@@ -1,0 +1,3276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NightingaleMD | AI Amplifying the Human Touch</title>
+    <meta name="description" content="NightingaleMD is the Care Orchestration Engine that lives inside your EHR. 50 navigators doing the work of 500.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/shield-only.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/shield-only.png">
+    <style>
+        /* ============================================
+           CSS VARIABLES - BRAND COLORS
+           ============================================ */
+        :root {
+            /* === NightingaleMD Brand Colors === */
+            --brand-teal: #55B5B8;
+            --brand-teal-dark: #3D8F92;
+            --brand-teal-darker: #2A6568;
+            --brand-teal-light: #6FC5C8;
+            --brand-teal-ultra-light: #E8F6F7;
+            --brand-red: #E45740;
+            --brand-red-dark: #C74430;
+            --brand-red-light: #FDECEA;
+            --brand-yellow: #F8CA44;
+            --brand-yellow-dark: #E5B72D;
+            --brand-yellow-light: #FEF9EB;
+            --neutral-dark: #49545E;
+            
+            /* === Text Colors === */
+            --text-primary: #31393F;
+            --text-secondary: #5A6872;
+            --text-tertiary: #49545E;
+            
+            /* === Gray Scale === */
+            --gray-50: #FAFBFB;
+            --gray-100: #F2F3F4;
+            --gray-200: #E5E7E9;
+            --gray-300: #CED2D6;
+            --gray-400: #A8AEB4;
+            --gray-500: #5A6872;
+            --gray-600: #49545E;
+            --gray-700: #31393F;
+            --gray-800: #1F262B;
+            --gray-900: #0F1418;
+            
+            /* === Background Colors === */
+            --bg-light: #F2F3F4;
+            --bg-white: #ffffff;
+            --bg-dark: #1F262B;
+            --bg-card-dark: #1F262B;
+            --border: #E5E7E9;
+            --border-dark: #2a3441;
+            
+            /* === Semantic Colors === */
+            --success: #4CAF50;
+            --success-bg: #E8F5E9;
+            --warning: #F8CA44;
+            --warning-bg: #FEF9EB;
+            --danger: #E45740;
+            --danger-bg: #FDECEA;
+            --info: #55B5B8;
+            --info-bg: #E8F6F7;
+            
+            /* === Spacing Scale (8px base) === */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            
+            /* === Border Radius === */
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --radius-xl: 12px;
+            --radius-pill: 16px;
+            
+            /* === Shadows (Flat Design) === */
+            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
+            
+            /* === Transitions === */
+            --transition-fast: 150ms ease-in-out;
+            --transition-base: 250ms ease-in-out;
+            --transition-slow: 400ms ease-in-out;
+        }
+
+        /* ============================================
+           RESET & BASE STYLES
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-white);
+            line-height: 1.6;
+        }
+
+        /* Skip Link for Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--brand-teal);
+            color: white;
+            padding: 8px 16px;
+            z-index: 10000;
+            text-decoration: none;
+            border-radius: 0 0 4px 0;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus Visible - Enhanced for Accessibility */
+        *:focus-visible {
+            outline: 3px solid var(--brand-teal);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 6px rgba(85, 181, 184, 0.2);
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid var(--brand-teal);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 6px rgba(85, 181, 184, 0.25);
+            transition: outline-offset 0.1s ease;
+        }
+
+        .view-btn:focus-visible {
+            outline-offset: 4px;
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced focus for form inputs */
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--brand-teal);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(85, 181, 184, 0.15);
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            *:focus-visible {
+                outline: 4px solid currentColor;
+                outline-offset: 4px;
+            }
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .nav-logo-text {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--brand-teal);
+        }
+
+        .nav-cta {
+            background: var(--brand-teal);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .nav-cta:hover {
+            background: var(--brand-teal-dark);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: rgba(58, 138, 141, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.2s;
+        }
+
+        .hamburger:hover {
+            background: rgba(85, 181, 184, 0.15);
+            border-color: var(--brand-teal);
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 3px;
+            background: var(--brand-teal);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            padding: 140px 32px 80px;
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle geometric background pattern */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(85, 181, 184, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(85, 181, 184, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(85, 181, 184, 0.04) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Subtle grid pattern overlay */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(85, 181, 184, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 181, 184, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid var(--brand-teal);
+            color: var(--brand-teal);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .hero-tagline {
+            color: var(--brand-teal);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            max-width: 900px;
+        }
+
+        .hero-title .highlight {
+            color: var(--brand-teal);
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat-value {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--brand-teal);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-stat-source {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .hero-lead-form {
+            display: flex;
+            gap: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .hero-lead-form input {
+            padding: 16px 20px;
+            border: none;
+            font-size: 1rem;
+            width: 280px;
+            outline: none;
+        }
+
+        .hero-lead-form input:focus {
+            outline: 2px solid var(--brand-teal);
+            outline-offset: 2px;
+            box-shadow: none;
+        }
+
+        .hero-lead-form .btn-primary {
+            border-radius: 0 8px 8px 0;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-teal);
+            color: white;
+            padding: 16px 32px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-base);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--brand-teal-dark);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            background-color: var(--brand-teal-darker);
+            transform: translateY(0) scale(1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--brand-teal);
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid var(--brand-teal);
+            transition: all var(--transition-base);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--brand-teal-ultra-light);
+            border-color: var(--brand-teal-dark);
+            color: var(--brand-teal-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:active {
+            background-color: var(--brand-teal-light);
+            transform: translateY(0);
+        }
+
+        /* Force Multiplier Visual */
+        .force-multiplier {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 48px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .force-multiplier-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .force-multiplier-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .force-box {
+            text-align: center;
+            padding: 24px 32px;
+            border-radius: 12px;
+            min-width: 200px;
+        }
+
+        .force-box.before {
+            background: var(--bg-light);
+        }
+
+        .force-box.after {
+            background: linear-gradient(135deg, rgba(85, 181, 184, 0.1), rgba(85, 181, 184, 0.2));
+            border: 2px solid var(--brand-teal);
+        }
+
+        .force-number {
+            font-family: 'Merriweather', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .force-box.after .force-number {
+            color: var(--brand-teal);
+        }
+
+        .force-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .force-arrow {
+            font-size: 2rem;
+            color: var(--brand-teal);
+        }
+
+        .force-caption {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .force-caption strong {
+            color: var(--brand-teal);
+        }
+
+        /* ============================================
+           CUSTOMER LOGOS SECTION
+           ============================================ */
+        .logos-section {
+            padding: 40px 32px;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logos-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logos-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+        }
+
+        .logos-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .logo-item {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo-item:hover {
+            opacity: 1;
+        }
+
+        /* ============================================
+           TESTIMONIAL SECTION
+           ============================================ */
+        .testimonial-section {
+            padding: 64px 32px;
+            background: linear-gradient(135deg, #f8fafa 0%, #e8f4f4 100%);
+        }
+
+        .testimonial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .testimonial-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 16px;
+            left: 24px;
+            font-size: 4rem;
+            color: var(--brand-teal);
+            opacity: 0.2;
+            font-family: 'Merriweather', serif;
+            line-height: 1;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-style: italic;
+            padding-top: 24px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--brand-teal), #2d7a7d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .testimonial-metric {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(58, 138, 141, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 16px;
+            font-weight: 600;
+            color: var(--brand-teal);
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           DEMO SECTION - CO-PILOT & ATC VIEWS
+           ============================================ */
+        .demo-section {
+            padding: 80px 32px;
+            background: var(--bg-white);
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .demo-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .demo-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* View Toggle */
+        .demo-view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(58, 138, 141, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .view-btn:hover {
+            border-color: var(--brand-teal);
+            color: var(--brand-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .view-btn:hover::before {
+            opacity: 1;
+        }
+
+        .view-btn:active {
+            transform: translateY(0);
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, var(--brand-teal), #2d7a7d);
+            border-color: var(--brand-teal);
+            color: white;
+            box-shadow: 0 6px 20px rgba(58, 138, 141, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .view-btn.active::before {
+            opacity: 0;
+        }
+
+        .view-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Demo Frame */
+        .demo-frame {
+            background: var(--bg-dark);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .demo-browser-bar {
+            background: #2a2a2a;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .demo-browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .demo-browser-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .demo-browser-dots span:nth-child(1) { background: #ff5f56; }
+        .demo-browser-dots span:nth-child(2) { background: #ffbd2e; }
+        .demo-browser-dots span:nth-child(3) { background: #27ca40; }
+
+        .demo-browser-url {
+            flex: 1;
+            background: #1a1a1a;
+            border-radius: 6px;
+            padding: 8px 16px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* Co-Pilot View */
+        .copilot-view {
+            display: flex;
+            min-height: 700px;
+        }
+
+        .copilot-view.hidden {
+            display: none;
+        }
+
+        .copilot-ehr {
+            flex: 1;
+            background: #1a1f2e;
+            padding: 24px;
+            color: white;
+        }
+
+        .copilot-ehr-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .copilot-ehr-title {
+            font-size: 1.1rem;
+            color: #888;
+        }
+
+        .copilot-ehr-patient {
+            background: var(--bg-card-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .patient-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .patient-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .patient-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .patient-info span {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .patient-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .patient-tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .patient-tag.high-risk {
+            background: rgba(220, 38, 38, 0.25);
+            color: #dc2626;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .patient-tag.discharged {
+            background: rgba(217, 119, 6, 0.25);
+            color: #d97706;
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+
+        .copilot-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .copilot-action-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .copilot-action-btn.engage {
+            background: var(--brand-teal);
+            color: white;
+        }
+
+        .copilot-action-btn.convene {
+            background: var(--brand-gold);
+            color: white;
+        }
+
+        .copilot-action-btn.checkin {
+            background: #6366f1;
+            color: white;
+        }
+
+        /* Facesheet Tabs */
+        .facesheet-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-dark);
+            margin-bottom: 20px;
+        }
+
+        .facesheet-tab {
+            padding: 12px 20px;
+            color: #888;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .facesheet-tab.active {
+            color: var(--brand-teal);
+            border-bottom-color: var(--brand-teal);
+        }
+
+        .facesheet-tab:hover:not(.active) {
+            color: #ccc;
+        }
+
+        /* Facesheet Content */
+        .facesheet-content {
+            background: var(--bg-card-dark);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .facesheet-section {
+            margin-bottom: 20px;
+        }
+
+        .facesheet-section-title {
+            color: var(--brand-teal);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .facesheet-item {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .facesheet-item-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .facesheet-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .facesheet-item-icon.alert {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .facesheet-item-icon.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .facesheet-item-icon.info {
+            background: rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+        }
+
+        .facesheet-item-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .facesheet-item-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .facesheet-item-badge.discharge {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .facesheet-item-badge.tcm {
+            background: rgba(85, 181, 184, 0.2);
+            color: var(--brand-teal);
+        }
+
+        .facesheet-item-badge.new {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .facesheet-item-text {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .facesheet-item-text.recommendations {
+            color: #ccc;
+        }
+
+        .facesheet-item-text strong.teal {
+            color: var(--brand-teal);
+        }
+
+        .facesheet-item.recommendations-box {
+            background: rgba(85, 181, 184, 0.1);
+            border: 1px solid rgba(85, 181, 184, 0.3);
+        }
+
+        .case-study-link {
+            color: var(--brand-teal);
+            text-decoration: underline;
+        }
+
+        .lab-value {
+            font-size: 1.5rem;
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .ckd-range {
+            color: var(--brand-teal);
+        }
+
+        .facesheet-item-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* NightingaleMD Sidebar */
+        .copilot-sidebar {
+            width: 380px;
+            background: var(--bg-card-dark);
+            border-left: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .copilot-sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copilot-sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .copilot-sidebar-title .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--brand-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .copilot-sidebar-title h3 {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .copilot-sidebar-title span {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .copilot-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #22c55e;
+            font-size: 0.85rem;
+        }
+
+        .copilot-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        .copilot-sidebar-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .ask-florence {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .ask-florence-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .ask-florence-input input {
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .ask-florence-input input::placeholder {
+            color: #666;
+        }
+
+        .ask-florence-input button {
+            background: var(--brand-teal);
+            border: none;
+            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* ============================================
+           ATC VIEW - AIR TRAFFIC CONTROLLER
+           ============================================ */
+        .atc-view {
+            background: var(--bg-dark);
+            padding: 24px;
+            min-height: 700px;
+        }
+
+        .atc-view.hidden {
+            display: none;
+        }
+
+        .atc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .atc-title {
+            color: white;
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+        }
+
+        .atc-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .atc-stat {
+            text-align: center;
+        }
+
+        .atc-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--brand-teal);
+        }
+
+        .atc-stat-value.warning {
+            color: var(--warning);
+        }
+
+        .atc-stat-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* ATC Grid */
+        .atc-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .atc-card {
+            background: var(--bg-card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .atc-card:hover {
+            border-color: var(--brand-teal);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .atc-card.escalated {
+            border-color: var(--brand-red);
+            box-shadow: 0 0 20px rgba(228, 87, 64, 0.2);
+        }
+
+        .atc-card-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .atc-card-patient h4 {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .atc-card-patient span {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .atc-card-status {
+            text-align: right;
+        }
+
+        .atc-card-status .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .atc-card-status .status-badge.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .atc-card-status .status-badge.escalated {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .atc-card-risk {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .atc-card-risk span {
+            font-weight: 700;
+        }
+
+        .atc-card-risk span.high { color: #ef4444; }
+        .atc-card-risk span.medium { color: #f59e0b; }
+        .atc-card-risk span.low { color: #22c55e; }
+
+        /* Transcript */
+        .atc-card-transcript {
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .transcript-entry {
+            margin-bottom: 12px;
+        }
+
+        .transcript-speaker {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .transcript-speaker.florence {
+            color: var(--brand-teal);
+        }
+
+        .transcript-speaker.patient {
+            color: var(--brand-gold);
+        }
+
+        .transcript-text {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            letter-spacing: 0.01em;
+        }
+
+        .transcript-signal {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 8px 12px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .transcript-signal .signal-icon {
+            color: var(--warning);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .atc-card-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .atc-card-program {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .atc-card-program.tcm {
+            background: rgba(85, 181, 184, 0.2);
+            color: var(--brand-teal);
+        }
+
+        .atc-card-program.ccm {
+            background: rgba(99, 102, 241, 0.2);
+            color: #6366f1;
+        }
+
+        .atc-card-program.rpm {
+            background: rgba(236, 72, 153, 0.2);
+            color: #ec4899;
+        }
+
+        .atc-card-program.chf {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* ============================================
+           LIVING CCA / CARE GAP DASHBOARD SECTION
+           ============================================ */
+        .orchestration-section {
+            padding: 80px 32px;
+            background: var(--bg-light);
+        }
+
+        .orchestration-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .orchestration-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .orchestration-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .orchestration-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Orchestration Diagram */
+        .orchestration-diagram {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .orchestration-flow {
+            display: grid;
+            grid-template-columns: 200px 1fr 280px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .orchestration-inputs {
+            padding: 20px;
+        }
+
+        .orchestration-inputs h4 {
+            color: var(--brand-gold);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .input-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .input-card h5 {
+            color: var(--brand-teal);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .input-card ul {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .input-card ul li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .input-card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--brand-teal);
+        }
+
+        .orchestration-engine {
+            background: linear-gradient(135deg, rgba(85, 181, 184, 0.05), rgba(85, 181, 184, 0.1));
+            border: 2px solid var(--brand-teal);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .engine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .engine-header h4 {
+            color: var(--brand-teal);
+            font-size: 1.1rem;
+        }
+
+        .engine-live-badge {
+            background: var(--brand-teal);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .engine-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .engine-queue {
+            margin-bottom: 20px;
+        }
+
+        .engine-queue-title {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+        }
+
+        .queue-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .queue-item-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #888;
+        }
+
+        .queue-item-status.active {
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .queue-item-status.pending {
+            background: var(--warning);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .queue-item-content h5 {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .queue-item-content span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .engine-logic {
+            background: rgba(85, 181, 184, 0.1);
+            border: 1px dashed var(--brand-teal);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .engine-logic h5 {
+            color: var(--brand-teal);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .engine-logic code {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: block;
+            line-height: 1.6;
+        }
+
+        .orchestration-outputs {
+            padding: 20px;
+        }
+
+        .orchestration-outputs h4 {
+            color: var(--brand-teal);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .output-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .output-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .output-card-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .output-card-header h5 {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .output-parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .output-party {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .output-party-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .output-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           CONVENE WORKFLOW SECTION
+           ============================================ */
+        .convene-section {
+            padding: 80px 32px;
+            background: var(--bg-white);
+        }
+
+        .convene-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .convene-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .convene-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .convene-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .convene-workflow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative;
+        }
+
+        .convene-workflow::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 12%;
+            right: 12%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-gold));
+            z-index: 0;
+        }
+
+        .convene-step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .convene-step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin: 0 auto 16px;
+            box-shadow: 0 4px 12px rgba(212, 168, 75, 0.4);
+        }
+
+        .convene-step h4 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .convene-step p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .convene-step-tag {
+            display: inline-block;
+            background: rgba(85, 181, 184, 0.1);
+            color: var(--brand-teal);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .convene-result {
+            background: var(--text-primary);
+            color: white;
+            border-radius: 12px;
+            padding: 24px 40px;
+            margin-top: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .convene-result p {
+            font-size: 1.1rem;
+        }
+
+        .convene-result strong {
+            color: var(--brand-teal);
+            font-size: 1.5rem;
+        }
+
+        /* ============================================
+           SCALE / CAMPAIGN SECTION
+           ============================================ */
+        .scale-section {
+            padding: 80px 32px;
+            background: var(--bg-light);
+        }
+
+        .scale-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .scale-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .scale-header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .scale-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .scale-demo {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+
+        .scale-demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .scale-demo-header h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .scale-new-campaign {
+            background: var(--brand-teal);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scale-campaigns {
+            display: grid;
+            gap: 16px;
+        }
+
+        .scale-campaign {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 20px 24px;
+        }
+
+        .scale-campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .scale-campaign h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .scale-campaign-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .scale-campaign-progress {
+            text-align: right;
+        }
+
+        .scale-campaign-progress .progress-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--brand-teal);
+        }
+
+        .scale-campaign-progress .progress-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .scale-progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .scale-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-gold));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .scale-benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .scale-benefit {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .scale-benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .scale-benefit h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .scale-benefit p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           CTA SECTION
+           ============================================ */
+        .cta-section {
+            padding: 100px 32px;
+            background: linear-gradient(135deg, var(--text-primary), #1a2530);
+            text-align: center;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .cta-urgency {
+            margin-top: 24px;
+            padding: 16px 28px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(245, 158, 11, 0.2));
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            display: inline-block;
+            animation: urgencyPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes urgencyPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 20px 4px rgba(239, 68, 68, 0.2); }
+        }
+
+        .cta-urgency span {
+            color: #fecaca;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: var(--bg-dark);
+            color: white;
+            padding: 60px 32px 32px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .footer-links h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: var(--brand-teal);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-dark);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copyright {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer-badges {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* ============================================
+           RESPONSIVE STYLES
+           ============================================ */
+        @media (max-width: 1024px) {
+            .orchestration-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .convene-workflow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .convene-workflow::before {
+                display: none;
+            }
+
+            .atc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .copilot-view {
+                flex-direction: column;
+            }
+
+            .copilot-sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 16px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 16px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .hamburger {
+                display: flex;
+                min-width: 48px;
+                min-height: 48px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .hamburger[aria-expanded="true"] span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger[aria-expanded="true"] span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger[aria-expanded="true"] span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            /* Mobile touch targets - minimum 48px */
+            .nav-links a {
+                padding: 16px;
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+            }
+
+            .btn-primary, .btn-secondary {
+                min-height: 48px;
+                padding: 14px 24px;
+            }
+
+            .view-btn {
+                min-height: 48px;
+                padding: 12px 20px;
+            }
+
+            .hero {
+                padding: 100px 16px 60px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .force-multiplier-visual {
+                flex-direction: column;
+            }
+
+            .force-arrow {
+                transform: rotate(90deg);
+            }
+
+            .demo-view-toggle {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .convene-workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .scale-benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+        /* Small Mobile Breakpoint */
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.6rem;
+                line-height: 1.3;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .hero-lead-form {
+                flex-direction: column;
+            }
+
+            .hero-lead-form input {
+                width: 100%;
+                border-radius: 8px;
+            }
+
+            .hero-lead-form .btn-primary {
+                width: 100%;
+                border-radius: 8px;
+                justify-content: center;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .view-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-urgency {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Prefers Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon"><img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/shield-only.png" alt="NightingaleMD Shield"></div>
+            <span class="nav-logo-text">NightingaleMD</span>
+        </a>
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+            <a href="#demo">Demo</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#campaigns">Campaigns</a>
+            <a href="#contact" class="nav-cta" aria-label="Request a personalized demo of NightingaleMD">Request Demo</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>The Care Orchestration Engine</div>
+                <p class="hero-tagline">AI Amplifying the Human Touch</p>
+                <h1 class="hero-title">
+                    The patient who needed you at 3 AM?<br>
+                    <span class="highlight">NightingaleMD was there.</span>
+                </h1>
+                <p class="hero-description">
+                    NightingaleMD is the AI care navigator that lives inside your EHR. Assign her a task—from closing a single care gap to running a HEDIS campaign for thousands—and she executes it. Your team, amplified—not replaced.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 12px; font-style: italic;">
+                    Unlike chatbots or patient portals, NightingaleMD takes action—scheduling appointments, coordinating transport, and closing gaps autonomously.
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">10x</div>
+                        <div class="hero-stat-label">Navigator Capacity</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">65%</div>
+                        <div class="hero-stat-label">Readmission Reduction</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">24/7</div>
+                        <div class="hero-stat-label">Patient Engagement</div>
+                    </div>
+                </div>
+                <p class="hero-stat-source">*Based on pilot results with Texas Children's Health Plan. <a href="#case-study" class="case-study-link">Read the case study →</a></p>
+                <div class="hero-ctas">
+                    <form class="hero-lead-form" onsubmit="handleHeroForm(event)">
+                        <label for="hero-name" class="sr-only">Your name</label>
+                        <input type="text" id="hero-name" placeholder="Your name" required>
+                        <label for="hero-email" class="sr-only">Work email</label>
+                        <input type="email" id="hero-email" placeholder="Work email" required>
+                        <button type="submit" class="btn-primary">Get Your Personalized ROI Analysis →</button>
+                    </form>
+                    <a href="#demo" class="btn-secondary">
+                        <span aria-hidden="true">▶</span> See NightingaleMD in Action (2 min)
+                    </a>
+                </div>
+
+                <!-- Force Multiplier Visual -->
+                <div class="force-multiplier">
+                    <h3 class="force-multiplier-title">The Force Multiplier Effect</h3>
+                    <div class="force-multiplier-visual">
+                        <div class="force-box before">
+                            <div class="force-number">50</div>
+                            <div class="force-label">Care Navigators</div>
+                        </div>
+                        <div class="force-arrow">→</div>
+                        <div class="force-box after">
+                            <div class="force-number">500</div>
+                            <div class="force-label">Equivalent Capacity</div>
+                        </div>
+                    </div>
+                    <p class="force-caption">NightingaleMD handles the repetitive outreach so your navigators can focus on <strong>building human relationships</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Logos Section -->
+        <section class="logos-section">
+            <div class="logos-container">
+                <p class="logos-title">Trusted by leading healthcare organizations</p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px;">Serving 500,000+ patients across 12 health systems</p>
+                <div class="logos-grid" style="margin-top: 24px;">
+                    <div class="logo-item" aria-label="Texas Children's Health Plan">Texas Children's</div>
+                    <div class="logo-item" aria-label="Main Street Health">Main Street Health</div>
+                    <div class="logo-item" aria-label="Advantage Health Partners">Advantage Health</div>
+                    <div class="logo-item" aria-label="Community Care Network">Community Care</div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 24px; margin-top: 32px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <span style="color: var(--brand-teal); font-size: 1.3rem;">🔒</span>
+                        <span style="font-weight: 600; color: var(--text-primary);">HIPAA Compliant</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <span style="color: var(--brand-teal); font-size: 1.3rem;">✅</span>
+                        <span style="font-weight: 600; color: var(--text-primary);">SOC 2 Type II</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: linear-gradient(135deg, #f8fafc, #f1f5f9); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <span style="color: var(--brand-teal); font-size: 1.3rem;">🛡️</span>
+                        <span style="font-weight: 600; color: var(--text-primary);">HITRUST Certified</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial Section -->
+        <section class="testimonial-section" aria-labelledby="testimonials-heading">
+            <div class="testimonial-container">
+                <div class="testimonial-header">
+                    <h2 id="testimonials-heading">What Healthcare Leaders Are Saying</h2>
+                    <p style="color: var(--text-secondary); margin-top: 12px;"><a href="#case-study" style="color: var(--brand-teal); text-decoration: underline;">Read the full Texas Children's case study →</a></p>
+                </div>
+                <div class="testimonial-grid">
+                    <article class="testimonial-card">
+                        <p class="testimonial-quote">NightingaleMD transformed how our care managers work. We went from spending 60% of our time on phone tag to actually having meaningful conversations with patients. The AI handles the scheduling, reminders, and follow-ups—we focus on care.</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">SJ</div>
+                            <div class="testimonial-info">
+                                <h4>Dr. Sarah Johnson</h4>
+                                <p>Chief Medical Officer, Texas Children's Health Plan</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-metric">
+                            <span aria-hidden="true">📈</span> 65% reduction in readmissions
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <p class="testimonial-quote">We closed more care gaps in 3 months with NightingaleMD than we did in the entire previous year. The Campaign Mode feature let us reach 8,000 diabetic patients for eye exams—something that would have taken our team 6 months manually.</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">MR</div>
+                            <div class="testimonial-info">
+                                <h4>Michael Rodriguez</h4>
+                                <p>VP of Care Management, Main Street Health</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-metric">
+                            <span aria-hidden="true">⚡</span> 10x faster gap closure
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <p class="testimonial-quote">Our navigators used to dread HEDIS season. Now NightingaleMD runs our campaigns autonomously while they focus on complex cases. Last quarter, we hit 95% compliance—our best ever—with half the manual effort.</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">LP</div>
+                            <div class="testimonial-info">
+                                <h4>Lisa Patterson, RN</h4>
+                                <p>Director of Population Health, Advantage Health Partners</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-metric">
+                            <span aria-hidden="true">✅</span> 95% HEDIS compliance
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Section -->
+        <section class="demo-section" id="demo">
+            <div class="demo-container">
+                <div class="demo-header">
+                    <h2>See NightingaleMD in Action</h2>
+                    <p>Toggle between views to see how NightingaleMD works as a Co-Pilot for individual patients or as an Air Traffic Controller managing multiple conversations.</p>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="demo-view-toggle" role="tablist" aria-label="Demo view selector">
+                    <button class="view-btn active" id="copilot-btn" role="tab" aria-selected="true" aria-controls="copilot-view" tabindex="0" onclick="switchView('copilot')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Co-Pilot View
+                    </button>
+                    <button class="view-btn" id="atc-btn" role="tab" aria-selected="false" aria-controls="atc-view" tabindex="-1" onclick="switchView('atc')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Air Traffic Controller
+                    </button>
+                </div>
+
+                <!-- Demo Frame -->
+                <div class="demo-frame">
+                    <div class="demo-browser-bar">
+                        <div class="demo-browser-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="demo-browser-url">healthchart-ehr.com/patient/jane-doe</div>
+                    </div>
+
+                    <!-- Co-Pilot View -->
+                    <div class="copilot-view" id="copilot-view" aria-live="polite">
+                        <div class="copilot-ehr">
+                            <div class="copilot-ehr-header">
+                                <span class="copilot-ehr-title">Patient Chart</span>
+                            </div>
+
+                            <div class="copilot-ehr-patient">
+                                <div class="patient-header">
+                                    <div class="patient-avatar" role="img" aria-label="Avatar for patient Jane Doe">JD</div>
+                                    <div class="patient-info">
+                                        <h3>Jane Doe</h3>
+                                        <span>75 y/o F</span>
+                                    </div>
+                                </div>
+                                <div class="patient-tags">
+                                    <span class="patient-tag high-risk">High Risk</span>
+                                    <span class="patient-tag discharged">Discharged</span>
+                                </div>
+                            </div>
+
+                            <div class="copilot-actions">
+                                <button class="copilot-action-btn engage" aria-haspopup="true" aria-expanded="false" aria-label="Engage patient options">⚡ Engage ▼</button>
+                                <button class="copilot-action-btn convene" aria-haspopup="true" aria-expanded="false" aria-label="Convene call options">📞 Convene ▼</button>
+                                <button class="copilot-action-btn checkin" aria-haspopup="true" aria-expanded="false" aria-label="Check-in options">💬 Check-In ▼</button>
+                            </div>
+
+                            <div class="facesheet-tabs">
+                                <div class="facesheet-tab active">Facesheet</div>
+                                <div class="facesheet-tab">Transcript</div>
+                                <div class="facesheet-tab">Documentation</div>
+                                <div class="facesheet-tab">Log</div>
+                            </div>
+
+                            <div class="facesheet-content">
+                                <div class="facesheet-section">
+                                    <div class="facesheet-section-title">NightingaleMD Summary & Agenda</div>
+                                    
+                                    <div class="facesheet-item">
+                                        <div class="facesheet-item-header">
+                                            <div class="facesheet-item-icon alert" role="img" aria-label="Alert">⚠</div>
+                                            <span class="facesheet-item-title">ADT Alert</span>
+                                            <span class="facesheet-item-badge discharge">Discharge</span>
+                                        </div>
+                                        <div class="facesheet-item-text">Discharged from Memorial Hospital 3 days ago<br>Reason: CHF Exacerbation</div>
+                                    </div>
+
+                                    <div class="facesheet-item">
+                                        <div class="facesheet-item-header">
+                                            <div class="facesheet-item-icon success" role="img" aria-label="Success">✓</div>
+                                            <span class="facesheet-item-title">Active Engagement</span>
+                                            <span class="facesheet-item-badge tcm">TCM</span>
+                                        </div>
+                                        <div class="facesheet-item-text">Patient engaged in TCM for 4 days</div>
+                                        <div class="facesheet-item-meta">
+                                            <span>🕐 Last: Jan 18, 2026</span>
+                                            <span>📅 Next: Jan 22, 2026</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="facesheet-item">
+                                        <div class="facesheet-item-header">
+                                            <div class="facesheet-item-icon info">☆</div>
+                                            <span class="facesheet-item-title">External Records</span>
+                                            <span class="facesheet-item-badge new">New</span>
+                                        </div>
+                                        <div class="facesheet-item-text">
+                                            <strong>Comprehensive Metabolic Panel</strong> - 4 days ago<br>
+                                            <span class="lab-value">29</span> mL/min<br>
+                                            Source: External Lab<br>
+                                            <span class="ckd-range">Stage 4 CKD range: 15-29 mL/min</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="copilot-sidebar">
+                            <div class="copilot-sidebar-header">
+                                <div class="copilot-sidebar-title">
+                                    <div class="avatar" role="img" aria-label="NightingaleMD AI avatar"><img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/shield-only.png" alt="NightingaleMD" style="width: 100%; height: 100%; object-fit: contain;"></div>
+                                    <div>
+                                        <h3>NightingaleMD Copilot</h3>
+                                        <span>AI Care Navigator</span>
+                                    </div>
+                                </div>
+                                <div class="copilot-status">Connected</div>
+                            </div>
+                            <div class="copilot-sidebar-content">
+                                <div class="facesheet-item recommendations-box">
+                                    <div class="facesheet-item-text recommendations">
+                                        <strong class="teal">Recommended Actions:</strong><br><br>
+                                        1. Schedule 7-day PCP follow-up (TCM requirement)<br><br>
+                                        2. Review medication reconciliation<br><br>
+                                        3. Assess home support and SDOH needs<br><br>
+                                        4. Coordinate nephrology referral for Stage 4 CKD
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ask-florence">
+                                <div class="ask-florence-input">
+                                    <label for="ask-florence-input" class="sr-only">Ask NightingaleMD a question</label>
+                                    <input type="text" id="ask-florence-input" placeholder="Ask NightingaleMD..." aria-label="Ask NightingaleMD a question">
+                                    <button aria-label="Send message">➤</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ATC View -->
+                    <div class="atc-view hidden" id="atc-view" aria-live="polite">
+                        <div class="atc-header">
+                            <h3 class="atc-title">Supervised Autonomy Dashboard</h3>
+                            <div class="atc-stats">
+                                <div class="atc-stat">
+                                    <div class="atc-stat-value">12</div>
+                                    <div class="atc-stat-label">Active Calls</div>
+                                </div>
+                                <div class="atc-stat">
+                                    <div class="atc-stat-value warning">2</div>
+                                    <div class="atc-stat-label">Needs Review</div>
+                                </div>
+                                <div class="atc-stat">
+                                    <div class="atc-stat-value">47</div>
+                                    <div class="atc-stat-label">Completed Today</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="atc-grid" id="atc-grid">
+                            <!-- ATC Cards will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mid-Page CTA -->
+        <div style="background: linear-gradient(135deg, var(--brand-teal), #2d7a7d); padding: 48px 32px; text-align: center;">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h3 style="font-family: 'Merriweather', serif; font-size: 1.8rem; color: white; margin-bottom: 16px;">Ready to see NightingaleMD work with your EHR?</h3>
+                <p style="color: rgba(255,255,255,0.9); margin-bottom: 24px;">Get a personalized demo showing NightingaleMD integrated with your specific workflows.</p>
+                <a href="#contact" style="display: inline-block; background: white; color: var(--brand-teal); padding: 16px 32px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">📅 Book Your 15-Minute Demo</a>
+            </div>
+        </div>
+
+        <!-- Living CCA / Care Gap Dashboard Section -->
+        <section class="orchestration-section" id="how-it-works">
+            <div class="orchestration-container">
+                <div class="orchestration-header">
+                    <h2>The Care Gap Dashboard: Active Orchestration</h2>
+                    <p>NightingaleMD doesn't just flag problems—she actively executes tasks and drives them to completion, reporting every action back to your EHR.</p>
+                </div>
+
+                <div class="orchestration-diagram">
+                    <div class="orchestration-flow">
+                        <div class="orchestration-inputs">
+                            <h4>Inputs</h4>
+                            <div class="input-card">
+                                <h5>COOP Gap List</h5>
+                                <ul>
+                                    <li>HbA1c Overdue</li>
+                                    <li>Eye Exam Needed</li>
+                                    <li>BP Uncontrolled</li>
+                                </ul>
+                            </div>
+                            <div class="input-card">
+                                <h5>Care Plan</h5>
+                                <ul>
+                                    <li>Chronic Conditions</li>
+                                    <li>Med Adherence</li>
+                                    <li>SDOH Needs</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="orchestration-engine">
+                            <div class="engine-header">
+                                <h4>NightingaleMD Copilot</h4>
+                                <span class="engine-live-badge">LIVE</span>
+                            </div>
+                            <p class="engine-subtitle">Continuous Feedback Loop</p>
+
+                            <div class="engine-queue">
+                                <p class="engine-queue-title">Active Orchestration Queue:</p>
+                                <div class="queue-item">
+                                    <div class="queue-item-status active"></div>
+                                    <div class="queue-item-content">
+                                        <h5>Coordinating Transport</h5>
+                                        <span>Booking Uber for Mrs. Thompson</span>
+                                    </div>
+                                </div>
+                                <div class="queue-item">
+                                    <div class="queue-item-status pending"></div>
+                                    <div class="queue-item-content">
+                                        <h5>Awaiting PCP Sign-off</h5>
+                                        <span>Sent to Dr. Smith via EHR</span>
+                                    </div>
+                                </div>
+                                <div class="queue-item">
+                                    <div class="queue-item-status"></div>
+                                    <div class="queue-item-content">
+                                        <h5>Specialist Referral</h5>
+                                        <span>Faxing Cardiology Dept</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="engine-logic">
+                                <h5>Gap Closure Logic:</h5>
+                                <code>
+                                    If Transport = Booked AND<br>
+                                    Appt = Confirmed THEN<br>
+                                    Update EHR & Close Gap
+                                </code>
+                            </div>
+                        </div>
+
+                        <div class="orchestration-outputs">
+                            <h4>Engagement & Record</h4>
+                            <div class="output-card">
+                                <div class="output-card-header">
+                                    <div class="output-card-icon">🏥</div>
+                                    <h5>EHR System of Record</h5>
+                                </div>
+                                <div class="output-parties">
+                                    <div class="output-party">
+                                        <div class="output-party-icon">👨‍⚕️</div>
+                                        Primary Care Provider
+                                    </div>
+                                    <div class="output-party">
+                                        <div class="output-party-icon">👩‍💼</div>
+                                        Care Manager
+                                    </div>
+                                    <div class="output-party">
+                                        <div class="output-party-icon">🩺</div>
+                                        Specialist
+                                    </div>
+                                    <div class="output-party">
+                                        <div class="output-party-icon">🚗</div>
+                                        Transport
+                                    </div>
+                                </div>
+                                <div class="output-success">
+                                    ✓ Gap Closed & Documented
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Convene Workflow Section -->
+        <section class="convene-section">
+            <div class="convene-container">
+                <div class="convene-header">
+                    <h2>Human-in-the-Loop: Complex Care Coordination</h2>
+                    <p>For complex cases, NightingaleMD orchestrates multi-party calls while keeping your navigators in control.</p>
+                </div>
+
+                <div class="convene-workflow">
+                    <div class="convene-step">
+                        <div class="convene-step-number">1</div>
+                        <h4>Trigger</h4>
+                        <p>Care Manager identifies a high-risk patient in HealthCloud or Lightbeam.</p>
+                        <span class="convene-step-tag">Task: "Post-Discharge Follow-up"</span>
+                    </div>
+                    <div class="convene-step">
+                        <div class="convene-step-number">2</div>
+                        <h4>Orchestrate</h4>
+                        <p>NightingaleMD sends SMS invite. If no reply in 15 mins, she calls to confirm availability.</p>
+                        <span class="convene-step-tag">Escalation: SMS → Voice Call</span>
+                    </div>
+                    <div class="convene-step">
+                        <div class="convene-step-number">3</div>
+                        <h4>Convene</h4>
+                        <p>NightingaleMD dials Patient, Caregiver, and Navigator, bridging them into a single conference line.</p>
+                        <span class="convene-step-tag">"Connecting all parties..."</span>
+                    </div>
+                    <div class="convene-step">
+                        <div class="convene-step-number">4</div>
+                        <h4>Support</h4>
+                        <p>NightingaleMD listens for protocol adherence and whispers missed gaps to the Navigator.</p>
+                        <span class="convene-step-tag">Whisper: "Ask about refill adherence"</span>
+                    </div>
+                </div>
+
+                <div class="convene-result">
+                    <p>The Result: Care Managers focus on the patient, not the phone tag.</p>
+                    <strong>100% Protocol Adherence</strong>
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="#contact" style="display: inline-block; background: var(--brand-teal); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#2d7a7d'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--brand-teal)'; this.style.transform='translateY(0)';">📞 Schedule a Convene Demo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scale / Campaign Section -->
+        <section class="scale-section" id="campaigns">
+            <div class="scale-container">
+                <div class="scale-header">
+                    <h2>Scale Your Impact: Campaign Mode</h2>
+                    <p>Close 10,000 care gaps with a few clicks. NightingaleMD handles the outreach while you focus on strategy.</p>
+                </div>
+
+                <div class="scale-demo">
+                    <div class="scale-demo-header">
+                        <h3>Campaign Manager</h3>
+                        <button class="scale-new-campaign">+ New Campaign</button>
+                    </div>
+
+                    <div class="scale-campaigns">
+                        <div class="scale-campaign">
+                            <div class="scale-campaign-header">
+                                <div>
+                                    <h4>HEDIS Colon Cancer Screening Drive</h4>
+                                    <span class="scale-campaign-meta">Target: 10,000 members | Deadline: Mar 31</span>
+                                </div>
+                                <div class="scale-campaign-progress">
+                                    <div class="progress-value">7,300</div>
+                                    <div class="progress-label">gaps closed (73%)</div>
+                                </div>
+                            </div>
+                            <div class="scale-progress-bar">
+                                <div class="scale-progress-fill" style="width: 73%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="scale-campaign">
+                            <div class="scale-campaign-header">
+                                <div>
+                                    <h4>Diabetic Eye Exam Outreach</h4>
+                                    <span class="scale-campaign-meta">Target: 5,200 members | Deadline: Feb 28</span>
+                                </div>
+                                <div class="scale-campaign-progress">
+                                    <div class="progress-value">4,732</div>
+                                    <div class="progress-label">gaps closed (91%)</div>
+                                </div>
+                            </div>
+                            <div class="scale-progress-bar">
+                                <div class="scale-progress-fill" style="width: 91%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scale-benefits">
+                        <div class="scale-benefit">
+                            <div class="scale-benefit-icon">⚡</div>
+                            <h4>Launch in 3 Clicks</h4>
+                            <p>Select population, set deadline, NightingaleMD handles the rest.</p>
+                        </div>
+                        <div class="scale-benefit">
+                            <div class="scale-benefit-icon">🕐</div>
+                            <h4>24/7 Autonomous Execution</h4>
+                            <p>Works around the clock while your team sleeps.</p>
+                        </div>
+                        <div class="scale-benefit">
+                            <div class="scale-benefit-icon">✓</div>
+                            <h4>Closed-Loop Reporting</h4>
+                            <p>Every action documented, full audit trail.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section" id="contact">
+            <div class="cta-container">
+                <h2>Ready to Amplify Your Team?</h2>
+                <p>See how NightingaleMD can transform your care coordination in a personalized demo.</p>
+                <div class="cta-buttons">
+                    <a href="https://calendly.com/nightingalemd" class="btn-primary" target="_blank">
+                        <span aria-hidden="true">📅</span> See NightingaleMD Close Gaps Live
+                    </a>
+                    <a href="mailto:hello@nightingalemd.com" class="btn-secondary" style="color: white; border-color: rgba(255,255,255,0.3);">
+                        <span aria-hidden="true">✉</span> Contact Sales
+                    </a>
+                </div>
+                <div class="cta-urgency" role="alert">
+                    <span><strong>⚡ HEDIS Season Is Here</strong> — Organizations joining by Feb 15 will have NightingaleMD operational before March measurement deadlines. Only 3 integration slots remain for Q1. <strong>Don't miss your window.</strong></span>
+                </div>
+                <div style="margin-top: 24px; display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                    <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #22c55e;">✓</span> No implementation fees</div>
+                    <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #22c55e;">✓</span> 30-day pilot available</div>
+                    <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #22c55e;">✓</span> Works with any EHR</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/shield-only.png" alt="NightingaleMD" style="width: 50px; height: 50px; margin-bottom: 12px;">
+                    <h3>NightingaleMD</h3>
+                    <p>The Care Orchestration Engine that lives inside your EHR. AI amplifying the human touch.</p>
+                </div>
+                <nav class="footer-links" aria-label="Product links">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#campaigns">Campaigns</a></li>
+                    </ul>
+                </nav>
+                <nav class="footer-links" aria-label="Company links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+                <nav class="footer-links" aria-label="Legal links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">HIPAA</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 NightingaleMD. All rights reserved.</p>
+                <div class="footer-badges">
+                    <span class="footer-badge">🔒 HIPAA Compliant</span>
+                    <span class="footer-badge">✓ SOC 2 Type II</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // View Toggle
+        window.switchView = function(view) {
+            const copilotView = document.getElementById('copilot-view');
+            const atcView = document.getElementById('atc-view');
+            const copilotBtn = document.getElementById('copilot-btn');
+            const atcBtn = document.getElementById('atc-btn');
+
+            // Get or create live region for announcements
+            let liveRegion = document.getElementById('view-announcement');
+            if (!liveRegion) {
+                liveRegion = document.createElement('div');
+                liveRegion.id = 'view-announcement';
+                liveRegion.setAttribute('role', 'status');
+                liveRegion.setAttribute('aria-live', 'polite');
+                liveRegion.className = 'sr-only';
+                document.body.appendChild(liveRegion);
+            }
+
+            if (view === 'copilot') {
+                copilotView.classList.remove('hidden');
+                atcView.classList.add('hidden');
+                copilotBtn.classList.add('active');
+                atcBtn.classList.remove('active');
+                copilotBtn.setAttribute('aria-selected', 'true');
+                copilotBtn.setAttribute('tabindex', '0');
+                atcBtn.setAttribute('aria-selected', 'false');
+                atcBtn.setAttribute('tabindex', '-1');
+                liveRegion.textContent = 'Switched to Co-Pilot View. Showing individual patient EHR sidebar.';
+            } else {
+                copilotView.classList.add('hidden');
+                atcView.classList.remove('hidden');
+                copilotBtn.classList.remove('active');
+                atcBtn.classList.add('active');
+                copilotBtn.setAttribute('aria-selected', 'false');
+                copilotBtn.setAttribute('tabindex', '-1');
+                atcBtn.setAttribute('aria-selected', 'true');
+                atcBtn.setAttribute('tabindex', '0');
+                generateATCCards();
+                liveRegion.textContent = 'Switched to Air Traffic Controller View. Showing 6 active patient conversations.';
+            }
+        };
+
+        // Hamburger Menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            navLinks.classList.toggle('active');
+        });
+
+        // Generate ATC Cards
+        function generateATCCards() {
+            const calls = [
+                {
+                    name: "Jane Doe",
+                    age: 75,
+                    conditions: "CHF, Stage 4 CKD",
+                    type: "TCM",
+                    risk: 78,
+                    status: "ACTIVE",
+                    transcript: [
+                        { speaker: "NightingaleMD", text: "Hello, this is NightingaleMD from your care team. I'm calling to check on how you're doing since your discharge from the hospital three days ago. Is this Jane Doe?" },
+                        { speaker: "Patient", text: "Yes, this is Jane. Oh, I'm so glad you called. I've been meaning to reach out..." },
+                        { speaker: "NightingaleMD", text: "I'm here to help, Jane. How have you been feeling since you came home?" }
+                    ]
+                },
+                {
+                    name: "Robert Chen",
+                    age: 68,
+                    conditions: "Diabetic Retinopathy",
+                    type: "CCM",
+                    risk: 45,
+                    status: "ACTIVE",
+                    transcript: [
+                        { speaker: "NightingaleMD", text: "Good morning, Mr. Chen! This is NightingaleMD, your AI care navigator from the clinic. How are you feeling today?" },
+                        { speaker: "Patient", text: "Oh, hello NightingaleMD. I'm... well, I'm doing okay, I guess. Still getting used to all this new information about my eyes." },
+                        { speaker: "NightingaleMD", text: "I completely understand - a diabetic retinopathy diagnosis can feel overwhelming. I'm here to help you navigate this." }
+                    ]
+                },
+                {
+                    name: "William Thompson",
+                    age: 72,
+                    conditions: "AFib, Pacemaker",
+                    type: "RPM",
+                    risk: 62,
+                    status: "ACTIVE",
+                    transcript: [
+                        { speaker: "NightingaleMD", text: "Good morning, Mr. Thompson! This is NightingaleMD, your AI care navigator. How are you feeling today?" },
+                        { speaker: "Patient", text: "Oh hello NightingaleMD. I'm doing alright, just a bit tired lately." },
+                        { speaker: "NightingaleMD", text: "I understand. Have you been checking your pacemaker readings regularly?" }
+                    ]
+                },
+                {
+                    name: "Margaret Wilson",
+                    age: 79,
+                    conditions: "CHF, Hypertension",
+                    type: "CHF Pathway",
+                    risk: 85,
+                    status: "ESCALATED",
+                    transcript: [
+                        { speaker: "NightingaleMD", text: "Hello, this is NightingaleMD from your heart failure management program. Am I speaking with Margaret Wilson?" },
+                        { speaker: "Patient", text: "Yes, this is Margaret. I've been having some trouble breathing lately..." },
+                        { speaker: "SIGNAL", text: "⚠️ SIGNAL: Respiratory distress — Patient reports breathing difficulties, potential CHF exacerbation" }
+                    ]
+                },
+                {
+                    name: "Frank Martinez",
+                    age: 66,
+                    conditions: "COPD, Former Smoker",
+                    type: "CCM",
+                    risk: 55,
+                    status: "ACTIVE",
+                    transcript: [
+                        { speaker: "NightingaleMD", text: "Hello Mr. Martinez, this is NightingaleMD from your care team. How are you doing today?" },
+                        { speaker: "Patient", text: "Hey NightingaleMD! Doing pretty good actually. The new inhaler seems to be helping." },
+                        { speaker: "NightingaleMD", text: "That's wonderful to hear! Have you been using it as prescribed, twice daily?" }
+                    ]
+                },
+                {
+                    name: "Harold Davis",
+                    age: 82,
+                    conditions: "Dementia, Hypertension",
+                    type: "CCM",
+                    risk: 70,
+                    status: "ACTIVE",
+                    transcript: [
+                        { speaker: "NightingaleMD", text: "Hello, this is NightingaleMD calling for Harold Davis. Is this Harold or a family member?" },
+                        { speaker: "Patient", text: "This is his daughter, Sarah. Dad is here with me." },
+                        { speaker: "NightingaleMD", text: "Thank you, Sarah. I'm calling to check on how Harold is doing with his medications and daily activities." }
+                    ]
+                }
+            ];
+
+            const grid = document.getElementById('atc-grid');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+
+            calls.forEach((call, index) => {
+                const card = document.createElement('div');
+                card.className = 'atc-card' + (call.status === 'ESCALATED' ? ' escalated' : '');
+
+                let transcriptHtml = '';
+                call.transcript.forEach(entry => {
+                    if (entry.speaker === 'SIGNAL') {
+                        transcriptHtml += `<div class="transcript-signal"><span class="signal-icon">⚠️ SIGNAL</span><br>${entry.text}</div>`;
+                    } else {
+                        transcriptHtml += `<div class="transcript-entry"><span class="transcript-speaker ${entry.speaker.toLowerCase()}">${entry.speaker}</span><div class="transcript-text">${entry.text}</div></div>`;
+                    }
+                });
+
+                const riskClass = call.risk >= 70 ? 'high' : (call.risk >= 50 ? 'medium' : 'low');
+                const programClass = call.type.toLowerCase().replace(' ', '-').replace('pathway', '');
+
+                card.innerHTML = `
+                    <div class="atc-card-header">
+                        <div class="atc-card-patient">
+                            <h4>${call.name}</h4>
+                            <span>${call.age} y/o • ${call.conditions}</span>
+                        </div>
+                        <div class="atc-card-status">
+                            <span class="status-badge ${call.status.toLowerCase()}">${call.status}</span>
+                            <div class="atc-card-risk">Risk Level <span class="${riskClass}">${call.risk}%</span></div>
+                        </div>
+                    </div>
+                    <div class="atc-card-transcript">${transcriptHtml}</div>
+                    <div class="atc-card-footer">
+                        <span class="atc-card-program ${programClass}">${call.type}</span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Handle hero lead form submission
+        function handleHeroForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const nameInput = document.getElementById('hero-name');
+            const emailInput = document.getElementById('hero-email');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            
+            // Clear previous error states
+            nameInput.style.borderColor = '';
+            emailInput.style.borderColor = '';
+            
+            // Email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            // Validate name
+            if (!name) {
+                nameInput.style.borderColor = 'var(--danger)';
+                nameInput.focus();
+                showFormError(form, 'Please enter your name.');
+                return;
+            }
+            
+            // Validate email
+            if (!emailRegex.test(email)) {
+                emailInput.style.borderColor = 'var(--danger)';
+                emailInput.focus();
+                showFormError(form, 'Please enter a valid work email address.');
+                return;
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span style="display: inline-flex; align-items: center; gap: 8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg> Processing...</span>';
+            submitBtn.disabled = true;
+            
+            // Simulate API call (in production, send to backend)
+            setTimeout(function() {
+                // Show success message
+                form.innerHTML = '<div style="padding: 20px; text-align: center;" role="alert"><div style="color: var(--success); font-size: 2rem; margin-bottom: 8px;">✓</div><div style="color: var(--brand-teal); font-weight: 600; font-size: 1.1rem;">Thanks, ' + name.split(' ')[0] + '!</div><div style="color: var(--text-secondary); margin-top: 4px;">We\'ll be in touch within 24 hours.</div></div>';
+                console.log('Lead captured:', { name, email });
+            }, 800);
+        }
+        
+        function showFormError(form, message) {
+            let errorDiv = form.querySelector('.form-error');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'form-error';
+                errorDiv.setAttribute('role', 'alert');
+                errorDiv.setAttribute('aria-live', 'assertive');
+                errorDiv.setAttribute('aria-atomic', 'true');
+                errorDiv.style.cssText = 'color: var(--danger); font-size: 0.875rem; margin-top: 8px; text-align: center; padding: 8px; background: rgba(239, 68, 68, 0.1); border-radius: 4px;';
+                form.appendChild(errorDiv);
+            }
+            // Clear and re-set to trigger screen reader announcement
+            errorDiv.textContent = '';
+            setTimeout(() => { errorDiv.textContent = message; }, 50);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+        
+        window.handleHeroForm = handleHeroForm;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pre-generate ATC cards for smoother switching
+            generateATCCards();
+        });
+    </script>
+</body>
+</html>
