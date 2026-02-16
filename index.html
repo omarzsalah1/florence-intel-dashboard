@@ -6579,6 +6579,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 console.log('Error in startWorkflow:', e);
                 if (e.message !== 'Aborted') {
                     console.error(e);
+                    // Show error in transcript
+                    const container = document.getElementById('transcript-container');
+                    container.innerHTML = `<div style="color: #E45740; padding: 20px; text-align: center;">
+                        <strong>Error:</strong> ${e.message}<br>
+                        <small>${e.stack}</small>
+                    </div>`;
                 }
                 hideTypingIndicator();
             }
