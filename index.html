@@ -8192,7 +8192,7 @@ function renderStagedProblems() {
                 <div class="problem-details">
                     <span class="staged-source">Source: Florence AI • ${new Date().toLocaleDateString()}</span>
                     <div class="problem-actions">
-                        <button class="btn-approve" onclick="approveStagedProblem('${problem.gapId}')">
+                        <button class="btn-approve" onclick="approveStagedItem('${problem.gapId}')">
                             ✓ Add to Problem List
                         </button>
                         <button class="btn-dismiss" onclick="dismissStagedProblem('${problem.gapId}')">
@@ -8207,7 +8207,7 @@ function renderStagedProblems() {
     stagedContainer.innerHTML = html;
 }
 
-function approveStagedProblem(gapId) {
+function approveStagedItem(gapId) {
     // Convert gapId to number to handle string/number mismatch
     gapId = parseInt(gapId);
     const problem = stagedItems.find(item => item.gapId === gapId);
