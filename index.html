@@ -6505,8 +6505,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 await new Promise(r => setTimeout(r, 100)); // Increased debounce
             }
             
-            // Reset DOM and state in correct order
-            documasync function startWorkflow(workflowType) {
+        
+        async function startWorkflow(workflowType) {
             // If same workflow is running, ignore
             if (currentWorkflow === workflowType && isWorkflowInProgress) return;
             
