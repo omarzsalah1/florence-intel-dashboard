@@ -6499,13 +6499,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         
         async function startWorkflow(workflowType) {
             console.log('startWorkflow called with:', workflowType);
-            // If same workflow is running, ignore
-            if (currentWorkflow === workflowType && isWorkflowInProgress) {
-                console.log('Same workflow already running, ignoring');
-                return;
-            }
             
-            // Cancel any existing workflow immediately
+            // Cancel any existing workflow immediately (including same workflow)
             if (isWorkflowInProgress && abortController) {
                 abortController.abort();
                 hideTypingIndicator();
