@@ -6560,7 +6560,13 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 convene: 'Convene Session',
                 checkin: 'Check-In'
             };
-            addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            
+            // Safely add to log (don't let logging errors break the workflow)
+            try {
+                addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            } catch (logError) {
+                console.warn('addToLog failed:', logError);
+            }
             
             try {
                 await playConversation(workflowType, abortController.signal);
@@ -6569,8 +6575,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 btn.querySelector('.btn-text').textContent = 'Completed';
                 btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
                 
-                // Add to log
-                addToLog(`${workflowNames[workflowType]} Completed`, 'Documentation generated');
+                // Add to log (safely)
+                try {
+                    addToLog(`${workflowNames[workflowType]} Completed`, 'Documentation generated');
+                } catch (logError) {
+                    console.warn('addToLog failed:', logError);
+                }
                 
                 // Store the workflow type for fileToEHR (don't clear currentWorkflow yet)
                 lastCompletedWorkflow = workflowType;
