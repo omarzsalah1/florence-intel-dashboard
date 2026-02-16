@@ -6445,6 +6445,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         
         async function playConversation(workflowType, signal) {
             const script = scripts[workflowType];
+            console.log('playConversation called with workflowType:', workflowType);
+            console.log('script:', script);
+            console.log('script length:', script ? script.length : 'undefined');
             
             for (let i = 0; i < script.length; i++) {
                 if (signal.aborted) throw new Error('Aborted');
@@ -6463,6 +6466,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     hideTypingIndicator();
                 }
                 
+                console.log('Adding message:', msg);
                 await addMessage(msg, signal);
                 await new Promise((r, reject) => {
                     const timeout = setTimeout(r, 500);
