@@ -264,25 +264,25 @@
             margin-bottom: 8px;
         }
         
-        .gap-title {
-            font-size: 12px;
+        .staged-title {
+            font-size: 14px;
             font-weight: 600;
-            color: #31393F;
-            margin-top: 3px;
+            color: #1b5e20;
+            margin-bottom: 6px;
         }
         
-        .gap-description {
+        .staged-detail {
+            font-size: 12px;
+            color: #2e7d32;
+            line-height: 1.5;
+        }
+        
+        .staged-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
             font-size: 11px;
-            color: #5A6872;
-            line-height: 1.4;
-            margin-bottom: 8px;
-        }
-        
-        .gap-codes {
-            font-size: 10px;
-            color: #9e9e9e;
-            margin-top: 3px;
-        }olor: #558b2f;
+            color: #558b2f;
         }
         
         /* CCA Staging Styles */
@@ -410,63 +410,14 @@
             flex-direction: column;
             color: #31393F;
             font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
-            transition: width 0.3s ease;
-            position: relative;
-        }
-        
-        .florence-panel.collapsed {
-            width: 200px;
-        }
-        
-        .florence-panel.collapsed .patient-card,
-        .florence-panel.collapsed .workflow-buttons,
-        .florence-panel.collapsed .florence-tabs,
-        .florence-panel.collapsed .tab-content {
-            display: none;
-        }
-        
-        .sidebar-collapse-btn {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: rgba(85, 181, 184, 0.1);
-            border: none;
-            border-radius: 4px;
-            padding: 4px 6px;
-            cursor: pointer;
-            color: #55B5B8;
-            font-size: 14px;
-            transition: all 0.2s;
-            z-index: 10;
-        }
-        
-        .sidebar-collapse-btn:hover {
-            background: rgba(85, 181, 184, 0.2);
         }
         
         .florence-header {
-            padding: 6px 16px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #e0e0e0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        
-        .florence-header.auto-hidden {
-            transform: translateY(-100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .patient-card.auto-hidden {
-            transform: translateY(-100%);
-            opacity: 0;
-            max-height: 0;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
         }
         
         .florence-logo {
@@ -476,29 +427,29 @@
         }
         
         .florence-logo-icon {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
         .florence-logo-icon svg {
-            width: 14px;
-            height: 14px;
+            width: 20px;
+            height: 20px;
             fill: white;
         }
         
         .florence-title {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 600;
             color: #ff6b35;
         }
         
         .florence-subtitle {
-            font-size: 9px;
+            font-size: 11px;
             color: #5A6872;
         }
         
@@ -572,100 +523,35 @@
         
         /* Patient Card */
         .patient-card {
-            margin: 8px 16px;
+            margin: 12px 16px;
             background: #f8f9fa;
-            border-radius: 8px;
-            padding: 10px 12px;
+            border-radius: 10px;
+            padding: 14px;
         }
         
         .patient-card-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 12px;
-            margin-bottom: 0;
+            margin-bottom: 12px;
         }
         
         .patient-avatar {
-            display: none;
-        }
-        
-        .patient-details {
-            flex: 1;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #7c4dff 0%, #536dfe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
         }
         
         .patient-details h3 {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             margin-bottom: 4px;
-        }
-        
-        .patient-action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            align-items: flex-end;
-        }
-        
-        .patient-action-btn {
-            padding: 4px 8px;
-            background: #55B5B8;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s;
-        }
-        
-        .patient-action-btn:hover {
-            background: #449194;
-        }
-        
-        .patient-action-btn.post-visit {
-            background: #7B1FA2;
-        }
-        
-        .patient-action-btn.post-visit:hover {
-            background: #6A1B9A;
-        }
-        
-        .patient-action-btn {
-            background: linear-gradient(135deg, #55B5B8 0%, #4A9FA2 100%);
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-        
-        .patient-action-btn:hover {
-            background: linear-gradient(135deg, #4A9FA2 0%, #3D8D90 100%);
-            transform: translateY(-1px);
-        }
-        
-        .patient-action-btn svg {
-            width: 10px;
-            height: 10px;
-        }
-        
-        .patient-action-btn.post-visit {
-            background: linear-gradient(135deg, #8B5CF6, #6D28D9);
-        }
-        
-        .patient-action-btn.post-visit:hover {
-            background: linear-gradient(135deg, #7C3AED, #5B21B6);
         }
         
         .patient-tags {
@@ -703,16 +589,6 @@
             padding: 12px 0 0 0;
             margin-top: 12px;
             border-top: 1px solid #e0e0e0;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .workflow-buttons.hidden {
-            max-height: 0;
-            padding: 0;
-            margin-top: 0;
-            border-top: none;
-            opacity: 0;
         }
         
         .workflow-btn {
@@ -798,11 +674,6 @@
             50% { box-shadow: 0 0 0 8px rgba(85, 181, 184, 0); }
         }
         
-        /* Florence Toolbar - Hidden (buttons moved to patient card) */
-        .florence-toolbar {
-            display: none;
-        }
-        
         /* Florence Tabs */
         .florence-tabs {
             display: flex;
@@ -818,12 +689,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            padding: 8px 8px;
+            gap: 6px;
+            padding: 12px 12px;
             background: transparent;
             border: none;
             color: #F2F3F4;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -844,8 +715,8 @@
         }
         
         .tab-icon {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             flex-shrink: 0;
         }
         
@@ -855,7 +726,6 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            scroll-behavior: smooth;
         }
         
         .tab-panel {
@@ -1040,65 +910,6 @@
             accent-color: #55B5B8;
         }
         
-        /* Gap Category Sections */
-        .gap-category {
-            margin-bottom: 12px;
-        }
-        
-        .category-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px;
-            background: #e9ecef;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: background 0.2s;
-        }
-        
-        .category-header:hover {
-            background: #dee2e6;
-        }
-        
-        .category-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #31393F;
-        }
-        
-        .category-count {
-            background: #55B5B8;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-        
-        .category-toggle {
-            font-size: 12px;
-            color: #5A6872;
-            transition: transform 0.3s;
-        }
-        
-        .category-toggle.collapsed {
-            transform: rotate(-90deg);
-        }
-        
-        .category-gaps {
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-        }
-        
-        .category-gaps.collapsed {
-            max-height: 0 !important;
-            opacity: 0;
-        }
-        
         /* Gap Cards */
         .gaps-list {
             flex: 1;
@@ -1107,10 +918,10 @@
         
         .gap-card {
             background: #f8f9fa;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-left: 3px solid #55B5B8;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #55B5B8;
         }
         
         .gap-card.staged {
@@ -1121,8 +932,8 @@
         .gap-card-header {
             display: flex;
             align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 6px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
         
         .gap-checkbox {
@@ -1205,17 +1016,17 @@
         
         .gap-actions {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
         
         .stage-btn {
             flex: 1;
-            padding: 8px 12px;
+            padding: 10px 16px;
             background: #55B5B8;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             color: white;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -1231,12 +1042,12 @@
         }
         
         .detail-btn, .undo-btn {
-            padding: 6px 10px;
+            padding: 8px 12px;
             background: transparent;
             border: 1px solid #c0c0c0;
-            border-radius: 5px;
+            border-radius: 6px;
             color: #5A6872;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
         }
         
@@ -1257,12 +1068,12 @@
         
         /* Stage for Future Visit */
         .future-visit-btn {
-            padding: 6px 10px;
+            padding: 8px 12px;
             background: transparent;
             border: 1px solid #7B1FA2;
-            border-radius: 5px;
+            border-radius: 6px;
             color: #7B1FA2;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -3224,7 +3035,15 @@ button:hover {
             color: #C62828;
         }
 
-        /* Florence Toolbar - REMOVED (duplicate rule, toolbar is hidden above) */
+        /* Florence Toolbar */
+        .florence-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
         /* Sync Button */
         .sync-button {
@@ -4130,10 +3949,7 @@ button:hover {
     </div>
     
     <!-- FLORENCE PANEL -->
-    <div class="florence-panel" id="florence-panel">
-        <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" title="Collapse/Expand Sidebar">
-            <span id="collapse-icon">◀</span>
-        </button>
+    <div class="florence-panel">
         <div class="florence-header" style="position: relative;">
             <div style="position: absolute; top: 8px; right: 16px; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; display: flex; align-items: center; gap: 8px;">
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; margin: 0;">
@@ -4180,23 +3996,6 @@ button:hover {
                         <span class="patient-tag ccm">CCM</span>
                     </div>
                     <div class="patient-mrn">MRN: 202070</div>
-                </div>
-                <div class="patient-action-buttons">
-                    <button class="patient-action-btn" id="sync-button-relocated" onclick="performSync()">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="23 4 23 10 17 10"></polyline>
-                            <polyline points="1 20 1 14 7 14"></polyline>
-                            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
-                        </svg>
-                        Sync
-                    </button>
-                    <button class="patient-action-btn post-visit" id="post-visit-btn-relocated" onclick="showPostVisitView()">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 11l3 3L22 4"></path>
-                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
-                        </svg>
-                        Post-Visit
-                    </button>
                 </div>
             </div>
             
@@ -5194,79 +4993,11 @@ button:hover {
         let isWorkflowInProgress = false;
         let abortController = null;
         
-        // ==================== SIDEBAR COLLAPSE TOGGLE ====================
-        function toggleSidebarCollapse() {
-            const panel = document.getElementById('florence-panel');
-            const icon = document.getElementById('collapse-icon');
-            
-            if (panel.classList.contains('collapsed')) {
-                panel.classList.remove('collapsed');
-                icon.textContent = '◀'; // Left arrow
-                localStorage.setItem('florence-sidebar-collapsed', 'false');
-            } else {
-                panel.classList.add('collapsed');
-                icon.textContent = '▶'; // Right arrow
-                localStorage.setItem('florence-sidebar-collapsed', 'true');
-            }
-        }
-        
-        // ==================== SMART AUTO-HIDE HEADER ====================
-        let lastScrollTop = 0;
-        let scrollTimeout = null;
-        
-        function setupSmartAutoHide() {
-            const tabContent = document.querySelector('.tab-content');
-            const header = document.querySelector('.florence-header');
-            const patientCard = document.querySelector('.patient-card');
-            
-            if (!tabContent || !header || !patientCard) return;
-            
-            tabContent.addEventListener('scroll', () => {
-                const scrollTop = tabContent.scrollTop;
-                
-                // Clear previous timeout
-                if (scrollTimeout) clearTimeout(scrollTimeout);
-                
-                // Only auto-hide if scrolled down more than 50px
-                if (scrollTop > 50) {
-                    if (scrollTop > lastScrollTop) {
-                        // Scrolling down - hide header
-                        header.classList.add('auto-hidden');
-                        patientCard.classList.add('auto-hidden');
-                    } else {
-                        // Scrolling up - show header
-                        header.classList.remove('auto-hidden');
-                        patientCard.classList.remove('auto-hidden');
-                    }
-                } else {
-                    // Near top - always show header
-                    header.classList.remove('auto-hidden');
-                    patientCard.classList.remove('auto-hidden');
-                }
-                
-                lastScrollTop = scrollTop;
-            });
-        }
-        
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', () => {
             renderGaps();
             updateCounts();
             setupEventListeners();
-            setupSmartAutoHide();
-            
-            // Restore sidebar collapse state from localStorage
-            const isCollapsed = localStorage.getItem('florence-sidebar-collapsed') === 'true';
-            if (isCollapsed) {
-                document.getElementById('florence-panel').classList.add('collapsed');
-                document.getElementById('collapse-icon').textContent = '▶';
-            }
-            
-            // Initialize workflow buttons as hidden (Overview tab is default)
-            const workflowButtons = document.querySelector('.workflow-buttons');
-            const postVisitBtn = document.getElementById('post-visit-btn-relocated');
-            if (workflowButtons) workflowButtons.classList.add('hidden');
-            if (postVisitBtn) postVisitBtn.style.display = 'none';
         });
         
         function setupEventListeners() {
@@ -5577,47 +5308,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 return true;
             });
             
-            // Group gaps by type
-            const groupedGaps = {
-                suspect: filteredGaps.filter(g => g.type === 'suspect'),
-                quality: filteredGaps.filter(g => g.type === 'quality'),
-                frailty: filteredGaps.filter(g => g.type === 'frailty'),
-                recapture: filteredGaps.filter(g => g.type === 'recapture')
-            };
-            
-            // Render each category
-            Object.keys(groupedGaps).forEach(category => {
-                const categoryGaps = groupedGaps[category];
-                if (categoryGaps.length === 0) return;
-                
-                // Create category section
-                const categorySection = document.createElement('div');
-                categorySection.className = 'gap-category';
-                categorySection.setAttribute('data-category', category);
-                
-                // Category header
-                const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'category-header';
-                categoryHeader.onclick = () => toggleCategory(category);
-                categoryHeader.innerHTML = `
-                    <div class="category-title">
-                        <span class="category-count">${categoryGaps.length}</span>
-                        <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
-                    </div>
-                    <span class="category-toggle">▼</span>
-                `;
-                
-                // Category gaps container
-                const categoryGapsContainer = document.createElement('div');
-                categoryGapsContainer.className = 'category-gaps';
-                categoryGapsContainer.setAttribute('data-category', category);
-                
-                categorySection.appendChild(categoryHeader);
-                categorySection.appendChild(categoryGapsContainer);
-                container.appendChild(categorySection);
-            });
-            
-            // Now render gaps into their categories
             filteredGaps.forEach(gap => {
                 const card = document.createElement('div');
                 card.className = `gap-card ${gap.staged ? 'staged' : gap.deferred ? 'deferred' : ''}`;
@@ -5676,14 +5366,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                         '<label for="attest-referred-' + gap.id + '"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><rect x="3" y="2" width="8" height="11" stroke="#582c83" stroke-width="1.5"/><path d="M7 4V8M5 6H9" stroke="#582c83" stroke-width="1.5" stroke-linecap="round"/><rect x="5" y="10" width="1.5" height="3" fill="#582c83"/><rect x="7.5" y="10" width="1.5" height="3" fill="#582c83"/></svg> Referred - Patient referred to specialist for this condition</label>' +
                     '</div>' +
                 '</div>';
-                
-                // Append to category container instead of main container
-                const categoryContainer = container.querySelector(`.category-gaps[data-category="${gap.type}"]`);
-                if (categoryContainer) {
-                    categoryContainer.appendChild(card);
-                } else {
-                    container.appendChild(card);
-                }
+                container.appendChild(card);
                 
                 // Add checkbox event listener
                 const checkbox = card.querySelector('.gap-checkbox');
@@ -5695,38 +5378,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     });
                 }
             });
-            
-            // Set max-height for all category-gaps containers (for smooth collapse/expand)
-            document.querySelectorAll('.category-gaps').forEach(container => {
-                if (!container.classList.contains('collapsed')) {
-                    container.style.maxHeight = container.scrollHeight + 'px';
-                }
-            });
-        }
-        
-        // Toggle category collapse/expand
-        function toggleCategory(category) {
-            const categoryGapsContainer = document.querySelector(`.category-gaps[data-category="${category}"]`);
-            const categoryToggle = document.querySelector(`.gap-category[data-category="${category}"] .category-toggle`);
-            
-            if (categoryGapsContainer && categoryToggle) {
-                const isCollapsed = categoryGapsContainer.classList.contains('collapsed');
-                
-                if (isCollapsed) {
-                    // Expand
-                    categoryGapsContainer.style.maxHeight = categoryGapsContainer.scrollHeight + 'px';
-                    categoryGapsContainer.classList.remove('collapsed');
-                    categoryToggle.classList.remove('collapsed');
-                } else {
-                    // Collapse
-                    categoryGapsContainer.style.maxHeight = categoryGapsContainer.scrollHeight + 'px';
-                    setTimeout(() => {
-                        categoryGapsContainer.style.maxHeight = '0';
-                        categoryGapsContainer.classList.add('collapsed');
-                        categoryToggle.classList.add('collapsed');
-                    }, 10);
-                }
-            }
         }
         
         function updateCounts() {
@@ -6684,20 +6335,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             document.getElementById(tabName + '-panel').classList.add('active');
-            
-            // Auto-hide workflow buttons on Overview and Documentation tabs
-            const workflowButtons = document.querySelector('.workflow-buttons');
-            const postVisitBtn = document.getElementById('post-visit-btn-relocated');
-            
-            if (tabName === 'facesheet' || tabName === 'documentation') {
-                // Hide workflow buttons and post-visit button
-                if (workflowButtons) workflowButtons.classList.add('hidden');
-                if (postVisitBtn) postVisitBtn.style.display = 'none';
-            } else {
-                // Show workflow buttons and post-visit button on Transcript tab
-                if (workflowButtons) workflowButtons.classList.remove('hidden');
-                if (postVisitBtn) postVisitBtn.style.display = 'flex';
-            }
             
             // Re-initialize filters after tab switch (v7 fix)
             if (tabName === 'facesheet') {
@@ -10121,12 +9758,26 @@ function advanceReferralStep() {
 }
 
 // Add "Post-Visit Tasks" button to the Florence panel header
-// DISABLED: Button now relocated to patient card (patient-action-buttons)
 function addPostVisitButton() {
-    // Button is now statically placed in patient card HTML
-    // No need to dynamically create it
-    console.log('Post-Visit button is now in patient card, skipping dynamic creation');
-    return;
+    const syncBtn = document.getElementById('sync-button');
+    if (!syncBtn) return;
+    
+    // Check if button already exists
+    if (document.getElementById('post-visit-btn')) return;
+    
+    const pvBtn = document.createElement('button');
+    pvBtn.id = 'post-visit-btn';
+    pvBtn.className = 'sync-button';
+    pvBtn.style.cssText = 'background: linear-gradient(135deg, #8B5CF6, #6D28D9); margin-top: 6px; font-size: 11px;';
+    pvBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+        </svg>
+        Post-Visit Tasks
+    `;
+    pvBtn.onclick = showPostVisitView;
+    syncBtn.parentNode.insertBefore(pvBtn, syncBtn.nextSibling);
 }
 
 // Make functions globally available

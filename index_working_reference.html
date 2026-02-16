@@ -1,0 +1,3220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florence Copilot Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-teal: #55B5B8;
+            --brand-purple: #8B5CF6;
+            --brand-yellow: #F8CA44;
+            --brand-red: #E45740;
+            --brand-green: #10B981;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* ==================== ATHENA PANEL (LEFT) ==================== */
+        .athena-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+        
+        .athena-header {
+            background: linear-gradient(135deg, #4E2D82 0%, #3a1f66 100%);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .athena-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .athena-logo span:first-child {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .athena-logo span:last-child {
+            font-size: 20px;
+            font-weight: 300;
+            color: #b39ddb;
+        }
+        
+        .patient-banner {
+            background: #F2ECDE;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0d8c8;
+        }
+        
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .patient-info strong {
+            font-size: 15px;
+            color: #4E2D82;
+        }
+        
+        .patient-info span {
+            color: #5c3d8f;
+            font-size: 13px;
+        }
+        
+        .athena-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .athena-actions button {
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-save {
+            background: #fff;
+            border: 1px solid #b39ddb;
+            color: #4E2D82;
+        }
+        
+        .btn-sign {
+            background: #62BB46;
+            border: 1px solid #62BB46;
+            color: white;
+        }
+        
+        .athena-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .athena-nav {
+            width: 200px;
+            background: #fafafa;
+            border-right: 1px solid #e0e0e0;
+            padding: 16px 0;
+            overflow-y: auto;
+        }
+        
+        .nav-section {
+            margin-bottom: 20px;
+        }
+        
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #9e9e9e;
+            text-transform: uppercase;
+            padding: 0 16px;
+            margin-bottom: 8px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            color: #424242;
+        }
+        
+        .nav-item:hover {
+            background: #ede7f6;
+        }
+        
+        .nav-item.active {
+            background: #d1c4e9;
+            color: #4E2D82;
+            font-weight: 600;
+        }
+        
+        .nav-item .icon {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .nav-item .badge {
+            margin-left: auto;
+            background: #4E2D82;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .athena-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* SOAP Sections */
+        .soap-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .soap-header {
+            background: #f5f5f5;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #424242;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-badge {
+            font-size: 10px;
+            font-weight: 500;
+            color: #757575;
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .soap-content {
+            padding: 16px;
+        }
+        
+        /* Staged Items in Athena */
+        .staged-item {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 1px solid #81c784;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            animation: stageIn 0.5s ease;
+        }
+        
+        @keyframes stageIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .staged-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #62BB46;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        
+        .staged-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1b5e20;
+            margin-bottom: 6px;
+        }
+        
+        .staged-detail {
+            font-size: 12px;
+            color: #2e7d32;
+            line-height: 1.5;
+        }
+        
+        .staged-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #558b2f;
+        }
+        
+        .remove-btn {
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid #ef5350;
+            color: #ef5350;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        
+        /* Finding rows */
+        .finding-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .finding-label {
+            width: 150px;
+            font-size: 12px;
+            color: #757575;
+        }
+        
+        .finding-value {
+            font-size: 13px;
+            color: #424242;
+            font-weight: 500;
+        }
+        
+        .finding-value.alert {
+            color: #c62828;
+        }
+        
+        /* ==================== FLORENCE PANEL (RIGHT) ==================== */
+        .florence-panel {
+            width: 400px;
+            background: linear-gradient(135deg, #1A2A3A 0%, #2D4A5A 50%, #1A3A4A 100%);
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .florence-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .florence-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .florence-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #55B5B8, #3D9A9D);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .florence-logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+        
+        .florence-title {
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Merriweather', Georgia, serif;
+            color: #55B5B8;
+        }
+        
+        .florence-subtitle {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #10B981;
+        }
+        
+        .connection-dot {
+            width: 8px;
+            height: 8px;
+            background: #10B981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Patient Card */
+        .patient-card {
+            margin: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        
+        .patient-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .patient-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #55B5B8, #3D9A9D);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .patient-details h3 {
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Merriweather', Georgia, serif;
+            margin-bottom: 4px;
+        }
+        
+        .patient-tags {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .patient-tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .patient-tag.risk {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+        
+        .patient-tag.ccm {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+        
+        .patient-mrn {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+        }
+        
+        /* Workflow Buttons */
+        .workflow-buttons {
+            display: flex;
+            gap: 8px;
+            padding: 12px 0 0 0;
+            margin-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .workflow-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            border: 2px solid;
+        }
+        
+        .workflow-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .workflow-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-engage {
+            background: var(--brand-teal);
+            border-color: var(--brand-teal);
+            color: white;
+        }
+        
+        .btn-engage:hover:not(:disabled) {
+            background: #3D9A9D;
+        }
+        
+        .btn-engage.active {
+            background: #3D9A9D;
+            animation: pulseBtn 1.5s infinite;
+        }
+        
+        .btn-convene {
+            background: transparent;
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
+        }
+        
+        .btn-convene:hover:not(:disabled) {
+            background: rgba(139, 92, 246, 0.2);
+        }
+        
+        .btn-convene.active {
+            background: var(--brand-purple);
+            color: white;
+            animation: pulseBtn 1.5s infinite;
+        }
+        
+        .btn-checkin {
+            background: transparent;
+            border-color: var(--brand-yellow);
+            color: var(--brand-yellow);
+        }
+        
+        .btn-checkin:hover:not(:disabled) {
+            background: rgba(248, 202, 68, 0.2);
+        }
+        
+        .btn-checkin.active {
+            background: var(--brand-yellow);
+            color: #1F2937;
+            animation: pulseBtn 1.5s infinite;
+        }
+        
+        @keyframes pulseBtn {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(85, 181, 184, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(85, 181, 184, 0); }
+        }
+        
+        /* Florence Tabs */
+        .florence-tabs {
+            display: flex;
+            gap: 0;
+            margin-top: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        
+        .florence-tab {
+            flex: 1;
+            padding: 10px 8px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .florence-tab:hover {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .florence-tab.active {
+            color: #55B5B8;
+            border-bottom-color: #55B5B8;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tab-panel {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        
+        .tab-panel.active {
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Florence Summary - Collapsible */
+        .florence-summary {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-left: 3px solid #55B5B8;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .summary-header {
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .summary-header:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .summary-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #55B5B8;
+        }
+        
+        .summary-toggle {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            transition: transform 0.3s;
+        }
+        
+        .summary-toggle.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .summary-content {
+            padding: 0 12px 12px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.8);
+            display: none;
+        }
+        
+        .summary-content.show {
+            display: block;
+        }
+        
+        /* Gaps Section */
+        .gaps-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .gaps-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .gaps-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .gaps-title h3 {
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Merriweather', Georgia, serif;
+        }
+        
+        .gaps-count {
+            background: #E45740;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .prework-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        /* Search and Filters */
+        .gaps-controls {
+            margin-bottom: 12px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        
+        .search-box::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        
+        .filter-btn {
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .filter-btn.active {
+            background: #55B5B8;
+            color: white;
+        }
+        
+        .show-staged-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .show-staged-row input {
+            accent-color: #55B5B8;
+        }
+        
+        /* Gap Cards */
+        .gaps-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .gap-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #55B5B8;
+        }
+        
+        .gap-card.staged {
+            opacity: 0.7;
+            border-left-color: #9e9e9e;
+        }
+        
+        .gap-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .gap-checkbox {
+            margin-top: 4px;
+            accent-color: #55B5B8;
+        }
+        
+        .gap-info {
+            flex: 1;
+        }
+        
+        .gap-type-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            margin-right: 6px;
+        }
+        
+        .gap-type-badge.recapture {
+            background: #55B5B8;
+            color: white;
+        }
+        
+        .gap-type-badge.suspect {
+            background: #F8CA44;
+            color: #49545E;
+        }
+        
+        .gap-type-badge.quality {
+            background: #8B5CF6;
+            color: white;
+        }
+        
+        .gap-type-badge.frailty {
+            background: #E45740;
+            color: white;
+        }
+        
+        .gap-priority {
+            font-size: 10px;
+            color: #E45740;
+            font-weight: 600;
+        }
+        
+        .gap-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin: 6px 0 4px;
+        }
+        
+        .gap-codes {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .gap-description {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .gap-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .stage-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #55B5B8, #449194);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .stage-btn:hover {
+            background: linear-gradient(135deg, #449194, #3D9A9D);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(85, 181, 184, 0.3);
+        }
+        
+        .stage-btn.staged {
+            background: #9e9e9e;
+            cursor: default;
+        }
+        
+        .detail-btn, .undo-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            cursor: pointer;
+        }
+        
+        .staged-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-size: 10px;
+            color: #10B981;
+        }
+        
+        .staged-indicator svg {
+            width: 14px;
+            height: 14px;
+            fill: #10B981;
+        }
+        
+        /* ==================== TRANSCRIPT TAB ==================== */
+        .transcript-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.system {
+            align-self: center;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            padding: 8px 16px;
+            max-width: 100%;
+            text-align: center;
+        }
+        
+        .message.florence {
+            align-self: flex-start;
+            background: var(--brand-teal);
+            color: white;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message.patient {
+            align-self: flex-end;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message.care-manager {
+            align-self: flex-end;
+            background: var(--brand-purple);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message-header {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .message-header svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .message-time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            width: fit-content;
+        }
+        
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        /* ==================== DOCUMENTATION TAB ==================== */
+        .doc-container {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .doc-header {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .doc-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .doc-badge {
+            background: var(--brand-teal);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .doc-content {
+            padding: 16px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .doc-section {
+            margin-bottom: 16px;
+        }
+        
+        .doc-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .doc-section h4 {
+            font-size: 12px;
+            font-weight: 700;
+            color: #55B5B8;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-family: 'Merriweather', Georgia, serif;
+        }
+        
+        .doc-section p, .doc-section ul {
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+        }
+        
+        .doc-section ul {
+            padding-left: 20px;
+        }
+        
+        .doc-section li {
+            margin-bottom: 4px;
+        }
+        
+        .file-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--brand-teal);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .file-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .file-btn:hover {
+            background: #3D9A9D;
+        }
+        
+        .file-btn:disabled {
+            background: #6B7280;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-bar.active {
+            display: block;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--brand-teal);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* ==================== LOG TAB ==================== */
+        .log-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .log-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        
+        .log-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(85, 181, 184, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-teal);
+        }
+        
+        .log-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .log-content h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .log-content p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .log-time {
+            margin-left: auto;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* ==================== MODAL ==================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            background: #f5f5f5;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #424242;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #9e9e9e;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-gap-info {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+        
+        .modal-gap-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #424242;
+            margin-bottom: 6px;
+        }
+        
+        .modal-gap-detail {
+            font-size: 13px;
+            color: #757575;
+            line-height: 1.5;
+        }
+        
+        .modal-destination {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .modal-destination-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 4px;
+        }
+        
+        .modal-destination-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1b5e20;
+        }
+        
+        .modal-note {
+            margin-bottom: 16px;
+        }
+        
+        .modal-note label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #424242;
+            margin-bottom: 6px;
+        }
+        
+        .modal-note textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-btn.cancel {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            color: #616161;
+        }
+        
+        .modal-btn.confirm {
+            background: #4caf50;
+            border: 1px solid #4caf50;
+            color: white;
+        }
+        
+        .modal-btn.confirm:hover {
+            background: #43a047;
+        }
+        
+        /* ==================== SYNC OVERLAY ==================== */
+        .sync-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .sync-overlay.show {
+            opacity: 1;
+        }
+        
+        .sync-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            min-width: 360px;
+        }
+        
+        .sync-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sync-icon svg {
+            width: 28px;
+            height: 28px;
+            color: #4caf50;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .sync-icon.done svg {
+            animation: none;
+            color: #4caf50;
+        }
+        
+        .sync-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #212121;
+            margin-bottom: 6px;
+        }
+        
+        .sync-subtitle {
+            font-size: 13px;
+            color: #757575;
+            margin-bottom: 20px;
+        }
+        
+        .sync-progress {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .sync-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #66bb6a);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .sync-steps {
+            text-align: left;
+            margin-top: 16px;
+        }
+        
+        .sync-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 13px;
+            color: #9e9e9e;
+            transition: color 0.3s;
+        }
+        
+        .sync-step.active {
+            color: #424242;
+            font-weight: 500;
+        }
+        
+        .sync-step.done {
+            color: #4caf50;
+        }
+        
+        .sync-step-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+        
+        .sync-step.active .sync-step-icon {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+        
+        .sync-step.done .sync-step-icon {
+            border-color: #4caf50;
+            background: #4caf50;
+            color: white;
+        }
+        
+        /* ==================== ENCOUNTER NOTE ==================== */
+        .encounter-note {
+            background: #e3f2fd;
+            border: 2px solid #42a5f5;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .encounter-note-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .encounter-note-badge {
+            background: #1565c0;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .encounter-note-type {
+            font-size: 12px;
+            color: #1565c0;
+            font-weight: 600;
+        }
+        
+        .encounter-note-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0d47a1;
+            margin-bottom: 8px;
+        }
+        
+        .encounter-note-content {
+            font-size: 13px;
+            color: #424242;
+            line-height: 1.6;
+        }
+        
+        .encounter-note-content strong {
+            color: #1565c0;
+        }
+        
+        .encounter-note-meta {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #757575;
+            display: flex;
+            gap: 12px;
+        }
+        
+        /* ==================== CHECKIN DATA ==================== */
+        .checkin-data {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .checkin-data-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .checkin-data-badge {
+            background: #e65100;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .checkin-data-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e65100;
+            margin-bottom: 8px;
+        }
+        
+        .checkin-data-content {
+            font-size: 13px;
+            color: #424242;
+            line-height: 1.6;
+        }
+        
+        .checkin-data-meta {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #757575;
+            display: flex;
+            gap: 12px;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.6); }
+            50% { box-shadow: 0 0 0 8px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+        
+        .pulse-highlight {
+            animation: pulseGreen 1s ease 3;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+        
+        .florence-panel ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .florence-panel ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+<meta property="og:type" content="website">
+		<meta property="og:url" content="https://florencedemo-jecguosu.manus.space/DiagnosisGapsManager-v6.html">
+		<meta property="og:title" content="Florence Copilot Demo">
+		<meta property="og:description" content="Mobile-responsive demo of Florence Copilot AI Care Navigator - showcasing CCM call simulation, transcript, note generation, and AI chat features">
+		<meta property="og:image" content="https://files.manuscdn.com/webdev_screenshots/2026/02/07/KZ5GdzPHcReXjkfVQn66gS.png?x-oss-process=image/resize,w_1200/crop,h_630,x_0,y_0">
+		<meta property="og:image:width" content="1200">
+		<meta property="og:image:height" content="630">
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="Florence Copilot Demo">
+		<meta name="twitter:description" content="Mobile-responsive demo of Florence Copilot AI Care Navigator - showcasing CCM call simulation, transcript, note generation, and AI chat features">
+		<meta name="twitter:image" content="https://files.manuscdn.com/webdev_screenshots/2026/02/07/KZ5GdzPHcReXjkfVQn66gS.png?x-oss-process=image/resize,w_1200/crop,h_630,x_0,y_0">
+		<meta name="twitter:image:width" content="1200">
+		<meta name="twitter:image:height" content="630"><link rel="canonical" href="https://florencedemo-jecguosu.manus.space/DiagnosisGapsManager-v6.html" /></head>
+<body>
+    <!-- ATHENA PANEL -->
+    <div class="athena-panel">
+        <div class="athena-header">
+            <div class="athena-logo">
+                <span>athena</span><span>One</span>
+            </div>
+            <div class="athena-actions">
+                <button class="btn-save">Save Draft</button>
+                <button class="btn-sign">Sign & Close</button>
+            </div>
+        </div>
+        
+        <div class="patient-banner">
+            <div class="patient-info">
+                <strong>Campbell, Neil</strong>
+                <span>68 y/o M • DOB: 05/27/1955 • MRN: 202070</span>
+            </div>
+        </div>
+        
+        <div class="athena-body">
+            <nav class="athena-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Patient Chart</div>
+                    <div class="nav-item" data-section="encounter-notes">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+                        <span>Encounter Notes</span>
+                        <span class="badge" id="encounter-badge" style="display:none;">0</span>
+                    </div>
+                    <div class="nav-item" data-section="visit-summary">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></span>
+                        <span>Visit Summary</span>
+                    </div>
+                    <div class="nav-item" data-section="problems">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                        <span>Problems</span>
+                        <span class="badge" id="problems-badge" style="display:none;">0</span>
+                    </div>
+                    <div class="nav-item" data-section="medications">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="7" rx="2"/><path d="M12 11V6a3 3 0 0 1 3-3h0a3 3 0 0 1 3 3v0"/><line x1="12" y1="11" x2="12" y2="18"/></svg></span>
+                        <span>Medications</span>
+                    </div>
+                    <div class="nav-item" data-section="labs">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v5l4 9a2 2 0 0 1-1.8 2.9H6.8A2 2 0 0 1 5 17l4-9V3z"/><line x1="9" y1="3" x2="15" y2="3"/></svg></span>
+                        <span>Labs</span>
+                    </div>
+                    <div class="nav-item" data-section="questionnaires">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg></span>
+                        <span>Questionnaires</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Value-Based Care</div>
+                    <div class="nav-item" data-section="quality-measures">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+                        <span>Quality Measures</span>
+                        <span class="badge" id="quality-badge" style="display:none;">0</span>
+                    </div>
+                    <div class="nav-item" data-section="care-gaps">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#4E2D82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+                        <span>Care Gaps</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="athena-content" id="athena-content">
+                <!-- ENCOUNTER NOTES Section -->
+                <div class="soap-section" id="section-encounter-notes">
+                    <div class="soap-header">
+                        ENCOUNTER NOTES
+                        <span class="section-badge">Visit Documentation</span>
+                    </div>
+                    <div class="soap-content">
+                        <div id="encounter-notes-staged"></div>
+                        <p style="font-size: 13px; color: #9e9e9e; font-style: italic;">No encounter notes filed yet.</p>
+                    </div>
+                </div>
+                
+                <!-- SUBJECTIVE Section -->
+                <div class="soap-section" id="section-subjective">
+                    <div class="soap-header">
+                        SUBJECTIVE
+                        <span class="section-badge">HPI / ROS</span>
+                    </div>
+                    <div class="soap-content">
+                        <div id="subjective-staged"></div>
+                        <p style="font-size: 13px; color: #616161; line-height: 1.6;">
+                            <strong>Chief Complaint:</strong> Annual wellness visit, chronic disease management<br><br>
+                            <strong>HPI:</strong> 68 y/o male presents for annual wellness visit. Patient reports stable blood pressure control on current medications. Denies chest pain, shortness of breath, or palpitations. Reports occasional fatigue. Blood sugars have been running higher per home monitoring (fasting 140-160). No hypoglycemic episodes. Denies polyuria, polydipsia. Reports feeling "a bit down" lately with decreased motivation. Sleep has been poor - waking 2-3x/night. Denies suicidal ideation.<br><br>
+                            <strong>Review of Systems:</strong> As above. All other systems reviewed and negative.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- OBJECTIVE Section -->
+                <div class="soap-section" id="section-objective">
+                    <div class="soap-header">
+                        OBJECTIVE
+                        <span class="section-badge">Vitals / Exam / Findings</span>
+                    </div>
+                    <div class="soap-content">
+                        <div id="objective-staged"></div>
+                        <div style="margin-bottom: 16px;">
+                            <strong style="font-size: 13px; color: #424242;">Vitals:</strong>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px;">
+                                <div class="finding-row" style="border: none; padding: 8px 12px; background: #f5f5f5; border-radius: 6px;">
+                                    <span style="font-size: 12px; color: #757575;">BP</span>
+                                    <span style="font-size: 14px; font-weight: 600; color: #424242; margin-left: 8px;">142/88 mmHg</span>
+                                </div>
+                                <div class="finding-row" style="border: none; padding: 8px 12px; background: #f5f5f5; border-radius: 6px;">
+                                    <span style="font-size: 12px; color: #757575;">HR</span>
+                                    <span style="font-size: 14px; font-weight: 600; color: #424242; margin-left: 8px;">76 bpm</span>
+                                </div>
+                                <div class="finding-row" style="border: none; padding: 8px 12px; background: #f5f5f5; border-radius: 6px;">
+                                    <span style="font-size: 12px; color: #757575;">Weight</span>
+                                    <span style="font-size: 14px; font-weight: 600; color: #424242; margin-left: 8px;">198 lbs</span>
+                                </div>
+                                <div class="finding-row" style="border: none; padding: 8px 12px; background: #f5f5f5; border-radius: 6px;">
+                                    <span style="font-size: 12px; color: #757575;">BMI</span>
+                                    <span style="font-size: 14px; font-weight: 600; color: #ef5350; margin-left: 8px;">29.3</span>
+                                </div>
+                                <div class="finding-row" style="border: none; padding: 8px 12px; background: #f5f5f5; border-radius: 6px;">
+                                    <span style="font-size: 12px; color: #757575;">SpO2</span>
+                                    <span style="font-size: 14px; font-weight: 600; color: #424242; margin-left: 8px;">97%</span>
+                                </div>
+                                <div class="finding-row" style="border: none; padding: 8px 12px; background: #f5f5f5; border-radius: 6px;">
+                                    <span style="font-size: 12px; color: #757575;">Temp</span>
+                                    <span style="font-size: 14px; font-weight: 600; color: #424242; margin-left: 8px;">98.4°F</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="findings-section">
+                            <strong style="font-size: 13px; color: #424242;">Screenings & Findings:</strong>
+                            <div style="margin-top: 8px;" id="findings-content">
+                                <div class="finding-row">
+                                    <span class="finding-label">PHQ-9 Score</span>
+                                    <span class="finding-value alert">18 (Moderately Severe)</span>
+                                </div>
+                                <div class="finding-row">
+                                    <span class="finding-label">Morse Fall Scale</span>
+                                    <span class="finding-value alert">55 (High Risk)</span>
+                                </div>
+                                <div class="finding-row">
+                                    <span class="finding-label">Last A1c</span>
+                                    <span class="finding-value alert">8.9% (12/20/2025)</span>
+                                </div>
+                                <div class="finding-row">
+                                    <span class="finding-label">eGFR</span>
+                                    <span class="finding-value alert">42 mL/min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ASSESSMENT Section -->
+                <div class="soap-section" id="section-assessment">
+                    <div class="soap-header">
+                        ASSESSMENT
+                        <span class="section-badge">Diagnoses / Problem List</span>
+                    </div>
+                    <div class="soap-content">
+                        <div id="assessment-staged"></div>
+                        <div style="font-size: 13px; color: #616161;">
+                            <strong>Active Problems:</strong>
+                            <ol style="margin-top: 8px; padding-left: 20px; line-height: 1.8;">
+                                <li>Essential Hypertension (I10) - Controlled on current regimen</li>
+                                <li>Type 2 Diabetes Mellitus (E11.9) - Suboptimally controlled, A1c 8.9%</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- QUALITY MEASURES Section -->
+                <div class="soap-section" id="section-quality">
+                    <div class="soap-header">
+                        QUALITY MEASURES
+                        <span class="section-badge">Care Gaps</span>
+                    </div>
+                    <div class="soap-content">
+                        <div id="quality-staged"></div>
+                        <div style="font-size: 13px; color: #616161;">
+                            <strong>Open Quality Measures:</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px; line-height: 1.8;">
+                                <li>Colorectal Cancer Screening - Due (last 2015)</li>
+                                <li>Depression Screening - Completed (PHQ-9: 18)</li>
+                                <li>Fall Risk Assessment - Completed (High Risk)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PLAN Section -->
+                <div class="soap-section" id="section-plan">
+                    <div class="soap-header">
+                        PLAN
+                        <span class="section-badge">Orders / Referrals</span>
+                    </div>
+                    <div class="soap-content">
+                        <div id="plan-staged"></div>
+                        <div style="font-size: 13px; color: #616161;">
+                            <strong>Existing Orders:</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px; line-height: 1.8;">
+                                <li>Continue Lisinopril 20mg daily</li>
+                                <li>Continue Metformin 1000mg BID</li>
+                                <li>Lab: Comprehensive Metabolic Panel (pending)</li>
+                                <li>Lab: Hemoglobin A1c (pending)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SYNC OVERLAY -->
+    <div class="sync-overlay" id="sync-overlay" style="display:none;">
+        <div class="sync-card">
+            <div class="sync-icon" id="sync-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="2" x2="12" y2="6"></line>
+                    <line x1="12" y1="18" x2="12" y2="22"></line>
+                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                    <line x1="2" y1="12" x2="6" y2="12"></line>
+                    <line x1="18" y1="12" x2="22" y2="12"></line>
+                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                </svg>
+            </div>
+            <div class="sync-title" id="sync-title">Syncing to athenaOne...</div>
+            <div class="sync-subtitle" id="sync-subtitle">Preparing data</div>
+            <div class="sync-progress">
+                <div class="sync-progress-fill" id="sync-progress-fill"></div>
+            </div>
+            <div class="sync-steps" id="sync-steps">
+                <div class="sync-step" id="sync-step-1">
+                    <div class="sync-step-icon">1</div>
+                    <span>Preparing data...</span>
+                </div>
+                <div class="sync-step" id="sync-step-2">
+                    <div class="sync-step-icon">2</div>
+                    <span>Connecting to athenaOne...</span>
+                </div>
+                <div class="sync-step" id="sync-step-3">
+                    <div class="sync-step-icon">3</div>
+                    <span>Writing to patient chart...</span>
+                </div>
+                <div class="sync-step" id="sync-step-4">
+                    <div class="sync-step-icon">4</div>
+                    <span>Verifying...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FLORENCE PANEL -->
+    <div class="florence-panel">
+        <div class="florence-header">
+            <div class="florence-logo">
+                <div class="florence-logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <div>
+                    <div class="florence-title">Florence</div>
+                    <div class="florence-subtitle">AI Navigator Co-Pilot</div>
+                </div>
+            </div>
+            <div class="connection-status">
+                <div class="connection-dot"></div>
+                Connected
+            </div>
+        </div>
+        
+        <div class="patient-card">
+            <div class="patient-card-header">
+                <div class="patient-avatar">NC</div>
+                <div class="patient-details">
+                    <h3>Neil Campbell (68 y/o M)</h3>
+                    <div class="patient-tags">
+                        <span class="patient-tag risk">High Risk</span>
+                        <span class="patient-tag ccm">CCM</span>
+                    </div>
+                    <div class="patient-mrn">MRN: 202070</div>
+                </div>
+            </div>
+            
+            <!-- Workflow Buttons -->
+            <div class="workflow-buttons">
+                <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span class="btn-text">Engage</span>
+                </button>
+                <button class="workflow-btn btn-convene" id="convene-btn" onclick="startWorkflow('convene')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span class="btn-text">Convene</span>
+                </button>
+                <button class="workflow-btn btn-checkin" id="checkin-btn" onclick="startWorkflow('checkin')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="btn-text">Check-In</span>
+                </button>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="florence-tabs">
+                <button class="florence-tab active" data-tab="facesheet">Facesheet</button>
+                <button class="florence-tab" data-tab="transcript">Transcript</button>
+                <button class="florence-tab" data-tab="documentation">Documentation</button>
+                <button class="florence-tab" data-tab="log">Log</button>
+            </div>
+        </div>
+        
+        <div class="tab-content">
+            <!-- Facesheet Tab -->
+            <div class="tab-panel active" id="facesheet-panel">
+                <div class="florence-summary">
+                    <div class="summary-header" onclick="toggleSummary()">
+                        <h4>Florence Summary</h4>
+                        <span class="summary-toggle" id="summary-toggle">▼</span>
+                    </div>
+                    <div class="summary-content" id="summary-content">
+                        Neil Campbell is a 68 y/o male with HTN, T2DM, and suspected CKD Stage 3. PHQ-9 score of 18 indicates moderately severe depression. History of falling noted. Multiple diagnosis and quality gaps identified for pre-visit staging.
+                    </div>
+                </div>
+                
+                <div class="gaps-section">
+                    <div class="gaps-header">
+                        <div class="gaps-title">
+                            <h3>Care & Diagnosis Gaps</h3>
+                            <span class="gaps-count" id="gaps-count">10</span>
+                        </div>
+                        <button class="prework-btn">View Pre-Work Summary</button>
+                    </div>
+                    
+                    <div class="gaps-controls">
+                        <input type="text" class="search-box" placeholder="Search gaps..." id="search-input">
+                        <div class="filter-row">
+                            <button class="filter-btn active" data-filter="all">All (<span id="count-all">10</span>)</button>
+                            <button class="filter-btn" data-filter="recapture">Recapture (<span id="count-recapture">2</span>)</button>
+                            <button class="filter-btn" data-filter="suspect">Suspect (<span id="count-suspect">3</span>)</button>
+                            <button class="filter-btn" data-filter="quality">Quality (<span id="count-quality">3</span>)</button>
+                            <button class="filter-btn" data-filter="frailty">Frailty (<span id="count-frailty">2</span>)</button>
+                        </div>
+                        <div class="show-staged-row">
+                            <input type="checkbox" id="show-staged">
+                            <label for="show-staged">Show staged items</label>
+                        </div>
+                    </div>
+                    
+                    <div class="gaps-list" id="gaps-list">
+                        <!-- Gap cards will be rendered here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transcript Tab -->
+            <div class="tab-panel" id="transcript-panel">
+                <div class="transcript-container" id="transcript-container">
+                    <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">
+                        Click Engage, Convene, or Check-In to start a workflow.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Documentation Tab -->
+            <div class="tab-panel" id="documentation-panel">
+                <div class="doc-container">
+                    <div class="doc-header">
+                        <h3 id="doc-title">Clinical Note</h3>
+                        <span class="doc-badge">Auto-Generated</span>
+                    </div>
+                    <div class="doc-content" id="doc-content">
+                        <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">
+                            Documentation will appear here after completing a workflow.
+                        </p>
+                    </div>
+                </div>
+                <button class="file-btn hidden" id="file-btn" onclick="fileToEHR()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="12" y1="18" x2="12" y2="12"></line>
+                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                    </svg>
+                    File to EHR
+                </button>
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <!-- Log Tab -->
+            <div class="tab-panel" id="log-panel">
+                <div class="log-container" id="log-container">
+                    <div class="log-item">
+                        <div class="log-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                        </div>
+                        <div class="log-content">
+                            <h4>Patient Chart Opened</h4>
+                            <p>Neil Campbell (MRN: 202070)</p>
+                        </div>
+                        <span class="log-time">Just now</span>
+                    </div>
+                    <div class="log-item">
+                        <div class="log-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div class="log-content">
+                            <h4>Gaps Analyzed</h4>
+                            <p>10 care gaps identified for review</p>
+                        </div>
+                        <span class="log-time">2 min ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- STAGING MODAL -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Stage for Provider Review</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-gap-info">
+                    <div class="modal-gap-title" id="modal-gap-title">Gap Title</div>
+                    <div class="modal-gap-detail" id="modal-gap-detail">Gap details will appear here</div>
+                </div>
+                <div class="modal-destination">
+                    <div class="modal-destination-label">WILL BE STAGED IN ATHENA:</div>
+                    <div class="modal-destination-value" id="modal-destination">Assessment Section</div>
+                </div>
+                <div class="modal-note">
+                    <label>Nurse Prep Note (optional):</label>
+                    <textarea id="modal-note" placeholder="Add any additional context for the provider..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+                    <button class="modal-btn confirm" onclick="confirmStaging()">Stage for MD Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ==================== GAP DATA ====================
+        const gaps = [
+            {
+                id: 1,
+                type: 'recapture',
+                title: 'Essential Hypertension',
+                icd: 'I10',
+                hcc: null,
+                description: 'Annual recapture required. Current BP: 142/88 mmHg. On Lisinopril 20mg daily.',
+                priority: 'high',
+                athenaSection: 'assessment',
+                athenaLabel: 'Assessment → Problem List',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 2,
+                type: 'recapture',
+                title: 'Type 2 Diabetes Mellitus',
+                icd: 'E11.9',
+                hcc: 'HCC 19',
+                description: 'Annual recapture required. Last A1c: 8.9% (12/20/2025). Consider upgrading to E11.65.',
+                priority: 'high',
+                athenaSection: 'assessment',
+                athenaLabel: 'Assessment → Problem List',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 3,
+                type: 'suspect',
+                title: 'CKD Stage 3',
+                icd: 'N18.3',
+                hcc: 'HCC 138',
+                description: 'Suspected based on eGFR 42 mL/min. Recommend nephrology referral.',
+                priority: 'high',
+                athenaSection: 'assessment',
+                athenaLabel: 'Assessment → Add as Suspected',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 4,
+                type: 'suspect',
+                title: 'Major Depressive Disorder',
+                icd: 'F32.1',
+                hcc: 'HCC 59',
+                description: 'PHQ-9 score of 18 indicates moderately severe depression. Patient reports poor sleep, decreased motivation.',
+                priority: 'high',
+                athenaSection: 'assessment',
+                athenaLabel: 'Assessment → Add as Suspected',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 5,
+                type: 'suspect',
+                title: 'Uncontrolled T2DM with Complications',
+                icd: 'E11.65',
+                hcc: 'HCC 18',
+                description: 'A1c 8.9% indicates poor control. Consider upgrading diagnosis from E11.9 to E11.65.',
+                priority: 'medium',
+                athenaSection: 'assessment',
+                athenaLabel: 'Assessment → Upgrade Diagnosis',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 6,
+                type: 'quality',
+                title: 'Colorectal Cancer Screening',
+                icd: null,
+                hcc: null,
+                description: 'Last colonoscopy in 2015. Patient is overdue for screening.',
+                priority: 'medium',
+                athenaSection: 'quality',
+                athenaLabel: 'Quality Measures → Care Gap',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 7,
+                type: 'quality',
+                title: 'Statin Therapy for Diabetes',
+                icd: null,
+                hcc: null,
+                description: 'Patient with diabetes not on statin therapy. Consider adding atorvastatin.',
+                priority: 'medium',
+                athenaSection: 'plan',
+                athenaLabel: 'Plan → Stage Order',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 8,
+                type: 'quality',
+                title: 'Nephrology Referral',
+                icd: null,
+                hcc: null,
+                description: 'eGFR < 45 warrants nephrology evaluation for CKD management.',
+                priority: 'high',
+                athenaSection: 'plan',
+                athenaLabel: 'Plan → Stage Referral',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 9,
+                type: 'frailty',
+                title: 'Fall Risk - High',
+                icd: 'Z91.81',
+                hcc: null,
+                description: 'Morse Fall Scale score of 55 indicates high fall risk. History of falls noted.',
+                priority: 'high',
+                athenaSection: 'objective',
+                athenaLabel: 'Objective → Findings',
+                staged: false,
+                stagedTime: null
+            },
+            {
+                id: 10,
+                type: 'frailty',
+                title: 'Frailty Assessment',
+                icd: 'R54',
+                hcc: 'HCC 161',
+                description: 'Patient shows signs of frailty: fatigue, decreased activity, unintentional weight changes.',
+                priority: 'medium',
+                athenaSection: 'assessment',
+                athenaLabel: 'Assessment → Add Diagnosis',
+                staged: false,
+                stagedTime: null
+            }
+        ];
+        
+        // ==================== WORKFLOW SCRIPTS ====================
+        const scripts = {
+            engage: [
+                { type: 'system', text: 'Florence initiating TCM post-discharge call to Neil Campbell...' },
+                { type: 'system', text: 'Call connected' },
+                { type: 'florence', text: "Hello Neil, this is Florence calling from Dr. Chen's office at Cunningham Medical Group. I'm calling to check on you following your recent hospital discharge. How are you feeling since you came home?" },
+                { type: 'patient', text: "Hi Florence. I'm doing alright, but honestly I've been a little overwhelmed with all the new medications and instructions they gave me." },
+                { type: 'florence', text: "That's completely understandable, Neil. That's exactly why I'm calling — to help make sure you're set up for a smooth recovery. Let's start by going through your medications. I see from your discharge summary that you were started on Bumetanide for fluid management, your Lisinopril was increased, and your Metformin was adjusted. Do you have all of those medications at home?" },
+                { type: 'patient', text: "I picked up the Bumetanide and the new Metformin dose, but I'm not sure about the Lisinopril. I think I still have my old pills." },
+                { type: 'florence', text: "That's important — your Lisinopril dose was increased from 10mg to 20mg. You'll need to make sure you're taking the new dose, not the old one. I'd recommend calling your pharmacy to confirm they have the updated prescription. Can you do that today?" },
+                { type: 'patient', text: "Yes, I'll call them this afternoon." },
+                { type: 'florence', text: "Perfect. Now let's talk about your follow-up appointment. It's critical that you see Dr. Chen within 7 days of discharge. I have an opening this Thursday at 10 AM. Does that work for you?" },
+                { type: 'patient', text: "Thursday at 10 works. Can you book that for me?" },
+                { type: 'florence', text: "Absolutely, I'll schedule that right now. You'll receive a confirmation text shortly. Now, a few safety questions — have you experienced any shortness of breath, chest pain, or swelling in your legs since coming home?" },
+                { type: 'patient', text: "No chest pain, but my ankles have been a little swollen." },
+                { type: 'florence', text: "Thank you for telling me that. Some mild swelling can be expected, but it's important to monitor it. Are you weighing yourself daily like the hospital recommended?" },
+                { type: 'patient', text: "I weighed myself this morning — 198 pounds." },
+                { type: 'florence', text: "Good, I'll record that as your baseline. If you gain more than 3 pounds in a single day or 5 pounds in a week, call us immediately — that could indicate fluid retention. Have you had any falls or dizziness since being home?" },
+                { type: 'patient', text: "I did feel a bit lightheaded yesterday when I got up from the couch." },
+                { type: 'florence', text: "That could be related to the blood pressure medication change. Make sure you stand up slowly, and hold onto something stable when you get up. I'll flag this for Dr. Chen to review at your Thursday appointment. One last thing — do you have someone at home who can help you if you need it?" },
+                { type: 'patient', text: "Yes, my daughter checks on me every evening." },
+                { type: 'florence', text: "That's wonderful. Let me summarize what we covered: First, call your pharmacy today to confirm the Lisinopril 20mg prescription. Second, your follow-up with Dr. Chen is Thursday at 10 AM. Third, weigh yourself every morning and call us if you gain more than 3 pounds in a day. Fourth, stand up slowly to avoid dizziness. And remember, if you experience any chest pain, severe shortness of breath, or rapid weight gain, go to the emergency room or call 911 immediately. Do you have any questions for me?" },
+                { type: 'patient', text: "No, I think that covers everything. Thank you so much, Florence. This really helped." },
+                { type: 'florence', text: "You're very welcome, Neil. I'll also send you a text summary of everything we discussed. Take care, and we'll see you Thursday!" },
+                { type: 'system', text: 'Call ended • Duration: 4:32' }
+            ],
+            convene: [
+                { type: 'system', text: 'Florence initiating Convene call...' },
+                { type: 'system', text: 'Calling Jane...' },
+                { type: 'system', text: 'Jane connected' },
+                { type: 'florence', text: "Hello Jane, this is Florence calling from Cunningham Medical Group. Are you ready for your meeting with your care manager?" },
+                { type: 'patient', text: "Yes, I'm ready." },
+                { type: 'florence', text: "Great! Let me patch you in with Sarah Martinez now." },
+                { type: 'system', text: 'Connecting Sarah Martinez...' },
+                { type: 'system', text: '✅ Sarah Martinez joined' },
+                { type: 'care-manager', text: "Hi Jane, this is Sarah Martinez, your care manager. How are you feeling today?" },
+                { type: 'patient', text: "Hi Sarah, I'm doing better, thank you." },
+                { type: 'care-manager', text: "That's wonderful to hear. I wanted to review your medications with you. I see you're on Bumetanide now for fluid management. How is that going?" },
+                { type: 'patient', text: "It's going well. I'm taking it in the morning like they told me." },
+                { type: 'care-manager', text: "Excellent. And your Lisinopril was increased. Any dizziness or side effects?" },
+                { type: 'patient', text: "No, I feel fine." },
+                { type: 'care-manager', text: "Perfect. Keep monitoring your weight daily and call us if you gain more than 3 pounds in a day." },
+                { type: 'patient', text: "I will, thank you." },
+                { type: 'care-manager', text: "Take care, Jane. Florence will wrap things up with you." },
+                { type: 'system', text: 'Sarah Martinez left the call' },
+                { type: 'florence', text: "Jane, that was a great check-in with Sarah. To summarize: Continue taking your Bumetanide in the morning, keep monitoring your weight daily, and you have your follow-up with Dr. Chen on Thursday at 10 AM. If you experience any shortness of breath, chest pain, or rapid weight gain, call us immediately. Do you have any questions?" },
+                { type: 'patient', text: "No, I think I'm all set. Thank you, Florence." },
+                { type: 'florence', text: "You're welcome, Jane. Remember, you can call me anytime if you need anything. Take care!" },
+                { type: 'system', text: 'Call ended • Duration: 2:45' }
+            ],
+            checkin: [
+                { type: 'system', text: 'Florence initiating automated Check-In with Neil Campbell...' },
+                { type: 'system', text: 'SMS sent to (555) 202-0700' },
+                { type: 'florence', text: "Hi Neil, this is Florence from your doctor's office. Quick check-in! How are you feeling today? Reply 1 for Good, 2 for Okay, 3 for Not well." },
+                { type: 'patient', text: "2" },
+                { type: 'florence', text: "Thanks for letting me know you're feeling okay. Have you taken all your medications today? Reply YES or NO." },
+                { type: 'patient', text: "YES" },
+                { type: 'florence', text: "Great job staying on track! What was your fasting blood sugar this morning? Please reply with the number." },
+                { type: 'patient', text: "156" },
+                { type: 'florence', text: "Thank you! I've recorded 156 mg/dL. That's a bit elevated - remember to watch your carbs. Any dizziness or falls today? Reply YES or NO." },
+                { type: 'patient', text: "NO" },
+                { type: 'florence', text: "Wonderful! Your check-in is complete. Remember, your appointment is coming up soon. Reply HELP anytime if you need assistance. Have a great day, Neil!" },
+                { type: 'system', text: 'Check-In completed • 5 responses collected' }
+            ]
+        };
+        
+        const documentation = {
+            engage: {
+                title: 'TCM Post-Discharge Call Note',
+                content: `
+                    <div class="doc-section">
+                        <h4>Encounter Type</h4>
+                        <p>Transitional Care Management (TCM) Post-Discharge Call • Duration: 4:32</p>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Chief Complaint</h4>
+                        <p>Post-hospitalization follow-up. Patient discharged recently with medication changes. Reports feeling overwhelmed with new regimen.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Medication Reconciliation</h4>
+                        <ul>
+                            <li>Bumetanide (NEW) — Patient has medication, taking as directed</li>
+                            <li>Lisinopril 10mg → 20mg (INCREASED) — Patient still has old dose; instructed to call pharmacy to confirm updated Rx</li>
+                            <li>Metformin (ADJUSTED) — Patient has new dose, taking as directed</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Subjective</h4>
+                        <ul>
+                            <li>Patient feeling overwhelmed with discharge instructions</li>
+                            <li>Mild ankle swelling noted — no chest pain or SOB</li>
+                            <li>Lightheadedness when standing (orthostatic symptoms)</li>
+                            <li>Baseline weight: 198 lbs (recorded today)</li>
+                            <li>Daughter checks on patient every evening (social support confirmed)</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Assessment & Plan</h4>
+                        <p>68 y/o male post-hospital discharge with HTN, T2DM, suspected CKD Stage 3. Medication reconciliation partially complete — Lisinopril dose discrepancy identified and addressed. Orthostatic symptoms flagged for provider review.</p>
+                        <ul>
+                            <li>Follow-up with Dr. Chen scheduled: Thursday 10 AM (within 7-day window)</li>
+                            <li>Daily weight monitoring initiated — alert threshold: &gt;3 lbs/day or &gt;5 lbs/week</li>
+                            <li>Fall prevention counseling provided (stand slowly, use support)</li>
+                            <li>Patient to call pharmacy re: Lisinopril 20mg today</li>
+                            <li>Emergency instructions reviewed (chest pain, SOB, rapid weight gain → ER/911)</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Items Staged for Provider Review</h4>
+                        <ul>
+                            <li>Lisinopril dose reconciliation — confirm patient on 20mg</li>
+                            <li>Ankle edema — evaluate at follow-up</li>
+                            <li>Orthostatic hypotension — fall risk assessment needed</li>
+                            <li>Medication adherence plan — patient overwhelmed with changes</li>
+                        </ul>
+                    </div>
+                `
+            },
+            convene: {
+                title: 'Convene Session Note',
+                content: `
+                    <div class="doc-section">
+                        <h4>Encounter Type</h4>
+                        <p>3-Way Convene Call • Duration: 2:45</p>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Participants</h4>
+                        <ul>
+                            <li>Patient: Jane Doe</li>
+                            <li>Care Manager: Sarah Martinez</li>
+                            <li>AI Navigator: Florence</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Discussion Summary</h4>
+                        <p>Care coordination call to review medications following recent hospital discharge. 
+                        Patient reports feeling better and is compliant with new medication regimen.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Medication Review</h4>
+                        <ul>
+                            <li>Bumetanide - Patient taking in morning as directed, tolerating well</li>
+                            <li>Lisinopril (increased dose) - No dizziness or side effects reported</li>
+                            <li>Daily weight monitoring discussed - alert if gain &gt;3 lbs/day</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Care Plan</h4>
+                        <ul>
+                            <li>Continue Bumetanide in the morning for fluid management</li>
+                            <li>Continue daily weight monitoring - call if gain &gt;3 lbs/day</li>
+                            <li>Follow-up with Dr. Chen on Thursday at 10 AM</li>
+                            <li>Call immediately if shortness of breath, chest pain, or rapid weight gain</li>
+                        </ul>
+                    </div>
+                `
+            },
+            checkin: {
+                title: 'Automated Check-In Summary',
+                content: `
+                    <div class="doc-section">
+                        <h4>Encounter Type</h4>
+                        <p>SMS Check-In • 5 responses collected</p>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Patient Status</h4>
+                        <ul>
+                            <li>Overall feeling: Okay (2/3)</li>
+                            <li>Medication adherence: Yes - all medications taken</li>
+                            <li>Dizziness/falls today: None reported</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Vitals Collected</h4>
+                        <ul>
+                            <li>Fasting Blood Sugar: 156 mg/dL (elevated)</li>
+                            <li>Trend: Consistent with reported home monitoring</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Risk Assessment</h4>
+                        <p>Blood sugar remains elevated but patient is medication compliant. 
+                        No acute symptoms reported. Continue monitoring.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h4>Next Steps</h4>
+                        <ul>
+                            <li>Continue daily automated check-ins</li>
+                            <li>Flag elevated blood sugars for provider review</li>
+                            <li>Upcoming appointment reminder sent</li>
+                        </ul>
+                    </div>
+                `
+            }
+        };
+        
+        // ==================== STATE VARIABLES ====================
+        let currentFilter = 'all';
+        let showStaged = false;
+        let currentGapId = null;
+        let currentWorkflow = null;
+        let lastCompletedWorkflow = null;
+        let isWorkflowInProgress = false;
+        let abortController = null;
+        
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGaps();
+            updateCounts();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderGaps();
+                });
+            });
+            
+            // Show staged checkbox
+            document.getElementById('show-staged').addEventListener('change', (e) => {
+                showStaged = e.target.checked;
+                renderGaps();
+            });
+            
+            // Search
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                renderGaps(e.target.value.toLowerCase());
+            });
+            
+            // Nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.dataset.section;
+                    scrollToSection(section);
+                });
+            });
+            
+            // Tab switching
+            document.querySelectorAll('.florence-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchToTab(tab.dataset.tab);
+                });
+            });
+        }
+        
+        // ==================== GAP RENDERING ====================
+        function renderGaps(searchTerm = '') {
+            const container = document.getElementById('gaps-list');
+            container.innerHTML = '';
+            
+            const filteredGaps = gaps.filter(gap => {
+                if (!showStaged && gap.staged) return false;
+                if (currentFilter !== 'all' && gap.type !== currentFilter) return false;
+                if (searchTerm && !gap.title.toLowerCase().includes(searchTerm) && 
+                    !gap.description.toLowerCase().includes(searchTerm)) return false;
+                return true;
+            });
+            
+            filteredGaps.forEach(gap => {
+                const card = document.createElement('div');
+                card.className = `gap-card ${gap.staged ? 'staged' : ''}`;
+                card.innerHTML = `
+                    <div class="gap-card-header">
+                        <input type="checkbox" class="gap-checkbox" ${gap.staged ? 'checked disabled' : ''}>
+                        <div class="gap-info">
+                            <span class="gap-type-badge ${gap.type}">${gap.type}</span>
+                            ${gap.priority === 'high' ? '<span class="gap-priority">↑ High</span>' : ''}
+                            <div class="gap-title">${gap.title}</div>
+                            <div class="gap-codes">${gap.icd ? `ICD-10: ${gap.icd}` : ''}${gap.hcc ? ` • ${gap.hcc}` : ''}</div>
+                        </div>
+                    </div>
+                    <div class="gap-description">${gap.description}</div>
+                    <div class="gap-actions">
+                        ${gap.staged ? `
+                            <button class="stage-btn staged">✓ Staged for MD Review</button>
+                            <button class="undo-btn" onclick="unstageGap(${gap.id})">Undo</button>
+                        ` : `
+                            <button class="stage-btn" onclick="openStagingModal(${gap.id})">Stage for MD Review</button>
+                            <button class="detail-btn">Details</button>
+                        `}
+                    </div>
+                    ${gap.staged ? `
+                        <div class="staged-indicator">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            Staged by Sarah Chen, RN • ${gap.stagedTime}
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function updateCounts() {
+            const counts = {
+                all: gaps.filter(g => !g.staged).length,
+                recapture: gaps.filter(g => g.type === 'recapture' && !g.staged).length,
+                suspect: gaps.filter(g => g.type === 'suspect' && !g.staged).length,
+                quality: gaps.filter(g => g.type === 'quality' && !g.staged).length,
+                frailty: gaps.filter(g => g.type === 'frailty' && !g.staged).length
+            };
+            
+            document.getElementById('count-all').textContent = counts.all;
+            document.getElementById('count-recapture').textContent = counts.recapture;
+            document.getElementById('count-suspect').textContent = counts.suspect;
+            document.getElementById('count-quality').textContent = counts.quality;
+            document.getElementById('count-frailty').textContent = counts.frailty;
+            document.getElementById('gaps-count').textContent = counts.all;
+            
+            // Update nav badges
+            const problemsStaged = gaps.filter(g => g.staged && g.athenaSection === 'assessment').length;
+            const qualityStaged = gaps.filter(g => g.staged && (g.athenaSection === 'quality' || g.athenaSection === 'plan')).length;
+            
+            if (problemsStaged > 0) {
+                document.getElementById('problems-badge').style.display = 'block';
+                document.getElementById('problems-badge').textContent = problemsStaged;
+            } else {
+                document.getElementById('problems-badge').style.display = 'none';
+            }
+            if (qualityStaged > 0) {
+                document.getElementById('quality-badge').style.display = 'block';
+                document.getElementById('quality-badge').textContent = qualityStaged;
+            } else {
+                document.getElementById('quality-badge').style.display = 'none';
+            }
+        }
+        
+        // ==================== STAGING MODAL ====================
+        function openStagingModal(gapId) {
+            currentGapId = gapId;
+            const gap = gaps.find(g => g.id === gapId);
+            
+            document.getElementById('modal-gap-title').textContent = gap.title;
+            document.getElementById('modal-gap-detail').innerHTML = `
+                ${gap.icd ? `<strong>ICD-10:</strong> ${gap.icd}<br>` : ''}
+                ${gap.hcc ? `<strong>HCC:</strong> ${gap.hcc}<br>` : ''}
+                ${gap.description}
+            `;
+            document.getElementById('modal-destination').textContent = gap.athenaLabel;
+            document.getElementById('modal-note').value = '';
+            document.getElementById('modal-overlay').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('show');
+            currentGapId = null;
+        }
+        
+        function confirmStaging() {
+            if (!currentGapId) return;
+            
+            const gap = gaps.find(g => g.id === currentGapId);
+            const note = document.getElementById('modal-note').value;
+            
+            // Mark as staged
+            gap.staged = true;
+            gap.stagedTime = 'Just now';
+            gap.nurseNote = note;
+            
+            // Close modal
+            closeModal();
+            
+            // Show sync overlay for staging
+            showSyncOverlay(
+                'Staging to athenaOne...',
+                `${gap.title}`,
+                [
+                    'Preparing nurse staging data...',
+                    'Connecting to athenaOne...',
+                    `Writing to ${gap.athenaLabel}...`,
+                    'Verifying staging...'
+                ],
+                () => {
+                    // Add staged item to Athena
+                    addStagedItemToAthena(gap);
+                    
+                    // Scroll to the section in Athena
+                    scrollToAthenaSection(gap.athenaSection);
+                    
+                    // Add to log
+                    addToLog('Gap Staged', `${gap.title} staged for MD review`);
+                    
+                    // Update UI
+                    renderGaps();
+                    updateCounts();
+                }
+            );
+        }
+        
+        function addStagedItemToAthena(gap) {
+            const sectionMap = {
+                'assessment': 'assessment-staged',
+                'quality': 'quality-staged',
+                'plan': 'plan-staged',
+                'objective': 'objective-staged',
+                'subjective': 'subjective-staged'
+            };
+            
+            const containerId = sectionMap[gap.athenaSection];
+            const container = document.getElementById(containerId);
+            
+            const stagedHtml = `
+                <div class="staged-item" id="staged-${gap.id}">
+                    <div class="staged-badge">✓ STAGED</div>
+                    <div class="staged-title">${gap.title} ${gap.icd ? `(${gap.icd})` : ''}</div>
+                    <div class="staged-detail">
+                        ${gap.type === 'suspect' ? '<em>Status: Suspected - Pending provider confirmation</em><br>' : ''}
+                        Nurse Prep: ${gap.description}
+                        ${gap.nurseNote ? `<br><em>Note: ${gap.nurseNote}</em>` : ''}
+                    </div>
+                    <div class="staged-meta">
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sarah Chen, RN</span>
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Just now</span>
+                    </div>
+                    <button class="remove-btn" onclick="unstageGap(${gap.id})">Remove Staging</button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', stagedHtml);
+        }
+        
+        // ==================== SYNC OVERLAY ====================
+        function showSyncOverlay(title, subtitle, steps, onComplete) {
+            const overlay = document.getElementById('sync-overlay');
+            const syncTitle = document.getElementById('sync-title');
+            const syncSubtitle = document.getElementById('sync-subtitle');
+            const syncProgressFill = document.getElementById('sync-progress-fill');
+            const syncSteps = document.getElementById('sync-steps');
+            const syncIcon = document.getElementById('sync-icon');
+            
+            // Reset
+            syncTitle.textContent = title;
+            syncSubtitle.textContent = subtitle;
+            syncProgressFill.style.width = '0%';
+            syncIcon.classList.remove('done');
+            syncIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="2" x2="12" y2="6"></line>
+                <line x1="12" y1="18" x2="12" y2="22"></line>
+                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                <line x1="2" y1="12" x2="6" y2="12"></line>
+                <line x1="18" y1="12" x2="22" y2="12"></line>
+                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            </svg>`;
+            
+            // Build step HTML
+            syncSteps.innerHTML = steps.map((step, i) => `
+                <div class="sync-step" id="sync-step-${i+1}">
+                    <div class="sync-step-icon">${i+1}</div>
+                    <span>${step}</span>
+                </div>
+            `).join('');
+            
+            // Show overlay
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => overlay.classList.add('show'));
+            
+            // Animate steps
+            let currentStep = 0;
+            const totalSteps = steps.length;
+            
+            function advanceStep() {
+                if (currentStep < totalSteps) {
+                    // Mark current step active
+                    const stepEl = document.getElementById(`sync-step-${currentStep + 1}`);
+                    if (stepEl) {
+                        stepEl.classList.add('active');
+                        stepEl.classList.remove('done');
+                    }
+                    
+                    // Mark previous step done
+                    if (currentStep > 0) {
+                        const prevEl = document.getElementById(`sync-step-${currentStep}`);
+                        if (prevEl) {
+                            prevEl.classList.remove('active');
+                            prevEl.classList.add('done');
+                            prevEl.querySelector('.sync-step-icon').textContent = '✓';
+                        }
+                    }
+                    
+                    // Update progress
+                    syncProgressFill.style.width = ((currentStep + 1) / totalSteps * 100) + '%';
+                    
+                    currentStep++;
+                    setTimeout(advanceStep, 600);
+                } else {
+                    // Mark last step done
+                    const lastEl = document.getElementById(`sync-step-${totalSteps}`);
+                    if (lastEl) {
+                        lastEl.classList.remove('active');
+                        lastEl.classList.add('done');
+                        lastEl.querySelector('.sync-step-icon').textContent = '✓';
+                    }
+                    syncProgressFill.style.width = '100%';
+                    
+                    // Show success
+                    syncTitle.textContent = 'Successfully synced!';
+                    syncIcon.classList.add('done');
+                    syncIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>`;
+                    
+                    // Close and execute callback
+                    setTimeout(() => {
+                        overlay.classList.remove('show');
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            if (onComplete) onComplete();
+                        }, 300);
+                    }, 800);
+                }
+            }
+            
+            setTimeout(advanceStep, 400);
+        }
+        
+        function scrollToAthenaSection(section) {
+            const sectionMap = {
+                'encounter-notes': 'section-encounter-notes',
+                'assessment': 'section-assessment',
+                'quality': 'section-quality',
+                'plan': 'section-plan',
+                'objective': 'section-objective',
+                'subjective': 'section-subjective'
+            };
+            
+            const navMap = {
+                'encounter-notes': 'encounter-notes',
+                'assessment': 'problems',
+                'quality': 'quality-measures',
+                'plan': 'care-gaps',
+                'objective': 'questionnaires',
+                'subjective': 'visit-summary'
+            };
+            
+            // Highlight nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === navMap[section]) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Scroll to section
+            const sectionEl = document.getElementById(sectionMap[section]);
+            if (sectionEl) {
+                sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Add pulse highlight effect
+                sectionEl.classList.add('pulse-highlight');
+                sectionEl.style.boxShadow = '0 0 0 3px #62BB46';
+                setTimeout(() => {
+                    sectionEl.style.boxShadow = '';
+                    sectionEl.classList.remove('pulse-highlight');
+                }, 3000);
+            }
+        }
+        
+        function scrollToSection(section) {
+            const sectionMap = {
+                'encounter-notes': 'section-encounter-notes',
+                'visit-summary': 'section-subjective',
+                'problems': 'section-assessment',
+                'medications': 'section-plan',
+                'labs': 'section-objective',
+                'questionnaires': 'section-objective',
+                'quality-measures': 'section-quality',
+                'care-gaps': 'section-plan'
+            };
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === section) {
+                    item.classList.add('active');
+                }
+            });
+            
+            const sectionEl = document.getElementById(sectionMap[section]);
+            if (sectionEl) {
+                sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function unstageGap(gapId) {
+            const gap = gaps.find(g => g.id === gapId);
+            gap.staged = false;
+            gap.stagedTime = null;
+            gap.nurseNote = null;
+            
+            // Remove from Athena
+            const stagedEl = document.getElementById(`staged-${gapId}`);
+            if (stagedEl) {
+                stagedEl.remove();
+            }
+            
+            // Add to log
+            addToLog('Staging Removed', `${gap.title} removed from staging`);
+            
+            renderGaps();
+            updateCounts();
+        }
+        
+        function toggleSummary() {
+            const content = document.getElementById('summary-content');
+            const toggle = document.getElementById('summary-toggle');
+            content.classList.toggle('show');
+            toggle.classList.toggle('expanded');
+        }
+        
+        // ==================== TAB SWITCHING ====================
+        function switchToTab(tabName) {
+            document.querySelectorAll('.florence-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(tabName + '-panel').classList.add('active');
+        }
+        
+        // ==================== WORKFLOW FUNCTIONS ====================
+        function resetButtons() {
+            const buttons = {
+                engage: { text: 'Engage', icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>' },
+                convene: { text: 'Convene', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' },
+                checkin: { text: 'Check-In', icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>' }
+            };
+
+            Object.keys(buttons).forEach(key => {
+                const btn = document.getElementById(key + '-btn');
+                btn.classList.remove('active');
+                btn.disabled = false;
+                btn.querySelector('.btn-text').textContent = buttons[key].text;
+                btn.querySelector('svg').innerHTML = buttons[key].icon;
+            });
+        }
+        
+        function addMessage(msg, signal) {
+            return new Promise((resolve, reject) => {
+                if (signal && signal.aborted) {
+                    reject(new Error('Aborted'));
+                    return;
+                }
+
+                const container = document.getElementById('transcript-container');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.type}`;
+                
+                const speakerNames = {
+                    florence: 'Florence',
+                    patient: currentWorkflow === 'convene' ? 'Jane' : 'Neil',
+                    'care-manager': 'Sarah Martinez (Care Manager)'
+                };
+
+                const speakerIcons = {
+                    florence: '<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+                    patient: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+                    'care-manager': '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line>'
+                };
+                
+                if (msg.type === 'system') {
+                    messageDiv.textContent = msg.text;
+                    container.appendChild(messageDiv);
+                    container.scrollTop = container.scrollHeight;
+                    resolve();
+                    return;
+                }
+
+                messageDiv.innerHTML = `
+                    <div class="message-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+                            ${speakerIcons[msg.type] || speakerIcons.patient}
+                        </svg>
+                        ${speakerNames[msg.type] || 'Unknown'}
+                    </div>
+                    <span class="message-text"></span>
+                    <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                `;
+                
+                container.appendChild(messageDiv);
+                container.scrollTop = container.scrollHeight;
+                
+                // Typewriter effect
+                const textSpan = messageDiv.querySelector('.message-text');
+                const words = msg.text.split(' ');
+                let wordIndex = 0;
+                
+                function typeWord() {
+                    if (signal && signal.aborted) {
+                        reject(new Error('Aborted'));
+                        return;
+                    }
+                    if (wordIndex < words.length) {
+                        textSpan.textContent += (wordIndex > 0 ? ' ' : '') + words[wordIndex];
+                        wordIndex++;
+                        container.scrollTop = container.scrollHeight;
+                        setTimeout(typeWord, 80);
+                    } else {
+                        resolve();
+                    }
+                }
+                typeWord();
+            });
+        }
+        
+        function showTypingIndicator() {
+            const container = document.getElementById('transcript-container');
+            const indicator = document.createElement('div');
+            indicator.className = 'typing-indicator';
+            indicator.id = 'typing-indicator';
+            indicator.innerHTML = '<span></span><span></span><span></span>';
+            container.appendChild(indicator);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+        
+        async function playConversation(workflowType, signal) {
+            const script = scripts[workflowType];
+            
+            for (let i = 0; i < script.length; i++) {
+                if (signal.aborted) throw new Error('Aborted');
+                
+                const msg = script[i];
+                
+                if (msg.type === 'patient' || msg.type === 'care-manager') {
+                    showTypingIndicator();
+                    await new Promise((r, reject) => {
+                        const timeout = setTimeout(r, 1200);
+                        signal.addEventListener('abort', () => {
+                            clearTimeout(timeout);
+                            reject(new Error('Aborted'));
+                        });
+                    });
+                    hideTypingIndicator();
+                }
+                
+                await addMessage(msg, signal);
+                await new Promise((r, reject) => {
+                    const timeout = setTimeout(r, 500);
+                    signal.addEventListener('abort', () => {
+                        clearTimeout(timeout);
+                        reject(new Error('Aborted'));
+                    });
+                });
+            }
+            
+            // Wait then switch to Documentation
+            await new Promise((r, reject) => {
+                const timeout = setTimeout(r, 2000);
+                signal.addEventListener('abort', () => {
+                    clearTimeout(timeout);
+                    reject(new Error('Aborted'));
+                });
+            });
+            
+            switchToTab('documentation');
+            showDocumentation(workflowType);
+        }
+        
+        function showDocumentation(workflowType) {
+            const doc = documentation[workflowType];
+            document.getElementById('doc-title').textContent = doc.title;
+            document.getElementById('doc-content').innerHTML = doc.content;
+            document.getElementById('file-btn').classList.remove('hidden');
+        }
+        
+        async function startWorkflow(workflowType) {
+            // If same workflow is running, ignore
+            if (currentWorkflow === workflowType && isWorkflowInProgress) return;
+            
+            // Cancel any existing workflow immediately
+            if (isWorkflowInProgress && abortController) {
+                abortController.abort();
+                hideTypingIndicator();
+                await new Promise(r => setTimeout(r, 50));
+            }
+            
+            // Reset state
+            isWorkflowInProgress = false;
+            currentWorkflow = null;
+            abortController = null;
+            
+            currentWorkflow = workflowType;
+            isWorkflowInProgress = true;
+            abortController = new AbortController();
+            
+            // Clear previous transcript
+            document.getElementById('transcript-container').innerHTML = '';
+            
+            // Reset all buttons first
+            resetButtons();
+            
+            // Switch to transcript tab
+            switchToTab('transcript');
+            
+            // Update active button
+            const btn = document.getElementById(workflowType + '-btn');
+            btn.classList.add('active');
+            btn.disabled = true;
+            
+            const inProgressText = {
+                engage: 'In Call...',
+                convene: 'In Session...',
+                checkin: 'Checking In...'
+            };
+            btn.querySelector('.btn-text').textContent = inProgressText[workflowType];
+            
+            // Keep other buttons enabled so user can switch workflows
+            ['engage', 'convene', 'checkin'].forEach(type => {
+                if (type !== workflowType) {
+                    document.getElementById(type + '-btn').disabled = false;
+                }
+            });
+            
+            // Add to log
+            const workflowNames = {
+                engage: 'Engage Call',
+                convene: 'Convene Session',
+                checkin: 'Check-In'
+            };
+            addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            
+            try {
+                await playConversation(workflowType, abortController.signal);
+                
+                // Success - update button
+                btn.querySelector('.btn-text').textContent = 'Completed';
+                btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+                
+                // Add to log
+                addToLog(`${workflowNames[workflowType]} Completed`, 'Documentation generated');
+                
+                // Store the workflow type for fileToEHR (don't clear currentWorkflow yet)
+                lastCompletedWorkflow = workflowType;
+                
+                setTimeout(() => {
+                    resetButtons();
+                    isWorkflowInProgress = false;
+                    // Don't clear currentWorkflow so fileToEHR knows which note to file
+                }, 2000);
+                
+            } catch (e) {
+                if (e.message !== 'Aborted') {
+                    console.error(e);
+                }
+                hideTypingIndicator();
+            }
+        }
+        
+        function fileToEHR() {
+            const btn = document.getElementById('file-btn');
+            btn.disabled = true;
+            
+            const workflowType = currentWorkflow || lastCompletedWorkflow || 'engage';
+            const isCheckin = workflowType === 'checkin';
+            
+            const targetSection = isCheckin ? 'Subjective' : 'Encounter Notes';
+            const steps = isCheckin 
+                ? ['Preparing check-in data...', 'Connecting to athenaOne...', `Writing to ${targetSection}...`, 'Verifying...']
+                : ['Preparing clinical note...', 'Connecting to athenaOne...', `Writing to ${targetSection}...`, 'Verifying...'];
+            
+            showSyncOverlay(
+                'Filing to athenaOne...',
+                isCheckin ? 'Patient Check-In Data' : documentation[workflowType]?.title || 'Clinical Note',
+                steps,
+                () => {
+                    if (isCheckin) {
+                        addCheckinDataToAthena();
+                    } else {
+                        addEncounterNoteToAthena(workflowType);
+                    }
+                    
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Filed to EHR
+                    `;
+                    
+                    addToLog('Note Filed to EHR', 'Documentation saved to patient chart');
+                }
+            );
+        }
+        
+        function addEncounterNoteToAthena(workflowType) {
+            const doc = documentation[workflowType];
+            const container = document.getElementById('encounter-notes-staged');
+            const emptyMsg = container.parentElement.querySelector('p[style*="italic"]');
+            if (emptyMsg) emptyMsg.style.display = 'none';
+            
+            const noteTypes = {
+                engage: 'CCM Outreach Call',
+                convene: '3-Way Convene Session',
+                checkin: 'Automated Check-In'
+            };
+            
+            const noteHtml = `
+                <div class="encounter-note pulse-highlight" id="encounter-note-${Date.now()}">
+                    <div class="encounter-note-header">
+                        <span class="encounter-note-badge">FILED</span>
+                        <span class="encounter-note-type">${noteTypes[workflowType]}</span>
+                    </div>
+                    <div class="encounter-note-title">${doc.title}</div>
+                    <div class="encounter-note-content">
+                        ${doc.content}
+                    </div>
+                    <div class="encounter-note-meta">
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sarah Chen, RN</span>
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Auto-generated by Florence</span>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', noteHtml);
+            
+            // Update encounter notes badge
+            const badge = document.getElementById('encounter-badge');
+            const count = container.querySelectorAll('.encounter-note').length;
+            badge.style.display = 'block';
+            badge.textContent = count;
+            
+            // Scroll to encounter notes section
+            scrollToAthenaSection('encounter-notes');
+        }
+        
+        function addCheckinDataToAthena() {
+            const container = document.getElementById('subjective-staged');
+            
+            const checkinHtml = `
+                <div class="checkin-data pulse-highlight" id="checkin-data-${Date.now()}">
+                    <div class="checkin-data-header">
+                        <span class="checkin-data-badge">CHECK-IN DATA</span>
+                    </div>
+                    <div class="checkin-data-title">Automated Patient Check-In Results</div>
+                    <div class="checkin-data-content">
+                        <strong>Patient-Reported Status:</strong> Feeling Okay (2/3)<br>
+                        <strong>Medication Adherence:</strong> Yes - all medications taken today<br>
+                        <strong>Fasting Blood Sugar:</strong> 156 mg/dL (elevated)<br>
+                        <strong>Dizziness/Falls:</strong> None reported today<br>
+                        <strong>Trend:</strong> Blood sugar remains elevated, consistent with home monitoring
+                    </div>
+                    <div class="checkin-data-meta">
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>SMS Check-In</span>
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                        <span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:3px;"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>5 responses collected</span>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', checkinHtml);
+            
+            // Scroll to subjective section
+            scrollToAthenaSection('subjective');
+        }
+        
+        function addToLog(title, description) {
+            const logContainer = document.getElementById('log-container');
+            const newLog = document.createElement('div');
+            newLog.className = 'log-item';
+            newLog.innerHTML = `
+                <div class="log-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="log-content">
+                    <h4>${title}</h4>
+                    <p>${description}</p>
+                </div>
+                <span class="log-time">Just now</span>
+            `;
+            logContainer.insertBefore(newLog, logContainer.firstChild);
+        }
+    </script>
+    
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+<manus-content-root></manus-content-root><script>
+			var __manus_space_editor_info = {
+			spaceId : 'jecguoSU5ivQqMTdNndTjJ',
+			patchList : [],
+			hideBadge : true,
+			sessionId : 'if5Uw7uquQtMR1nragSDmH',
+			isWebDev : true,
+			usageStatus : 'UsageStatus_Unknown',
+			};
+			var __manus__global_env = {
+				apiHost: 'https://api.manus.im',
+				host: 'https://manus.im',
+				amplitudeKey: '46ac3f9abb41dd2d17a5785e052bc6d3',
+			};
+			</script><script src="https://files.manuscdn.com/manus-space-dispatcher/spaceEditor-DPV-_I11.js" async></script><script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>
