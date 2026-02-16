@@ -5598,7 +5598,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             if (typeof stagedItems !== 'undefined') {
                 stagedItems.push({
                     gapId: gap.id,
-                    type: 'problem',
+                    type: gap.type,
                     diagnosis: gap.title,
                     icd10: gap.icd,
                     hccs: gap.hcc ? [gap.hcc.replace('HCC ', '')] : [],
@@ -8228,6 +8228,28 @@ function approveStagedProblem(gapId) {
     const index = stagedItems.findIndex(item => item.gapId === gapId);
     if (index > -1) {
         stagedItems.splice(index, 1);
+    }
+    
+    // Add to active problem list
+    const problemListActive = document.getElementById('problem-list-active');
+    if (problemListActive) {
+        const newProblem = document.createElement('div');
+        newProblem.className = 'problem-item active';
+        newProblem.innerHTML = `
+            <div class="problem-header">
+                <span class="problem-status">✓ ACTIVE</span>
+                <span class="problem-diagnosis">${problem.diagnosis} (${problem.icd10})</span>
+                ${problem.hccs.map(hcc => `<span class="hcc-badge">HCC ${hcc}</span>`).join('')}
+            </div>
+            <div class="problem-details">
+                <span>Onset: ${new Date().toLocaleDateString()}</span>
+                <div class="problem-actions">
+                    <button class="btn-link-small">Edit</button>
+                    <button class="btn-link-small">Change Status</button>
+                </div>
+            </div>
+        `;
+        problemListActive.insertBefore(newProblem, problemListActive.firstChild);
     }
     
     // Re-render
