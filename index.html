@@ -732,6 +732,8 @@
             flex: 1;
             overflow-y: auto;
             padding: 16px;
+            background: #1F2937;
+            color: #F3F4F6;
         }
         
         .tab-panel.active {
@@ -5571,6 +5573,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         function confirmStagingFromPreview(gapId) {
+            // Close modal immediately
+            closeStagingPreviewModal();
+            
             const gap = gaps.find(g => g.id === gapId);
             if (!gap || gap.staged) return;
             
@@ -5622,9 +5627,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             
             // Show sync notification
             showSyncNotification(`${gap.title} staged for MD review`);
-            
-            // Close the staging preview modal
-            closeStagingPreviewModal();
         }
         
         function showStagingPreviewModal(gap) {
