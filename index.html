@@ -6498,8 +6498,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         async function startWorkflow(workflowType) {
+            console.log('startWorkflow called with:', workflowType);
             // If same workflow is running, ignore
-            if (currentWorkflow === workflowType && isWorkflowInProgress) return;
+            if (currentWorkflow === workflowType && isWorkflowInProgress) {
+                console.log('Same workflow already running, ignoring');
+                return;
+            }
             
             // Cancel any existing workflow immediately
             if (isWorkflowInProgress && abortController) {
@@ -6554,7 +6558,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
             
             try {
+                console.log('About to call playConversation with:', workflowType);
                 await playConversation(workflowType, abortController.signal);
+                console.log('playConversation completed');
                 
                 // Success - update button
                 btn.querySelector('.btn-text').textContent = 'Completed';
@@ -6570,6 +6576,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 }, 2000);
                 
             } catch (e) {
+                console.log('Error in startWorkflow:', e);
                 if (e.message !== 'Aborted') {
                     console.error(e);
                 }
