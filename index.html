@@ -6444,7 +6444,14 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         async function playConversation(workflowType, signal) {
-            const script = scripts[workflowType];
+            if (signal.aborted) throw new Error('Aborted');
+            
+            const script = scripts?.[workflowType];
+            if (!script || !Array.isArray(script)) {
+                throw new Error(`Invalid script for ${workflowType}: ${script}`);
+            }
+            
+            console.log('playConversation STARTED with', script.length, 'messages');
             console.log('playConversation called with workflowType:', workflowType);
             console.log('script:', script);
             console.log('script length:', script ? script.length : 'undefined');
@@ -6502,28 +6509,24 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             
             // Cancel any existing workflow immediately (including same workflow)
             if (isWorkflowInProgress && abortController) {
+                console.log('Aborting previous workflow');
                 abortController.abort();
                 hideTypingIndicator();
-                await new Promise(r => setTimeout(r, 50));
+                await new Promise(r => setTimeout(r, 100)); // Increased debounce
             }
             
-            // Reset state
-            isWorkflowInProgress = false;
-            currentWorkflow = null;
-            abortController = null;
+            // Reset DOM and state in correct order
+            document.getElementById('transcript-container').innerHTML = '';
+            resetButtons();
             
+            // Set NEW workflow state IMMEDIATELY (eliminates race condition)
             currentWorkflow = workflowType;
             isWorkflowInProgress = true;
             abortController = new AbortController();
             
-            // Clear previous transcript
-            document.getElementById('transcript-container').innerHTML = '';
-            
-            // Reset all buttons first
-            resetButtons();
-            
-            // Switch to transcript tab
+            // Switch to transcript tab WITH DOM ready check
             switchToTab('transcript');
+            await new Promise(r => setTimeout(r, 50)); // Ensure DOM settled
             
             // Update active button
             const btn = document.getElementById(workflowType + '-btn');
@@ -6553,9 +6556,14 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
             
             try {
-                console.log('About to call playConversation with:', workflowType);
+                // Guard against missing scripts
+                if (!scripts || !scripts[workflowType]) {
+                    throw new Error(`No script found for workflow: ${workflowType}`);
+                }
+                console.log('About to call playConversation with:', workflowType, 'script length:', scripts[workflowType].length);
+                
                 await playConversation(workflowType, abortController.signal);
-                console.log('playConversation completed');
+                console.log('playConversation completed successfully');
                 
                 // Success - update button
                 btn.querySelector('.btn-text').textContent = 'Completed';
@@ -6571,21 +6579,21 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 }, 2000);
                 
             } catch (e) {
-                console.log('Error in startWorkflow:', e);
+                console.error('startWorkflow ERROR:', e.name, e.message, e.stack);
+                
                 if (e.message !== 'Aborted') {
-                    console.error(e);
-                    // Show error in transcript
                     const container = document.getElementById('transcript-container');
                     container.innerHTML = `<div style="color: #E45740; padding: 20px; text-align: center;">
-                        <strong>Error:</strong> ${e.message}<br>
-                        <small>${e.stack}</small>
+                        <strong>Workflow Error:</strong> ${e.message}<br>
+                        <small>Restarting in 3s...</small>
                     </div>`;
                 }
+                
                 hideTypingIndicator();
-                // Reset workflow state on error
                 resetButtons();
                 isWorkflowInProgress = false;
                 currentWorkflow = null;
+                abortController = null;
             }
         }
         
