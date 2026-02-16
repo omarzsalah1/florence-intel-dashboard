@@ -6587,6 +6587,10 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     </div>`;
                 }
                 hideTypingIndicator();
+                // Reset workflow state on error
+                resetButtons();
+                isWorkflowInProgress = false;
+                currentWorkflow = null;
             }
         }
         
