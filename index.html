@@ -4989,6 +4989,7 @@ button:hover {
         let showStaged = false;
         let currentGapId = null;
         let currentWorkflow = null;
+        let lastCompletedWorkflow = null;
         let isWorkflowInProgress = false;
         let abortController = null;
         
@@ -6444,17 +6445,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         async function playConversation(workflowType, signal) {
-            if (signal.aborted) throw new Error('Aborted');
-            
-            const script = scripts?.[workflowType];
-            if (!script || !Array.isArray(script)) {
-                throw new Error(`Invalid script for ${workflowType}: ${script}`);
-            }
-            
-            console.log('playConversation STARTED with', script.length, 'messages');
-            console.log('playConversation called with workflowType:', workflowType);
-            console.log('script:', script);
-            console.log('script length:', script ? script.length : 'undefined');
+            const script = scripts[workflowType];
             
             for (let i = 0; i < script.length; i++) {
                 if (signal.aborted) throw new Error('Aborted');
@@ -6473,7 +6464,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     hideTypingIndicator();
                 }
                 
-                console.log('Adding message:', msg);
                 await addMessage(msg, signal);
                 await new Promise((r, reject) => {
                     const timeout = setTimeout(r, 500);
@@ -6516,17 +6506,34 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             }
             
             // Reset DOM and state in correct order
-            document.getElementById('transcript-container').innerHTML = '';
-            resetButtons();
+            documasync function startWorkflow(workflowType) {
+            // If same workflow is running, ignore
+            if (currentWorkflow === workflowType && isWorkflowInProgress) return;
             
-            // Set NEW workflow state IMMEDIATELY (eliminates race condition)
+            // Cancel any existing workflow immediately
+            if (isWorkflowInProgress && abortController) {
+                abortController.abort();
+                hideTypingIndicator();
+                await new Promise(r => setTimeout(r, 50));
+            }
+            
+            // Reset state
+            isWorkflowInProgress = false;
+            currentWorkflow = null;
+            abortController = null;
+            
             currentWorkflow = workflowType;
             isWorkflowInProgress = true;
             abortController = new AbortController();
             
-            // Switch to transcript tab WITH DOM ready check
+            // Clear previous transcript
+            document.getElementById('transcript-container').innerHTML = '';
+            
+            // Reset all buttons first
+            resetButtons();
+            
+            // Switch to transcript tab
             switchToTab('transcript');
-            await new Promise(r => setTimeout(r, 50)); // Ensure DOM settled
             
             // Update active button
             const btn = document.getElementById(workflowType + '-btn');
@@ -6556,14 +6563,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
             
             try {
-                // Guard against missing scripts
-                if (!scripts || !scripts[workflowType]) {
-                    throw new Error(`No script found for workflow: ${workflowType}`);
-                }
-                console.log('About to call playConversation with:', workflowType, 'script length:', scripts[workflowType].length);
-                
                 await playConversation(workflowType, abortController.signal);
-                console.log('playConversation completed successfully');
                 
                 // Success - update button
                 btn.querySelector('.btn-text').textContent = 'Completed';
@@ -6572,41 +6572,22 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 // Add to log
                 addToLog(`${workflowNames[workflowType]} Completed`, 'Documentation generated');
                 
+                // Store the workflow type for fileToEHR (don't clear currentWorkflow yet)
+                lastCompletedWorkflow = workflowType;
+                
                 setTimeout(() => {
                     resetButtons();
                     isWorkflowInProgress = false;
-                    currentWorkflow = null;
+                    // Don't clear currentWorkflow so fileToEHR knows which note to file
                 }, 2000);
                 
             } catch (e) {
-                console.error('startWorkflow ERROR:', e.name, e.message, e.stack);
-                
                 if (e.message !== 'Aborted') {
-                    const container = document.getElementById('transcript-container');
-                    container.innerHTML = `<div style="color: #E45740; padding: 20px; text-align: center;">
-                        <strong>Workflow Error:</strong> ${e.message}<br>
-                        <small>Restarting in 3s...</small>
-                    </div>`;
+                    console.error(e);
                 }
-                
                 hideTypingIndicator();
-                resetButtons();
-                isWorkflowInProgress = false;
-                currentWorkflow = null;
-                abortController = null;
             }
-        }
-        
-        function fileToEHR() {
-            const btn = document.getElementById('file-btn');
-            const progressBar = document.getElementById('progress-bar');
-            const progressFill = document.getElementById('progress-fill');
-            
-            btn.disabled = true;
-            btn.innerHTML = `
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
-                    <line x1="12" y1="2" x2="12" y2="6"></line>
-                    <line x1="12" y1="18" x2="12" y2="22"></line>
+        }         <line x1="12" y1="18" x2="12" y2="22"></line>
                     <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
                     <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
                     <line x1="2" y1="12" x2="6" y2="12"></line>
