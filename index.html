@@ -6614,13 +6614,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         async function startWorkflow(workflowType) {
-            // Auto-enable Navigator panel when workflow starts
-            const navigatorToggle = document.getElementById('provider-view-toggle');
-            if (navigatorToggle.checked) {
-                navigatorToggle.checked = false;
-                navigatorToggle.dispatchEvent(new Event('change'));
-            }
-            
             // If same workflow is running, ignore
             if (currentWorkflow === workflowType && isWorkflowInProgress) return;
             
@@ -6674,7 +6667,13 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 convene: 'Convene Session',
                 checkin: 'Check-In'
             };
-            addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            
+            // Wrap addToLog in try-catch to prevent errors from breaking the workflow
+            try {
+                addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            } catch (logError) {
+                console.warn('addToLog failed:', logError);
+            }
             
             try {
                 await playConversation(workflowType, abortController.signal);
