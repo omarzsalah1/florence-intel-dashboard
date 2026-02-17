@@ -4193,13 +4193,7 @@ button:hover {
                 <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 60px; width: auto;">
             </div>
             <div class="header-center-icons">
-                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; margin: 0;">
-                    <input type="checkbox" id="provider-view-toggle" style="cursor: pointer;">
-                    <span id="view-mode-label" style="font-size: 11px; color: #5A6872;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="8" cy="5" r="3" stroke="#5A6872" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M2.5 14.5C2.5 11.5 4.5 9.5 8 9.5C11.5 9.5 13.5 11.5 13.5 14.5" stroke="#5A6872" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>Navigator</span>
-                </label>
+<!-- Toggle removed: all users have full access -->
                 <div style="position:relative;">
                     <button id="sync-notif-bell" class="sync-notif-bell" onclick="toggleNotificationPanel()" title="Sync notifications">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -5330,10 +5324,12 @@ button:hover {
                 });
             });
 
-            // Provider view toggle
-            const providerToggle = document.getElementById('provider-view-toggle');
-            const viewModeLabel = document.getElementById('view-mode-label');
-            if (providerToggle) {
+            // Provider view toggle removed - all users have full access
+            // Auto-enable provider view features for everyone
+            document.body.classList.add('provider-view');
+            if (false) { // Toggle removed
+                const providerToggle = null;
+                const viewModeLabel = null;
                 providerToggle.addEventListener('change', function(e) {
                     console.log('Provider toggle changed:', e.target.checked);
                     if (e.target.checked) {
@@ -9864,29 +9860,78 @@ async function confirmSignClose() {
         signBtn.textContent = 'Signing...';
     }
     
-    // Perform batch sync
-    await batchSyncToCCA();
+    // Transfer any remaining staged problems to approved before signing
+    const remainingStaged = stagedItems.filter(item => item.type === 'problem');
+    remainingStaged.forEach(item => {
+        const gap = gaps.find(g => g.id === item.gapId);
+        if (gap && !gap.accepted && !gap.dismissed) {
+            gap.accepted = true;
+            gap.documented = true;
+            visitActions.accepted.push({
+                gapId: gap.id,
+                diagnosis: gap.diagnosis,
+                icd10: gap.icd10,
+                action: 'auto_approved_on_sign',
+                type: 'problem',
+                timestamp: new Date().toISOString()
+            });
+        }
+    });
     
-    // Close the modal
+    // Transfer all diagnoses to active problem list (from enhancement)
+    if (typeof transferAllDiagnosesToProblemList === 'function') {
+        const transferred = transferAllDiagnosesToProblemList();
+        if (transferred > 0) {
+            addLogEntry('Diagnosis Transfer', `${transferred} diagnosis(es) transferred to Active Problem List from SOAP note`);
+        }
+    }
+    
+    // Brief delay to show "Signing..." state
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
+    // Close the modal FIRST so the user isn't stuck
     closeSignCloseModal();
     
     // Show signed state on the Sign & Close button
     const mainSignBtn = document.querySelector('.btn-sign');
     if (mainSignBtn) {
-        mainSignBtn.textContent = '✓ Visit Signed';
+        mainSignBtn.textContent = '\u2713 Visit Signed';
         mainSignBtn.style.background = '#43A047';
         mainSignBtn.style.borderColor = '#43A047';
         mainSignBtn.disabled = true;
     }
     
+    // Update all remaining staged items in the UI to documented
+    document.querySelectorAll('#problem-list-staged .problem-item.staged').forEach(el => {
+        const badge = el.querySelector('.staged-badge');
+        if (badge) {
+            badge.textContent = '\u2713 DOCUMENTED';
+            badge.style.background = '#43A047';
+        }
+    });
+    
+    // Update Florence gap tracker
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof renderGaps === 'function') renderGaps();
+    
     // Show success toast
-    showToast('✓ Visit signed and closed. All actions synced to CCA.', 'success');
+    showToast('\u2713 Visit signed and closed. All actions synced to CCA.', 'success');
     addLogEntry('Visit Signed', `Dr. Campbell signed and closed the visit at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}. ${visitActions.accepted.length} approved, ${visitActions.dismissed.length} dismissed.`);
+    
+    // Perform batch sync in background (non-blocking)
+    try {
+        await batchSyncToCCA();
+    } catch (err) {
+        console.error('Sync error during sign:', err);
+    }
+    
+    // Remove the review queue banner
+    const banner = document.getElementById('provider-review-queue');
+    if (banner) banner.remove();
     
     // Trigger post-visit view after a delay
     setTimeout(() => {
         showToast('Post-visit tasks are now available', 'info');
-        // Highlight the post-visit button
         const pvBtn = document.getElementById('post-visit-button-compact');
         if (pvBtn) {
             pvBtn.style.animation = 'pulse 1s ease 3';
@@ -11341,32 +11386,9 @@ function dismissReviewBanner() {
     }
 }
 
-// ===== ENHANCED PROVIDER TOGGLE =====
-
-(function() {
-    const providerToggle = document.getElementById('provider-view-toggle');
-    if (providerToggle) {
-        providerToggle.addEventListener('change', function() {
-            if (this.checked) {
-                // Provider view ON - show review banner and scroll to staged items
-                setTimeout(() => {
-                    updateProviderReviewBanner();
-                    // Auto-scroll to first staged item after a brief delay
-                    setTimeout(() => {
-                        const firstStaged = document.querySelector('#problem-list-staged .problem-item.staged');
-                        if (firstStaged) {
-                            firstStaged.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                    }, 500);
-                }, 100);
-            } else {
-                // Navigator view - hide review banner
-                const banner = document.getElementById('provider-review-banner');
-                if (banner) banner.classList.remove('visible');
-            }
-        });
-    }
-})();
+// ===== PROVIDER VIEW AUTO-ENABLED =====
+// Toggle removed - all users have full access to all features.
+// Provider review banner updates automatically when items are staged.
 
 // ===== EDIT STAGED PROBLEM (Full Edit) =====
 
@@ -11626,8 +11648,10 @@ function transferAllDiagnosesToProblemList() {
         });
     });
     
-    // Clear staged problems
-    stagedItems = stagedItems.filter(item => item.type !== 'problem');
+    // Clear staged problems (use splice to modify in-place since stagedItems may be const in this scope)
+    for (let i = stagedItems.length - 1; i >= 0; i--) {
+        if (stagedItems[i].type === 'problem') stagedItems.splice(i, 1);
+    }
     
     // Sign all unsigned orders
     const unsignedOrders = document.querySelectorAll('.staged-order-item button.btn-approve');
@@ -11726,26 +11750,7 @@ if (typeof _origConfirmDismissal === 'function') {
     };
 }
 
-// Override confirmSignClose to transfer all diagnoses first
-const _origConfirmSignClose = window.confirmSignClose;
-if (typeof _origConfirmSignClose === 'function') {
-    window.confirmSignClose = async function() {
-        const signBtn = document.getElementById('confirm-sign-btn');
-        if (signBtn) {
-            signBtn.disabled = true;
-            signBtn.textContent = 'Signing...';
-        }
-        
-        // Transfer all remaining staged problems to active problem list
-        const transferred = transferAllDiagnosesToProblemList();
-        if (transferred > 0) {
-            addLogEntry('Diagnosis Transfer', `${transferred} diagnosis(es) transferred to Active Problem List from SOAP note`);
-        }
-        
-        // Now call the original
-        await _origConfirmSignClose();
-    };
-}
+// confirmSignClose override removed — transfer logic merged into the main function
 
 // Hook into renderStagedProblems to update badges
 const _origRenderStagedProblems = window.renderStagedProblems;
