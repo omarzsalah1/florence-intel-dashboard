@@ -4150,7 +4150,7 @@ button:hover {
                             <button class="filter-btn" data-filter="suspect">Sus (<span id="count-suspect">3</span>)</button>
                             <button class="filter-btn" data-filter="quality">Qual (<span id="count-quality">3</span>)</button>
                             <button class="filter-btn" data-filter="frailty">Frail (<span id="count-frailty">2</span>)</button>
-                            <button class="filter-btn" id="stage-all-btn" onclick="stageAllGaps()" style="background: var(--brand-teal); color: white; font-weight: 600;">Stage All</button>
+                            <button class="stage-all-btn-action" id="stage-all-btn" onclick="stageAllGaps()" style="background: var(--brand-teal); color: white; font-weight: 600; border: none; padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer;">Stage All</button>
                         </div>
                         <div class="show-staged-row">
                             <input type="checkbox" id="show-staged">
@@ -5065,6 +5065,9 @@ button:hover {
             const filterContainer = document.querySelector('.filter-row');
             if (filterContainer) {
                 filterContainer.addEventListener('click', (e) => {
+                    // Exclude Stage All button from filter logic
+                    if (e.target.id === 'stage-all-btn' || e.target.closest('#stage-all-btn')) return;
+                    
                     if (e.target.matches('.filter-btn') || e.target.closest('.filter-btn')) {
                         const btn = e.target.matches('.filter-btn') ? e.target : e.target.closest('.filter-btn');
                         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -5634,14 +5637,15 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         
         function stageAllGaps() {
             // Get all visible unstaged gaps based on current filter
-            const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            const activeFilterBtn = document.querySelector('.filter-btn.active');
+            const activeFilter = activeFilterBtn ? activeFilterBtn.dataset.filter : 'all';
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
             
             const gapsToStage = gaps.filter(gap => {
                 if (gap.staged) return false;
                 
                 // Apply filter
-                if (currentFilter !== 'all' && gap.type !== currentFilter) return false;
+                if (activeFilter !== 'all' && gap.type !== activeFilter) return false;
                 
                 // Apply search
                 if (searchTerm && !gap.title.toLowerCase().includes(searchTerm) && 
@@ -5651,14 +5655,156 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             });
             
             if (gapsToStage.length === 0) {
-                alert('No gaps to stage!');
+                showToast('No gaps to stage!', 'info');
                 return;
             }
             
-            // Confirm with user
-            if (!confirm(`Stage all ${gapsToStage.length} visible gaps for MD review?`)) {
-                return;
-            }
+            // Show Stage All preview modal instead of confirm()
+            showStageAllPreviewModal(gapsToStage);
+        }
+        
+        function showStageAllPreviewModal(gapsToStage) {
+            // Remove any existing modal
+            const existingModal = document.getElementById('stage-all-preview-modal');
+            if (existingModal) existingModal.remove();
+            
+            const modal = document.createElement('div');
+            modal.className = 'staging-preview-modal';
+            modal.id = 'stage-all-preview-modal';
+            
+            // Build gap list HTML
+            const gapListHtml = gapsToStage.map((gap, index) => {
+                const typeColors = {
+                    recapture: '#582c83',
+                    suspect: '#E65100',
+                    quality: '#1565C0',
+                    frailty: '#C62828'
+                };
+                const typeColor = typeColors[gap.type] || '#666';
+                const typeLabel = gap.type.charAt(0).toUpperCase() + gap.type.slice(1);
+                const priorityBadge = gap.priority === 'high' ? '<span style="color: #C62828; font-weight: 600; font-size: 11px;">↑ High</span>' : '';
+                
+                let ordersInfo = '';
+                if (gap.orders) {
+                    const orderParts = [];
+                    if (gap.orders.rx) orderParts.push(`Rx: ${gap.orders.rx.drug} ${gap.orders.rx.dose}`);
+                    if (gap.orders.labs && gap.orders.labs.length > 0) orderParts.push(`Labs: ${gap.orders.labs.join(', ')}`);
+                    if (gap.orders.referrals && gap.orders.referrals.length > 0) orderParts.push(`Referrals: ${gap.orders.referrals.join(', ')}`);
+                    if (orderParts.length > 0) {
+                        ordersInfo = `<div style="font-size: 11px; color: #555; margin-top: 4px;">Orders: ${orderParts.join(' | ')}</div>`;
+                    }
+                }
+                
+                return `
+                    <div style="display: flex; align-items: flex-start; gap: 10px; padding: 10px; background: white; border-radius: 6px; margin-bottom: 6px; border-left: 3px solid ${typeColor};">
+                        <div style="min-width: 20px; text-align: center; font-size: 12px; color: #999; padding-top: 2px;">${index + 1}</div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <span style="font-size: 10px; font-weight: 700; color: white; background: ${typeColor}; padding: 1px 6px; border-radius: 3px; text-transform: uppercase;">${typeLabel}</span>
+                                <strong style="font-size: 13px; color: #333;">${gap.title}</strong>
+                                ${priorityBadge}
+                            </div>
+                            <div style="font-size: 12px; color: #666; margin-top: 2px;">
+                                ${gap.icd ? `ICD-10: ${gap.icd}` : ''} ${gap.hcc ? `• ${gap.hcc}` : ''}
+                            </div>
+                            ${ordersInfo}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Calculate summary stats
+            const byType = {};
+            gapsToStage.forEach(g => {
+                byType[g.type] = (byType[g.type] || 0) + 1;
+            });
+            const summaryParts = Object.entries(byType).map(([type, count]) => {
+                return `${count} ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+            }).join(', ');
+            
+            const totalOrders = gapsToStage.reduce((sum, g) => {
+                let count = 0;
+                if (g.orders) {
+                    if (g.orders.rx) count++;
+                    if (g.orders.labs) count += g.orders.labs.length;
+                    if (g.orders.referrals) count += g.orders.referrals.length;
+                }
+                return sum + count;
+            }, 0);
+            
+            modal.innerHTML = `
+                <div class="staging-preview-content" style="max-width: 650px;">
+                    <div class="staging-preview-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Stage All Preview — ${gapsToStage.length} Gaps
+                    </div>
+                    
+                    <div style="background: #E8F5E9; border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                        <div style="font-size: 28px; font-weight: 700; color: #2E7D32;">${gapsToStage.length}</div>
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600; color: #2E7D32;">Gaps will be staged for MD review</div>
+                            <div style="font-size: 11px; color: #4CAF50;">${summaryParts}${totalOrders > 0 ? ` • ${totalOrders} associated orders` : ''}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="staging-preview-section">
+                        <div class="staging-preview-section-title">
+                            ✓ Gaps to Stage (${gapsToStage.length})
+                        </div>
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            ${gapListHtml}
+                        </div>
+                    </div>
+                    
+                    <div class="staging-preview-section">
+                        <div class="staging-preview-section-title">
+                            ✓ What will happen
+                        </div>
+                        <div class="staging-preview-item">
+                            <div style="font-size: 12px; line-height: 1.6;">
+                                • All ${gapsToStage.length} gaps will be added to the <strong>Problem List</strong> as STAGED<br>
+                                • Assessment & Plan blocks will be generated with MEAT criteria<br>
+                                ${totalOrders > 0 ? `• ${totalOrders} orders will be queued for provider signature<br>` : ''}
+                                • Provider will see all items for review on next sync
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="staging-preview-footer">
+                        <div class="staging-preview-time">
+                            Estimated Provider Review Time: ~${Math.ceil(gapsToStage.length * 0.5)} minutes
+                        </div>
+                        <div class="staging-preview-actions">
+                            <button class="modal-btn cancel" onclick="closeStageAllPreviewModal()">Cancel</button>
+                            <button class="modal-btn confirm" onclick="confirmStageAll()" style="background: var(--brand-teal, #55B5B8);">
+                                Confirm Stage All (${gapsToStage.length})
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Store gaps to stage for confirmation
+            window._gapsToStage = gapsToStage;
+        }
+        
+        function closeStageAllPreviewModal() {
+            const modal = document.getElementById('stage-all-preview-modal');
+            if (modal) modal.remove();
+            window._gapsToStage = null;
+        }
+        
+        function confirmStageAll() {
+            const gapsToStage = window._gapsToStage;
+            if (!gapsToStage || gapsToStage.length === 0) return;
+            
+            // Close modal first
+            closeStageAllPreviewModal();
             
             // Stage all gaps
             gapsToStage.forEach(gap => {
@@ -5685,9 +5831,15 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Play whoosh sound
             syncSounds.playWhoosh();
             
+            // Show success toast
+            showToast(`✓ ${gapsToStage.length} gaps staged for MD review`, 'success');
+            
             // Update UI
             renderGaps();
             updateCounts();
+            renderGapTracker();
+            if (typeof renderStagedProblems === 'function') renderStagedProblems();
+            if (typeof updateCompletionTracker === 'function') updateCompletionTracker();
             addToLog(`Staged ${gapsToStage.length} Gaps`, `All visible gaps staged for MD review`);
         }
         
@@ -7058,12 +7210,14 @@ function addToProblemList(gapId) {
     console.log('Adding problem to problem list:', gapId);
     
     // Find the gap
-    const gap = gaps.find(g => g.id === gapId);
+    const gap = gaps.find(g => g.id === parseInt(gapId));
     if (!gap) return;
     
-    // Mark as documented
+    // *** PHASE 0 FIX: Mark gap with all status flags ***
     gap.status = 'documented';
     gap.physicianAction = 'accepted';
+    gap.accepted = true;
+    gap.documented = true;
     gap.documentedDate = new Date().toISOString();
     
     // Update UI - change button to "✓ DOCUMENTED"
@@ -7085,8 +7239,15 @@ function addToProblemList(gapId) {
         }
     }
     
+    // Re-render Florence panel trackers
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof updateCounts === 'function') updateCounts();
+    
     // Add to log
-    addLogEntry('Problem Added', `${gap.diagnosis} (${gap.icd10}) added to problem list by physician`, 'success');
+    addLogEntry('Problem Added', `${gap.title} (${gap.icd}) added to problem list by physician`, 'success');
+    
+    // Show toast
+    if (typeof showToast === 'function') showToast(`✓ ${gap.title} added to Problem List`, 'success');
     
     console.log('Problem added successfully');
 }
@@ -8350,15 +8511,27 @@ function approveStagedProblem(gapId) {
         action: 'added_to_problem_list'
     });
     
+    // *** PHASE 0 FIX: Update the gap object in the Florence panel ***
+    const gap = gaps.find(g => g.id === gapId);
+    if (gap) {
+        gap.accepted = true;
+        gap.documented = true;
+        gap.physicianAction = 'accepted';
+        gap.documentedDate = new Date().toISOString();
+        gap.status = 'documented';
+    }
+    
     // Remove from staged items
     const index = stagedItems.findIndex(item => item.gapId === gapId);
     if (index > -1) {
         stagedItems.splice(index, 1);
     }
     
-    // Re-render
+    // Re-render all affected UI components
     renderStagedProblems();
     updateCompletionTracker();
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof updateCounts === 'function') updateCounts();
     
     // Show toast
     showToast(`✓ ${problem.diagnosis} added to Problem List`, 'success');
@@ -8778,15 +8951,28 @@ function confirmDismissal() {
         dismissedBy: 'Dr. Campbell' // In production, get from session
     });
     
+    // *** PHASE 0 FIX: Update the gap object in the Florence panel ***
+    const gap = gaps.find(g => g.id === gapId);
+    if (gap) {
+        gap.dismissed = true;
+        gap.physicianAction = 'dismissed';
+        gap.dismissalReason = reason;
+        gap.dismissalComments = comments;
+        gap.dismissedDate = new Date().toISOString();
+        gap.status = 'dismissed';
+    }
+    
     // Remove from staged items
     const index = stagedItems.findIndex(item => item.gapId === gapId);
     if (index > -1) {
         stagedItems.splice(index, 1);
     }
     
-    // Re-render
+    // Re-render all affected UI components
     renderStagedProblems();
     updateCompletionTracker();
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof updateCounts === 'function') updateCounts();
     
     // Show toast with reason
     const reasonLabels = {
