@@ -413,18 +413,19 @@
         }
         
         .florence-header {
-            padding: 12px 16px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #e0e0e0;
             position: relative;
+            min-height: 70px;
         }
         
         .header-center-icons {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 24px;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -434,6 +435,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
         
         .florence-logo-icon {
@@ -466,9 +468,11 @@
         .connection-status {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            gap: 8px;
+            font-size: 13px;
             color: #55B5B8;
+            font-weight: 500;
+            flex-shrink: 0;
         }
         
         .connection-dot {
@@ -4143,9 +4147,10 @@ button:hover {
                         <div class="filter-row">
                             <button class="filter-btn active" data-filter="all">All (<span id="count-all">10</span>)</button>
                             <button class="filter-btn" data-filter="recapture">Recap (<span id="count-recapture">2</span>)</button>
-                            <button class="filter-btn" data-filter="suspect">Suspect (<span id="count-suspect">3</span>)</button>
-                            <button class="filter-btn" data-filter="quality">Quality (<span id="count-quality">3</span>)</button>
-                            <button class="filter-btn" data-filter="frailty">Frailty (<span id="count-frailty">2</span>)</button>
+                            <button class="filter-btn" data-filter="suspect">Sus (<span id="count-suspect">3</span>)</button>
+                            <button class="filter-btn" data-filter="quality">Qual (<span id="count-quality">3</span>)</button>
+                            <button class="filter-btn" data-filter="frailty">Frail (<span id="count-frailty">2</span>)</button>
+                            <button class="filter-btn" id="stage-all-btn" onclick="stageAllGaps()" style="background: var(--brand-teal); color: white; font-weight: 600;">Stage All</button>
                         </div>
                         <div class="show-staged-row">
                             <input type="checkbox" id="show-staged">
@@ -5627,6 +5632,65 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             showStagingPreviewModal(gap);
         }
         
+        function stageAllGaps() {
+            // Get all visible unstaged gaps based on current filter
+            const currentFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            
+            const gapsToStage = gaps.filter(gap => {
+                if (gap.staged) return false;
+                
+                // Apply filter
+                if (currentFilter !== 'all' && gap.type !== currentFilter) return false;
+                
+                // Apply search
+                if (searchTerm && !gap.title.toLowerCase().includes(searchTerm) && 
+                    !gap.icd.toLowerCase().includes(searchTerm)) return false;
+                
+                return true;
+            });
+            
+            if (gapsToStage.length === 0) {
+                alert('No gaps to stage!');
+                return;
+            }
+            
+            // Confirm with user
+            if (!confirm(`Stage all ${gapsToStage.length} visible gaps for MD review?`)) {
+                return;
+            }
+            
+            // Stage all gaps
+            gapsToStage.forEach(gap => {
+                gap.staged = true;
+                gap.stagedTime = new Date().toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit'
+                });
+                addStagedItemToAthena(gap);
+                
+                if (typeof stagedItems !== 'undefined') {
+                    stagedItems.push({
+                        gapId: gap.id,
+                        type: 'problem',
+                        diagnosis: gap.title,
+                        icd10: gap.icd,
+                        hccs: gap.hcc ? [gap.hcc.replace('HCC ', '')] : [],
+                        priority: gap.priority,
+                        stagedAt: gap.stagedTime
+                    });
+                }
+            });
+            
+            // Play whoosh sound
+            syncSounds.playWhoosh();
+            
+            // Update UI
+            renderGaps();
+            updateCounts();
+            addToLog(`Staged ${gapsToStage.length} Gaps`, `All visible gaps staged for MD review`);
+        }
+        
         function confirmStagingFromPreview(gapId) {
             // Close modal immediately
             closeStagingPreviewModal();
@@ -6550,6 +6614,13 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         async function startWorkflow(workflowType) {
+            // Auto-enable Navigator panel when workflow starts
+            const navigatorToggle = document.getElementById('provider-view-toggle');
+            if (navigatorToggle.checked) {
+                navigatorToggle.checked = false;
+                navigatorToggle.dispatchEvent(new Event('change'));
+            }
+            
             // If same workflow is running, ignore
             if (currentWorkflow === workflowType && isWorkflowInProgress) return;
             
