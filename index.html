@@ -2547,6 +2547,180 @@ button:hover {
             display: block;
         }
         
+        /* Provider Review Queue Banner */
+        .provider-review-banner {
+            background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+            border: 2px solid #FF9800;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+        .provider-review-banner.visible {
+            display: block;
+        }
+        .provider-review-banner .banner-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .provider-review-banner .banner-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #E65100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .provider-review-banner .banner-count {
+            background: #E65100;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .provider-review-banner .banner-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .provider-review-banner .banner-item {
+            background: white;
+            border: 1px solid #FFCC80;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: #424242;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .provider-review-banner .banner-item .item-type {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 1px 4px;
+            border-radius: 3px;
+            color: white;
+        }
+        .provider-review-banner .banner-item .item-type.problem { background: #E65100; }
+        .provider-review-banner .banner-item .item-type.order { background: #1565C0; }
+        .provider-review-banner .banner-item .item-type.quality { background: #7B1FA2; }
+        .provider-review-banner .banner-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .provider-review-banner .btn-review-now {
+            background: #E65100;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .provider-review-banner .btn-review-now:hover {
+            background: #BF360C;
+            transform: translateY(-1px);
+        }
+        .provider-review-banner .btn-review-dismiss {
+            background: white;
+            color: #9E9E9E;
+            border: 1px solid #E0E0E0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        /* Pulsing glow on staged items in provider view */
+        body.provider-view .problem-item.staged,
+        body.provider-view .ap-block.staged,
+        body.provider-view .staged-item.cca-staging {
+            animation: stagedPulse 2s ease-in-out 3;
+            box-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
+        }
+        @keyframes stagedPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 152, 0, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(255, 152, 0, 0.6); border-color: #FF9800; }
+        }
+        
+        /* Edit Problem Modal */
+        .edit-problem-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .edit-problem-modal .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 480px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .edit-problem-modal .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #E0E0E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .edit-problem-modal .modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #1a1a2e;
+        }
+        .edit-problem-modal .modal-body {
+            padding: 20px;
+        }
+        .edit-problem-modal .form-group {
+            margin-bottom: 14px;
+        }
+        .edit-problem-modal .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #424242;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .edit-problem-modal .form-group input,
+        .edit-problem-modal .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .edit-problem-modal .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        .edit-problem-modal .modal-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #E0E0E0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
         .attestation-item {
             margin: 8px 0;
             display: flex;
@@ -3447,6 +3621,22 @@ button:hover {
             </nav>
             
             <div class="athena-content" id="athena-content">
+                <!-- Provider Review Queue Banner -->
+                <div class="provider-review-banner" id="provider-review-banner">
+                    <div class="banner-header">
+                        <div class="banner-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            Items Staged for Your Review
+                        </div>
+                        <span class="banner-count" id="banner-staged-count">0 items</span>
+                    </div>
+                    <div class="banner-items" id="banner-staged-items"></div>
+                    <div class="banner-actions">
+                        <button class="btn-review-now" onclick="scrollToFirstStagedItem()">Review Now &darr;</button>
+                        <button class="btn-review-dismiss" onclick="dismissReviewBanner()">Dismiss</button>
+                    </div>
+                </div>
+                
                 <!-- SUBJECTIVE Section -->
                 <div class="soap-section" id="section-subjective">
                     <div class="soap-header">
@@ -6069,7 +6259,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             
             // Add to Problem List
             const problemHtml = `
-                <div class="problem-item staged" id="problem-staged-${gap.id}">
+                <div class="problem-item staged" id="problem-staged-${gap.id}" data-gap-id="${gap.id}">
                     <div class="problem-header">
                         <span class="problem-status staged">STAGED</span>
                         <span class="problem-diagnosis">${gap.title} (${gap.icd})</span>
@@ -6078,6 +6268,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     <div class="problem-details">
                         <span>Staged by: Sarah Chen, RN • Just now</span>
                         <div class="problem-actions">
+                            <button class="btn-link-small" style="color:#1565C0;font-weight:600;" onclick="editStagedProblem(${gap.id})">✎ Edit</button>
                             <button class="btn-link-small" onclick="unstageGap(${gap.id})">Remove</button>
                         </div>
                     </div>
@@ -8524,6 +8715,9 @@ function renderStagedProblems() {
                     <div class="problem-actions">
                         <button class="btn-approve" onclick="approveStagedProblem('${problem.gapId}')">
                             ✓ Add to Problem List
+                        </button>
+                        <button class="btn-link-small" style="color:#1565C0;font-weight:600;font-size:12px;padding:6px 12px;border:1px solid #1565C0;border-radius:4px;background:white;cursor:pointer;" onclick="editStagedProblem('${problem.gapId}')">
+                            ✎ Edit
                         </button>
                         <button class="btn-dismiss" onclick="dismissStagedProblem('${problem.gapId}')">
                             Dismiss
@@ -11063,6 +11257,513 @@ async function runPostEncounterDemo() {
     demoBtn.style.background = 'linear-gradient(135deg, #10B981, #059669)';
     demoBtn.style.opacity = '1';
 }
+
+// ===== PROVIDER REVIEW QUEUE BANNER =====
+
+function updateProviderReviewBanner() {
+    const banner = document.getElementById('provider-review-banner');
+    const countEl = document.getElementById('banner-staged-count');
+    const itemsEl = document.getElementById('banner-staged-items');
+    if (!banner || !countEl || !itemsEl) return;
+    
+    // Count staged items in athenaOne
+    const stagedProblems = document.querySelectorAll('#problem-list-staged .problem-item.staged');
+    const stagedAP = document.querySelectorAll('#ap-staged .ap-block.staged');
+    const stagedOrders = document.querySelectorAll('#plan-staged .staged-item.cca-staging');
+    const stagedQuality = document.querySelectorAll('#quality-staged .staged-item.cca-staging');
+    const unsignedOrders = document.querySelectorAll('.staged-order-item button.btn-approve');
+    
+    const totalStaged = stagedProblems.length + stagedOrders.length + stagedQuality.length;
+    const totalUnsigned = unsignedOrders.length;
+    
+    if (totalStaged === 0 && totalUnsigned === 0) {
+        banner.classList.remove('visible');
+        return;
+    }
+    
+    banner.classList.add('visible');
+    countEl.textContent = `${totalStaged} item${totalStaged !== 1 ? 's' : ''} + ${totalUnsigned} order${totalUnsigned !== 1 ? 's' : ''}`;
+    
+    // Build item chips
+    let chipsHtml = '';
+    stagedProblems.forEach(p => {
+        const diag = p.querySelector('.problem-diagnosis');
+        if (diag) {
+            chipsHtml += `<div class="banner-item"><span class="item-type problem">DX</span>${diag.textContent.substring(0, 40)}</div>`;
+        }
+    });
+    stagedOrders.forEach(o => {
+        const title = o.querySelector('.staged-title');
+        if (title) {
+            chipsHtml += `<div class="banner-item"><span class="item-type order">ORDER</span>${title.textContent.substring(0, 40)}</div>`;
+        }
+    });
+    stagedQuality.forEach(q => {
+        const title = q.querySelector('.staged-title');
+        if (title) {
+            chipsHtml += `<div class="banner-item"><span class="item-type quality">QUAL</span>${title.textContent.substring(0, 40)}</div>`;
+        }
+    });
+    itemsEl.innerHTML = chipsHtml;
+}
+
+function scrollToFirstStagedItem() {
+    // Find the first staged item in the athenaOne panel
+    const firstStaged = document.querySelector('#problem-list-staged .problem-item.staged') ||
+                        document.querySelector('#ap-staged .ap-block.staged') ||
+                        document.querySelector('#plan-staged .staged-item') ||
+                        document.querySelector('#quality-staged .staged-item');
+    
+    if (firstStaged) {
+        firstStaged.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Flash highlight
+        firstStaged.style.transition = 'all 0.3s ease';
+        firstStaged.style.boxShadow = '0 0 25px rgba(255, 152, 0, 0.8)';
+        firstStaged.style.transform = 'scale(1.01)';
+        setTimeout(() => {
+            firstStaged.style.boxShadow = '';
+            firstStaged.style.transform = '';
+        }, 2000);
+    }
+}
+
+function dismissReviewBanner() {
+    const banner = document.getElementById('provider-review-banner');
+    if (banner) {
+        banner.style.transition = 'all 0.3s ease';
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+            banner.classList.remove('visible');
+            banner.style.opacity = '';
+            banner.style.transform = '';
+        }, 300);
+    }
+}
+
+// ===== ENHANCED PROVIDER TOGGLE =====
+
+(function() {
+    const providerToggle = document.getElementById('provider-view-toggle');
+    if (providerToggle) {
+        providerToggle.addEventListener('change', function() {
+            if (this.checked) {
+                // Provider view ON - show review banner and scroll to staged items
+                setTimeout(() => {
+                    updateProviderReviewBanner();
+                    // Auto-scroll to first staged item after a brief delay
+                    setTimeout(() => {
+                        const firstStaged = document.querySelector('#problem-list-staged .problem-item.staged');
+                        if (firstStaged) {
+                            firstStaged.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 500);
+                }, 100);
+            } else {
+                // Navigator view - hide review banner
+                const banner = document.getElementById('provider-review-banner');
+                if (banner) banner.classList.remove('visible');
+            }
+        });
+    }
+})();
+
+// ===== EDIT STAGED PROBLEM (Full Edit) =====
+
+function editStagedProblem(gapId) {
+    gapId = parseInt(gapId);
+    const gap = gaps.find(g => g.id === gapId);
+    if (!gap) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'edit-problem-modal';
+    modal.id = 'edit-problem-modal-' + gapId;
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Staged Problem</h3>
+                <button onclick="closeEditProblemModal(${gapId})" style="background:none;border:none;font-size:24px;cursor:pointer;color:#9E9E9E;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Diagnosis Name</label>
+                    <input type="text" id="edit-diagnosis-${gapId}" value="${gap.title}">
+                </div>
+                <div class="form-group">
+                    <label>ICD-10 Code</label>
+                    <input type="text" id="edit-icd10-${gapId}" value="${gap.icd || gap.code || ''}">
+                </div>
+                <div class="form-group">
+                    <label>HCC Code</label>
+                    <input type="text" id="edit-hcc-${gapId}" value="${gap.hcc || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Onset Date</label>
+                    <input type="date" id="edit-onset-${gapId}" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+                <div class="form-group">
+                    <label>Clinical Notes</label>
+                    <textarea id="edit-notes-${gapId}" placeholder="Add clinical notes...">${gap.description || ''}</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeEditProblemModal(${gapId})" style="padding:8px 16px;border:1px solid #E0E0E0;background:white;border-radius:6px;cursor:pointer;font-size:12px;">Cancel</button>
+                <button onclick="saveEditedProblem(${gapId})" style="padding:8px 16px;border:none;background:#1a237e;color:white;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">Save Changes</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    addLogEntry('Problem Edit', `Editing staged problem: ${gap.title}`);
+}
+
+function closeEditProblemModal(gapId) {
+    const modal = document.getElementById('edit-problem-modal-' + gapId);
+    if (modal) modal.remove();
+}
+
+function saveEditedProblem(gapId) {
+    gapId = parseInt(gapId);
+    const gap = gaps.find(g => g.id === gapId);
+    if (!gap) return;
+    
+    const newTitle = document.getElementById('edit-diagnosis-' + gapId).value;
+    const newIcd = document.getElementById('edit-icd10-' + gapId).value;
+    const newHcc = document.getElementById('edit-hcc-' + gapId).value;
+    const newNotes = document.getElementById('edit-notes-' + gapId).value;
+    
+    // Update the gap object
+    const oldTitle = gap.title;
+    gap.title = newTitle;
+    gap.icd = newIcd;
+    gap.code = newIcd;
+    gap.hcc = newHcc;
+    gap.description = newNotes;
+    
+    // Update the staged problem in athenaOne
+    const problemEl = document.getElementById('problem-staged-' + gapId);
+    if (problemEl) {
+        const diagSpan = problemEl.querySelector('.problem-diagnosis');
+        if (diagSpan) diagSpan.textContent = `${newTitle} (${newIcd})`;
+        const hccBadge = problemEl.querySelector('.hcc-badge');
+        if (hccBadge && newHcc) hccBadge.textContent = newHcc;
+    }
+    
+    // Update the A&P block
+    const apBlock = document.getElementById('ap-staged-' + gapId);
+    if (apBlock) {
+        const diagSpan = apBlock.querySelector('.ap-block-diagnosis');
+        if (diagSpan) diagSpan.textContent = `${newTitle} (${newIcd})`;
+        const hccBadge = apBlock.querySelector('.hcc-badge');
+        if (hccBadge && newHcc) hccBadge.textContent = newHcc;
+    }
+    
+    // Update the staged item in stagedItems array
+    const stagedItem = stagedItems.find(item => item.gapId === gapId);
+    if (stagedItem) {
+        stagedItem.diagnosis = newTitle;
+        stagedItem.icd10 = newIcd;
+    }
+    
+    // Track the edit
+    visitActions.edited.push({
+        gapId: gapId,
+        type: 'problem',
+        oldDiagnosis: oldTitle,
+        newDiagnosis: newTitle,
+        newIcd10: newIcd,
+        timestamp: new Date().toISOString()
+    });
+    
+    // Re-render
+    if (typeof renderStagedProblems === 'function') renderStagedProblems();
+    if (typeof renderGaps === 'function') renderGaps();
+    if (typeof updateCompletionTracker === 'function') updateCompletionTracker();
+    
+    closeEditProblemModal(gapId);
+    showToast(`\u2713 ${newTitle} updated successfully`, 'success');
+    addLogEntry('Problem Edited', `Dr. Campbell edited ${oldTitle} \u2192 ${newTitle} (${newIcd})`);
+}
+
+// ===== ENHANCED BADGE COUNTS =====
+
+function updateAthenaNavBadges() {
+    // Problems badge: count active + staged problems
+    const activeProblems = document.querySelectorAll('#problem-list-active .problem-item').length;
+    const stagedProblems = document.querySelectorAll('#problem-list-staged .problem-item').length;
+    const totalProblems = activeProblems + stagedProblems;
+    
+    const problemsBadge = document.getElementById('problems-badge');
+    if (problemsBadge) {
+        if (totalProblems > 0) {
+            problemsBadge.style.display = 'block';
+            problemsBadge.textContent = totalProblems;
+            // Orange if staged items exist, purple if all active
+            if (stagedProblems > 0) {
+                problemsBadge.style.background = '#E65100';
+            } else {
+                problemsBadge.style.background = '#582c83';
+            }
+        } else {
+            problemsBadge.style.display = 'none';
+        }
+    }
+    
+    // Quality badge
+    const stagedQuality = document.querySelectorAll('#quality-staged .staged-item').length;
+    const qualityBadge = document.getElementById('quality-badge');
+    if (qualityBadge) {
+        if (stagedQuality > 0) {
+            qualityBadge.style.display = 'block';
+            qualityBadge.textContent = stagedQuality;
+            qualityBadge.style.background = '#E65100';
+        } else {
+            qualityBadge.style.display = 'none';
+        }
+    }
+}
+
+// ===== STAGING PROGRESS INDICATOR =====
+
+function showStagingProgress(total) {
+    const progressEl = document.createElement('div');
+    progressEl.id = 'staging-progress';
+    progressEl.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:4px;z-index:10002;background:#E0E0E0;';
+    progressEl.innerHTML = '<div id="staging-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#55B5B8,#43A047);transition:width 0.3s ease;"></div>';
+    document.body.appendChild(progressEl);
+    return progressEl;
+}
+
+function updateStagingProgress(current, total) {
+    const bar = document.getElementById('staging-progress-bar');
+    if (bar) {
+        bar.style.width = Math.round((current / total) * 100) + '%';
+    }
+}
+
+function hideStagingProgress() {
+    const el = document.getElementById('staging-progress');
+    if (el) {
+        setTimeout(() => el.remove(), 500);
+    }
+}
+
+// ===== ENHANCED SIGN & CLOSE: DIAGNOSIS TRANSFER =====
+
+function transferAllDiagnosesToProblemList() {
+    // Move all remaining staged problems to Active Problem List
+    const stagedProblems = stagedItems.filter(item => item.type === 'problem');
+    const activeProblemList = document.getElementById('problem-list-active');
+    
+    stagedProblems.forEach(problem => {
+        const gapId = problem.gapId;
+        const gap = gaps.find(g => g.id === gapId);
+        
+        // Add to active problem list
+        if (activeProblemList && gap) {
+            const hccBadges = problem.hccs.map(h => `<span class="hcc-badge">HCC ${h}</span>`).join('');
+            const newProblem = document.createElement('div');
+            newProblem.className = 'problem-item active';
+            newProblem.style.animation = 'slideIn 0.5s ease';
+            newProblem.style.borderLeft = '3px solid #43A047';
+            newProblem.innerHTML = `
+                <div class="problem-header">
+                    <span class="problem-status" style="color: #43A047;">\u2713 ACTIVE</span>
+                    <span class="problem-diagnosis">${problem.diagnosis} (${problem.icd10})</span>
+                    ${hccBadges}
+                </div>
+                <div class="problem-details">
+                    <span>Onset: ${new Date().toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'numeric'})} \u2022 From SOAP note ${new Date().toLocaleDateString()} \u2022 Dr. Campbell</span>
+                    <div class="problem-actions">
+                        <button class="btn-link-small">Edit</button>
+                        <button class="btn-link-small">Change Status</button>
+                    </div>
+                </div>
+            `;
+            activeProblemList.insertBefore(newProblem, activeProblemList.firstChild);
+        }
+        
+        // Update gap status
+        if (gap) {
+            gap.accepted = true;
+            gap.documented = true;
+            gap.physicianAction = 'accepted';
+            gap.status = 'documented';
+            gap.documentedDate = new Date().toISOString();
+        }
+        
+        // Update A&P block
+        const apBlock = document.getElementById('ap-staged-' + gapId);
+        if (apBlock) {
+            apBlock.classList.remove('staged');
+            apBlock.classList.add('documented');
+            apBlock.style.borderLeft = '3px solid #43A047';
+            apBlock.style.background = '#f1f8e9';
+            const stagedBadge = apBlock.querySelector('.staged-badge');
+            if (stagedBadge) {
+                stagedBadge.textContent = '\u2713 DOCUMENTED';
+                stagedBadge.style.background = '#43A047';
+                stagedBadge.style.color = 'white';
+                stagedBadge.style.padding = '2px 8px';
+                stagedBadge.style.borderRadius = '4px';
+                stagedBadge.style.fontSize = '10px';
+                stagedBadge.style.fontWeight = '700';
+            }
+            const actionsDiv = apBlock.querySelector('.ap-actions');
+            if (actionsDiv) {
+                actionsDiv.innerHTML = `<span style="color:#43A047;font-size:11px;font-weight:600;">\u2713 Documented by Dr. Campbell at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span>`;
+            }
+        }
+        
+        // Track in visitActions
+        visitActions.accepted.push({
+            gapId: gapId,
+            type: 'problem',
+            diagnosis: problem.diagnosis,
+            icd10: problem.icd10,
+            hccs: problem.hccs,
+            timestamp: new Date().toISOString(),
+            action: 'added_to_problem_list'
+        });
+    });
+    
+    // Clear staged problems
+    stagedItems = stagedItems.filter(item => item.type !== 'problem');
+    
+    // Sign all unsigned orders
+    const unsignedOrders = document.querySelectorAll('.staged-order-item button.btn-approve');
+    unsignedOrders.forEach(btn => {
+        const orderEl = btn.closest('.staged-order-item');
+        if (orderEl) {
+            orderEl.style.background = '#E8F5E9';
+            orderEl.style.borderLeft = '3px solid #43A047';
+            const orderText = orderEl.querySelector('span:first-child');
+            if (orderText) {
+                const text = orderText.textContent.replace('(UNSIGNED)', '');
+                orderEl.innerHTML = `
+                    <span><strong style="color:#43A047;">\u2713 SIGNED:</strong> ${text.trim()}</span>
+                    <span style="font-size:11px;color:#43A047;font-weight:600;">Signed by Dr. Campbell at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span>
+                `;
+            }
+        }
+    });
+    
+    // Clear staged problem list display
+    const stagedContainer = document.getElementById('problem-list-staged');
+    if (stagedContainer) stagedContainer.innerHTML = '';
+    
+    // Update all UI
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof updateCounts === 'function') updateCounts();
+    if (typeof renderGaps === 'function') renderGaps();
+    updateAthenaNavBadges();
+    updateProviderReviewBanner();
+    
+    return stagedProblems.length;
+}
+
+// ===== HOOK INTO EXISTING FUNCTIONS =====
+
+// Override confirmStageAll to add progress indicator and update banner
+const _origConfirmStageAll = window.confirmStageAll;
+if (typeof _origConfirmStageAll === 'function') {
+    window.confirmStageAll = function() {
+        const unstaged = gaps.filter(g => !g.staged);
+        const total = unstaged.length;
+        showStagingProgress(total);
+        
+        let staged = 0;
+        unstaged.forEach((gap, i) => {
+            setTimeout(() => {
+                staged++;
+                updateStagingProgress(staged, total);
+                if (staged === total) {
+                    setTimeout(() => {
+                        hideStagingProgress();
+                        updateProviderReviewBanner();
+                        updateAthenaNavBadges();
+                    }, 300);
+                }
+            }, i * 50);
+        });
+        
+        _origConfirmStageAll();
+    };
+}
+
+// Override confirmStagingFromPreview to update banner
+const _origConfirmStagingFromPreview = window.confirmStagingFromPreview;
+if (typeof _origConfirmStagingFromPreview === 'function') {
+    window.confirmStagingFromPreview = function(gapId) {
+        _origConfirmStagingFromPreview(gapId);
+        setTimeout(() => {
+            updateProviderReviewBanner();
+            updateAthenaNavBadges();
+        }, 100);
+    };
+}
+
+// Override approveStagedProblem to update banner and badges
+const _origApproveStagedProblem = window.approveStagedProblem;
+if (typeof _origApproveStagedProblem === 'function') {
+    window.approveStagedProblem = function(gapId) {
+        _origApproveStagedProblem(gapId);
+        setTimeout(() => {
+            updateProviderReviewBanner();
+            updateAthenaNavBadges();
+        }, 100);
+    };
+}
+
+// Override confirmDismissal to update banner and badges
+const _origConfirmDismissal = window.confirmDismissal;
+if (typeof _origConfirmDismissal === 'function') {
+    window.confirmDismissal = function() {
+        _origConfirmDismissal();
+        setTimeout(() => {
+            updateProviderReviewBanner();
+            updateAthenaNavBadges();
+        }, 100);
+    };
+}
+
+// Override confirmSignClose to transfer all diagnoses first
+const _origConfirmSignClose = window.confirmSignClose;
+if (typeof _origConfirmSignClose === 'function') {
+    window.confirmSignClose = async function() {
+        const signBtn = document.getElementById('confirm-sign-btn');
+        if (signBtn) {
+            signBtn.disabled = true;
+            signBtn.textContent = 'Signing...';
+        }
+        
+        // Transfer all remaining staged problems to active problem list
+        const transferred = transferAllDiagnosesToProblemList();
+        if (transferred > 0) {
+            addLogEntry('Diagnosis Transfer', `${transferred} diagnosis(es) transferred to Active Problem List from SOAP note`);
+        }
+        
+        // Now call the original
+        await _origConfirmSignClose();
+    };
+}
+
+// Hook into renderStagedProblems to update badges
+const _origRenderStagedProblems = window.renderStagedProblems;
+if (typeof _origRenderStagedProblems === 'function') {
+    window.renderStagedProblems = function() {
+        _origRenderStagedProblems();
+        // Update badges after render
+        updateAthenaNavBadges();
+    };
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set initial badge counts
+    setTimeout(() => {
+        updateAthenaNavBadges();
+    }, 500);
+});
 
     </script>
 
