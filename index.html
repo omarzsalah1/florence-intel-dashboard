@@ -1223,6 +1223,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
         .message.system {
             align-self: center;
             background: #e9ecef;
@@ -4005,13 +4010,24 @@ button:hover {
   <path d="M2.5 14.5C2.5 11.5 4.5 9.5 8 9.5C11.5 9.5 13.5 11.5 13.5 14.5" stroke="#5A6872" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>Navigator</span>
                 </label>
-                <button id="sync-notif-bell" class="sync-notif-bell" onclick="clearSyncNotifications()" title="Sync notifications">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                    <span id="sync-notif-badge" class="sync-notif-badge" style="display: none;">0</span>
-                </button>
+                <div style="position:relative;">
+                    <button id="sync-notif-bell" class="sync-notif-bell" onclick="toggleNotificationPanel()" title="Sync notifications">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span id="sync-notif-badge" class="sync-notif-badge" style="display: none;">0</span>
+                    </button>
+                    <div id="notif-dropdown" style="display:none;position:absolute;top:100%;right:0;width:280px;background:white;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.15);border:1px solid #E0E0E0;z-index:1000;margin-top:4px;">
+                        <div style="padding:12px 16px;border-bottom:1px solid #E0E0E0;display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-weight:700;font-size:13px;color:#1a1a2e;">Notifications</span>
+                            <button onclick="clearAllNotifications()" style="background:none;border:none;color:#55B5B8;cursor:pointer;font-size:11px;">Clear all</button>
+                        </div>
+                        <div id="notif-list" style="max-height:250px;overflow-y:auto;padding:4px 0;">
+                            <div style="padding:16px;text-align:center;color:#9E9E9E;font-size:12px;">No new notifications</div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="connection-status">
                 <div class="connection-dot"></div>
@@ -4049,7 +4065,7 @@ button:hover {
                         </svg>
                         Sync
                     </button>
-                    <button id="post-visit-button-compact" class="patient-action-btn" onclick="showPostVisitTasks()">
+                    <button id="post-visit-button-compact" class="patient-action-btn" onclick="showPostVisitView()">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
@@ -4276,6 +4292,26 @@ button:hover {
                     </div>
                     <div class="gap-tracker-list" id="gap-tracker-list">
                         <!-- Gap tracker items will be dynamically rendered here -->
+                    </div>
+                    
+                    <!-- Activity Log -->
+                    <div style="margin-top:16px;border-top:1px solid #E0E0E0;padding-top:16px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h4 style="margin:0;font-size:14px;color:#1a1a2e;">Activity Log</h4>
+                            <div style="display:flex;gap:6px;">
+                                <button class="log-filter-btn active" data-log-filter="all" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:#55B5B8;color:white;cursor:pointer;">All</button>
+                                <button class="log-filter-btn" data-log-filter="staging" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:white;cursor:pointer;">Staging</button>
+                                <button class="log-filter-btn" data-log-filter="provider" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:white;cursor:pointer;">Provider</button>
+                                <button class="log-filter-btn" data-log-filter="sync" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:white;cursor:pointer;">Sync</button>
+                            </div>
+                        </div>
+                        <div id="log-container" style="max-height:300px;overflow-y:auto;">
+                            <div class="log-item" data-log-type="system" style="display:flex;gap:10px;padding:8px;border-bottom:1px solid #f5f5f5;font-size:12px;">
+                                <span style="color:#9E9E9E;white-space:nowrap;">Session Start</span>
+                                <span style="color:#616161;">Florence connected to athenaOne. Patient: Jane Doe (MRN: 202070)</span>
+                                <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;">Session start</span>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Dismissal Analytics Dashboard -->
@@ -6076,21 +6112,40 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         function addOrdersToPlan(gap) {
             const container = document.getElementById('plan-staged');
             
-            // Generate orders HTML
+            // Generate orders HTML with Sign/Dismiss buttons
             let ordersHtml = '';
+            let orderIndex = 0;
             if (gap.orders) {
                 if (gap.orders.rx) {
                     const rx = gap.orders.rx;
-                    ordersHtml += `<div class="staged-order-item"><strong>Prescription (UNSIGNED):</strong> ${rx.drug} ${rx.dose} ${rx.frequency} #${rx.quantity} (${rx.refills} refills)</div>`;
+                    ordersHtml += `<div class="staged-order-item" id="order-${gap.id}-rx" style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:#FFF8E1;border-radius:4px;">
+                        <span><strong>📋 Rx (UNSIGNED):</strong> ${rx.drug} ${rx.dose} ${rx.frequency} #${rx.quantity} (${rx.refills} refills)</span>
+                        <span style="display:flex;gap:4px;">
+                            <button class="btn-approve" style="padding:2px 8px;font-size:11px;" onclick="signOrder(${gap.id},'rx','${rx.drug} ${rx.dose}')">✓ Sign</button>
+                            <button class="btn-dismiss" style="padding:2px 8px;font-size:11px;" onclick="dismissOrder(${gap.id},'rx','${rx.drug} ${rx.dose}')">Dismiss</button>
+                        </span>
+                    </div>`;
                 }
                 if (gap.orders.labs && gap.orders.labs.length > 0) {
-                    gap.orders.labs.forEach(lab => {
-                        ordersHtml += `<div class="staged-order-item"><strong>Lab (UNSIGNED):</strong> ${lab} - Clinical indication: ${gap.title}</div>`;
+                    gap.orders.labs.forEach((lab, i) => {
+                        ordersHtml += `<div class="staged-order-item" id="order-${gap.id}-lab-${i}" style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:#FFF8E1;border-radius:4px;">
+                            <span><strong>🧪 Lab (UNSIGNED):</strong> ${lab}</span>
+                            <span style="display:flex;gap:4px;">
+                                <button class="btn-approve" style="padding:2px 8px;font-size:11px;" onclick="signOrder(${gap.id},'lab-${i}','${lab}')">✓ Sign</button>
+                                <button class="btn-dismiss" style="padding:2px 8px;font-size:11px;" onclick="dismissOrder(${gap.id},'lab-${i}','${lab}')">Dismiss</button>
+                            </span>
+                        </div>`;
                     });
                 }
                 if (gap.orders.referrals && gap.orders.referrals.length > 0) {
-                    gap.orders.referrals.forEach(ref => {
-                        ordersHtml += `<div class="staged-order-item"><strong>Referral (UNSIGNED):</strong> ${ref} - Reason: ${gap.title}</div>`;
+                    gap.orders.referrals.forEach((ref, i) => {
+                        ordersHtml += `<div class="staged-order-item" id="order-${gap.id}-ref-${i}" style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:#FFF8E1;border-radius:4px;">
+                            <span><strong>🏥 Referral (UNSIGNED):</strong> ${ref}</span>
+                            <span style="display:flex;gap:4px;">
+                                <button class="btn-approve" style="padding:2px 8px;font-size:11px;" onclick="signOrder(${gap.id},'ref-${i}','${ref}')">✓ Sign</button>
+                                <button class="btn-dismiss" style="padding:2px 8px;font-size:11px;" onclick="dismissOrder(${gap.id},'ref-${i}','${ref}')">Dismiss</button>
+                            </span>
+                        </div>`;
                     });
                 }
             }
@@ -6114,17 +6169,29 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         function addQualityMeasureStaging(gap) {
             const container = document.getElementById('quality-staged');
             
-            // Generate orders HTML
+            // Generate orders HTML with Sign/Dismiss buttons
             let ordersHtml = '';
             if (gap.orders) {
                 if (gap.orders.referrals && gap.orders.referrals.length > 0) {
-                    gap.orders.referrals.forEach(ref => {
-                        ordersHtml += `<div class="staged-order-item"><strong>Order (UNSIGNED):</strong> ${ref}</div>`;
+                    gap.orders.referrals.forEach((ref, i) => {
+                        ordersHtml += `<div class="staged-order-item" id="order-${gap.id}-qref-${i}" style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:#FFF8E1;border-radius:4px;">
+                            <span><strong>🏥 Referral (UNSIGNED):</strong> ${ref}</span>
+                            <span style="display:flex;gap:4px;">
+                                <button class="btn-approve" style="padding:2px 8px;font-size:11px;" onclick="signOrder(${gap.id},'qref-${i}','${ref}')">✓ Sign</button>
+                                <button class="btn-dismiss" style="padding:2px 8px;font-size:11px;" onclick="dismissOrder(${gap.id},'qref-${i}','${ref}')">Dismiss</button>
+                            </span>
+                        </div>`;
                     });
                 }
                 if (gap.orders.labs && gap.orders.labs.length > 0) {
-                    gap.orders.labs.forEach(lab => {
-                        ordersHtml += `<div class="staged-order-item"><strong>Lab (UNSIGNED):</strong> ${lab}</div>`;
+                    gap.orders.labs.forEach((lab, i) => {
+                        ordersHtml += `<div class="staged-order-item" id="order-${gap.id}-qlab-${i}" style="display:flex;justify-content:space-between;align-items:center;padding:8px;margin:4px 0;background:#FFF8E1;border-radius:4px;">
+                            <span><strong>🧪 Lab (UNSIGNED):</strong> ${lab}</span>
+                            <span style="display:flex;gap:4px;">
+                                <button class="btn-approve" style="padding:2px 8px;font-size:11px;" onclick="signOrder(${gap.id},'qlab-${i}','${lab}')">✓ Sign</button>
+                                <button class="btn-dismiss" style="padding:2px 8px;font-size:11px;" onclick="dismissOrder(${gap.id},'qlab-${i}','${lab}')">Dismiss</button>
+                            </span>
+                        </div>`;
                     });
                 }
             }
@@ -7182,22 +7249,10 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
         
         function addToLog(title, description) {
-            const logContainer = document.getElementById('log-container');
-            const newLog = document.createElement('div');
-            newLog.className = 'log-item';
-            newLog.innerHTML = `
-                <div class="log-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
-                <div class="log-content">
-                    <h4>${title}</h4>
-                    <p>${description}</p>
-                </div>
-                <span class="log-time">Just now</span>
-            `;
-            logContainer.insertBefore(newLog, logContainer.firstChild);
+            // Redirect to enhanced addLogEntry if available
+            if (typeof addLogEntry === 'function') {
+                addLogEntry(title, description);
+            }
         }
     
 
@@ -7269,24 +7324,12 @@ function dismissStagedProblem(gapId) {
 }
 
 // Function to add log entry
-function addLogEntry(title, description, type = 'info') {
-    const logContent = document.querySelector('.log-content');
-    if (!logContent) return;
-    
-    const logEntry = document.createElement('div');
-    logEntry.className = 'log-entry';
-    logEntry.innerHTML = `
-        <div class="log-icon">${type === 'success' ? '✓' : type === 'warning' ? '✕' : 'ℹ'}</div>
-        <div class="log-details">
-            <h4>${title}</h4>
-            <p>${description}</p>
-            <span class="log-time">Just now</span>
-        </div>
-    `;
-    
-    // Insert at the top
-    logContent.insertBefore(logEntry, logContent.firstChild);
-}
+// addLogEntry - redirects to the enhanced version defined in the helper functions section
+// The canonical addLogEntry is defined later in the script and handles:
+// - Log type detection (staging, provider, sync, system)
+// - Color-coded icons
+// - Notification bell integration
+// - Activity log filter support
 
 // Initialize button handlers when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
@@ -8511,7 +8554,7 @@ function approveStagedProblem(gapId) {
         action: 'added_to_problem_list'
     });
     
-    // *** PHASE 0 FIX: Update the gap object in the Florence panel ***
+    // Update the gap object in the Florence panel
     const gap = gaps.find(g => g.id === gapId);
     if (gap) {
         gap.accepted = true;
@@ -8519,6 +8562,62 @@ function approveStagedProblem(gapId) {
         gap.physicianAction = 'accepted';
         gap.documentedDate = new Date().toISOString();
         gap.status = 'documented';
+    }
+    
+    // Move to Active Problem List in athenaOne
+    const activeProblemList = document.getElementById('problem-list-active');
+    if (activeProblemList && gap) {
+        const hccBadges = problem.hccs.map(h => `<span class="hcc-badge">HCC ${h}</span>`).join('');
+        const newProblem = document.createElement('div');
+        newProblem.className = 'problem-item active';
+        newProblem.style.animation = 'slideInFromRight 0.5s ease';
+        newProblem.style.borderLeft = '3px solid #43A047';
+        newProblem.innerHTML = `
+            <div class="problem-header">
+                <span class="problem-status" style="color: #43A047;">✓ ACTIVE</span>
+                <span class="problem-diagnosis">${problem.diagnosis} (${problem.icd10})</span>
+                ${hccBadges}
+            </div>
+            <div class="problem-details">
+                <span>Onset: ${new Date().toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'numeric'})} • Added by Dr. Campbell</span>
+                <div class="problem-actions">
+                    <button class="btn-link-small">Edit</button>
+                    <button class="btn-link-small">Change Status</button>
+                </div>
+            </div>
+        `;
+        activeProblemList.insertBefore(newProblem, activeProblemList.firstChild);
+    }
+    
+    // Update the A&P block from STAGED to DOCUMENTED
+    const apBlock = document.getElementById('ap-staged-' + gapId);
+    if (apBlock) {
+        apBlock.classList.remove('staged');
+        apBlock.classList.add('documented');
+        apBlock.style.borderLeft = '3px solid #43A047';
+        apBlock.style.background = '#f1f8e9';
+        const stagedBadge = apBlock.querySelector('.staged-badge');
+        if (stagedBadge) {
+            stagedBadge.textContent = '✓ DOCUMENTED';
+            stagedBadge.style.background = '#43A047';
+            stagedBadge.style.color = 'white';
+            stagedBadge.style.padding = '2px 8px';
+            stagedBadge.style.borderRadius = '4px';
+            stagedBadge.style.fontSize = '10px';
+            stagedBadge.style.fontWeight = '700';
+        }
+        // Update actions to show documented state
+        const actionsDiv = apBlock.querySelector('.ap-actions');
+        if (actionsDiv) {
+            actionsDiv.innerHTML = `
+                <span style="color: #43A047; font-size: 11px; font-weight: 600;">✓ Documented by Dr. Campbell at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span>
+            `;
+        }
+        // Sign any unsigned orders in this A&P block
+        const orderItems = apBlock.querySelectorAll('.staged-order, .staged-order-item');
+        orderItems.forEach(item => {
+            item.innerHTML = item.innerHTML.replace('(UNSIGNED)', '<span style="color:#43A047;font-weight:600;">(SIGNED ✓)</span>');
+        });
     }
     
     // Remove from staged items
@@ -8532,12 +8631,21 @@ function approveStagedProblem(gapId) {
     updateCompletionTracker();
     if (typeof renderGapTracker === 'function') renderGapTracker();
     if (typeof updateCounts === 'function') updateCounts();
+    if (typeof renderGaps === 'function') renderGaps();
     
     // Show toast
     showToast(`✓ ${problem.diagnosis} added to Problem List`, 'success');
     
     // Add log entry
-    addLogEntry('Problem Added', `${problem.diagnosis} (${problem.icd10}) added to Problem List`);
+    addLogEntry('Problem Approved', `Dr. Campbell approved ${problem.diagnosis} (${problem.icd10}) — added to Problem List, A&P documented, orders signed`);
+    
+    // Flash the problem list section
+    const problemSection = document.getElementById('section-problem-list');
+    if (problemSection) {
+        problemSection.style.transition = 'all 0.5s ease';
+        problemSection.style.boxShadow = '0 0 15px rgba(67, 160, 71, 0.4)';
+        setTimeout(() => { problemSection.style.boxShadow = ''; }, 2000);
+    }
 }
 
 // ===== MEAT CRITERIA EDITING =====
@@ -8968,11 +9076,38 @@ function confirmDismissal() {
         stagedItems.splice(index, 1);
     }
     
+    // Remove the A&P block from athenaOne
+    const apBlock = document.getElementById('ap-staged-' + gapId);
+    if (apBlock) {
+        apBlock.style.transition = 'all 0.3s ease';
+        apBlock.style.opacity = '0';
+        apBlock.style.maxHeight = '0';
+        apBlock.style.overflow = 'hidden';
+        setTimeout(() => apBlock.remove(), 300);
+    }
+    
+    // Remove staged problem from Problem List
+    const problemEl = document.getElementById('problem-staged-' + gapId);
+    if (problemEl) {
+        problemEl.style.transition = 'all 0.3s ease';
+        problemEl.style.opacity = '0';
+        setTimeout(() => problemEl.remove(), 300);
+    }
+    
+    // Remove from quality-staged and plan-staged containers
+    const stagedEl = document.getElementById('staged-' + gapId);
+    if (stagedEl) {
+        stagedEl.style.transition = 'all 0.3s ease';
+        stagedEl.style.opacity = '0';
+        setTimeout(() => stagedEl.remove(), 300);
+    }
+    
     // Re-render all affected UI components
     renderStagedProblems();
     updateCompletionTracker();
     if (typeof renderGapTracker === 'function') renderGapTracker();
     if (typeof updateCounts === 'function') updateCounts();
+    if (typeof renderGaps === 'function') renderGaps();
     
     // Show toast with reason
     const reasonLabels = {
@@ -8986,7 +9121,7 @@ function confirmDismissal() {
     showToast(`${problem.diagnosis} dismissed: ${reasonLabels[reason]}`, 'info');
     
     // Add log entry with reason
-    addLogEntry('Problem Dismissed', `${problem.diagnosis} (${problem.icd10}) dismissed by provider. Reason: ${reasonLabels[reason]}${comments ? '. Comments: ' + comments : ''}`);
+    addLogEntry('Problem Dismissed', `Dr. Campbell dismissed ${problem.diagnosis} (${problem.icd10}). Reason: ${reasonLabels[reason]}${comments ? '. Comments: ' + comments : ''}`);
     
     // Close modal
     closeDismissalModal();
@@ -8994,6 +9129,78 @@ function confirmDismissal() {
 
 // dismissStagedProblem is defined in the main script block above
 // It includes duplicate modal prevention and calls showDismissalModal()
+
+// ===== ORDER SIGNING FUNCTIONS =====
+
+function signOrder(gapId, orderType, orderName) {
+    const orderEl = document.getElementById('order-' + gapId + '-' + orderType);
+    if (!orderEl) return;
+    
+    // Update the order element to show signed state
+    orderEl.style.transition = 'all 0.3s ease';
+    orderEl.style.background = '#E8F5E9';
+    orderEl.style.borderLeft = '3px solid #43A047';
+    orderEl.innerHTML = `
+        <span><strong style="color:#43A047;">✓ SIGNED:</strong> ${orderName}</span>
+        <span style="font-size:11px;color:#43A047;font-weight:600;">Signed by Dr. Campbell at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span>
+    `;
+    
+    // Track in visitActions
+    visitActions.accepted.push({
+        gapId: gapId,
+        type: 'order',
+        orderType: orderType,
+        orderName: orderName,
+        timestamp: new Date().toISOString(),
+        action: 'order_signed'
+    });
+    
+    // Update the gap status
+    const gap = gaps.find(g => g.id === gapId);
+    if (gap) {
+        gap.accepted = true;
+        gap.documented = true;
+        gap.physicianAction = 'accepted';
+        gap.status = 'documented';
+    }
+    
+    // Update UI
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof updateCounts === 'function') updateCounts();
+    if (typeof updateCompletionTracker === 'function') updateCompletionTracker();
+    if (typeof renderGaps === 'function') renderGaps();
+    
+    showToast(`✓ ${orderName} signed by Dr. Campbell`, 'success');
+    addLogEntry('Order Signed', `Dr. Campbell signed ${orderName} for ${gap ? gap.title : 'gap ' + gapId}`);
+}
+
+function dismissOrder(gapId, orderType, orderName) {
+    const orderEl = document.getElementById('order-' + gapId + '-' + orderType);
+    if (!orderEl) return;
+    
+    // Update the order element to show dismissed state
+    orderEl.style.transition = 'all 0.3s ease';
+    orderEl.style.background = '#FFEBEE';
+    orderEl.style.borderLeft = '3px solid #C62828';
+    orderEl.innerHTML = `
+        <span><strong style="color:#C62828;">✗ DISMISSED:</strong> <s>${orderName}</s></span>
+        <span style="font-size:11px;color:#C62828;">Dismissed by Dr. Campbell at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span>
+    `;
+    
+    // Track in visitActions
+    visitActions.dismissed.push({
+        gapId: gapId,
+        type: 'order',
+        orderType: orderType,
+        orderName: orderName,
+        timestamp: new Date().toISOString(),
+        action: 'order_dismissed'
+    });
+    
+    showToast(`${orderName} dismissed`, 'info');
+    addLogEntry('Order Dismissed', `Dr. Campbell dismissed ${orderName}`);
+    if (typeof updateCompletionTracker === 'function') updateCompletionTracker();
+}
 
 
 // ===== COMPLETION TRACKER =====
@@ -9284,13 +9491,215 @@ function setupBatchSync() {
     const signCloseButton = document.querySelector('.btn-sign');
     if (signCloseButton) {
         signCloseButton.addEventListener('click', async function(e) {
-            // Perform batch sync before closing
-            await batchSyncToCCA();
-            
-            // Then proceed with normal sign & close
-            // (In production, this would actually close the visit)
+            e.preventDefault();
+            showSignCloseModal();
         });
     }
+    
+    const saveDraftButton = document.querySelector('.btn-save');
+    if (saveDraftButton) {
+        saveDraftButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            performSaveDraft();
+        });
+    }
+}
+
+// ===== SAVE DRAFT WORKFLOW =====
+
+function performSaveDraft() {
+    const saveDraftBtn = document.querySelector('.btn-save');
+    if (saveDraftBtn) {
+        saveDraftBtn.disabled = true;
+        saveDraftBtn.textContent = 'Saving...';
+    }
+    
+    // Simulate save with progress
+    setTimeout(() => {
+        if (saveDraftBtn) {
+            saveDraftBtn.textContent = '✓ Draft Saved';
+            saveDraftBtn.style.background = '#E8F5E9';
+            saveDraftBtn.style.borderColor = '#43A047';
+            saveDraftBtn.style.color = '#43A047';
+        }
+        showToast('✓ Draft saved successfully. You can return to this visit later.', 'success');
+        addLogEntry('Draft Saved', `Visit draft saved at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}. ${visitActions.accepted.length} approved, ${visitActions.dismissed.length} dismissed.`);
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            if (saveDraftBtn) {
+                saveDraftBtn.disabled = false;
+                saveDraftBtn.textContent = 'Save Draft';
+                saveDraftBtn.style.background = '#ffffff';
+                saveDraftBtn.style.borderColor = '#582c83';
+                saveDraftBtn.style.color = '#582c83';
+            }
+        }, 3000);
+    }, 1200);
+}
+
+// ===== SIGN & CLOSE MODAL =====
+
+function showSignCloseModal() {
+    // Count unsigned items
+    const unsignedOrders = document.querySelectorAll('.staged-order-item button.btn-approve');
+    const unsignedProblems = stagedItems.filter(item => item.type === 'problem').length;
+    const totalAccepted = visitActions.accepted.length;
+    const totalDismissed = visitActions.dismissed.length;
+    const totalEdited = visitActions.edited.length;
+    
+    // Build summary of what will be signed
+    let summaryHtml = '';
+    
+    // Accepted problems
+    if (totalAccepted > 0) {
+        summaryHtml += `<div style="margin-bottom:12px;">
+            <div style="font-weight:700;color:#43A047;margin-bottom:6px;">✓ Approved Items (${totalAccepted})</div>`;
+        visitActions.accepted.forEach(a => {
+            summaryHtml += `<div style="padding:4px 0 4px 16px;font-size:12px;border-bottom:1px solid #f0f0f0;">${a.diagnosis || a.orderName || 'Item'} — ${a.action === 'order_signed' ? 'Order Signed' : 'Added to Problem List'}</div>`;
+        });
+        summaryHtml += '</div>';
+    }
+    
+    // Dismissed items
+    if (totalDismissed > 0) {
+        summaryHtml += `<div style="margin-bottom:12px;">
+            <div style="font-weight:700;color:#C62828;margin-bottom:6px;">✗ Dismissed Items (${totalDismissed})</div>`;
+        visitActions.dismissed.forEach(d => {
+            summaryHtml += `<div style="padding:4px 0 4px 16px;font-size:12px;border-bottom:1px solid #f0f0f0;">${d.diagnosis || d.orderName || 'Item'} — ${d.reason || d.action || 'Dismissed'}</div>`;
+        });
+        summaryHtml += '</div>';
+    }
+    
+    // Remaining unsigned items warning
+    let warningHtml = '';
+    if (unsignedProblems > 0 || unsignedOrders.length > 0) {
+        warningHtml = `
+            <div style="background:#FFF3E0;border:1px solid #FF9800;border-radius:8px;padding:12px;margin-bottom:16px;">
+                <div style="font-weight:700;color:#E65100;margin-bottom:4px;">⚠ Unsigned Items Remaining</div>
+                <div style="font-size:12px;color:#BF360C;">
+                    ${unsignedProblems > 0 ? `${unsignedProblems} staged problem(s) not yet reviewed<br>` : ''}
+                    ${unsignedOrders.length > 0 ? `${unsignedOrders.length} order(s) still unsigned` : ''}
+                </div>
+                <div style="font-size:11px;color:#795548;margin-top:6px;">These items will remain staged for the next visit if not addressed.</div>
+            </div>
+        `;
+    }
+    
+    if (totalAccepted === 0 && totalDismissed === 0) {
+        summaryHtml = '<div style="text-align:center;padding:20px;color:#9E9E9E;">No provider actions taken during this visit.</div>';
+    }
+    
+    const modal = document.createElement('div');
+    modal.id = 'sign-close-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:10001;display:flex;align-items:center;justify-content:center;';
+    modal.innerHTML = `
+        <div style="background:white;border-radius:12px;width:560px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <div style="padding:20px 24px;border-bottom:1px solid #E0E0E0;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <h3 style="margin:0;font-size:18px;color:#1a1a2e;">Sign & Close Visit</h3>
+                    <div style="font-size:12px;color:#757575;margin-top:4px;">Jane Doe (MRN: 202070) • ${new Date().toLocaleDateString()}</div>
+                </div>
+                <button onclick="closeSignCloseModal()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#9E9E9E;">&times;</button>
+            </div>
+            
+            <div style="padding:20px 24px;">
+                ${warningHtml}
+                
+                <div style="font-weight:700;font-size:14px;margin-bottom:12px;color:#1a1a2e;">Visit Summary</div>
+                ${summaryHtml}
+                
+                <div style="background:#F5F5F5;border-radius:8px;padding:12px;margin-top:16px;">
+                    <div style="font-size:12px;color:#616161;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                            <span>Problems Documented:</span>
+                            <strong>${visitActions.accepted.filter(a => a.type === 'problem').length}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                            <span>Orders Signed:</span>
+                            <strong>${visitActions.accepted.filter(a => a.type === 'order').length}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                            <span>Items Dismissed:</span>
+                            <strong>${totalDismissed}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>CCA Sync Status:</span>
+                            <strong style="color:#43A047;">Ready</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top:16px;">
+                    <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#616161;cursor:pointer;">
+                        <input type="checkbox" id="sign-attestation" style="cursor:pointer;">
+                        I attest that I have reviewed all staged items and the documentation is accurate and complete.
+                    </label>
+                </div>
+            </div>
+            
+            <div style="padding:16px 24px;border-top:1px solid #E0E0E0;display:flex;justify-content:flex-end;gap:12px;">
+                <button onclick="closeSignCloseModal()" style="padding:8px 20px;border:1px solid #E0E0E0;background:white;border-radius:6px;cursor:pointer;font-size:13px;">Cancel</button>
+                <button id="confirm-sign-btn" onclick="confirmSignClose()" style="padding:8px 20px;border:none;background:#582c83;color:white;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;opacity:0.5;" disabled>Sign & Close Visit</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Enable sign button when attestation is checked
+    const attestCheckbox = document.getElementById('sign-attestation');
+    const signBtn = document.getElementById('confirm-sign-btn');
+    if (attestCheckbox && signBtn) {
+        attestCheckbox.addEventListener('change', function() {
+            signBtn.disabled = !this.checked;
+            signBtn.style.opacity = this.checked ? '1' : '0.5';
+        });
+    }
+}
+
+function closeSignCloseModal() {
+    const modal = document.getElementById('sign-close-modal');
+    if (modal) modal.remove();
+}
+
+async function confirmSignClose() {
+    const signBtn = document.getElementById('confirm-sign-btn');
+    if (signBtn) {
+        signBtn.disabled = true;
+        signBtn.textContent = 'Signing...';
+    }
+    
+    // Perform batch sync
+    await batchSyncToCCA();
+    
+    // Close the modal
+    closeSignCloseModal();
+    
+    // Show signed state on the Sign & Close button
+    const mainSignBtn = document.querySelector('.btn-sign');
+    if (mainSignBtn) {
+        mainSignBtn.textContent = '✓ Visit Signed';
+        mainSignBtn.style.background = '#43A047';
+        mainSignBtn.style.borderColor = '#43A047';
+        mainSignBtn.disabled = true;
+    }
+    
+    // Show success toast
+    showToast('✓ Visit signed and closed. All actions synced to CCA.', 'success');
+    addLogEntry('Visit Signed', `Dr. Campbell signed and closed the visit at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}. ${visitActions.accepted.length} approved, ${visitActions.dismissed.length} dismissed.`);
+    
+    // Trigger post-visit view after a delay
+    setTimeout(() => {
+        showToast('Post-visit tasks are now available', 'info');
+        // Highlight the post-visit button
+        const pvBtn = document.getElementById('post-visit-button-compact');
+        if (pvBtn) {
+            pvBtn.style.animation = 'pulse 1s ease 3';
+            pvBtn.style.background = 'linear-gradient(135deg, #8B5CF6, #6D28D9)';
+            pvBtn.style.color = 'white';
+        }
+    }, 2000);
 }
 
 // ===== INITIALIZE =====
@@ -9314,50 +9723,248 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== HELPER FUNCTIONS =====
 
+// Toast counter for stacking
+let toastCount = 0;
+
 function showToast(message, type = 'info') {
-    // Reuse existing toast function or create simple one
+    toastCount++;
+    const currentToastIndex = toastCount;
+    
+    // Calculate vertical offset for stacking
+    const existingToasts = document.querySelectorAll('.florence-toast');
+    const offset = existingToasts.length * 60;
+    
+    // Icon and colors based on type
+    const config = {
+        success: { bg: '#43A047', icon: '✓', border: '#2E7D32' },
+        error: { bg: '#C62828', icon: '✗', border: '#B71C1C' },
+        info: { bg: '#55B5B8', icon: 'ℹ', border: '#3d9ea1' },
+        warning: { bg: '#F57C00', icon: '⚠', border: '#E65100' }
+    };
+    const c = config[type] || config.info;
+    
     const toast = document.createElement('div');
+    toast.className = 'florence-toast';
     toast.style.cssText = `
         position: fixed;
-        bottom: 20px;
+        bottom: ${20 + offset}px;
         right: 20px;
-        background: ${type === 'success' ? '#43A047' : type === 'error' ? '#C62828' : '#55B5B8'};
+        background: ${c.bg};
         color: white;
-        padding: 16px 24px;
+        padding: 12px 20px;
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.25);
         z-index: 10000;
-        animation: slideIn 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        max-width: 400px;
+        border-left: 4px solid ${c.border};
+        animation: slideInRight 0.3s ease;
+        transition: all 0.3s ease;
     `;
-    toast.textContent = message;
+    toast.innerHTML = `
+        <span style="font-size:16px;font-weight:700;">${c.icon}</span>
+        <span style="flex:1;">${message}</span>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;opacity:0.7;padding:0 0 0 8px;">&times;</button>
+    `;
     document.body.appendChild(toast);
     
+    // Auto-remove after 4 seconds with fade-out
     setTimeout(() => {
-        toast.remove();
-    }, 3000);
+        if (toast.parentElement) {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 4000);
 }
 
 function addLogEntry(title, description) {
-    // Add to log container if it exists
     const logContainer = document.getElementById('log-container');
-    if (logContainer) {
-        const logItem = document.createElement('div');
-        logItem.className = 'log-item';
-        logItem.innerHTML = `
-            <div class="log-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </div>
-            <div class="log-content">
-                <h4>${title}</h4>
-                <p>${description}</p>
-            </div>
-            <span class="log-time">Just now</span>
-        `;
-        logContainer.insertBefore(logItem, logContainer.firstChild);
+    if (!logContainer) return;
+    
+    // Determine log type for filtering
+    let logType = 'system';
+    let iconColor = '#55B5B8';
+    let icon = 'ℹ';
+    
+    const titleLower = title.toLowerCase();
+    if (titleLower.includes('staged') || titleLower.includes('staging')) {
+        logType = 'staging';
+        iconColor = '#F59E0B';
+        icon = '▶';
+    } else if (titleLower.includes('approved') || titleLower.includes('added') || titleLower.includes('signed') || titleLower.includes('documented')) {
+        logType = 'provider';
+        iconColor = '#43A047';
+        icon = '✓';
+    } else if (titleLower.includes('dismissed')) {
+        logType = 'provider';
+        iconColor = '#C62828';
+        icon = '✗';
+    } else if (titleLower.includes('sync') || titleLower.includes('ehr')) {
+        logType = 'sync';
+        iconColor = '#1565C0';
+        icon = '↻';
+    } else if (titleLower.includes('draft') || titleLower.includes('visit')) {
+        logType = 'provider';
+        iconColor = '#582c83';
+        icon = '✎';
+    }
+    
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',second:'2-digit'});
+    
+    const logItem = document.createElement('div');
+    logItem.className = 'log-item';
+    logItem.setAttribute('data-log-type', logType);
+    logItem.style.cssText = 'display:flex;gap:10px;padding:8px 8px;border-bottom:1px solid #f5f5f5;font-size:12px;align-items:flex-start;animation:slideIn 0.3s ease;';
+    logItem.innerHTML = `
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${iconColor}15;color:${iconColor};font-size:11px;font-weight:700;flex-shrink:0;">${icon}</span>
+        <span style="color:#1a1a2e;font-weight:600;white-space:nowrap;min-width:100px;">${title}</span>
+        <span style="color:#616161;flex:1;">${description}</span>
+        <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;">${timeStr}</span>
+    `;
+    logContainer.insertBefore(logItem, logContainer.firstChild);
+    
+    // Also add as a notification in the bell dropdown
+    if (typeof addNotification === 'function') {
+        const notifType = logType === 'staging' ? 'staging' : logType === 'sync' ? 'sync' : logType === 'provider' ? 'success' : 'info';
+        addNotification(title, description, notifType);
+    }
+    
+    // Update log filter counts
+    updateLogFilterCounts();
+}
+
+function updateLogFilterCounts() {
+    // No-op for now, could add badge counts to filter buttons
+}
+
+// Setup log filter buttons
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('log-filter-btn')) {
+        const filter = e.target.getAttribute('data-log-filter');
+        
+        // Update active button
+        document.querySelectorAll('.log-filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.style.background = 'white';
+            btn.style.color = '#333';
+        });
+        e.target.classList.add('active');
+        e.target.style.background = '#55B5B8';
+        e.target.style.color = 'white';
+        
+        // Filter log items
+        const logItems = document.querySelectorAll('#log-container .log-item');
+        logItems.forEach(item => {
+            const itemType = item.getAttribute('data-log-type');
+            if (filter === 'all' || itemType === filter) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+});
+
+// Also update the addToLog function in the main script to use addLogEntry
+window.addToLog = addLogEntry;
+
+// ===== NOTIFICATION BELL DROPDOWN =====
+
+function toggleNotificationPanel() {
+    const dropdown = document.getElementById('notif-dropdown');
+    if (!dropdown) return;
+    
+    if (dropdown.style.display === 'none') {
+        dropdown.style.display = 'block';
+        // Close on click outside
+        setTimeout(() => {
+            document.addEventListener('click', closeNotifOnClickOutside);
+        }, 10);
+    } else {
+        dropdown.style.display = 'none';
+        document.removeEventListener('click', closeNotifOnClickOutside);
     }
 }
+
+function closeNotifOnClickOutside(e) {
+    const dropdown = document.getElementById('notif-dropdown');
+    const bell = document.getElementById('sync-notif-bell');
+    if (dropdown && !dropdown.contains(e.target) && !bell.contains(e.target)) {
+        dropdown.style.display = 'none';
+        document.removeEventListener('click', closeNotifOnClickOutside);
+    }
+}
+
+function addNotification(title, message, type) {
+    const notifList = document.getElementById('notif-list');
+    const badge = document.getElementById('sync-notif-badge');
+    const bell = document.getElementById('sync-notif-bell');
+    if (!notifList) return;
+    
+    // Remove empty state
+    if (notifList.querySelector('[style*="text-align:center"]')) {
+        notifList.innerHTML = '';
+    }
+    
+    const iconMap = {
+        success: { icon: '\u2713', color: '#43A047' },
+        error: { icon: '\u2717', color: '#C62828' },
+        info: { icon: '\u2139', color: '#55B5B8' },
+        sync: { icon: '\u21bb', color: '#1565C0' },
+        staging: { icon: '\u25b6', color: '#F59E0B' }
+    };
+    const ic = iconMap[type] || iconMap.info;
+    const timeStr = new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
+    
+    const item = document.createElement('div');
+    item.style.cssText = 'padding:10px 16px;border-bottom:1px solid #f5f5f5;display:flex;gap:10px;align-items:flex-start;font-size:12px;cursor:pointer;transition:background 0.2s;';
+    item.onmouseenter = () => item.style.background = '#f5f5f5';
+    item.onmouseleave = () => item.style.background = 'white';
+    item.innerHTML = `
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:${ic.color}15;color:${ic.color};font-size:12px;font-weight:700;flex-shrink:0;">${ic.icon}</span>
+        <div style="flex:1;">
+            <div style="font-weight:600;color:#1a1a2e;">${title}</div>
+            <div style="color:#757575;margin-top:2px;">${message}</div>
+        </div>
+        <span style="color:#BDBDBD;font-size:10px;white-space:nowrap;">${timeStr}</span>
+    `;
+    notifList.insertBefore(item, notifList.firstChild);
+    
+    // Update badge
+    if (badge && bell) {
+        const currentCount = parseInt(badge.textContent) || 0;
+        badge.textContent = currentCount + 1;
+        badge.style.display = 'flex';
+        bell.classList.add('has-notifications');
+    }
+}
+
+function clearAllNotifications() {
+    const notifList = document.getElementById('notif-list');
+    const badge = document.getElementById('sync-notif-badge');
+    const bell = document.getElementById('sync-notif-bell');
+    if (notifList) {
+        notifList.innerHTML = '<div style="padding:16px;text-align:center;color:#9E9E9E;font-size:12px;">No new notifications</div>';
+    }
+    if (badge) {
+        badge.textContent = '0';
+        badge.style.display = 'none';
+    }
+    if (bell) {
+        bell.classList.remove('has-notifications');
+    }
+}
+
+// Hook notifications into key actions
+const origShowToast = showToast;
+window._origShowToast = origShowToast;
+// We'll add notifications for important events via the existing addLogEntry calls
 
     </script>
 
@@ -9381,24 +9988,74 @@ function addSyncButton() {
 
 window.performSync = async function() {
     const syncButton = document.getElementById('sync-button');
+    const syncButtonCompact = document.getElementById('sync-button-compact');
     if (!syncButton) return;
     
-    // Show syncing state
+    // Show syncing state on both buttons
     syncButton.classList.add('syncing');
     syncButton.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon">
             <polyline points="23 4 23 10 17 10"></polyline>
             <polyline points="1 20 1 14 7 14"></polyline>
             <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
         </svg>
         Syncing...
     `;
+    if (syncButtonCompact) {
+        syncButtonCompact.disabled = true;
+        syncButtonCompact.innerHTML = '<span style="animation:spin 1s linear infinite;display:inline-block;">&#8635;</span> Syncing';
+    }
+    
+    // Show sync progress toast
+    showToast('Syncing from athenaOne...', 'info');
     
     // Simulate sync delay (in real app, this would be API call)
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     // Extract documentation from athenaOne DOM
     const syncResults = extractDocumentationFromAthena();
+    
+    // *** KEY FIX: Update Florence panel gap statuses based on sync results ***
+    let updatedCount = 0;
+    
+    // Update confirmed gaps in Florence panel
+    syncResults.confirmed.forEach(result => {
+        const gap = gaps.find(g => g.id === result.id);
+        if (gap && !gap.documented) {
+            gap.accepted = true;
+            gap.documented = true;
+            gap.physicianAction = 'accepted';
+            gap.documentedDate = new Date().toISOString();
+            gap.status = 'documented';
+            updatedCount++;
+        }
+    });
+    
+    // Update dismissed gaps in Florence panel
+    syncResults.dismissed.forEach(result => {
+        const gap = gaps.find(g => g.id === result.id);
+        if (gap && !gap.dismissed) {
+            gap.dismissed = true;
+            gap.physicianAction = 'dismissed';
+            gap.status = 'dismissed';
+            updatedCount++;
+        }
+    });
+    
+    // Re-render Florence panel with updated statuses
+    if (typeof renderGaps === 'function') renderGaps();
+    if (typeof renderGapTracker === 'function') renderGapTracker();
+    if (typeof updateCounts === 'function') updateCounts();
+    if (typeof updateCompletionTracker === 'function') updateCompletionTracker();
+    
+    // Update notification bell
+    const bell = document.getElementById('sync-notif-bell');
+    const badge = document.getElementById('sync-notif-badge');
+    if (bell && badge && updatedCount > 0) {
+        bell.classList.add('has-notifications');
+        badge.style.display = 'flex';
+        badge.textContent = updatedCount;
+    }
     
     // Reset button
     syncButton.classList.remove('syncing');
@@ -9410,13 +10067,27 @@ window.performSync = async function() {
         </svg>
         Sync from athenaOne
     `;
+    if (syncButtonCompact) {
+        syncButtonCompact.disabled = false;
+        syncButtonCompact.innerHTML = `
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
+            </svg>
+            Sync
+        `;
+    }
     
     // Show sync report
     showSyncReport(syncResults);
     
-    // Add log entry (if function exists)
+    // Show success toast with details
+    showToast(`\u2713 Sync complete: ${syncResults.confirmed.length} confirmed, ${syncResults.dismissed.length} dismissed, ${syncResults.pending.length} pending`, 'success');
+    
+    // Add log entry
     if (typeof addLogEntry === 'function') {
-        addLogEntry('Sync Complete', `Synced ${syncResults.confirmed.length + syncResults.dismissed.length + syncResults.pending.length} gaps from athenaOne`);
+        addLogEntry('EHR Sync Complete', `Synced ${syncResults.confirmed.length + syncResults.dismissed.length + syncResults.pending.length} gaps from athenaOne. ${updatedCount} gap statuses updated in Florence.`);
     }
 }
 
