@@ -418,6 +418,16 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #e0e0e0;
+            position: relative;
+        }
+        
+        .header-center-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
         
         .florence-logo {
@@ -580,6 +590,38 @@
             font-size: 12px;
             color: #5A6872;
             margin-top: 4px;
+        }
+        
+        .patient-action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-left: auto;
+        }
+        
+        .patient-action-btn {
+            background: linear-gradient(135deg, #55B5B8 0%, #4A9FA2 100%);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        .patient-action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(85, 181, 184, 0.3);
+        }
+        
+        .patient-action-btn svg {
+            flex-shrink: 0;
         }
         
         /* Workflow Buttons */
@@ -3038,12 +3080,7 @@ button:hover {
 
         /* Florence Toolbar */
         .florence-toolbar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e0e0e0;
+            display: none; /* Hidden - buttons moved to patient card */
         }
 
         /* Sync Button */
@@ -3951,29 +3988,29 @@ button:hover {
     
     <!-- FLORENCE PANEL -->
     <div class="florence-panel">
-        <div class="florence-header" style="position: relative;">
-            <div style="position: absolute; top: 8px; right: 16px; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; display: flex; align-items: center; gap: 8px;">
+        <div class="florence-header">
+            <div class="florence-logo">
+                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 60px; width: auto;">
+            </div>
+            <div class="header-center-icons">
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; margin: 0;">
                     <input type="checkbox" id="provider-view-toggle" style="cursor: pointer;">
-                    <span id="view-mode-label"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="8" cy="5" r="3" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M2.5 14.5C2.5 11.5 4.5 9.5 8 9.5C11.5 9.5 13.5 11.5 13.5 14.5" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>Navigator View</span>
+                    <span id="view-mode-label" style="font-size: 11px; color: #5A6872;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="8" cy="5" r="3" stroke="#5A6872" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M2.5 14.5C2.5 11.5 4.5 9.5 8 9.5C11.5 9.5 13.5 11.5 13.5 14.5" stroke="#5A6872" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>Navigator</span>
                 </label>
-            </div>
-            <div class="florence-logo">
-                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 40px; width: auto;">
-            </div>
-            <div class="connection-status">
-                <div class="connection-dot"></div>
-                Connected
                 <button id="sync-notif-bell" class="sync-notif-bell" onclick="clearSyncNotifications()" title="Sync notifications">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
                     <span id="sync-notif-badge" class="sync-notif-badge" style="display: none;">0</span>
                 </button>
+            </div>
+            <div class="connection-status">
+                <div class="connection-dot"></div>
+                Connected
             </div>
         </div>
         <div class="florence-toolbar" id="florence-toolbar">
@@ -3997,6 +4034,23 @@ button:hover {
                         <span class="patient-tag ccm">CCM</span>
                     </div>
                     <div class="patient-mrn">MRN: 202070</div>
+                </div>
+                <div class="patient-action-buttons">
+                    <button id="sync-button-compact" class="patient-action-btn" onclick="performSync()">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
+                        </svg>
+                        Sync
+                    </button>
+                    <button id="post-visit-button-compact" class="patient-action-btn" onclick="showPostVisitTasks()">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Post-Visit
+                    </button>
                 </div>
             </div>
             
@@ -4032,13 +4086,13 @@ button:hover {
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span>Overview</span>
+                    <span>CDA</span>
                 </button>
                 <button class="florence-tab" data-tab="transcript" title="Real-time conversation transcript">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    <span>Transcript</span>
+                    <span>COM</span>
                 </button>
                 <button class="florence-tab" data-tab="documentation" title="Auto-generated clinical documentation">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -4048,7 +4102,7 @@ button:hover {
                         <line x1="16" y1="17" x2="8" y2="17"></line>
                         <polyline points="10 9 9 9 8 9"></polyline>
                     </svg>
-                    <span>Documentation</span>
+                    <span>DOC</span>
                 </button>
                 <button class="florence-tab" data-tab="log" title="Gap status tracking and analytics">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -4056,7 +4110,7 @@ button:hover {
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
-                    <span>Analytics</span>
+                    <span>LOG</span>
                 </button>
             </div>
         </div>
