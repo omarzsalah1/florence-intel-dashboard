@@ -6667,7 +6667,13 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 convene: 'Convene Session',
                 checkin: 'Check-In'
             };
-            addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            
+            // Wrap addToLog in try-catch to prevent errors from breaking the workflow
+            try {
+                addToLog(`${workflowNames[workflowType]} Started`, 'Workflow in progress...');
+            } catch (logError) {
+                console.warn('addToLog failed:', logError);
+            }
             
             try {
                 await playConversation(workflowType, abortController.signal);
