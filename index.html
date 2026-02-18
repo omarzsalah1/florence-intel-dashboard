@@ -720,11 +720,24 @@
             50% { box-shadow: 0 0 0 8px rgba(85, 181, 184, 0); }
         }
         
+        /* COM Tab Workflow Buttons */
+        .com-workflow-buttons {
+            display: flex;
+            gap: 8px;
+            padding: 12px 0;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .com-workflow-buttons .workflow-btn {
+            flex: 1;
+        }
+        
         /* Florence Tabs */
         .florence-tabs {
             display: flex;
             gap: 4px;
-            margin-top: 16px;
+            margin-top: 8px;
             padding: 0 8px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
@@ -4259,31 +4272,6 @@ button:hover {
                 </div>
             </div>
             
-            <!-- Workflow Buttons -->
-            <div class="workflow-buttons">
-                <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                    </svg>
-                    <span class="btn-text">Engage</span>
-                </button>
-                <button class="workflow-btn btn-convene" id="convene-btn" onclick="startWorkflow('convene')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="overflow:hidden; flex-shrink:0;">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <span class="btn-text" style="margin-left:2px;">Convene</span>
-                </button>
-                <button class="workflow-btn btn-checkin" id="checkin-btn" onclick="startWorkflow('checkin')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <span class="btn-text">Check-In</span>
-                </button>
-            </div>
-            
             <!-- Tab Navigation -->
             <div class="florence-tabs">
                 <button class="florence-tab active" data-tab="facesheet" title="Patient overview and care gaps">
@@ -4366,9 +4354,33 @@ button:hover {
             
             <!-- Transcript Tab -->
             <div class="tab-panel" id="transcript-panel">
+                <!-- Workflow Buttons (inside COM tab) -->
+                <div class="com-workflow-buttons">
+                    <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        <span class="btn-text">Engage</span>
+                    </button>
+                    <button class="workflow-btn btn-convene" id="convene-btn" onclick="startWorkflow('convene')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="overflow:hidden; flex-shrink:0;">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="btn-text" style="margin-left:2px;">Convene</span>
+                    </button>
+                    <button class="workflow-btn btn-checkin" id="checkin-btn" onclick="startWorkflow('checkin')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span class="btn-text">Check-In</span>
+                    </button>
+                </div>
                 <div class="transcript-container" id="transcript-container">
                     <p style="color: #a0aec0; text-align: center; padding: 40px;">
-                        Click Engage, Convene, or Check-In to start a workflow.
+                        Select a workflow above to start a conversation.
                     </p>
                 </div>
             </div>
