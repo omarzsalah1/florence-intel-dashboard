@@ -3888,6 +3888,32 @@ button:hover {
             display: flex;
             flex-direction: column;
             gap: 4px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .wf-steps.expanded {
+            max-height: 500px;
+            padding-top: 4px;
+        }
+        .wf-expand-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 4px 0;
+            margin-top: 4px;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        .wf-expand-toggle:hover { color: #D1D5DB; }
+        .wf-expand-toggle svg {
+            transition: transform 0.3s;
+        }
+        .wf-expand-toggle.expanded svg {
+            transform: rotate(180deg);
         }
         .wf-step {
             display: flex;
@@ -4823,12 +4849,12 @@ button:hover {
                         </svg>
                         Sync
                     </button>
-                    <button id="post-visit-button-compact" class="patient-action-btn" onclick="showPostVisitView()">
+                    <button id="post-visit-button-compact" class="patient-action-btn" onclick="switchToTab('tasks')">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                         </svg>
-                        Post-Visit
+                        Tasks
                     </button>
                 </div>
             </div>
@@ -4979,6 +5005,12 @@ button:hover {
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                         <span class="btn-text">Check-In</span>
+                    </button>
+                </div>
+                <div id="show-full-transcript-bar" style="display:none; padding: 6px 12px; background: linear-gradient(135deg, #f0f9ff, #e8f4fd); border-bottom: 1px solid #dbeafe; text-align: center;">
+                    <button id="show-full-transcript-btn" onclick="showFullTranscriptInstant()" style="background: linear-gradient(135deg, #55B5B8, #3d9a9d); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        Show Full Transcript
                     </button>
                 </div>
                 <div class="transcript-container" id="transcript-container">
@@ -7694,6 +7726,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Clear previous transcript
             document.getElementById('transcript-container').innerHTML = '';
             
+            // Show/hide full transcript bar for convene
+            const ftBar = document.getElementById('show-full-transcript-bar');
+            if (ftBar) {
+                ftBar.style.display = (workflowType === 'convene') ? 'block' : 'none';
+            }
+            
             // Reset all buttons first
             resetButtons();
             
@@ -7755,6 +7793,74 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 }
                 hideTypingIndicator();
             }
+        }
+        
+        function showFullTranscriptInstant() {
+            // Abort the current slow playback if running
+            if (isWorkflowInProgress && abortController) {
+                abortController.abort();
+                hideTypingIndicator();
+            }
+            isWorkflowInProgress = false;
+            
+            const workflowType = currentWorkflow || 'convene';
+            const script = scripts[workflowType];
+            if (!script) return;
+            
+            const container = document.getElementById('transcript-container');
+            container.innerHTML = '';
+            
+            const speakerNames = {
+                florence: 'Florence',
+                patient: 'Jane',
+                'care-manager': 'Sarah Martinez (Care Manager)'
+            };
+            const speakerIcons = {
+                florence: '<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+                patient: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+                'care-manager': '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line>'
+            };
+            
+            script.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.type}`;
+                if (msg.type === 'system') {
+                    messageDiv.textContent = msg.text;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="message-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+                                ${speakerIcons[msg.type] || speakerIcons.patient}
+                            </svg>
+                            ${speakerNames[msg.type] || 'Unknown'}
+                        </div>
+                        <span class="message-text">${msg.text}</span>
+                        <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                    `;
+                }
+                container.appendChild(messageDiv);
+            });
+            
+            container.scrollTop = container.scrollHeight;
+            
+            // Hide the bar and update button
+            const ftBar = document.getElementById('show-full-transcript-bar');
+            if (ftBar) ftBar.style.display = 'none';
+            
+            // Reset the convene button
+            const btn = document.getElementById(workflowType + '-btn');
+            if (btn) {
+                btn.classList.remove('active');
+                btn.disabled = false;
+                btn.querySelector('.btn-text').textContent = 'Completed';
+                btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+            }
+            
+            // Show documentation after instant view
+            setTimeout(() => {
+                resetButtons();
+                currentWorkflow = null;
+            }, 2000);
         }
         
         function fileToEHR() {
@@ -12822,7 +12928,7 @@ function renderWorkflows(filter) {
         }).join('');
 
         return `
-            <div class="wf-card ${cardClass}">
+            <div class="wf-card ${cardClass}" data-wf-id="${wf.id}">
                 <div class="wf-card-header">
                     <div>
                         <div class="wf-card-title">${wf.name}</div>
@@ -12831,9 +12937,13 @@ function renderWorkflows(filter) {
                     <span class="wf-status-badge ${statusBadgeClass}">${statusLabel}</span>
                 </div>
                 <div class="wf-trigger">Triggered by: ${wf.triggered_by}</div>
-                <div class="wf-steps">${stepsHtml}</div>
                 <div class="wf-progress-bar"><div class="wf-progress-fill ${pfClass}" style="width:${pct}%"></div></div>
                 <div class="wf-progress-label">${wf.progress}</div>
+                <div class="wf-expand-toggle" onclick="toggleWorkflowSteps(this)">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span>Show step details</span>
+                </div>
+                <div class="wf-steps">${stepsHtml}</div>
             </div>
         `;
     }).join('');
@@ -12939,7 +13049,7 @@ function renderSummaryFacesheet() {
                 </div>
                 <div class="fs-row"><span class="fs-label">Name</span><span class="fs-value">Jane Doe</span></div>
                 <div class="fs-row"><span class="fs-label">Age / Sex</span><span class="fs-value">68 y/o Female</span></div>
-                <div class="fs-row"><span class="fs-label">DOB</span><span class="fs-value">January 5, 1958</span></div>
+                <div class="fs-row"><span class="fs-label">DOB</span><span class="fs-value">May 27, 1955</span></div>
                 <div class="fs-row"><span class="fs-label">MRN</span><span class="fs-value">202070</span></div>
                 <div class="fs-row"><span class="fs-label">PCP</span><span class="fs-value">Dr. Campbell</span></div>
                 <div class="fs-row"><span class="fs-label">Risk Level</span><span class="fs-value" style="color:#E45740;">High Risk</span></div>
@@ -12969,10 +13079,10 @@ function renderSummaryFacesheet() {
                     Key Vitals & Labs
                 </div>
                 <div class="fs-row"><span class="fs-label">Blood Pressure</span><span class="fs-value" style="color:#F59E0B;">142/88 mmHg</span></div>
-                <div class="fs-row"><span class="fs-label">HbA1c</span><span class="fs-value" style="color:#E45740;">8.2%</span></div>
-                <div class="fs-row"><span class="fs-label">eGFR</span><span class="fs-value" style="color:#E45740;">52 mL/min (declining)</span></div>
+                <div class="fs-row"><span class="fs-label">HbA1c</span><span class="fs-value" style="color:#E45740;">8.9% (12/20/2025)</span></div>
+                <div class="fs-row"><span class="fs-label">eGFR</span><span class="fs-value" style="color:#E45740;">42 mL/min (declining)</span></div>
                 <div class="fs-row"><span class="fs-label">Fasting Glucose</span><span class="fs-value" style="color:#F59E0B;">156 mg/dL</span></div>
-                <div class="fs-row"><span class="fs-label">BMI</span><span class="fs-value" style="color:#F59E0B;">36</span></div>
+                <div class="fs-row"><span class="fs-label">BMI</span><span class="fs-value" style="color:#F59E0B;">29.3</span></div>
                 <div class="fs-row"><span class="fs-label">PHQ-9</span><span class="fs-value">8 (mild)</span></div>
                 <div class="fs-row"><span class="fs-label">Morse Fall Scale</span><span class="fs-value" style="color:#E45740;">55 (high risk)</span></div>
                 <div class="fs-row"><span class="fs-label">Weight Loss</span><span class="fs-value" style="color:#F59E0B;">8 lb in 3 months</span></div>
@@ -13033,7 +13143,26 @@ if (document.readyState !== 'loading') {
     setTimeout(() => { renderTasks('all'); }, 200);
 }
 
+// Toggle workflow step details
+function toggleWorkflowSteps(toggleEl) {
+    const card = toggleEl.closest('.wf-card');
+    const stepsDiv = card.querySelector('.wf-steps');
+    const label = toggleEl.querySelector('span');
+    const isExpanded = stepsDiv.classList.contains('expanded');
+    
+    if (isExpanded) {
+        stepsDiv.classList.remove('expanded');
+        toggleEl.classList.remove('expanded');
+        label.textContent = 'Show step details';
+    } else {
+        stepsDiv.classList.add('expanded');
+        toggleEl.classList.add('expanded');
+        label.textContent = 'Hide step details';
+    }
+}
+
 // Make functions globally available
+window.toggleWorkflowSteps = toggleWorkflowSteps;
 window.renderTasks = renderTasks;
 window.renderWorkflows = renderWorkflows;
 window.openWorkflowCatalog = openWorkflowCatalog;
