@@ -747,12 +747,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 3px;
-            padding: 10px 4px;
+            gap: 5px;
+            padding: 12px 8px;
             background: #F2F3F4;
             border: none;
             color: #49545E;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -778,6 +778,63 @@
             width: 14px;
             height: 14px;
             flex-shrink: 0;
+        }
+        
+        /* Gaps/Workflows Toggle */
+        .gaps-toggle-bar {
+            display: flex;
+            gap: 0;
+            padding: 8px 16px;
+            background: #F9FAFB;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .gaps-toggle-btn {
+            flex: 1;
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #D1D5DB;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .gaps-toggle-btn:first-child {
+            border-radius: 6px 0 0 6px;
+            border-right: none;
+        }
+        .gaps-toggle-btn:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+        .gaps-toggle-btn.active {
+            background: #55B5B8;
+            color: white;
+            border-color: #55B5B8;
+        }
+        .gaps-toggle-btn:hover:not(.active) {
+            background: #F3F4F6;
+        }
+        
+        /* Filter Dropdown */
+        .filter-dropdown {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-dropdown:hover {
+            border-color: #55B5B8;
+        }
+        .filter-dropdown:focus {
+            outline: none;
+            border-color: #55B5B8;
+            box-shadow: 0 0 0 3px rgba(85, 181, 184, 0.1);
         }
         
         /* Tab Content */
@@ -4835,30 +4892,113 @@ button:hover {
                 <div class="patient-details">
                     <h3>Jane Doe (68 y/o F)</h3>
                     <div class="patient-tags">
-                        <span class="patient-tag risk">High Risk</span>
+                        <span class="patient-tag risk">HIGH RISK</span>
                         <span class="patient-tag ccm">CCM</span>
                     </div>
-                    <div class="patient-mrn">MRN: 202070</div>
                 </div>
-                <div class="patient-action-buttons">
-                    <button id="sync-button-compact" class="patient-action-btn" onclick="performSync()">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="23 4 23 10 17 10"></polyline>
-                            <polyline points="1 20 1 14 7 14"></polyline>
-                            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"></path>
-                        </svg>
-                        Sync
-                    </button>
-                    <button id="post-visit-button-compact" class="patient-action-btn" onclick="switchToTab('tasks')">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        Tasks
-                    </button>
+                <button class="banner-expand-btn" onclick="toggleBannerFacesheet()" id="banner-expand-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Clinical Snapshot - Always Visible -->
+            <div class="clinical-snapshot">
+                <div class="snapshot-item">
+                    <div class="snapshot-label">HbA1c</div>
+                    <div class="snapshot-value alert">8.9%</div>
+                    <div class="snapshot-trend">12/20</div>
+                </div>
+                <div class="snapshot-item">
+                    <div class="snapshot-label">eGFR</div>
+                    <div class="snapshot-value alert">42</div>
+                    <div class="snapshot-trend declining">↓</div>
+                </div>
+                <div class="snapshot-item">
+                    <div class="snapshot-label">Fall Risk</div>
+                    <div class="snapshot-value alert">55</div>
+                    <div class="snapshot-trend">High</div>
+                </div>
+                <div class="snapshot-item">
+                    <div class="snapshot-label">BP</div>
+                    <div class="snapshot-value warn">142/88</div>
+                    <div class="snapshot-trend">Today</div>
                 </div>
             </div>
             
+            <!-- Allergy Strip -->
+            <div class="allergy-strip">
+                <svg class="allergy-strip-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <span class="allergy-strip-text">ALLERGIES: Penicillin, Sulfa drugs</span>
+            </div>
+            
+            <!-- Expandable Full Facesheet -->
+            <div class="banner-facesheet" id="banner-facesheet">
+                <div class="banner-facesheet-inner">
+                    <div class="bf-section">
+                        <div class="bf-section-title">Demographics</div>
+                        <div class="bf-row"><span class="bf-label">DOB</span><span class="bf-value">May 27, 1955</span></div>
+                        <div class="bf-row"><span class="bf-label">MRN</span><span class="bf-value">202070</span></div>
+                        <div class="bf-row"><span class="bf-label">PCP</span><span class="bf-value">Dr. Campbell</span></div>
+                        <div class="bf-row"><span class="bf-label">Phone</span><span class="bf-value">(555) 202-0700</span></div>
+                        <div class="bf-row"><span class="bf-label">Emergency</span><span class="bf-value">Lisa Doe (555) 123-4567</span></div>
+                    </div>
+                    
+                    <div class="bf-section">
+                        <div class="bf-section-title">Active Conditions</div>
+                        <div class="bf-condition">
+                            <span><span class="bf-condition-name">Essential Hypertension</span><span class="bf-condition-code">I10</span></span>
+                            <span class="bf-badge active">Active</span>
+                        </div>
+                        <div class="bf-condition">
+                            <span><span class="bf-condition-name">Type 2 Diabetes with CKD</span><span class="bf-condition-code">E11.22</span></span>
+                            <span class="bf-badge active">Active</span>
+                        </div>
+                        <div class="bf-condition">
+                            <span><span class="bf-condition-name">CKD Stage 3a</span><span class="bf-condition-code">N18.31</span></span>
+                            <span class="bf-badge suspect">Suspect</span>
+                        </div>
+                        <div class="bf-condition">
+                            <span><span class="bf-condition-name">Major Depressive Disorder</span><span class="bf-condition-code">F33.1</span></span>
+                            <span class="bf-badge suspect">Suspect</span>
+                        </div>
+                        <div class="bf-condition">
+                            <span><span class="bf-condition-name">Acute MI (recent)</span><span class="bf-condition-code">I21.9</span></span>
+                            <span class="bf-badge active">Active</span>
+                        </div>
+                        <div class="bf-condition">
+                            <span><span class="bf-condition-name">Fall Risk — High</span><span class="bf-condition-code">Z91.81</span></span>
+                            <span class="bf-badge flagged">Flagged</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bf-section">
+                        <div class="bf-section-title">Current Medications (8)</div>
+                        <div class="bf-med"><span class="bf-med-name">Lisinopril</span> <span class="bf-med-detail">20mg daily — HTN</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Metformin</span> <span class="bf-med-detail">1000mg BID — Diabetes</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Sertraline</span> <span class="bf-med-detail">100mg daily — Depression</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Metoprolol</span> <span class="bf-med-detail">50mg daily — post-MI</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Clopidogrel</span> <span class="bf-med-detail">75mg daily — antiplatelet</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Atorvastatin</span> <span class="bf-med-detail">80mg daily — cholesterol</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Furosemide</span> <span class="bf-med-detail">40mg daily — fluid mgmt</span></div>
+                        <div class="bf-med"><span class="bf-med-name">Aspirin</span> <span class="bf-med-detail">81mg daily — antiplatelet</span></div>
+                    </div>
+                    
+                    <div class="bf-section">
+                        <div class="bf-section-title">Recent Events</div>
+                        <div class="bf-event"><span class="bf-event-date">Feb 25, 2026</span> — Discharged from St. Joseph's after acute MI with stent placement</div>
+                        <div class="bf-event"><span class="bf-event-date">Feb 25, 2026</span> — TCM call completed, meds verified, f/u scheduled</div>
+                        <div class="bf-event"><span class="bf-event-date">Feb 25, 2026</span> — Convene call: 5 action items assigned</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Navigation -->
             <!-- Tab Navigation -->
             <div class="florence-tabs">
                 <button class="florence-tab active" data-tab="tasks" title="Action items and task checklist">
@@ -4868,38 +5008,19 @@ button:hover {
                     </svg>
                     <span>Tasks</span>
                 </button>
-                <button class="florence-tab" data-tab="facesheet" title="Care & diagnosis gaps">
+                <button class="florence-tab" data-tab="facesheet" title="Care gaps and active workflows">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    <span>CDA</span>
-                </button>
-                <button class="florence-tab" data-tab="workflows" title="Active workflows and processes">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="16 3 21 3 21 8"></polyline>
-                        <line x1="4" y1="20" x2="21" y2="3"></line>
-                        <polyline points="21 16 21 21 16 21"></polyline>
-                        <line x1="15" y1="15" x2="21" y2="21"></line>
-                        <line x1="4" y1="4" x2="9" y2="9"></line>
-                    </svg>
-                    <span>WF</span>
+                    <span>Gaps</span>
                 </button>
                 <button class="florence-tab" data-tab="transcript" title="Communication workflows">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    <span>COM</span>
-                </button>
-                <button class="florence-tab" data-tab="documentation" title="Patient summary and facesheet">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
-                    <span>Summary</span>
+                    <span>Comms</span>
                 </button>
                 <button class="florence-tab" data-tab="log" title="Activity log and gap tracking">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -4907,7 +5028,7 @@ button:hover {
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
-                    <span>LOG</span>
+                    <span>Log</span>
                 </button>
             </div>
         </div>
@@ -4921,16 +5042,13 @@ button:hover {
                         <span class="tasks-count-badge" id="tasks-total-count">4 pending</span>
                     </div>
                     <div class="tasks-filter-row">
-                        <button class="tasks-filter-btn active" data-tasks-filter="all">All</button>
-                        <button class="tasks-filter-btn" data-tasks-filter="pending">Pending</button>
-                        <button class="tasks-filter-btn" data-tasks-filter="in-progress">In Progress</button>
-                        <button class="tasks-filter-btn" data-tasks-filter="completed">Completed</button>
-                        <button class="tasks-filter-btn" data-tasks-filter="ai-deduced">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-1px;margin-right:2px;">
-                                <path d="M12 2l2.09 6.26L20.18 9l-5 4.27L16.82 20 12 16.77 7.18 20l1.64-6.73L3.82 9l6.09-.74z"/>
-                            </svg>
-                            AI Deduced
-                        </button>
+                        <select class="filter-dropdown" id="tasks-filter-dropdown" onchange="renderTasks(this.value)">
+                            <option value="all">All Tasks</option>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="ai-deduced">AI Deduced</option>
+                        </select>
                     </div>
                 </div>
                 <div class="tasks-list" id="tasks-list">
@@ -4940,6 +5058,15 @@ button:hover {
 
             <!-- Facesheet / CDA Tab -->
             <div class="tab-panel" id="facesheet-panel">
+
+                <!-- Gaps/Workflows Toggle -->
+                <div class="gaps-toggle-bar">
+                    <button class="gaps-toggle-btn active" onclick="switchGapsView('gaps')">Gap Cards</button>
+                    <button class="gaps-toggle-btn" onclick="switchGapsView('workflows')">Active Workflows</button>
+                </div>
+                
+                <!-- Gap Cards View (default) -->
+                <div id="gaps-view">
                 <div class="florence-summary">
                     <div class="summary-header" onclick="toggleSummary()">
                         <h4>Florence Summary</h4>
@@ -5093,19 +5220,23 @@ button:hover {
                 </div>
             </div>
             
-            <!-- Workflows Tab (NEW) -->
-            <div class="tab-panel" id="workflows-panel">
+                </div>
+                <!-- End Gap Cards View -->
+                
+                <!-- Workflows View (hidden by default) -->
+                <div id="workflows-view" style="display: none;">
+
                 <div class="wf-header-bar">
                     <div class="wf-title-row">
                         <h3 class="wf-heading">Active Workflows</h3>
                         <span class="wf-count-badge" id="wf-active-count">2 active</span>
                     </div>
-                    <div class="wf-filter-row">
-                        <button class="wf-filter-btn active" data-wf-filter="all">All</button>
-                        <button class="wf-filter-btn" data-wf-filter="active">Active</button>
-                        <button class="wf-filter-btn" data-wf-filter="completed">Completed</button>
-                        <button class="wf-filter-btn" data-wf-filter="paused">Paused</button>
-                    </div>
+                    <select class="filter-dropdown" id="wf-filter-dropdown" onchange="renderWorkflows(this.value)">
+                        <option value="all">All Workflows</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                        <option value="paused">Paused</option>
+                    </select>
                 </div>
                 <div class="wf-list" id="wf-list">
                     <!-- Workflow cards rendered dynamically -->
@@ -5118,6 +5249,11 @@ button:hover {
                 </button>
             </div>
 
+                </div>
+                <!-- End Workflows View -->
+            </div>
+            <!-- End Facesheet/Gaps Tab -->
+            
             <!-- Log Tab -->
             <div class="tab-panel" id="log-panel">
                 <div class="gap-tracker-container">
@@ -5154,12 +5290,12 @@ button:hover {
                     <div style="margin-top:16px;border-top:1px solid #E0E0E0;padding-top:16px;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                             <h4 style="margin:0;font-size:14px;color:#1a1a2e;">Activity Log</h4>
-                            <div style="display:flex;gap:6px;">
-                                <button class="log-filter-btn active" data-log-filter="all" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:#55B5B8;color:white;cursor:pointer;">All</button>
-                                <button class="log-filter-btn" data-log-filter="staging" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:white;cursor:pointer;">Staging</button>
-                                <button class="log-filter-btn" data-log-filter="provider" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:white;cursor:pointer;">Provider</button>
-                                <button class="log-filter-btn" data-log-filter="sync" style="padding:2px 8px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;background:white;cursor:pointer;">Sync</button>
-                            </div>
+                            <select class="filter-dropdown" style="font-size:11px;padding:4px 8px;">
+                                <option value="all">All Activity</option>
+                                <option value="staging">Staging</option>
+                                <option value="provider">Provider</option>
+                                <option value="sync">Sync</option>
+                            </select>
                         </div>
                         <div id="log-container" style="max-height:300px;overflow-y:auto;">
                             <div class="log-item" data-log-type="system" style="display:flex;gap:10px;padding:8px;border-bottom:1px solid #f5f5f5;font-size:12px;">
@@ -13171,6 +13307,42 @@ window.startCatalogWorkflow = startCatalogWorkflow;
 window.openTaskTranscript = openTaskTranscript;
 window.toggleTaskCheck = toggleTaskCheck;
 window.renderSummaryFacesheet = renderSummaryFacesheet;
+    
+// ==================== SMART PATIENT BANNER ====================
+function toggleBannerFacesheet() {
+    const facesheet = document.getElementById('banner-facesheet');
+    const btn = document.getElementById('banner-expand-btn');
+    if (facesheet.classList.contains('expanded')) {
+        facesheet.classList.remove('expanded');
+        btn.classList.remove('expanded');
+    } else {
+        facesheet.classList.add('expanded');
+        btn.classList.add('expanded');
+    }
+}
+window.toggleBannerFacesheet = toggleBannerFacesheet;
+
+// ==================== GAPS/WORKFLOWS TOGGLE ====================
+function switchGapsView(view) {
+    const gapsView = document.getElementById('gaps-view');
+    const workflowsView = document.getElementById('workflows-view');
+    const toggleBtns = document.querySelectorAll('.gaps-toggle-btn');
+    
+    if (view === 'gaps') {
+        gapsView.style.display = 'block';
+        workflowsView.style.display = 'none';
+        toggleBtns[0].classList.add('active');
+        toggleBtns[1].classList.remove('active');
+    } else {
+        gapsView.style.display = 'none';
+        workflowsView.style.display = 'block';
+        toggleBtns[0].classList.remove('active');
+        toggleBtns[1].classList.add('active');
+        // Re-render workflows when switching to that view
+        if (typeof renderWorkflows === 'function') renderWorkflows('all');
+    }
+}
+window.switchGapsView = switchGapsView;
     </script>
 
 </body>
