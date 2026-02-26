@@ -628,6 +628,210 @@
             flex-shrink: 0;
         }
         
+        /* Banner Expand Button */
+        .banner-expand-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            margin-left: auto;
+        }
+        
+        .banner-expand-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .banner-expand-btn svg {
+            transition: transform 0.3s;
+        }
+        
+        .banner-expand-btn.expanded svg {
+            transform: rotate(180deg);
+        }
+        
+        /* Clinical Snapshot */
+        .clinical-snapshot {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .snapshot-item {
+            text-align: center;
+        }
+        
+        .snapshot-label {
+            font-size: 10px;
+            color: #6B7280;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .snapshot-value {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .snapshot-value.alert {
+            color: var(--brand-red);
+        }
+        
+        .snapshot-value.warn {
+            color: var(--brand-yellow);
+        }
+        
+        .snapshot-trend {
+            font-size: 10px;
+            color: #6B7280;
+        }
+        
+        .snapshot-trend.declining {
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        
+        /* Allergy Strip */
+        .allergy-strip {
+            background: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .allergy-strip-icon {
+            color: var(--brand-red);
+            flex-shrink: 0;
+        }
+        
+        .allergy-strip-text {
+            font-size: 11px;
+            color: #991B1B;
+            font-weight: 600;
+        }
+        
+        /* Banner Facesheet - Collapsed by Default */
+        .banner-facesheet {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .banner-facesheet.expanded {
+            max-height: 800px;
+            transition: max-height 0.5s ease-in;
+        }
+        
+        .banner-facesheet-inner {
+            padding-top: 10px;
+            border-top: 1px solid #E5E7EB;
+        }
+        
+        .bf-section {
+            margin-bottom: 12px;
+        }
+        
+        .bf-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .bf-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 3px 0;
+        }
+        
+        .bf-label {
+            color: #6B7280;
+            font-weight: 600;
+        }
+        
+        .bf-value {
+            color: #1F2937;
+        }
+        
+        .bf-condition {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding: 4px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .bf-condition-name {
+            color: #1F2937;
+            font-weight: 500;
+        }
+        
+        .bf-condition-code {
+            color: #6B7280;
+            font-size: 10px;
+            margin-left: 6px;
+        }
+        
+        .bf-badge {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .bf-badge.active {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .bf-badge.suspect {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .bf-badge.flagged {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .bf-med {
+            font-size: 11px;
+            padding: 3px 0;
+            color: #1F2937;
+        }
+        
+        .bf-med-name {
+            font-weight: 600;
+        }
+        
+        .bf-med-detail {
+            color: #6B7280;
+        }
+        
+        .bf-event {
+            font-size: 11px;
+            padding: 4px 0;
+            color: #1F2937;
+            line-height: 1.4;
+        }
+        
+        .bf-event-date {
+            font-weight: 600;
+            color: var(--brand-teal);
+        }
+        
         /* Workflow Buttons */
         .workflow-buttons {
             display: flex;
