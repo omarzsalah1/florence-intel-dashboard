@@ -736,9 +736,9 @@
         /* Florence Tabs */
         .florence-tabs {
             display: flex;
-            gap: 4px;
+            gap: 2px;
             margin-top: 8px;
-            padding: 0 8px;
+            padding: 0 4px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -747,18 +747,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 12px 12px;
+            gap: 3px;
+            padding: 10px 4px;
             background: #F2F3F4;
             border: none;
             color: #49545E;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             border-bottom: 2px solid transparent;
             border-radius: 6px 6px 0 0;
             position: relative;
+            white-space: nowrap;
+            min-width: 0;
         }
         
         .florence-tab:hover {
@@ -773,8 +775,8 @@
         }
         
         .tab-icon {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             flex-shrink: 0;
         }
         
@@ -3542,6 +3544,565 @@ button:hover {
             line-height: 1.6;
         }
 
+        /* ==================== TASKS TAB ==================== */
+        .tasks-header-bar {
+            margin-bottom: 12px;
+        }
+        .tasks-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .tasks-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: #F3F4F6;
+            margin: 0;
+        }
+        .tasks-count-badge {
+            background: rgba(85,181,184,0.2);
+            color: #55B5B8;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+        .tasks-filter-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .tasks-filter-btn {
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid #374151;
+            border-radius: 14px;
+            background: transparent;
+            color: #9CA3AF;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        .tasks-filter-btn:hover { background: #374151; color: #F3F4F6; }
+        .tasks-filter-btn.active { background: #55B5B8; color: white; border-color: #55B5B8; }
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .task-card {
+            background: #283040;
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+        .task-card:hover { background: #313b4d; }
+        .task-card.status-pending { border-left-color: #F59E0B; }
+        .task-card.status-in-progress { border-left-color: #3B82F6; }
+        .task-card.status-completed { border-left-color: #10B981; opacity: 0.8; }
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #4B5563;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.2s;
+        }
+        .task-checkbox.checked {
+            background: #10B981;
+            border-color: #10B981;
+        }
+        .task-checkbox.checked::after {
+            content: '\2713';
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .task-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .task-title-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 3px;
+        }
+        .task-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F3F4F6;
+        }
+        .task-card.status-completed .task-title {
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+        .task-sparkle {
+            color: #F8CA44;
+            font-size: 14px;
+            cursor: help;
+            position: relative;
+        }
+        .task-sparkle .sparkle-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1F2937;
+            color: #F3F4F6;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 400;
+            white-space: nowrap;
+            border: 1px solid #374151;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .task-sparkle:hover .sparkle-tooltip { display: block; }
+        .task-detail {
+            font-size: 11px;
+            color: #9CA3AF;
+            margin-bottom: 4px;
+        }
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+        }
+        .task-category-badge {
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+        }
+        .task-category-badge.cat-orders { background: rgba(59,130,246,0.15); color: #60A5FA; }
+        .task-category-badge.cat-referrals { background: rgba(245,158,11,0.15); color: #FBBF24; }
+        .task-category-badge.cat-communication { background: rgba(139,92,246,0.15); color: #A78BFA; }
+        .task-category-badge.cat-follow-up { background: rgba(85,181,184,0.15); color: #55B5B8; }
+        .task-category-badge.cat-education { background: rgba(16,185,129,0.15); color: #34D399; }
+        .task-category-badge.cat-documentation { background: rgba(156,163,175,0.15); color: #D1D5DB; }
+        .task-status-pill {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 8px;
+        }
+        .task-status-pill.s-pending { background: rgba(245,158,11,0.15); color: #FBBF24; }
+        .task-status-pill.s-in-progress { background: rgba(59,130,246,0.15); color: #60A5FA; }
+        .task-status-pill.s-completed { background: rgba(16,185,129,0.15); color: #34D399; }
+        .task-transcript-link {
+            color: #55B5B8;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-left: auto;
+        }
+        .task-transcript-link:hover { text-decoration: underline; }
+
+        /* Task Transcript Viewer Modal */
+        .transcript-viewer-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .transcript-viewer {
+            background: #1F2937;
+            border-radius: 12px;
+            width: 440px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            border: 1px solid #374151;
+        }
+        .transcript-viewer-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .transcript-viewer-header h4 {
+            font-size: 13px;
+            color: #F3F4F6;
+            margin: 0;
+        }
+        .transcript-viewer-close {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .transcript-viewer-body {
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .tv-msg {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .tv-msg-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            min-width: 52px;
+            text-align: center;
+        }
+        .tv-msg-label.lbl-system { background: #374151; color: #9CA3AF; }
+        .tv-msg-label.lbl-florence { background: rgba(85,181,184,0.2); color: #55B5B8; }
+        .tv-msg-label.lbl-florence-sms { background: rgba(85,181,184,0.2); color: #55B5B8; }
+        .tv-msg-label.lbl-patient { background: rgba(139,92,246,0.15); color: #A78BFA; }
+        .tv-msg-label.lbl-patient-daughter-sms { background: rgba(236,72,153,0.15); color: #F472B6; min-width: 60px; }
+        .tv-msg-label.lbl-care-manager { background: rgba(245,158,11,0.15); color: #FBBF24; min-width: 60px; }
+        .tv-msg-label.lbl-dme-agent { background: rgba(16,185,129,0.15); color: #34D399; min-width: 60px; }
+        .tv-msg-label.lbl-pharmacy-tech { background: rgba(16,185,129,0.15); color: #34D399; min-width: 60px; }
+        .tv-msg-text {
+            font-size: 12px;
+            color: #D1D5DB;
+            line-height: 1.5;
+        }
+
+        /* ==================== WORKFLOWS TAB ==================== */
+        .wf-header-bar {
+            margin-bottom: 12px;
+        }
+        .wf-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .wf-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: #F3F4F6;
+            margin: 0;
+        }
+        .wf-count-badge {
+            background: rgba(59,130,246,0.2);
+            color: #60A5FA;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+        .wf-filter-row {
+            display: flex;
+            gap: 4px;
+        }
+        .wf-filter-btn {
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid #374151;
+            border-radius: 14px;
+            background: transparent;
+            color: #9CA3AF;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .wf-filter-btn:hover { background: #374151; color: #F3F4F6; }
+        .wf-filter-btn.active { background: #3B82F6; color: white; border-color: #3B82F6; }
+        .wf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-bottom: 60px;
+        }
+        .wf-card {
+            background: #283040;
+            border-radius: 10px;
+            padding: 12px 14px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .wf-card:hover { background: #313b4d; }
+        .wf-card.wf-active { border-left-color: #3B82F6; }
+        .wf-card.wf-completed { border-left-color: #10B981; opacity: 0.85; }
+        .wf-card.wf-paused { border-left-color: #F59E0B; }
+        .wf-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .wf-card-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #F3F4F6;
+        }
+        .wf-card-id {
+            font-size: 9px;
+            color: #6B7280;
+            font-weight: 600;
+        }
+        .wf-status-badge {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+        .wf-status-badge.ws-active { background: rgba(59,130,246,0.15); color: #60A5FA; }
+        .wf-status-badge.ws-completed { background: rgba(16,185,129,0.15); color: #34D399; }
+        .wf-status-badge.ws-paused { background: rgba(245,158,11,0.15); color: #FBBF24; }
+        .wf-trigger {
+            font-size: 10px;
+            color: #9CA3AF;
+            margin-bottom: 8px;
+        }
+        .wf-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .wf-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            padding: 4px 0;
+        }
+        .wf-step-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .wf-step-icon.si-done { background: #10B981; color: white; }
+        .wf-step-icon.si-active { background: #3B82F6; color: white; animation: pulse 2s infinite; }
+        .wf-step-icon.si-pending { background: #374151; color: #6B7280; }
+        .wf-step-title { color: #D1D5DB; flex: 1; }
+        .wf-step.step-done .wf-step-title { color: #9CA3AF; }
+        .wf-step-time { font-size: 9px; color: #6B7280; }
+        .wf-progress-bar {
+            margin-top: 8px;
+            background: #374151;
+            border-radius: 4px;
+            height: 4px;
+            overflow: hidden;
+        }
+        .wf-progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .wf-progress-fill.pf-active { background: #3B82F6; }
+        .wf-progress-fill.pf-completed { background: #10B981; }
+        .wf-progress-fill.pf-paused { background: #F59E0B; }
+        .wf-progress-label {
+            font-size: 9px;
+            color: #6B7280;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        /* Floating Action Button */
+        .wf-fab {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #55B5B8, #3d9ea1);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(85,181,184,0.4);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .wf-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(85,181,184,0.5);
+        }
+
+        /* Workflow Catalog Modal */
+        .wf-catalog-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .wf-catalog {
+            background: #1F2937;
+            border-radius: 12px;
+            width: 420px;
+            max-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            border: 1px solid #374151;
+        }
+        .wf-catalog-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wf-catalog-header h4 {
+            font-size: 13px;
+            color: #F3F4F6;
+            margin: 0;
+        }
+        .wf-catalog-close {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .wf-catalog-search {
+            margin: 12px 16px;
+            padding: 8px 12px;
+            background: #283040;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #F3F4F6;
+            font-size: 12px;
+            width: calc(100% - 32px);
+        }
+        .wf-catalog-search::placeholder { color: #6B7280; }
+        .wf-catalog-list {
+            padding: 0 16px 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .wf-catalog-item {
+            padding: 10px 12px;
+            background: #283040;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .wf-catalog-item:hover {
+            background: #313b4d;
+            border-color: #55B5B8;
+        }
+        .wf-catalog-item-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F3F4F6;
+            margin-bottom: 2px;
+        }
+        .wf-catalog-item-desc {
+            font-size: 10px;
+            color: #9CA3AF;
+        }
+        .wf-catalog-item-id {
+            font-size: 9px;
+            color: #6B7280;
+            float: right;
+        }
+
+        /* ==================== SUMMARY TAB ==================== */
+        .summary-facesheet {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .fs-section {
+            background: #283040;
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+        .fs-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #55B5B8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .fs-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            font-size: 12px;
+        }
+        .fs-label { color: #9CA3AF; }
+        .fs-value { color: #F3F4F6; font-weight: 600; }
+        .fs-list-item {
+            font-size: 11px;
+            color: #D1D5DB;
+            padding: 3px 0;
+            border-bottom: 1px solid #374151;
+        }
+        .fs-list-item:last-child { border-bottom: none; }
+        .fs-med-name { font-weight: 600; color: #F3F4F6; }
+        .fs-med-dose { color: #9CA3AF; margin-left: 4px; }
+        .fs-condition-badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .fs-condition-badge.active { background: rgba(16,185,129,0.15); color: #34D399; }
+        .fs-condition-badge.risk { background: rgba(228,87,64,0.15); color: #E45740; }
+        .fs-allergy-item {
+            color: #E45740;
+            font-size: 11px;
+            padding: 2px 0;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
     </style>
 </head>
 <body>
@@ -4274,30 +4835,47 @@ button:hover {
             
             <!-- Tab Navigation -->
             <div class="florence-tabs">
-                <button class="florence-tab active" data-tab="facesheet" title="Patient overview and care gaps">
+                <button class="florence-tab active" data-tab="tasks" title="Action items and task checklist">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                    </svg>
+                    <span>Tasks</span>
+                </button>
+                <button class="florence-tab" data-tab="facesheet" title="Care & diagnosis gaps">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
                     <span>CDA</span>
                 </button>
-                <button class="florence-tab" data-tab="transcript" title="Real-time conversation transcript">
+                <button class="florence-tab" data-tab="workflows" title="Active workflows and processes">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 3 21 3 21 8"></polyline>
+                        <line x1="4" y1="20" x2="21" y2="3"></line>
+                        <polyline points="21 16 21 21 16 21"></polyline>
+                        <line x1="15" y1="15" x2="21" y2="21"></line>
+                        <line x1="4" y1="4" x2="9" y2="9"></line>
+                    </svg>
+                    <span>WF</span>
+                </button>
+                <button class="florence-tab" data-tab="transcript" title="Communication workflows">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
                     <span>COM</span>
                 </button>
-                <button class="florence-tab" data-tab="documentation" title="Auto-generated clinical documentation">
+                <button class="florence-tab" data-tab="documentation" title="Patient summary and facesheet">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <line x1="16" y1="13" x2="8" y2="13"></line>
                         <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
                     </svg>
-                    <span>DOC</span>
+                    <span>Summary</span>
                 </button>
-                <button class="florence-tab" data-tab="log" title="Gap status tracking and analytics">
+                <button class="florence-tab" data-tab="log" title="Activity log and gap tracking">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
@@ -4309,8 +4887,33 @@ button:hover {
         </div>
         
         <div class="tab-content">
-            <!-- Facesheet Tab -->
-            <div class="tab-panel active" id="facesheet-panel">
+            <!-- Tasks Tab (NEW - Primary) -->
+            <div class="tab-panel active" id="tasks-panel">
+                <div class="tasks-header-bar">
+                    <div class="tasks-title-row">
+                        <h3 class="tasks-heading">Action Items</h3>
+                        <span class="tasks-count-badge" id="tasks-total-count">4 pending</span>
+                    </div>
+                    <div class="tasks-filter-row">
+                        <button class="tasks-filter-btn active" data-tasks-filter="all">All</button>
+                        <button class="tasks-filter-btn" data-tasks-filter="pending">Pending</button>
+                        <button class="tasks-filter-btn" data-tasks-filter="in-progress">In Progress</button>
+                        <button class="tasks-filter-btn" data-tasks-filter="completed">Completed</button>
+                        <button class="tasks-filter-btn" data-tasks-filter="ai-deduced">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-1px;margin-right:2px;">
+                                <path d="M12 2l2.09 6.26L20.18 9l-5 4.27L16.82 20 12 16.77 7.18 20l1.64-6.73L3.82 9l6.09-.74z"/>
+                            </svg>
+                            AI Deduced
+                        </button>
+                    </div>
+                </div>
+                <div class="tasks-list" id="tasks-list">
+                    <!-- Task items rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Facesheet / CDA Tab -->
+            <div class="tab-panel" id="facesheet-panel">
                 <div class="florence-summary">
                     <div class="summary-header" onclick="toggleSummary()">
                         <h4>Florence Summary</h4>
@@ -4458,6 +5061,31 @@ button:hover {
                 </div>
             </div>
             
+            <!-- Workflows Tab (NEW) -->
+            <div class="tab-panel" id="workflows-panel">
+                <div class="wf-header-bar">
+                    <div class="wf-title-row">
+                        <h3 class="wf-heading">Active Workflows</h3>
+                        <span class="wf-count-badge" id="wf-active-count">2 active</span>
+                    </div>
+                    <div class="wf-filter-row">
+                        <button class="wf-filter-btn active" data-wf-filter="all">All</button>
+                        <button class="wf-filter-btn" data-wf-filter="active">Active</button>
+                        <button class="wf-filter-btn" data-wf-filter="completed">Completed</button>
+                        <button class="wf-filter-btn" data-wf-filter="paused">Paused</button>
+                    </div>
+                </div>
+                <div class="wf-list" id="wf-list">
+                    <!-- Workflow cards rendered dynamically -->
+                </div>
+                <button class="wf-fab" id="wf-fab" onclick="openWorkflowCatalog()" title="Start a new workflow">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+
             <!-- Log Tab -->
             <div class="tab-panel" id="log-panel">
                 <div class="gap-tracker-container">
@@ -5071,28 +5699,34 @@ button:hover {
                 { type: 'system', text: '📞 Call ended • Duration: 4:32' }
             ],
             convene: [
-                { type: 'system', text: 'Florence initiating Convene call...' },
+                { type: 'system', text: 'Florence initiating Convene call to Jane Doe (patient) and Sarah Martinez (Care Manager)...' },
                 { type: 'system', text: '📞 Calling Jane...' },
                 { type: 'system', text: '📞 Jane connected' },
-                { type: 'florence', text: "Hello Jane, this is Florence calling from Cunningham Medical Group. Are you ready for your meeting with your care manager?" },
-                { type: 'patient', text: "Yes, I'm ready." },
-                { type: 'florence', text: "Great! Let me patch you in with Sarah Martinez now." },
+                { type: 'florence', text: "Hello Jane, this is Florence, your care navigator from Dr. Campbell's office, calling on a recorded line. I have your care manager, Sarah, ready to join. Is now a good time to talk?" },
+                { type: 'patient', text: "Oh, hello Florence. Yes, now is fine. A little out of breath today, but I can talk." },
+                { type: 'florence', text: "I understand. Connecting you with Sarah now. Please hold." },
                 { type: 'system', text: '👥 Connecting Sarah Martinez...' },
                 { type: 'system', text: '👥 Sarah Martinez joined' },
-                { type: 'care-manager', text: "Hi Jane, this is Sarah Martinez, your care manager. How are you feeling today?" },
-                { type: 'patient', text: "Hi Sarah, I'm doing better, thank you." },
-                { type: 'care-manager', text: "That's wonderful to hear. I wanted to review your medications with you. I see you're on Bumetanide now for fluid management. How is that going?" },
-                { type: 'patient', text: "It's going well. I'm taking it in the morning like they told me." },
-                { type: 'care-manager', text: "Excellent. And your Lisinopril was increased. Any dizziness or side effects?" },
-                { type: 'patient', text: "No, I feel fine." },
-                { type: 'care-manager', text: "Perfect. Keep monitoring your weight daily and call us if you gain more than 3 pounds in a day." },
-                { type: 'patient', text: "I will, thank you." },
-                { type: 'care-manager', text: "Take care, Jane. Florence will wrap things up with you." },
-                { type: 'system', text: '👥 Sarah Martinez left' },
-                { type: 'florence', text: "Jane, that was a great check-in with Sarah. To summarize: Continue taking your Bumetanide in the morning, keep monitoring your weight daily, and you have your follow-up with Dr. Chen on Thursday at 10 AM. If you experience any shortness of breath, chest pain, or rapid weight gain, call us immediately. Do you have any questions?" },
-                { type: 'patient', text: "No, I think I'm all set. Thank you, Florence." },
-                { type: 'florence', text: "You're welcome, Jane. Remember, you can call me anytime if you need anything. Take care!" },
-                { type: 'system', text: '📞 Call ended • Duration: 2:45' }
+                { type: 'care-manager', text: "Hi Jane, this is Sarah. How are you feeling today? I heard you sound a bit short of breath." },
+                { type: 'patient', text: "Hi Sarah. I'm okay, just... tired. It's a little harder to get around than I expected. The hospital doctor mentioned I might get an oxygen machine for the house, but nothing's arrived yet." },
+                { type: 'care-manager', text: "Okay, that's the first thing I want to check on for you. A home oxygen concentrator. I'll make sure that order is processed and find out when it will be delivered. I'm concerned about that shortness of breath, though. I'd feel better if we could get a pulse oximeter to you, so you can check your oxygen levels at home. Would that be alright?" },
+                { type: 'patient', text: "Oh, one of those finger clip things? Yes, that would be fine. It would probably make me feel better, too." },
+                { type: 'care-manager', text: "Great. Now, I know they gave you a few new prescriptions at the hospital. Have you been able to pick those up?" },
+                { type: 'patient', text: "Well, that's the other thing. I'm so confused. The discharge papers say one pharmacy, but my usual one is the CVS on Main Street. I don't know where they sent them." },
+                { type: 'care-manager', text: "Don't you worry about that at all. I will track down exactly which pharmacy has your new medications and make sure you know where to go. We can even see about getting them delivered. How does that sound?" },
+                { type: 'patient', text: "Oh, that would be wonderful, Sarah. Thank you. It's all a bit much right now." },
+                { type: 'care-manager', text: "Of course. We'll take it one step at a time. Is there anything else on your mind?" },
+                { type: 'patient', text: "Well, my daughter, Lisa, she helps me so much. She was asking when my appointment with the kidney doctor is. I couldn't remember what we scheduled." },
+                { type: 'care-manager', text: "The nephrologist. I see that's scheduled for March 12th. I'll send all the details directly to Lisa's phone so she has them. What's a good number for her?" },
+                { type: 'patient', text: "It's 555-123-4567. Thank you. One less thing for me to remember." },
+                { type: 'care-manager', text: "Perfect. One last thing, Jane. How are you managing with daily activities, like bathing? I know that can be tough after a hospital stay." },
+                { type: 'patient', text: "(sighs) It is. It's hard to stand in the shower for too long. I get so tired and dizzy. I was wondering... is there someone who could... help with that? Just for a little while?" },
+                { type: 'care-manager', text: "Absolutely. That's a great question. It sounds like a home health aide would be very helpful. I will put in a referral for that right away. They can help with personal care while you get your strength back." },
+                { type: 'patient', text: "You've taken such a weight off my shoulders, Sarah." },
+                { type: 'care-manager', text: "That's what I'm here for, Jane. I'll get to work on all of this. Florence will handle the coordination, and we'll keep you updated. Just rest up, and I'll be in touch soon." },
+                { type: 'patient', text: "Thank you. Bye now." },
+                { type: 'system', text: '📞 Call ended • Duration: 5:42' },
+                { type: 'system', text: '✨ Florence deduced 5 action items from this conversation. View them in the Tasks tab.' }
             ],
             checkin: [
                 { type: 'system', text: 'Florence initiating automated Check-In with Jane Doe...' },
@@ -6869,9 +7503,11 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         // ==================== TAB SWITCHING ====================
         function switchToTab(tabName) {
             document.querySelectorAll('.florence-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            const tabBtn = document.querySelector('[data-tab="' + tabName + '"]');
+            if (tabBtn) tabBtn.classList.add('active');
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            document.getElementById(tabName + '-panel').classList.add('active');
+            const panel = document.getElementById(tabName + '-panel');
+            if (panel) panel.classList.add('active');
             
             // Re-initialize filters after tab switch (v7 fix)
             if (tabName === 'facesheet') {
@@ -6879,6 +7515,10 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     renderGaps();
                 }, 100);
             }
+            // Render new tab content on switch
+            if (tabName === 'tasks' && typeof renderTasks === 'function') renderTasks('all');
+            if (tabName === 'workflows' && typeof renderWorkflows === 'function') renderWorkflows('all');
+            if (tabName === 'documentation' && typeof renderSummaryFacesheet === 'function') renderSummaryFacesheet();
         }
         
         // ==================== WORKFLOW FUNCTIONS ====================
@@ -11803,6 +12443,606 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </div>
+
+    <!-- ==================== NEW TABS: TASKS, WORKFLOWS, SUMMARY ==================== -->
+    <script>
+// ==================== TASKS TAB DATA & RENDERING ====================
+
+const conveneTranscript = [
+  { type: 'system', text: 'Florence initiating Convene call to Jane Doe (patient) and Sarah Martinez (Care Manager)...' },
+  { type: 'florence', text: 'Hello Jane, this is Florence, your care navigator from Dr. Campbell\'s office, calling on a recorded line. I have your care manager, Sarah, ready to join. Is now a good time to talk?' },
+  { type: 'patient', text: 'Oh, hello Florence. Yes, now is fine. A little out of breath today, but I can talk.' },
+  { type: 'florence', text: 'I understand. Connecting you with Sarah now. Please hold.' },
+  { type: 'system', text: 'Florence patching in Sarah Martinez...' },
+  { type: 'care-manager', text: 'Hi Jane, this is Sarah. How are you feeling today? I heard you sound a bit short of breath.' },
+  { type: 'patient', text: 'Hi Sarah. I\'m okay, just... tired. It\'s a little harder to get around than I expected. The hospital doctor mentioned I might get an oxygen machine for the house, but nothing\'s arrived yet.' },
+  { type: 'care-manager', text: 'Okay, that\'s the first thing I want to check on for you. A home oxygen concentrator. I\'ll make sure that order is processed and find out when it will be delivered. I\'m concerned about that shortness of breath, though. I\'d feel better if we could get a pulse oximeter to you, so you can check your oxygen levels at home. Would that be alright?' },
+  { type: 'patient', text: 'Oh, one of those finger clip things? Yes, that would be fine. It would probably make me feel better, too.' },
+  { type: 'care-manager', text: 'Great. Now, I know they gave you a few new prescriptions at the hospital. Have you been able to pick those up?' },
+  { type: 'patient', text: 'Well, that\'s the other thing. I\'m so confused. The discharge papers say one pharmacy, but my usual one is the CVS on Main Street. I don\'t know where they sent them.' },
+  { type: 'care-manager', text: 'Don\'t you worry about that at all. I will track down exactly which pharmacy has your new medications and make sure you know where to go. We can even see about getting them delivered. How does that sound?' },
+  { type: 'patient', text: 'Oh, that would be wonderful, Sarah. Thank you. It\'s all a bit much right now.' },
+  { type: 'care-manager', text: 'Of course. We\'ll take it one step at a time. Is there anything else on your mind?' },
+  { type: 'patient', text: 'Well, my daughter, Lisa, she helps me so much. She was asking when my appointment with the kidney doctor is. I couldn\'t remember what we scheduled.' },
+  { type: 'care-manager', text: 'The nephrologist. I see that\'s scheduled for March 12th. I\'ll send all the details directly to Lisa\'s phone so she has them. What\'s a good number for her?' },
+  { type: 'patient', text: 'It\'s 555-123-4567. Thank you. One less thing for me to remember.' },
+  { type: 'care-manager', text: 'Perfect. One last thing, Jane. How are you managing with daily activities, like bathing? I know that can be tough after a hospital stay.' },
+  { type: 'patient', text: '(sighs) It is. It\'s hard to stand in the shower for too long. I get so tired and dizzy. I was wondering... is there someone who could... help with that? Just for a little while?' },
+  { type: 'care-manager', text: 'Absolutely. That\'s a great question. It sounds like a home health aide would be very helpful. I will put in a referral for that right away. They can help with personal care while you get your strength back.' },
+  { type: 'patient', text: 'You\'ve taken such a weight off my shoulders, Sarah.' },
+  { type: 'care-manager', text: 'That\'s what I\'m here for, Jane. I\'ll get to work on all of this. Florence will handle the coordination, and we\'ll keep you updated. Just rest up, and I\'ll be in touch soon.' },
+  { type: 'patient', text: 'Thank you. Bye now.' },
+  { type: 'system', text: 'Call ended. Duration: 5m 42s.' }
+];
+
+const dmeCallTranscript = [
+  { type: 'system', text: 'Florence initiating outbound call to Lincare Home Medical...' },
+  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office on behalf of a patient, Jane Doe, date of birth January 5th, 1958. I\'m calling to coordinate the delivery of a home oxygen concentrator ordered by Dr. Campbell. Can you help me with that?' },
+  { type: 'dme-agent', text: 'Hi Florence, yes, I can help. Let me pull up her record... Yes, I see the order from St. Joseph\'s Hospital for Jane Doe. It was approved this morning.' },
+  { type: 'florence', text: 'Excellent. Can you please confirm the delivery address you have on file?' },
+  { type: 'dme-agent', text: 'We have 123 Maple Street, Anytown, USA, 12345.' },
+  { type: 'florence', text: 'That is correct. When is the earliest you can schedule delivery and setup?' },
+  { type: 'dme-agent', text: 'We have an opening tomorrow morning between 9 AM and 11 AM. Our technician will call 30 minutes prior to arrival.' },
+  { type: 'florence', text: 'That works perfectly. Please schedule it. I will inform the patient. To confirm: Lincare will deliver a home oxygen concentrator to Jane Doe at 123 Maple Street tomorrow, February 26th, between 9 and 11 AM. Is that correct?' },
+  { type: 'dme-agent', text: 'That\'s all correct.' },
+  { type: 'florence', text: 'Thank you for your help. Have a great day.' },
+  { type: 'system', text: 'Call ended. Task \'Coordinate home oxygen delivery\' status updated to \'Completed\'.' }
+];
+
+const daughterSmsTranscript = [
+  { type: 'system', text: 'Florence initiating SMS to Lisa Doe at 555-123-4567...' },
+  { type: 'florence-sms', text: 'Hello Lisa, this is Florence, your mother Jane Doe\'s digital care navigator from Dr. Campbell\'s office. She asked me to send you the details for her upcoming kidney doctor appointment. It is scheduled with Dr. Patel at Nephrology Associates on Tuesday, March 12th at 1:30 PM. Please reply to confirm you received this message.' },
+  { type: 'patient-daughter-sms', text: 'Got it! Thanks so much for sending. I\'ll make sure she gets there.' },
+  { type: 'florence-sms', text: 'You\'re welcome. Have a great day.' },
+  { type: 'system', text: 'SMS thread ended. Task \'Send nephrology appointment details to daughter\' status updated to \'Completed\'.' }
+];
+
+const pharmacyCallTranscript = [
+  { type: 'system', text: 'Florence initiating outbound call to CVS Pharmacy on Main Street...' },
+  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office for a patient, Jane Doe, date of birth January 5th, 1958. I\'m calling to verify if you have new prescriptions ready for her that were sent from St. Joseph\'s Hospital today.' },
+  { type: 'pharmacy-tech', text: 'Hi, let me check for you... Doe... D-O-E... Yes, I see them. We have new prescriptions for Metoprolol, Clopidogrel, and Atorvastatin. They are filled and ready for pickup.' },
+  { type: 'florence', text: 'That\'s wonderful. Thank you for confirming. I will let the patient know she can pick them up at your location on Main Street.' },
+  { type: 'pharmacy-tech', text: 'Sounds good. We\'re open until 9 PM.' },
+  { type: 'florence', text: 'Thank you for your time.' },
+  { type: 'system', text: 'Call ended. Task \'Verify prescription pickup location\' status updated to \'Completed\'.' }
+];
+
+const florenceTasks = [
+  {
+    id: 'task-1',
+    title: 'Coordinate home oxygen delivery',
+    detail: 'DME supplier needs to deliver and set up a home oxygen concentrator.',
+    status: 'completed',
+    origin: 'ai-deduced',
+    category: 'orders',
+    deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
+    completed_at: 'Feb 25, 2:28 PM',
+    transcript: dmeCallTranscript,
+    transcript_label: 'Call with Lincare Home Medical'
+  },
+  {
+    id: 'task-2',
+    title: 'Order home pulse oximetry monitoring',
+    detail: 'Patient agreed to home monitoring due to shortness of breath.',
+    status: 'completed',
+    origin: 'ai-deduced',
+    category: 'orders',
+    deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
+    completed_at: 'Feb 25, 2:35 PM',
+    transcript: null,
+    transcript_label: null
+  },
+  {
+    id: 'task-3',
+    title: 'Verify prescription pickup location',
+    detail: 'Patient is confused about which pharmacy has new post-MI medications.',
+    status: 'completed',
+    origin: 'ai-deduced',
+    category: 'follow-up',
+    deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
+    completed_at: 'Feb 25, 2:40 PM',
+    transcript: pharmacyCallTranscript,
+    transcript_label: 'Call with CVS Pharmacy'
+  },
+  {
+    id: 'task-4',
+    title: 'Send nephrology appointment details to daughter',
+    detail: 'Send SMS to Lisa (daughter) at 555-123-4567 with appointment info.',
+    status: 'completed',
+    origin: 'ai-deduced',
+    category: 'communication',
+    deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
+    completed_at: 'Feb 25, 2:22 PM',
+    transcript: daughterSmsTranscript,
+    transcript_label: 'SMS with Lisa Doe (daughter)'
+  },
+  {
+    id: 'task-5',
+    title: 'Initiate home health aide referral',
+    detail: 'Patient requested assistance with bathing and daily activities.',
+    status: 'in-progress',
+    origin: 'ai-deduced',
+    category: 'referrals',
+    deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
+    completed_at: null,
+    transcript: null,
+    transcript_label: null
+  },
+  {
+    id: 'task-6',
+    title: 'Schedule follow-up with Dr. Campbell',
+    detail: 'Post-discharge follow-up scheduled for Monday, Feb 18 at 10 AM.',
+    status: 'completed',
+    origin: 'post-visit-automation',
+    category: 'follow-up',
+    deduced_from: null,
+    completed_at: 'Feb 25, 9:22 AM',
+    transcript: null,
+    transcript_label: null
+  },
+  {
+    id: 'task-7',
+    title: 'Review latest lab results',
+    detail: 'New labs from hospital stay are available in the chart.',
+    status: 'pending',
+    origin: 'manual-entry',
+    category: 'documentation',
+    deduced_from: null,
+    completed_at: null,
+    transcript: null,
+    transcript_label: null
+  },
+  {
+    id: 'task-8',
+    title: 'Send patient education on heart-healthy diet',
+    detail: 'Deliver post-MI dietary guidelines via patient portal.',
+    status: 'completed',
+    origin: 'workflow-generated',
+    category: 'education',
+    deduced_from: null,
+    completed_at: 'Feb 25, 10:05 AM',
+    transcript: null,
+    transcript_label: null
+  }
+];
+
+function renderTasks(filter) {
+    filter = filter || 'all';
+    const container = document.getElementById('tasks-list');
+    if (!container) return;
+
+    let filtered = florenceTasks;
+    if (filter === 'pending') filtered = florenceTasks.filter(t => t.status === 'pending');
+    else if (filter === 'in-progress') filtered = florenceTasks.filter(t => t.status === 'in-progress');
+    else if (filter === 'completed') filtered = florenceTasks.filter(t => t.status === 'completed');
+    else if (filter === 'ai-deduced') filtered = florenceTasks.filter(t => t.origin === 'ai-deduced');
+
+    const pendingCount = florenceTasks.filter(t => t.status === 'pending' || t.status === 'in-progress').length;
+    const badge = document.getElementById('tasks-total-count');
+    if (badge) badge.textContent = pendingCount + ' pending';
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:#6B7280;font-size:12px;">No tasks match this filter.</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(task => {
+        const isChecked = task.status === 'completed';
+        const sparkle = task.origin === 'ai-deduced' ? `<span class="task-sparkle" title="AI Deduced">&#10024;<span class="sparkle-tooltip">Deduced from ${task.deduced_from}</span></span>` : '';
+        const catClass = 'cat-' + task.category;
+        const statusClass = 's-' + task.status;
+        const statusLabel = task.status === 'in-progress' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1);
+        const transcriptLink = task.transcript ? `<span class="task-transcript-link" onclick="event.stopPropagation();openTaskTranscript('${task.id}')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> View transcript</span>` : '';
+        const completedAt = task.completed_at ? `<span style="color:#6B7280;font-size:9px;">${task.completed_at}</span>` : '';
+
+        return `
+            <div class="task-card status-${task.status}" id="${task.id}" onclick="toggleTaskCheck('${task.id}')">
+                <div class="task-checkbox ${isChecked ? 'checked' : ''}" id="chk-${task.id}"></div>
+                <div class="task-body">
+                    <div class="task-title-row">
+                        <span class="task-title">${task.title}</span>
+                        ${sparkle}
+                    </div>
+                    <div class="task-detail">${task.detail}</div>
+                    <div class="task-meta">
+                        <span class="task-category-badge ${catClass}">${task.category}</span>
+                        <span class="task-status-pill ${statusClass}">${statusLabel}</span>
+                        ${completedAt}
+                        ${transcriptLink}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function toggleTaskCheck(taskId) {
+    const task = florenceTasks.find(t => t.id === taskId);
+    if (!task) return;
+    if (task.status === 'completed') {
+        task.status = 'pending';
+        task.completed_at = null;
+    } else {
+        task.status = 'completed';
+        task.completed_at = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+    const activeFilter = document.querySelector('.tasks-filter-btn.active');
+    renderTasks(activeFilter ? activeFilter.dataset.tasksFilter : 'all');
+}
+
+function openTaskTranscript(taskId) {
+    const task = florenceTasks.find(t => t.id === taskId);
+    if (!task || !task.transcript) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'transcript-viewer-overlay';
+    overlay.id = 'tv-overlay';
+    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+
+    const labelMap = {
+        'system': 'System', 'florence': 'Florence', 'florence-sms': 'Florence', 'patient': 'Patient',
+        'patient-daughter-sms': 'Lisa', 'care-manager': 'Sarah', 'dme-agent': 'Lincare', 'pharmacy-tech': 'CVS'
+    };
+
+    const msgs = task.transcript.map(m => {
+        const lbl = labelMap[m.type] || m.type;
+        const lblClass = 'lbl-' + m.type;
+        return `<div class="tv-msg"><span class="tv-msg-label ${lblClass}">${lbl}</span><span class="tv-msg-text">${m.text}</span></div>`;
+    }).join('');
+
+    overlay.innerHTML = `
+        <div class="transcript-viewer">
+            <div class="transcript-viewer-header">
+                <h4>${task.transcript_label || 'Transcript'}</h4>
+                <button class="transcript-viewer-close" onclick="document.getElementById('tv-overlay').remove()">&times;</button>
+            </div>
+            <div class="transcript-viewer-body">${msgs}</div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+// Task filter click handler
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.tasks-filter-btn')) {
+        const btn = e.target.closest('.tasks-filter-btn');
+        document.querySelectorAll('.tasks-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTasks(btn.dataset.tasksFilter);
+    }
+});
+
+// ==================== WORKFLOWS TAB DATA & RENDERING ====================
+
+const florenceWorkflows = [
+  {
+    id: 'WF-131',
+    name: 'Post-Discharge Transition of Care (TCM)',
+    triggered_by: 'ADT Notification: Discharge from St. Joseph\'s Hospital',
+    status: 'completed',
+    progress: '5 of 5 steps complete',
+    steps: [
+      { title: 'Initial post-discharge outreach call', status: 'done', timestamp: 'Feb 25, 9:15 AM' },
+      { title: 'Medication reconciliation', status: 'done', timestamp: 'Feb 25, 9:18 AM' },
+      { title: 'Identify red flags / symptoms', status: 'done', timestamp: 'Feb 25, 9:20 AM' },
+      { title: 'Schedule PCP follow-up appointment', status: 'done', timestamp: 'Feb 25, 9:22 AM' },
+      { title: 'Send visit summary to PCP', status: 'done', timestamp: 'Feb 25, 9:25 AM' }
+    ]
+  },
+  {
+    id: 'WF-105',
+    name: 'Home Health Start-of-Care Coordination',
+    triggered_by: 'Deduced from Convene call: "Initiate home health aide referral"',
+    status: 'active',
+    progress: '1 of 4 steps complete',
+    steps: [
+      { title: 'Submit referral to preferred home health agency', status: 'done', timestamp: 'Feb 25, 2:30 PM' },
+      { title: 'Confirm agency acceptance and start date', status: 'active', timestamp: null },
+      { title: 'Notify patient of start date and provider', status: 'pending', timestamp: null },
+      { title: 'Confirm first visit completed', status: 'pending', timestamp: null }
+    ]
+  },
+  {
+    id: 'WF-CKD-01',
+    name: 'CKD Stage 3a Management',
+    triggered_by: 'Staged Gap: Chronic Kidney Disease Stage 3a',
+    status: 'active',
+    progress: '2 of 5 steps complete',
+    steps: [
+      { title: 'Order BMP lab for eGFR monitoring', status: 'done', timestamp: 'Feb 24, 10:45 AM' },
+      { title: 'Send patient education on kidney health', status: 'done', timestamp: 'Feb 24, 11:05 AM' },
+      { title: 'Schedule nephrology referral', status: 'active', timestamp: null },
+      { title: 'Monitor eGFR trend quarterly', status: 'pending', timestamp: null },
+      { title: 'Annual review of nephrotoxic medications', status: 'pending', timestamp: null }
+    ]
+  },
+  {
+    id: 'WF-FALL-01',
+    name: 'High Fall Risk Intervention',
+    triggered_by: 'Staged Gap: Fall Risk Assessment - High',
+    status: 'paused',
+    progress: '1 of 4 steps complete',
+    steps: [
+      { title: 'Initiate physical therapy referral for balance training', status: 'done', timestamp: 'Feb 22, 4:00 PM' },
+      { title: 'Confirm PT evaluation scheduled', status: 'pending', timestamp: null },
+      { title: 'Follow up on PT progress in 4 weeks', status: 'pending', timestamp: null },
+      { title: 'Re-assess fall risk in 3 months', status: 'pending', timestamp: null }
+    ]
+  },
+  {
+    id: 'WF-DME-01',
+    name: 'DME Coordination: Home Oxygen',
+    triggered_by: 'Deduced from Convene call: "Coordinate home oxygen delivery"',
+    status: 'completed',
+    progress: '3 of 3 steps complete',
+    steps: [
+      { title: 'Verify DME order with provider', status: 'done', timestamp: 'Feb 25, 2:20 PM' },
+      { title: 'Call DME supplier to schedule delivery', status: 'done', timestamp: 'Feb 25, 2:25 PM' },
+      { title: 'Confirm delivery with patient', status: 'done', timestamp: 'Feb 25, 2:28 PM' }
+    ]
+  }
+];
+
+function renderWorkflows(filter) {
+    filter = filter || 'all';
+    const container = document.getElementById('wf-list');
+    if (!container) return;
+
+    let filtered = florenceWorkflows;
+    if (filter !== 'all') filtered = florenceWorkflows.filter(w => w.status === filter);
+
+    const activeCount = florenceWorkflows.filter(w => w.status === 'active').length;
+    const badge = document.getElementById('wf-active-count');
+    if (badge) badge.textContent = activeCount + ' active';
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:#6B7280;font-size:12px;">No workflows match this filter.</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(wf => {
+        const doneSteps = wf.steps.filter(s => s.status === 'done').length;
+        const pct = Math.round((doneSteps / wf.steps.length) * 100);
+        const statusBadgeClass = 'ws-' + wf.status;
+        const cardClass = 'wf-' + wf.status;
+        const pfClass = 'pf-' + wf.status;
+        const statusLabel = wf.status.charAt(0).toUpperCase() + wf.status.slice(1);
+
+        const stepsHtml = wf.steps.map(step => {
+            const iconClass = 'si-' + step.status;
+            const iconChar = step.status === 'done' ? '\u2713' : step.status === 'active' ? '\u25CF' : '\u2022';
+            const stepClass = 'step-' + step.status;
+            return `
+                <div class="wf-step ${stepClass}">
+                    <div class="wf-step-icon ${iconClass}">${iconChar}</div>
+                    <span class="wf-step-title">${step.title}</span>
+                    ${step.timestamp ? `<span class="wf-step-time">${step.timestamp}</span>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="wf-card ${cardClass}">
+                <div class="wf-card-header">
+                    <div>
+                        <div class="wf-card-title">${wf.name}</div>
+                        <div class="wf-card-id">${wf.id}</div>
+                    </div>
+                    <span class="wf-status-badge ${statusBadgeClass}">${statusLabel}</span>
+                </div>
+                <div class="wf-trigger">Triggered by: ${wf.triggered_by}</div>
+                <div class="wf-steps">${stepsHtml}</div>
+                <div class="wf-progress-bar"><div class="wf-progress-fill ${pfClass}" style="width:${pct}%"></div></div>
+                <div class="wf-progress-label">${wf.progress}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Workflow filter click handler
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.wf-filter-btn')) {
+        const btn = e.target.closest('.wf-filter-btn');
+        document.querySelectorAll('.wf-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderWorkflows(btn.dataset.wfFilter);
+    }
+});
+
+// ==================== WORKFLOW CATALOG ====================
+
+const workflowCatalog = [
+  { id: 'WF-100', name: 'Annual Wellness Visit (AWV) Prep', desc: 'Pre-visit chart review, gap identification, and patient outreach for AWV.' },
+  { id: 'WF-101', name: 'Chronic Care Management (CCM) Monthly Check-In', desc: 'Monthly touchpoint for CCM-enrolled patients with care plan review.' },
+  { id: 'WF-102', name: 'Transitional Care Management (TCM)', desc: 'Post-discharge outreach, med reconciliation, and PCP follow-up scheduling.' },
+  { id: 'WF-103', name: 'Specialist Referral Coordination', desc: 'End-to-end referral: submit, confirm, notify patient, and follow up.' },
+  { id: 'WF-104', name: 'Lab Order & Results Follow-Up', desc: 'Order labs, track completion, and flag abnormal results for provider.' },
+  { id: 'WF-105', name: 'Home Health Start-of-Care Coordination', desc: 'Referral submission, agency acceptance, and first visit confirmation.' },
+  { id: 'WF-106', name: 'DME Order & Delivery Coordination', desc: 'Verify order, contact supplier, schedule delivery, confirm with patient.' },
+  { id: 'WF-107', name: 'Medication Adherence Intervention', desc: 'Identify non-adherence, patient outreach, and pharmacy coordination.' },
+  { id: 'WF-108', name: 'Patient Education Delivery', desc: 'Select materials, deliver via portal/SMS, and confirm receipt.' },
+  { id: 'WF-109', name: 'Prior Authorization Request', desc: 'Submit PA, track status, appeal if denied, notify provider and patient.' }
+];
+
+function openWorkflowCatalog() {
+    const overlay = document.createElement('div');
+    overlay.className = 'wf-catalog-overlay';
+    overlay.id = 'wf-catalog-overlay';
+    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+
+    const itemsHtml = workflowCatalog.map(wf => `
+        <div class="wf-catalog-item" onclick="startCatalogWorkflow('${wf.id}')">
+            <span class="wf-catalog-item-id">${wf.id}</span>
+            <div class="wf-catalog-item-title">${wf.name}</div>
+            <div class="wf-catalog-item-desc">${wf.desc}</div>
+        </div>
+    `).join('');
+
+    overlay.innerHTML = `
+        <div class="wf-catalog">
+            <div class="wf-catalog-header">
+                <h4>Start a New Workflow</h4>
+                <button class="wf-catalog-close" onclick="document.getElementById('wf-catalog-overlay').remove()">&times;</button>
+            </div>
+            <input type="text" class="wf-catalog-search" id="wf-catalog-search" placeholder="Search workflows..." oninput="filterCatalog(this.value)">
+            <div class="wf-catalog-list" id="wf-catalog-list">${itemsHtml}</div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+function filterCatalog(query) {
+    const items = document.querySelectorAll('.wf-catalog-item');
+    const q = query.toLowerCase();
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(q) ? '' : 'none';
+    });
+}
+
+function startCatalogWorkflow(wfId) {
+    const catalogItem = workflowCatalog.find(w => w.id === wfId);
+    if (!catalogItem) return;
+
+    // Add a new workflow card
+    florenceWorkflows.push({
+        id: wfId + '-' + Date.now(),
+        name: catalogItem.name,
+        triggered_by: 'Manually started by care manager',
+        status: 'active',
+        progress: '0 of 3 steps complete',
+        steps: [
+            { title: 'Initiate workflow', status: 'active', timestamp: null },
+            { title: 'Execute primary action', status: 'pending', timestamp: null },
+            { title: 'Confirm completion', status: 'pending', timestamp: null }
+        ]
+    });
+
+    document.getElementById('wf-catalog-overlay').remove();
+    renderWorkflows('all');
+    if (typeof showToast === 'function') showToast('Workflow "' + catalogItem.name + '" started', 'success');
+    if (typeof addLogEntry === 'function') addLogEntry('Workflow Started', catalogItem.name + ' initiated by care manager');
+}
+
+// ==================== SUMMARY / FACESHEET TAB ====================
+
+function renderSummaryFacesheet() {
+    const panel = document.getElementById('documentation-panel');
+    if (!panel) return;
+
+    panel.innerHTML = `
+        <div class="summary-facesheet">
+            <div class="fs-section">
+                <div class="fs-section-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Demographics
+                </div>
+                <div class="fs-row"><span class="fs-label">Name</span><span class="fs-value">Jane Doe</span></div>
+                <div class="fs-row"><span class="fs-label">Age / Sex</span><span class="fs-value">68 y/o Female</span></div>
+                <div class="fs-row"><span class="fs-label">DOB</span><span class="fs-value">January 5, 1958</span></div>
+                <div class="fs-row"><span class="fs-label">MRN</span><span class="fs-value">202070</span></div>
+                <div class="fs-row"><span class="fs-label">PCP</span><span class="fs-value">Dr. Campbell</span></div>
+                <div class="fs-row"><span class="fs-label">Risk Level</span><span class="fs-value" style="color:#E45740;">High Risk</span></div>
+                <div class="fs-row"><span class="fs-label">Program</span><span class="fs-value">CCM (Chronic Care Management)</span></div>
+                <div class="fs-row"><span class="fs-label">Address</span><span class="fs-value">123 Maple Street, Anytown, USA</span></div>
+                <div class="fs-row"><span class="fs-label">Phone</span><span class="fs-value">(555) 202-0700</span></div>
+                <div class="fs-row"><span class="fs-label">Emergency Contact</span><span class="fs-value">Lisa Doe (daughter) — 555-123-4567</span></div>
+            </div>
+
+            <div class="fs-section">
+                <div class="fs-section-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    Active Conditions
+                </div>
+                <div class="fs-list-item"><span class="fs-med-name">Essential Hypertension</span> <span class="fs-med-dose">I10</span> <span class="fs-condition-badge active">Active</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Type 2 Diabetes with Diabetic CKD</span> <span class="fs-med-dose">E11.22</span> <span class="fs-condition-badge active">Active</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Chronic Kidney Disease Stage 3a</span> <span class="fs-med-dose">N18.31</span> <span class="fs-condition-badge risk">Suspect</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Major Depressive Disorder, Recurrent</span> <span class="fs-med-dose">F33.1</span> <span class="fs-condition-badge risk">Suspect</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Morbid Obesity with OSA</span> <span class="fs-med-dose">E66.01</span> <span class="fs-condition-badge risk">Suspect</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Acute MI (recent)</span> <span class="fs-med-dose">I21.9</span> <span class="fs-condition-badge active">Active</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Fall Risk — High</span> <span class="fs-med-dose">Z91.81</span> <span class="fs-condition-badge risk">Flagged</span></div>
+            </div>
+
+            <div class="fs-section">
+                <div class="fs-section-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    Key Vitals & Labs
+                </div>
+                <div class="fs-row"><span class="fs-label">Blood Pressure</span><span class="fs-value" style="color:#F59E0B;">142/88 mmHg</span></div>
+                <div class="fs-row"><span class="fs-label">HbA1c</span><span class="fs-value" style="color:#E45740;">8.2%</span></div>
+                <div class="fs-row"><span class="fs-label">eGFR</span><span class="fs-value" style="color:#E45740;">52 mL/min (declining)</span></div>
+                <div class="fs-row"><span class="fs-label">Fasting Glucose</span><span class="fs-value" style="color:#F59E0B;">156 mg/dL</span></div>
+                <div class="fs-row"><span class="fs-label">BMI</span><span class="fs-value" style="color:#F59E0B;">36</span></div>
+                <div class="fs-row"><span class="fs-label">PHQ-9</span><span class="fs-value">8 (mild)</span></div>
+                <div class="fs-row"><span class="fs-label">Morse Fall Scale</span><span class="fs-value" style="color:#E45740;">55 (high risk)</span></div>
+                <div class="fs-row"><span class="fs-label">Weight Loss</span><span class="fs-value" style="color:#F59E0B;">8 lb in 3 months</span></div>
+            </div>
+
+            <div class="fs-section">
+                <div class="fs-section-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                    Current Medications (8)
+                </div>
+                <div class="fs-list-item"><span class="fs-med-name">Lisinopril</span><span class="fs-med-dose"> 20mg daily — HTN / renoprotection</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Metformin</span><span class="fs-med-dose"> 1000mg BID — Diabetes</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Sertraline</span><span class="fs-med-dose"> 100mg daily — Depression</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Metoprolol Succinate</span><span class="fs-med-dose"> 50mg daily — post-MI heart rate</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Clopidogrel</span><span class="fs-med-dose"> 75mg daily — antiplatelet post-stent</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Atorvastatin</span><span class="fs-med-dose"> 80mg daily — cholesterol, post-MI</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Furosemide</span><span class="fs-med-dose"> 40mg daily — fluid management</span></div>
+                <div class="fs-list-item"><span class="fs-med-name">Aspirin</span><span class="fs-med-dose"> 81mg daily — antiplatelet</span></div>
+            </div>
+
+            <div class="fs-section">
+                <div class="fs-section-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E45740" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Allergies
+                </div>
+                <div class="fs-allergy-item">Penicillin — Rash, hives</div>
+                <div class="fs-allergy-item">Sulfa drugs — GI upset</div>
+                <div class="fs-allergy-item">NKDA for other classes</div>
+            </div>
+
+            <div class="fs-section">
+                <div class="fs-section-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    Recent Events
+                </div>
+                <div class="fs-list-item" style="color:#F3F4F6;"><strong>Feb 25, 2026</strong> — Discharged from St. Joseph's Hospital after acute MI with cardiac catheterization and stent placement.</div>
+                <div class="fs-list-item" style="color:#F3F4F6;"><strong>Feb 25, 2026</strong> — TCM outreach call completed. Medications verified. Follow-up with Dr. Campbell scheduled for Mon, Feb 18 at 10 AM.</div>
+                <div class="fs-list-item" style="color:#F3F4F6;"><strong>Feb 25, 2026</strong> — Convene call completed with patient and care manager. 5 action items deduced and assigned.</div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== INITIALIZE NEW TABS ====================
+
+// Tab click events are already bound in the main script block.
+// switchToTab has been updated there to handle tasks, workflows, and documentation tabs.
+
+// Initial render of Tasks tab (default)
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        renderTasks('all');
+    }, 200);
+});
+
+// Also render immediately if DOM already loaded
+if (document.readyState !== 'loading') {
+    setTimeout(() => { renderTasks('all'); }, 200);
+}
+
+// Make functions globally available
+window.renderTasks = renderTasks;
+window.renderWorkflows = renderWorkflows;
+window.openWorkflowCatalog = openWorkflowCatalog;
+window.filterCatalog = filterCatalog;
+window.startCatalogWorkflow = startCatalogWorkflow;
+window.openTaskTranscript = openTaskTranscript;
+window.toggleTaskCheck = toggleTaskCheck;
+window.renderSummaryFacesheet = renderSummaryFacesheet;
+    </script>
 
 </body>
 </html>
