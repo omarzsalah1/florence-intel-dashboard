@@ -1,369 +1,577 @@
-# The Florence Product Bible: Vision, Philosophy, and Manual
+# Florence AI Navigator  
+## Product Bible — Complete User Guide & Clinical Reference
 
-**Author:** Manus AI
-**Version:** 1.0
-**Date:** February 27, 2026
-
----
-
-## Introduction: The Co-Pilot for Care Management
-
-Florence is not an automation tool. It is a **co-pilot**, designed to work alongside a human care manager, amplifying their clinical judgment and freeing them from the administrative burdens that distract from patient care. Our vision is to create a seamless, intelligent partnership between human and machine, where Florence handles the rote, the routine, and the data-heavy lifting, so the care manager can focus on what they do best: building relationships, making complex clinical decisions, and providing empathetic, human-centered care.
-
-This manual is not just a list of features. It is a bible that explains the **why** behind every design decision — the clinical philosophy that guides Florence’s development. We believe that by understanding the vision, you can more effectively partner with Florence to deliver extraordinary care.
-
-> The goal is not to replace the care manager, but to empower them. Florence is a tool to help you attend to the patient on the call, not just record it. We are not only recording the call but also listening for clues of anything that Florence can do for you.
+**NightingaleMD** | Proprietary Information | For Customer Use  
+Version 2.0 | February 2026
 
 ---
 
-## Chapter 1: The Florence Interface — Your Command Center
+## Executive Summary
 
-The Florence AI Navigator is a Chrome extension that lives alongside your Electronic Health Record (EHR). It is organized into four primary tabs, each designed to support a key aspect of the care management workflow.
+In today’s value-driven healthcare landscape, care managers play a vital role in delivering high-quality, coordinated patient care while meeting rigorous documentation, compliance, and billing requirements. Yet these demands often pull care managers away from what matters most: building trust and engaging deeply with patients.
 
-### 1.1 The Gaps Tab: Proactive Care, Realized
+Florence AI Navigator is a trusted clinical AI assistant that transforms care management by seamlessly blending intelligent automation with compassionate patient engagement. Designed specifically for care managers, Florence helps reduce administrative burden and mental workload, enabling clinicians to focus on their most important clinical skills.
 
-The Gaps tab is the heart of Florence’s proactive care engine. It moves beyond reactive sick-care to a model where we are constantly, automatically identifying opportunities to improve a patient’s health and prevent future crises. This is not just about closing quality measures; it is about fundamentally changing the care paradigm.
+Florence integrates with the care manager’s phone or video call system to capture and transcribe patient conversations in real time. This allows Florence to identify clinically relevant information and generate compliant documentation seamlessly during the interaction. By listening alongside the care manager, surfacing actionable insights, and preparing documentation as a natural byproduct of care, Florence ensures accuracy, compliance, and workflow efficiency.
 
-**The Philosophy:** A care gap is not a checkbox to be ticked. It is a window into a patient’s health, a signal that something needs attention. By surfacing these gaps automatically, Florence allows the care manager to see the full clinical picture at a glance, connecting disparate data points into a coherent narrative.
+Backed by rigorous research detailed in our foundational white paper, *The AI Nurse Extender: Redefining Care Management Through Intelligent Automation*, which analyzed time-motion studies and care manager workflows, Florence addresses the documented reality that care managers spend an estimated 40–60% of their time on documentation, coordination, and administrative tasks — time that should be devoted to direct patient engagement (Section 2.3, Documentation Burden Analysis). By reclaiming this time, Florence drives improved clinical outcomes, enhances patient satisfaction, and supports operational goals tied to Medicare Advantage, Chronic Care Management (CCM), Transitional Care Management (TCM), and other value-based care programs.
 
-**Key Features:**
+For health system executives and clinical leaders, Florence represents a strategic investment in workforce sustainability, care quality, and financial performance.
 
-| Feature | Description & Clinical Rationale |
-|---|---|
-| **Gap Cards** | Each card represents a single care gap, from annual wellness visit reminders to suspected chronic conditions. The card provides a concise summary of the gap, its priority, and the supporting evidence. This allows the care manager to quickly triage and prioritize their work. |
-| **Recapture vs. Suspect Gaps** | Florence distinguishes between **recapture** gaps (known conditions that need annual reassessment) and **suspect** gaps (potential new conditions flagged by the AI based on labs, vitals, or other data). This helps the care manager differentiate between routine follow-up and new diagnostic workups. |
-| **Staging for MD Review** | With one click, a care manager can "stage" a gap for physician review. This is a critical workflow that respects the clinical hierarchy. Florence prepares a concise summary of the gap, the evidence, and a suggested action plan, but the final clinical decision always rests with the physician. This streamlines the process without overstepping clinical boundaries. |
-| **Gap Status Tracker** | This sub-tab provides a high-level overview of all open, staged, and closed gaps for the patient. It allows the care manager to track progress and ensure nothing falls through the cracks. |
-
-### 1.2 The Outreach Tab: Intelligent, Empathetic Communication
-
-The Outreach tab is where Florence’s communication capabilities come to life. It is designed to make patient outreach more efficient, effective, and empathetic.
-
-**The Philosophy:** Patient communication should be personal, timely, and relevant. Rote, repetitive calls burn out care managers and annoy patients. Florence automates the routine aspects of outreach, freeing the care manager to handle complex conversations that require a human touch.
-
-**Key Features:**
-
-| Feature | Description & Clinical Rationale |
-|---|---|
-| **Engage, Convene, Check-In** | Florence offers three distinct outreach workflows: **Engage** (a fully automated, scripted call for post-discharge follow-up), **Convene** (a three-way call where Florence brings the patient and care manager together and then listens in the background), and **Check-In** (an automated SMS-based wellness check). This allows the care manager to choose the right tool for the job, from low-touch check-ins to high-touch, human-led conversations. |
-| **Live Transcript & Clinical Flagging** | During any call, Florence provides a real-time transcript. More importantly, it is actively **listening for clinical clues**. If a patient mentions "chest pain" or "feeling dizzy," Florence will surface a **Clinical Flag** alert directly in the transcript. This allows the care manager to react in the moment, without having to manually scan for keywords. |
-| **Workflow Suggestion Engine** | Going a step further, Florence also listens for opportunities to help. If a patient says, "I can’t afford my medication," Florence will surface a **Workflow Suggestion** card with an "Accept" button to launch a Medication Assistance workflow. This is the core of the co-pilot vision: Florence identifies a need and proposes a solution, but the care manager makes the final call. |
-
-
-### 1.3 The Workflows Tab: Automating the Administrative Burden
-
-The Workflows tab is the engine room of Florence, where multi-step administrative processes are automated from end to end.
-
-**The Philosophy:** Care management is plagued by administrative tasks that are critical but time-consuming: referral coordination, DME orders, prior authorizations. These tasks are perfect for automation. By handling the back-and-forth communication and status tracking, Florence frees the care manager to operate at the top of their license.
-
-**Key Features:**
-
-| Feature | Description & Clinical Rationale |
-|---|---|
-| **Active Workflows List** | This provides a real-time view of all in-progress workflows, showing the current step, progress, and any roadblocks. It allows the care manager to see the status of all delegated tasks at a glance. |
-| **Workflow Catalog** | The catalog contains a library of pre-built workflows for common administrative tasks (e.g., Specialist Referral, Home Health Coordination, DME Order). The care manager can launch any workflow manually from the catalog. |
-| **Workflow Steps & Progress** | Each workflow is broken down into clear, logical steps. As Florence completes each step (e.g., "Submit referral to preferred agency," "Confirm agency acceptance"), the workflow updates in real time, providing full transparency. |
-
-### 1.4 The Tasks Tab: The Intelligent To-Do List
-
-The Tasks tab is more than a simple to-do list. It is an intelligent, self-populating list of action items that are automatically deduced from patient conversations, incoming data, and active workflows.
-
-**The Philosophy:** A care manager should never have to manually create a to-do list after a patient call. The act of listening should automatically generate the necessary actions. The Tasks tab is the manifestation of this philosophy.
-
-**Key Features:**
-
-| Feature | Description & Clinical Rationale |
-|---|---|
-| **AI-Deduction from Calls** | During a Convene call, as the care manager and patient talk, Florence listens for action items. When the care manager says, "I will send you a pulse oximeter," Florence automatically adds "Order home pulse oximetry monitoring" to the Tasks list. This is the magic of the co-pilot at work. |
-| **Pending Review** | Tasks deduced from a call or surfaced as a workflow suggestion are initially marked as **Pending Review**. This gives the care manager full control to **Accept**, **Defer**, or **Dismiss** the task, ensuring that Florence’s suggestions are always validated by clinical judgment. |
-| **Task-Workflow Linkage** | When a task is part of a larger workflow (e.g., "Coordinate home oxygen delivery" is a task within the DME Coordination workflow), the task is explicitly linked to its parent workflow. This provides a clear line of sight from a single action item to the broader clinical process. |
-| **Task Origins** | Each task is tagged with its origin: **AI-deduced**, **workflow-generated**, or **manual-entry**. This helps the care manager understand where the task came from and why it exists. |
+For detailed definitions of clinical and technical terms, please refer to Appendix A — Glossary. Appendix B provides a comprehensive catalog of care management workflows supported by Florence.
 
 ---
 
-## Chapter 2: The Three Outreach Modalities
+## Table of Contents
 
-Florence provides three distinct outreach modalities, each tailored to a specific clinical scenario. Choosing the right modality is key to efficient and effective care management.
-
-### 2.1 Engage: The Automated Post-Discharge Call
-
-**When to Use:** For routine, scripted follow-up, such as the initial post-discharge call after a hospital stay.
-
-**How it Works:** The Engage workflow is a fully automated, voice-based call. Florence follows a pre-defined script to check on the patient, review medications, ask about red-flag symptoms, and even schedule the first PCP follow-up appointment by conferencing in the clinic’s front desk. The care manager does not need to be on the call.
-
-**Clinical Rationale:** The first 72 hours post-discharge are a critical window to prevent readmission. However, these calls are often repetitive and can be handled effectively by an AI. By automating the Engage call, Florence ensures that every discharged patient receives a timely, thorough follow-up, freeing the care manager to focus on higher-risk patients who need a human-led conversation.
-
-### 2.2 Convene: The Human-Led, AI-Assisted Conversation
-
-**When to Use:** For complex, nuanced conversations that require clinical judgment, empathy, and relationship-building.
-
-**How it Works:** The Convene workflow is a three-way call. Florence initiates the call, brings the patient and care manager together, and then transitions to a listening mode. As the care manager and patient talk, Florence listens in the background, providing real-time transcription, surfacing clinical flags, suggesting relevant workflows, and automatically deducing action items for the Tasks list.
-
-**Clinical Rationale:** This is the core of the human-machine partnership. The care manager leads the conversation, leveraging their clinical skills and empathetic connection with the patient. Florence acts as a hyper-efficient scribe and assistant, handling all the documentation and administrative follow-up in the background. This allows the care manager to be fully present in the conversation, knowing that Florence is capturing every detail.
-
-### 2.3 Check-In: The Asynchronous SMS Wellness Check
-
-**When to Use:** For quick, low-touch check-ins on stable patients, such as monthly CCM check-ins or post-visit follow-ups.
-
-**How it Works:** The Check-In workflow is a fully automated, SMS-based conversation. Florence sends a series of questions to the patient (e.g., "How are you feeling today?", "Have you taken your medications?") and collects their responses. If a patient reports a concerning symptom or asks for help, Florence can escalate the conversation to the care manager.
-
-**Clinical Rationale:** Not every patient needs a full phone call every month. The SMS Check-In provides a lightweight way to maintain contact, monitor key metrics (like blood sugar or symptoms), and surface potential issues before they become crises. This allows the care manager to efficiently monitor a large panel of patients, triaging their attention to those who need it most.
-
+1. [The Problem Florence Solves](#1-the-problem-florence-solves)  
+2. [The Florence Philosophy](#2-the-florence-philosophy)  
+3. [The Interface — The Florence Panel](#3-the-interface--the-florence-panel)  
+4. [The Gaps Tab — Clinical Intelligence at a Glance](#4-the-gaps-tab--clinical-intelligence-at-a-glance)  
+5. [The Outreach Tab — Conducting Patient Calls](#5-the-outreach-tab--conducting-patient-calls)  
+6. [The Intelligence Layer — Listening During the Call](#6-the-intelligence-layer--listening-during-the-call)  
+7. [The Workflows Tab — Coordinating Care Actions](#7-the-workflows-tab--coordinating-care-actions)  
+8. [The Activity Tab — The Audit Trail](#8-the-activity-tab--the-audit-trail)  
+9. [Filing to the EHR — Closing the Loop](#9-filing-to-the-ehr--closing-the-loop)  
+10. [The Patient — Jane Doe's Story](#10-the-patient--jane-does-story)  
+11. [White Paper Alignment Reference](#11-white-paper-alignment-reference)  
+12. [Appendix A — Glossary](#appendix-a--glossary)  
+13. [Appendix B — Workflow Catalog](#appendix-b--workflow-catalog)  
 
 ---
 
-## Chapter 3: The Intelligence Layer — How Florence Listens and Thinks
+## 1. The Problem Florence Solves
 
-Florence's intelligence is not a black box. It is a transparent, rule-based system designed to be predictable, auditable, and clinically sound. This chapter explains exactly how Florence detects clinical flags and surfaces workflow suggestions during a live call.
+Care managers are essential frontline clinicians whose primary mission is to connect with patients — to listen attentively, build trust, and detect subtle clinical changes that can prevent costly complications. However, the reality of modern care management is that these clinicians are burdened by extensive documentation, coding, coordination, and compliance tasks that fragment their attention.
 
-### 3.1 Clinical Flag Detection
+The consequence is a care manager who is only partially present during patient encounters: one eye on the patient, one eye on the keyboard; one ear listening for clinical cues, one ear listening for the next thing to document. This split focus not only slows workflows but also degrades the quality of patient care, contributing to clinician burnout and missed opportunities for early intervention.
 
-**The Problem It Solves:** During a patient call, a care manager is simultaneously listening, thinking, and talking. It is easy to miss a subtle clinical cue — a passing mention of dizziness, a comment about not eating well. These cues can be early warning signs of a serious deterioration. Florence's Clinical Flag engine is designed to catch what a human might miss in the moment.
+As detailed in our foundational white paper, *The AI Nurse Extender: Redefining Care Management Through Intelligent Automation*, which analyzed time-motion studies and care manager workflows:
 
-**How It Works:** Florence maintains a library of clinical keyword patterns, organized by severity. Every patient utterance is scanned against this library in real time. When a match is found, Florence surfaces an inline alert directly in the transcript, with a severity badge (CRITICAL, HIGH, or MEDIUM) and two action buttons: **Add to Note** and **Dismiss**.
+> *"Care managers spend an estimated 40–60% of their time on documentation, coordination, and administrative tasks — time that should be devoted to direct patient engagement."*  
+> *(NightingaleMD White Paper, Section 2.3, Documentation Burden Analysis)*
 
-The current Clinical Flag library covers the following categories:
+Florence was built to reclaim this lost time — not by eliminating necessary documentation, which remains critical for compliance, billing, and continuity of care — but by transforming documentation from a competing task into a natural byproduct of clinical interaction.
 
-| Category | Severity | Example Keywords |
+When a care manager uses Florence, they can be fully present with the patient. Florence listens alongside them by integrating with the care manager’s phone or video call system to capture and transcribe patient conversations in real time. It captures clinically relevant information, surfaces actionable insights, and prepares documentation continuously during the interaction. By the end of the call, a comprehensive Care Manager’s Note is ready to review and file with a single click.
+
+**Florence’s fundamental commitment is clear: to ensure care managers devote their full attention to patients, not to documentation tasks.**
+
+---
+
+## 2. The Florence Philosophy
+
+### Attend First, Document Second
+
+Florence is designed around a single guiding principle: **care managers should never have to choose between being fully present with their patients and meeting documentation requirements.**
+
+This principle shapes every aspect of Florence’s design:
+
+- **Florence listens during the call so the care manager doesn’t have to take notes.** This frees cognitive resources to focus on clinical judgment and patient rapport.
+- **Florence surfaces clinical flags and prompts so the care manager doesn’t have to remember every detail.** This reduces mental workload and ensures no critical issues are overlooked.
+- **Florence suggests specific care coordination workflows — such as arranging medication reconciliation, scheduling follow-up visits, or connecting patients to social support services — tailored to the conversation, so care managers don’t need to memorize complex intervention catalogs.** This accelerates appropriate interventions and referrals.
+- **Florence prepares the clinical note in real time so the care manager doesn’t have to reconstruct the encounter afterward.** This streamlines documentation and reduces errors.
+
+### The Care Manager Is Always in Control
+
+Crucially, **none of these actions happen automatically or without the care manager’s explicit approval.** Florence follows a clear three-step approach: it first **surfaces** relevant clinical information, then **suggests** appropriate actions, and finally waits for the care manager to **confirm** before proceeding.
+
+When Florence detects a clinical or social need — such as a patient reporting difficulty obtaining food — it does not act autonomously. Instead, it presents a suggestion card in the transcript:
+
+> *"Patient reported difficulty getting food — Feed Assistance Workflow may help."*
+
+The care manager reviews this suggestion in the context of the full conversation and decides whether to **Accept**, **Defer**, or **Dismiss** it. This human-in-the-loop model respects clinical judgment as irreplaceable while offloading the cognitive overhead that surrounds it.
+
+This approach is especially important in value-based care environments where inappropriate interventions carry both clinical and financial consequences. Florence never starts a workflow, files a note, or takes any action without explicit care manager authorization.
+
+### Documentation as a Byproduct of Care
+
+Traditional care management workflows treat documentation as a separate, post-encounter task. Care managers finish the call, then open the note and reconstruct the conversation from memory — a process prone to error, delay, and burnout.
+
+Florence inverts this workflow. Documentation happens invisibly and continuously during the clinical interaction. By the time the call ends, a comprehensive Care Manager’s Note is already drafted, capturing:
+
+- Patient-reported symptoms and concerns  
+- Actions taken during the call  
+- Gaps identified and addressed  
+- Planned next steps and follow-up  
+
+The care manager reviews this note, makes any necessary adjustments, and files it to the EHR with one click.
+
+### Privacy and Data Security
+
+Florence AI Navigator is built with stringent privacy and security protocols, fully compliant with HIPAA and other relevant regulations, ensuring patient data is protected at every step. The integration with phone and video call systems is designed to safeguard confidentiality and maintain compliance with all applicable standards.
+
+---
+
+## 3. The Interface — The Florence Panel
+
+Florence lives inside the EHR as a side panel, integrated directly into the athenaOne environment. It is always present, always connected, and never intrusive. The panel does not replace the EHR — it augments it by providing a seamless layer of clinical intelligence that supports care managers without disrupting their existing workflows.
+
+![Florence Full Overview](manual-screenshots/00-full-overview.png)
+
+*The Florence panel sits alongside the EHR, providing real-time clinical intelligence without disrupting the existing workflow.*
+
+### The Header
+
+At the top of every Florence session, the header displays:
+
+| Element | Purpose |
+|---|---|
+| **NightingaleMD Logo** | Confirms Florence is active and authenticated, ensuring secure and compliant access to patient data |
+| **Notification Bell** | Proactive alerts for pending items requiring your immediate attention, ensuring no critical task or patient need is overlooked |
+| **Connection Status** | Green "Connected" indicator confirms live, secure EHR synchronization and data integrity |
+
+The connection status is not merely decorative; it is a critical indicator. A green "Connected" confirms Florence has an active, authenticated, and secure session with your EHR. This guarantees that any documentation or action taken within Florence is immediately and accurately written back to the patient’s official record in real time, ensuring data integrity and compliance. If the connection drops, Florence will alert the care manager immediately, preventing any loss of work or documentation discrepancies.
+
+### The Patient Banner
+
+Directly below the header, the patient banner provides an immediate clinical snapshot of the patient being managed.
+
+![Patient Banner](manual-screenshots/12-patient-banner-expanded.png)
+
+*The patient banner gives the care manager an immediate clinical snapshot before any interaction begins.*
+
+| Element | What It Shows | Why It Matters |
 |---|---|---|
-| Chest Pain | CRITICAL | "chest pain," "chest pressure," "chest tightness" |
-| Mental Health Crisis | CRITICAL | "hopeless," "don't want to go on," "suicide" |
-| Shortness of Breath | HIGH | "short of breath," "can't breathe," "hard to breathe" |
-| Dizziness / Lightheadedness | HIGH | "dizzy," "lightheaded," "feel faint" |
-| Fall or Fall Risk | HIGH | "fell," "fall," "tripped," "stumbled" |
-| Edema / Swelling | HIGH | "swelling," "legs are swollen," "ankles swollen" |
-| Possible Infection / Fever | HIGH | "fever," "chills," "infection," "wound drainage" |
-| Medication Request / Running Out | MEDIUM | "running out," "out of meds," "need a refill" |
-| Cognitive Concern | MEDIUM | "confused," "memory," "forgetful" |
-| Nutrition / GI Concern | MEDIUM | "not eating," "no appetite," "nausea," "vomiting" |
+| **Patient Avatar** | Initials and color-coded circle | Instant visual identification |
+| **Name and Age** | Jane Doe (68 y/o F) | Confirms correct patient context |
+| **HIGH RISK badge** | Risk stratification level | Signals the level of care intensity and proactive intervention required, enabling you to prioritize and allocate resources effectively for your most vulnerable patients |
+| **CCM badge** | Program enrollment (CCM, TCM, AWV) | Confirms the patient’s enrollment in specific value-based care programs (e.g., Chronic Care Management, Transitional Care Management, Annual Wellness Visit). This is critical for ensuring every interaction is accurately attributed, documented, and billed to the correct program, optimizing reimbursement and demonstrating program efficacy |
+| **Expand chevron** | Opens full clinical summary | Access to full patient context |
 
-**The "Add to Note" Action:** When the care manager clicks "Add to Note," Florence automatically inserts a structured "Patient-Reported Concerns" section into the care manager's note, pre-populated with the flagged concern. This ensures that the clinical observation is documented without interrupting the flow of the conversation.
+The risk stratification badge reflects patient risk levels derived from your organization’s established risk models or Florence’s configurable algorithms, ensuring alignment with your clinical criteria and priorities.
 
-**The Design Philosophy:** Florence surfaces the flag and then gets out of the way. The care manager decides what to do with it. The alert is not a pop-up that demands immediate attention; it is a persistent, non-blocking card in the transcript that the care manager can address when they are ready.
+The program enrollment badge indicates the patient’s current enrollment status as recorded in the EHR, providing real-time visibility into care management program participation — paramount for ensuring compliant documentation, accurate billing, and demonstrating the value of care management services within specific value-based care models.
 
-### 3.2 Workflow Suggestion Engine
+### The Four Tabs
 
-**The Problem It Solves:** A patient mentions they are having trouble getting food. A care manager might note this mentally, intend to follow up, and then forget in the chaos of the post-call administrative work. Florence's Workflow Suggestion engine is designed to convert these fleeting moments of clinical insight into concrete, actionable workflow suggestions — in real time, before the moment is lost.
+Below the patient banner, four tabs organize every Florence capability:
 
-**How It Works:** Alongside the Clinical Flag scanner, Florence runs a second, parallel scan for workflow trigger keywords. When a match is found, Florence surfaces a **Florence Suggestion** card in the transcript. This card is visually distinct from a Clinical Flag — it is styled in Florence's signature teal-and-navy color scheme, signaling a proactive suggestion rather than a clinical alert.
-
-The Suggestion card displays:
-- The name of the suggested workflow
-- A brief, plain-language rationale (e.g., "Patient reported difficulty getting food — Feed Assistance Workflow may help")
-- Three action buttons: **Accept**, **Defer**, and **Dismiss**
-
-The current Workflow Trigger library covers the following scenarios:
-
-| Patient Concern | Suggested Workflow |
+| Tab | Purpose |
 |---|---|
-| Home oxygen / breathing equipment | DME Order & Delivery Coordination |
-| Help at home / personal care | Home Health Start-of-Care Coordination |
-| Medication confusion / pharmacy | Medication Adherence Intervention |
-| Specialist appointment / referral | Specialist Referral Coordination |
-| Food / nutrition / meal delivery | Patient Education Delivery |
-| Depression / mental health | Specialist Referral Coordination (Behavioral Health) |
-| Lab results / blood work | Lab Order & Results Follow-Up |
-| Insurance denial / prior auth | Prior Authorization Request |
+| **Gaps** | Clinical and quality gaps requiring action |
+| **Outreach** | Patient call workflows (Engage, Convene, Check-In) |
+| **Workflows** | Active care coordination workflows and tasks |
+| **Activity** | Timestamped audit trail of all session actions |
 
-**The Three Actions Explained:**
-
-The three-button design reflects a core design principle: Florence proposes, the care manager disposes.
-
-- **Accept:** The care manager agrees that this workflow is needed right now. Florence immediately creates a new task in the Tasks list (status: `pending`) and adds the workflow to the Active Workflows list. The workflow is ready to execute.
-- **Defer:** The care manager acknowledges the suggestion but wants to review it after the call. Florence creates a task in the Tasks list with a `pending_review` status. This item will appear at the top of the Tasks list after the call, clearly marked for post-call review.
-- **Dismiss:** The care manager determines that the suggestion is not applicable. Florence removes the card and logs the dismissal to the Activity log for auditability.
-
-**Why Not Automate It?** This is the most important design decision in the Workflow Suggestion engine. Florence could, in theory, automatically start a workflow the moment it detects a trigger keyword. We chose not to do this for a fundamental reason: **not everything said in a call is an actionable request**. A patient might mention food in passing, or in the context of a story that has nothing to do with a need for meal assistance. The care manager is the only one who can determine context and intent. Florence provides the signal; the care manager provides the judgment.
+Each tab is thoughtfully designed around a specific phase of your care management workflow. Together, they provide a comprehensive, intuitive pathway through the complete lifecycle of a patient interaction — from identifying critical needs, to executing interventions, coordinating follow-up, and meticulously documenting every step. This integrated approach empowers you to manage your caseload efficiently and effectively.
 
 ---
 
-## Chapter 4: The Workflows and Tasks System — A Unified Model
+## 4. The Gaps Tab — Clinical Intelligence at a Glance
 
-The relationship between Workflows and Tasks is one of the most important architectural decisions in Florence. Understanding it is key to using the system effectively.
+The Gaps tab is where Florence presents the care manager with a prioritized, actionable view of everything that requires clinical attention for this patient. It serves as your immediate starting point for every patient encounter — Florence’s answer to your fundamental question: *“What does this patient need from me today?”* This intelligent prioritization helps you cut through the noise and focus your valuable time where it matters most.
 
-### 4.1 The Conceptual Model
+### Gap Cards — The Default View
 
-Florence uses a clear, hierarchical model:
+![Gap Cards](manual-screenshots/01-gaps-cards-default.png)
 
-- A **Workflow** is a multi-step, automated process for a specific clinical or administrative goal (e.g., coordinating a home health referral from submission to first visit confirmation).
-- A **Task** is a single, discrete action item that may or may not be part of a workflow.
-- A **Workflow** can own multiple **Tasks** (e.g., the Home Health workflow generates tasks for "Submit referral," "Confirm agency acceptance," "Notify patient").
-- A **Task** can trigger a **Workflow** (e.g., the task "Initiate home health aide referral," deduced from a Convene call, triggers the Home Health Start-of-Care Coordination workflow).
-- Some **Tasks** are standalone and are not connected to any workflow (e.g., "Review latest lab results," added manually by the care manager).
+*The Gap Cards view presents every clinical and quality gap in a prioritized, actionable format.*
 
-This model is reflected in the data structure of every task and workflow in Florence. Every task has a `workflow_id` field (which is `null` for standalone tasks) and every workflow has a `triggered_by_task` field (which is `null` for workflows started manually or by an ADT notification).
+When the Gaps tab opens, it defaults to the **Gap Cards** view — a scrollable list of every identified gap for the patient, organized by clinical priority. Each card contains:
 
-### 4.2 Task Origins
+- **Gap name and ICD-10 code** — the specific clinical condition or quality measure  
+- **HCC category** — the Hierarchical Condition Category, crucial for accurate risk adjustment and demonstrating patient complexity for value-based care models  
+- **Priority level** — High, Medium, or Low based on clinical urgency and program requirements  
+- **Gap type** — Recapture (known diagnosis needing re-documentation), Suspect (probable diagnosis needing evaluation), or Quality (care measure needing completion)  
+- **MEAT documentation** — Monitored, Evaluated, Assessed, Treated (MEAT) documentation status, indicating the level of clinical attention and supporting compliant risk adjustment  
 
-Florence tracks the origin of every task, providing full auditability:
+This view exists because care managers need to see the full, holistic clinical picture *before* a patient interaction, not just rely on memory or fragmented data. Florence intelligently aggregates every open gap from the EHR, risk adjustment data, and quality measure registries into a single, prioritized, and actionable view, empowering you to be fully prepared and proactive.
 
-| Origin | Description |
+#### The Filter Bar
+
+Above the gap cards, a filter bar allows the care manager to focus on specific gap types:
+
+| Filter | What It Shows |
 |---|---|
-| `ai-deduced` | The task was automatically identified by Florence from a patient conversation during a Convene call. |
-| `workflow-generated` | The task was created as a step in a larger workflow (e.g., a step in the Post-Discharge TCM workflow). |
-| `manual-entry` | The task was manually created by the care manager. |
-| `suggestion-accepted` | The task was created when the care manager accepted a Florence Workflow Suggestion during a call. |
+| **All (9)** | Every open gap |
+| **Recap (0)** | Recapture gaps — known diagnoses needing re-documentation |
+| **Sus (4)** | Suspect gaps — probable diagnoses needing clinical evaluation |
+| **Qual (3)** | Quality gaps — care measures not yet completed |
+| **Frail (2)** | Frailty-related gaps requiring special attention |
 
-### 4.3 Task Statuses
+The numbers in parentheses update in real time as gaps are staged or addressed.
 
-Tasks move through a defined lifecycle:
+#### Expanding a Gap Card
+
+![Gap Card Expanded](manual-screenshots/02-gap-card-expanded.png)
+
+*Expanding a gap card reveals the full clinical evidence, MEAT documentation status, and staging options.*
+
+Clicking on any gap card expands it to reveal:
+
+- **Clinical evidence** — the specific data points (lab values, HCC codes, clinical notes) that support this gap  
+- **MEAT documentation** — checkboxes for Monitored, Evaluated, Assessed, and Treated, allowing you to quickly and compliantly document the clinical basis and ongoing management of the gap, directly supporting accurate risk adjustment  
+- **Stage for MD Review button** — your primary action for initiating physician review and closing the loop on identified gaps, ensuring timely clinical intervention  
+
+#### The Florence Summary
+
+At the top of the Gap Cards view, a collapsible **Florence Summary** provides a plain-language, AI-generated synthesis of the patient’s clinical picture. This is Florence’s intelligent interpretation of the complex data — a concise narrative that helps you quickly orient to the patient’s situation and immediate needs before a call, saving you precious time and mental effort.
+
+The Florence Summary exists because raw gap lists are clinical data, not clinical context. A care manager preparing for a call with Jane Doe needs to know not just that she has 9 open gaps, but that she is a 68-year-old post-MI patient with suspected CKD, moderately severe depression, and a history of falls — and that the most urgent priorities today are her kidney function and medication reconciliation.
+
+### Staging a Gap — The Stage Modal
+
+When the care manager is ready to move a gap forward for physician review, they click **Stage for MD Review**. This opens the staging modal — one of the most important workflows in Florence.
+
+![Stage Modal](manual-screenshots/03-stage-modal.png)
+
+*The staging modal presents the full MEAT documentation framework and clinical evidence for the physician.*
+
+The staging modal presents:
+
+1. **Gap name and ICD-10 code** — the specific condition being staged  
+2. **Clinical evidence** — the supporting data (e.g., "eGFR 52 mL/min/1.73m² indicates CKD Stage 3a")  
+3. **MEAT checkboxes** — the care manager confirms which MEAT criteria have been met:  
+   - **Monitored** — the patient is being monitored for this condition  
+   - **Rx** — medication has been prescribed or reviewed  
+   - **Labs** — labs have been ordered or reviewed  
+   - **Referred** — the patient has been referred to a specialist  
+
+This modal exists because staging a gap for MD review is not a clerical act — it is a clinical handoff. The MEAT framework ensures that the physician receives not just a list of gaps, but a documented record of what the care team has already done for each condition. This is the foundation of compliant risk adjustment documentation.
+
+> **White Paper Alignment:** The MEAT documentation framework directly supports the white paper’s discussion of *“structured clinical documentation that satisfies both care quality and risk adjustment requirements simultaneously”* (Section 4.1, Documentation Standards).
+
+#### Bulk Staging
+
+The **Stage All** button at the top of the gap list allows the care manager to stage multiple gaps simultaneously. A **Show staged items** checkbox toggles visibility of already-staged gaps, keeping the view focused on what still needs attention.
+
+### Gap Status Tracker — The Population View
+
+![Gap Status Tracker](manual-screenshots/04-gap-status-tracker.png)
+
+*The Gap Status Tracker provides a real-time dashboard of every gap’s current status across the full gap lifecycle.*
+
+Switching to the **Gap Status** sub-tab reveals the Gap Status Tracker — a real-time dashboard showing every gap and its current position in the workflow:
 
 | Status | Meaning |
 |---|---|
-| `pending_review` | The task has been suggested by Florence (either deduced from a call or surfaced as a workflow suggestion) and is awaiting CM review. These tasks appear at the top of the Tasks list with an amber "PENDING REVIEW" badge. |
-| `pending` | The task has been accepted by the CM and is in the queue, but work has not yet started. |
-| `in-progress` | The task is actively being worked on. |
-| `completed` | The task is done. |
+| **OPEN** | Gap identified, no action taken yet |
+| **STAGED FOR MD REVIEW** | Care manager has staged the gap; awaiting physician review |
+| **ACCEPTED** | Physician has accepted the gap documentation |
+| **DISMISSED** | Gap dismissed with documented rationale |
+| **DOCUMENTED** | Gap fully documented and closed |
 
-### 4.4 The Workflow Catalog
+The tracker header shows aggregate counts: in Jane Doe’s case, 9 OPEN and 2 STAGED FOR MD REVIEW.
 
-The Workflow Catalog is a library of 10 pre-built workflows that can be launched manually by the care manager at any time. These workflows cover the most common administrative processes in care management:
-
-| Workflow ID | Name |
-|---|---|
-| WF-100 | Annual Wellness Visit (AWV) Prep |
-| WF-101 | Chronic Care Management (CCM) Monthly Check-In |
-| WF-102 | Transitional Care Management (TCM) |
-| WF-103 | Specialist Referral Coordination |
-| WF-104 | Lab Order & Results Follow-Up |
-| WF-105 | Home Health Start-of-Care Coordination |
-| WF-106 | DME Order & Delivery Coordination |
-| WF-107 | Medication Adherence Intervention |
-| WF-108 | Patient Education Delivery |
-| WF-109 | Prior Authorization Request |
+This view exists because care managers need to track not just what gaps exist, but where each gap is in the workflow. A gap that has been staged but not yet accepted by the physician is in a different state than one that is still open — and the care manager needs to know which is which, especially when preparing for a follow-up call or a pre-visit review.
 
 ---
 
-## Chapter 5: The Activity Log — The Audit Trail
+## 5. The Outreach Tab — Conducting Patient Calls
 
-The Activity Log is Florence's memory. It is a chronological, timestamped record of every action taken during a session, providing a complete audit trail for documentation, compliance, and quality review.
+The Outreach tab is where Florence becomes a true co-pilot. This is where the care manager conducts patient calls — and where Florence’s real-time intelligence layer activates.
 
-**The Philosophy:** In care management, documentation is not just a bureaucratic requirement. It is a clinical and legal record of the care provided. The Activity Log ensures that every action — every call made, every task created, every gap staged, every clinical flag detected — is automatically captured without requiring the care manager to manually document it.
+![Outreach Tab](manual-screenshots/05-outreach-tab.png)
 
-### 5.1 What Gets Logged
+*The Outreach tab presents the three call modalities, each designed for a specific clinical context.*
 
-Every significant event in Florence is automatically logged to the Activity Log:
+### The Three Call Modalities
 
-- **Session Start:** When Florence connects to the EHR at the beginning of a session.
-- **Workflow Events:** When an Engage, Convene, or Check-In workflow is started and completed.
-- **Clinical Flags:** When Florence detects a clinical flag during a call (e.g., "Patient reported: Chest Pain — flagged for documentation").
-- **Workflow Suggestions:** When a workflow suggestion is accepted, deferred, or dismissed.
-- **Gap Actions:** When a gap is staged for MD review, unstaged, or deferred.
-- **EHR Filing:** When a care manager's note is filed to the EHR.
+Florence supports three distinct outreach workflows, each designed for a specific clinical context:
 
-### 5.2 Care Manager Attribution
+#### Engage — Transitional Care Management (TCM)
 
-Every log entry generated by a care manager action is attributed to the care manager by name and credentials (e.g., "by Sarah Martinez, RN, CCM"). This is critical for accountability and for distinguishing between actions taken by the care manager and actions taken autonomously by Florence.
+The **Engage** workflow is designed for post-discharge transitional care calls. It is used when a patient has just been released from a hospital or skilled nursing facility and needs immediate follow-up to prevent readmission.
 
-System-generated events (e.g., "Session Start," "Florence connected to athenaOne") are not attributed to the care manager, as they are automated actions.
+The Engage call script guides Florence through:
 
-### 5.3 The Filter
+- Medication reconciliation (confirming the patient has all discharge medications)  
+- Weight monitoring education (the 2-pound/5-pound rule for heart failure patients)  
+- Symptom screening (chest pain, shortness of breath, leg swelling)  
+- Appointment scheduling (conferencing in the physician’s office for a follow-up appointment)  
+- Red flag education (when to call 911)  
 
-The Activity Log includes a filter dropdown that allows the care manager to filter the log by event type (e.g., "Outreach," "Clinical Flags," "Gap Actions"). This makes it easy to find specific events in a long session.
+This workflow exists because TCM calls are time-sensitive, high-stakes interactions where the risk of readmission is highest. Florence ensures that every TCM call covers every required clinical element — not because the care manager would forget, but because the cognitive load of managing a complex post-discharge patient while simultaneously documenting the call is simply too high for any human to do perfectly every time.
 
----
+> **White Paper Alignment:** The Engage workflow directly implements the white paper’s *“Transitional Care Management Protocol”* (Section 3.2), which identifies medication reconciliation, symptom screening, and follow-up scheduling as the three highest-impact interventions in the 72-hour post-discharge window.
 
-## Chapter 6: The Gap Staging System — Bridging Care Management and the Physician
+#### Convene — Complex Care Management (CCM)
 
-The Gap Staging system is Florence's most powerful feature for improving clinical documentation and risk adjustment. It is the bridge between the care manager's proactive identification of care gaps and the physician's clinical decision-making.
+The **Convene** workflow is designed for complex care management calls — the monthly touchpoints with high-risk patients enrolled in CCM programs. These calls are longer, more comprehensive, and cover a broader range of clinical and social needs.
 
-### 6.1 What is a Care Gap?
+The Convene call script covers:
 
-A care gap is a discrepancy between the care a patient is receiving and the care they should be receiving, based on clinical guidelines, their medical history, and their current health status. Florence identifies two types of care gaps:
+- Current symptom status and functional assessment  
+- Medication adherence and side effect monitoring  
+- Social determinants of health screening  
+- Care coordination (specialist appointments, DME orders, home health)  
+- Goal-setting and patient activation  
 
-- **Recapture Gaps:** These are known, previously diagnosed conditions that need to be re-documented in the current year to ensure accurate risk adjustment and quality measure reporting. For example, a patient with a known history of hypertension needs to have that condition documented in every annual visit.
-- **Suspect Gaps:** These are potential new conditions that Florence has identified based on the patient's data (labs, vitals, medications, etc.) but that have not yet been formally diagnosed. For example, if a patient's eGFR has been declining over three years and is now in the 45-59 range, Florence will flag a "Suspect: Chronic Kidney Disease Stage 3a" gap.
+This workflow exists because CCM calls are where the most complex clinical and social needs surface. A patient who mentions difficulty showering, food insecurity, or caregiver burnout during a CCM call is signaling needs that require coordinated responses — and Florence is listening for every one of them.
 
-### 6.2 The Staging Workflow
+#### Check-In — Brief Monitoring Calls
 
-The staging workflow is designed to be fast, transparent, and clinically rigorous:
+The **Check-In** workflow is designed for brief, focused monitoring calls — the 10-15 minute touchpoints between major care management encounters. These calls confirm medication adherence, check on recent lab results, and address any emerging concerns before they escalate.
 
-1. **Review:** The care manager reviews the gap card, including the supporting evidence, clinical rationale, and suggested documentation.
-2. **Stage:** With one click, the care manager stages the gap for MD review. Florence prepares a structured staging package that includes the ICD-10 code, the supporting evidence, the MEAT criteria (Monitor, Evaluate, Assess, Treat), and a suggested order set (labs, referrals, prescriptions).
-3. **MD Review:** The staged gap appears in the physician's workflow in the EHR (athenaOne), where they can review the evidence and either accept, modify, or reject the staging.
-4. **Documentation:** If accepted, Florence automatically adds the condition to the Problem List, the Assessment & Plan section, and generates the appropriate orders.
+### Starting a Call
 
-### 6.3 MEAT Criteria
+When the care manager clicks any of the three workflow buttons, Florence:
 
-Every staged gap includes a pre-populated MEAT criteria section:
+1. Displays a status bar: *“Florence initiating TCM outreach call to Jane Doe...”*  
+2. Shows a **Call connected** indicator when the call begins  
+3. Activates the real-time transcript, showing every exchange between the care manager and the patient  
+4. Begins listening for clinical flags and workflow triggers in the patient’s responses  
 
-- **Monitor:** What data is being tracked (e.g., "Last BP: 142/88 mmHg").
-- **Evaluate:** What the patient reports (e.g., "Patient reports stable blood pressure control on current medications").
-- **Assess:** The clinical assessment (e.g., "Controlled on current regimen. Linked to diabetic CKD").
-- **Treat:** The treatment plan (e.g., "Continue Lisinopril 20mg daily. Recheck BP in 3 months").
-
-MEAT criteria are the gold standard for documenting chronic conditions in a way that satisfies both clinical and coding requirements. By pre-populating them, Florence dramatically reduces the documentation burden on the physician.
-
-### 6.4 Bulk Staging
-
-For patients with multiple open gaps, Florence offers a **Bulk Staging** feature that allows the care manager to review and stage multiple gaps at once. Each gap can be individually reviewed and approved before the bulk staging is confirmed.
+The call transcript is not just a record — it is a live, interactive workspace where Florence surfaces insights, flags concerns, and suggests actions in real time.
 
 ---
 
-## Chapter 7: The EHR Integration — Filing to athenaOne
+## 6. The Intelligence Layer — Listening During the Call
 
-Florence is built to work within the existing clinical workflow, not to replace it. The EHR integration is designed to be seamless, automatic, and transparent.
+This is the heart of Florence. While the care manager is fully present with the patient — listening, building rapport, making clinical judgments — Florence is simultaneously processing every word the patient says, looking for signals that require attention.
 
-### 7.1 Filing the Care Manager's Note
+Florence is not just recording the call. Florence is **listening for clues of anything it can do for the care manager.**
 
-After any Engage or Convene call, Florence generates a structured **Care Manager's Note** that captures the key clinical information from the call. With one click on the "File to EHR" button, Florence automatically:
+### Clinical Flag Detection
 
-1. Adds the note to the **Assessment & Plan** section of the patient's chart in athenaOne.
-2. Includes the care manager's name and credentials, the date and time of the call, and a structured summary of the clinical findings.
-3. Logs the filing action to the Activity Log.
+![Clinical Flag Detected](manual-screenshots/06-engage-clinical-flag.png)
 
-**Why This Matters:** Documentation is often the last thing a care manager does, and it is often done from memory, hours after the call. This leads to incomplete, inaccurate documentation. By generating the note in real time during the call and making it one click to file, Florence ensures that documentation is complete, accurate, and timely.
+*When Florence detects a clinical keyword in the patient’s speech, it immediately surfaces a Clinical Flag card in the transcript.*
 
-### 7.2 The Staged Gap Integration
+When a patient says something that triggers a clinical concern, Florence immediately surfaces a **Clinical Flag** card in the transcript. The card appears inline — right where the relevant patient statement was made — so the care manager can see the flag in context.
 
-When a gap is staged, Florence writes directly to the athenaOne chart, adding the condition to the Problem List and generating the appropriate orders. This is a direct, real-time integration that eliminates the manual data entry that would otherwise be required.
+Each Clinical Flag card shows:
 
----
+- **Flag type** (e.g., “Shortness of Breath”)  
+- **Severity badge** (CRITICAL, HIGH, or MEDIUM)  
+- **The exact patient quote** that triggered the flag  
+- **Two action buttons**: **+ Add to Note** and **Dismiss**  
 
-## Chapter 8: The Patient — Jane Doe
+The **+ Add to Note** button inserts a *“⚠ Patient-Reported Concerns”* section into the care manager’s note, documenting the clinical concern with the patient’s own words. The **Dismiss** button removes the card and logs the dismissal to the Activity tab.
 
-The Florence demo is built around a single patient: **Jane Doe, 68-year-old female, HIGH RISK, CCM-enrolled**. Jane's clinical profile is designed to illustrate the full range of Florence's capabilities.
+Florence detects the following clinical categories:
 
-Jane was recently discharged from St. Joseph's Hospital after an acute myocardial infarction (heart attack). She has multiple comorbidities, including Type 2 Diabetes with Diabetic CKD, Chronic Kidney Disease Stage 3a, Essential Hypertension, and Major Depressive Disorder. She is on a complex medication regimen and has several open care gaps.
-
-Jane's story is the thread that runs through every feature of Florence. The Engage call is her post-discharge follow-up. The Convene call is her care manager checking in on her recovery. The care gaps are her real, documented clinical needs. The workflow suggestions are triggered by her real concerns about home oxygen, medication confusion, and difficulty with daily activities.
-
-By grounding the demo in a realistic, complex patient, Florence demonstrates its value in the most challenging care management scenarios — the ones where the stakes are highest and the need for intelligent assistance is greatest.
-
----
-
-## Appendix A: Glossary
-
-| Term | Definition |
-|---|---|
-| **ADT Notification** | Admit, Discharge, Transfer notification — an automated alert sent by a hospital when a patient is admitted, discharged, or transferred. Florence uses ADT notifications to trigger post-discharge workflows. |
-| **AWV** | Annual Wellness Visit — a Medicare preventive care visit that includes a comprehensive health risk assessment and care plan. |
-| **CCM** | Chronic Care Management — a Medicare program that provides ongoing care management services to patients with two or more chronic conditions. |
-| **MEAT Criteria** | Monitor, Evaluate, Assess, Treat — a documentation framework for chronic conditions that demonstrates active management and supports risk adjustment. |
-| **HCC** | Hierarchical Condition Category — a risk adjustment model used by Medicare to predict future healthcare costs based on a patient's diagnoses. |
-| **TCM** | Transitional Care Management — a Medicare program that provides care coordination services to patients transitioning from a hospital or skilled nursing facility to the community. |
-| **DME** | Durable Medical Equipment — medical equipment prescribed for home use, such as oxygen concentrators, wheelchairs, and hospital beds. |
-| **eGFR** | Estimated Glomerular Filtration Rate — a measure of kidney function. An eGFR of 45-59 indicates CKD Stage 3a. |
-| **ICD-10** | International Classification of Diseases, 10th Revision — the standard diagnostic coding system used in the United States. |
-| **Prior Authorization (PA)** | A requirement by a health insurance plan that a physician obtain approval before prescribing a specific medication or ordering a specific service. |
-
----
-
-## Appendix B: Workflow Catalog Reference
-
-| Workflow ID | Name | Description |
+| Category | Severity | Example Trigger |
 |---|---|---|
-| WF-100 | Annual Wellness Visit (AWV) Prep | Pre-visit chart review, gap identification, and patient outreach for AWV. |
-| WF-101 | Chronic Care Management (CCM) Monthly Check-In | Monthly touchpoint for CCM-enrolled patients with care plan review. |
-| WF-102 | Transitional Care Management (TCM) | Post-discharge outreach, med reconciliation, and PCP follow-up scheduling. |
-| WF-103 | Specialist Referral Coordination | End-to-end referral: submit, confirm, notify patient, and follow up. |
-| WF-104 | Lab Order & Results Follow-Up | Order labs, track completion, and flag abnormal results for provider. |
-| WF-105 | Home Health Start-of-Care Coordination | Referral submission, agency acceptance, and first visit confirmation. |
-| WF-106 | DME Order & Delivery Coordination | Verify order, contact supplier, schedule delivery, confirm with patient. |
-| WF-107 | Medication Adherence Intervention | Identify non-adherence, patient outreach, and pharmacy coordination. |
-| WF-108 | Patient Education Delivery | Select materials, deliver via portal/SMS, and confirm receipt. |
-| WF-109 | Prior Authorization Request | Submit PA, track status, appeal if denied, notify provider and patient. |
+| Chest Pain | CRITICAL | “chest pain,” “chest pressure,” “heart hurts” |
+| Shortness of Breath | HIGH | “short of breath,” “can’t breathe,” “breathing hard” |
+| Dizziness / Fall Risk | HIGH | “dizzy,” “fell,” “losing balance” |
+| Medication Running Out | HIGH | “running out of medication,” “can’t afford pills” |
+| Mental Health Concern | CRITICAL | “feeling hopeless,” “don’t want to go on,” “depressed” |
+| Edema / Swelling | MEDIUM | “legs are swollen,” “feet are puffy” |
+| Infection / Fever | MEDIUM | “fever,” “infected,” “wound is red” |
+| Cognitive Concern | MEDIUM | “forgetting things,” “confused,” “memory problems” |
+| Nutrition / GI | MEDIUM | “not eating,” “nausea,” “stomach pain” |
+
+This detection exists because care managers cannot simultaneously maintain full conversational presence with a patient and maintain a mental checklist of every clinical keyword to listen for. Florence handles the checklist so the care manager can handle the human connection.
+
+### Workflow Suggestion Cards
+
+![Florence Workflow Suggestion](manual-screenshots/07-workflow-suggestion-card.png)
+
+*When Florence detects a social or care coordination need, it surfaces a Workflow Suggestion card with Accept, Defer, and Dismiss options.*
+
+Beyond clinical flags, Florence also listens for signals that a specific **care coordination workflow** may be needed. When a patient mentions a need that maps to an available workflow — such as difficulty getting food, transportation challenges, or caregiver burnout — Florence surfaces a **Florence Suggestion** card.
+
+The suggestion card shows:
+
+- **The suggested workflow name** (e.g., “Home Health Aide Workflow”)  
+- **The rationale** — the specific patient statement that triggered the suggestion  
+- **Three action buttons**: **Accept**, **Defer**, **Dismiss**  
+
+#### The Three Actions
+
+| Action | What Happens | When to Use |
+|---|---|---|
+| **Accept** | Creates a new task linked to the workflow, starts the workflow in Active Workflows, logs to Activity | When the care manager agrees this is the right intervention now |
+| **Defer** | Creates a `Pending Review` task in the Tasks list for post-call action | When the care manager wants to address it after the call |
+| **Dismiss** | Removes the card, logs the dismissal | When the suggestion is not appropriate for this patient |
+
+This workflow exists because care managers cannot be expected to memorize a catalog of 10+ available workflows and mentally match them to patient statements in real time. Florence does the matching — the care manager makes the decision.
+
+> **White Paper Alignment:** This feature directly implements the white paper’s vision of *“AI-assisted care pathway identification”* (Section 5.3), where the system identifies appropriate care pathways from patient-reported needs without requiring the care manager to navigate complex decision trees.
+
+Florence detects workflow triggers for the following needs:
+
+| Patient Need | Suggested Workflow |
+|---|---|
+| Food / nutrition difficulty | Feed Assistance Workflow |
+| Transportation barriers | Transportation Assistance Workflow |
+| Depression / mental health | Mental Health Support Workflow |
+| Fall risk / balance | Fall Prevention Workflow |
+| Medication cost | Medication Assistance Workflow |
+| Social isolation | Social Engagement Workflow |
+| Housing / utilities | Social Determinants Workflow |
+| Caregiver stress | Caregiver Support Workflow |
+
+### The Inline Documentation Block
+
+![Call Complete Documentation](manual-screenshots/08-call-complete-documentation.png)
+
+*When the call ends, Florence presents the completed Care Manager’s Note inline in the transcript for review and filing.*
+
+When the call concludes, Florence presents the completed **Care Manager’s Note** directly in the transcript — a SOAP-format clinical note that captures everything that happened during the call:
+
+- **S (Subjective):** Patient-reported symptoms, concerns, and statements  
+- **O (Objective):** Clinical data, vital signs, and observable findings  
+- **A (Assessment):** Clinical assessment and gap status  
+- **P (Plan):** Actions taken, follow-up scheduled, next steps  
+
+The note is ready to review immediately. The care manager can edit any section, then click **File to EHR** to write the note directly to the patient’s athenaOne record.
+
+This is the moment where documentation transforms from a burden into a byproduct. The care manager spent the entire call focused on Jane Doe — and Florence spent the entire call building the note.
 
 ---
 
-*This document is a living product bible and will be updated as Florence evolves. For questions, feedback, or contributions, please contact the NightingaleMD product team.*
+## 7. The Workflows Tab — Coordinating Care Actions
+
+The Workflows tab is where care coordination happens after the call. It is organized into two sub-views: **Active Workflows** and **Tasks**.
+
+### Active Workflows
+
+![Active Workflows](manual-screenshots/09-workflows-active.png)
+
+*The Active Workflows view shows every care coordination workflow currently in progress for this patient.*
+
+The Active Workflows view shows every workflow that has been started for this patient, including:
+
+- **Workflow name** (e.g., “Home Health Start-of-Care Coordination”)  
+- **Status** (Active, Pending, Completed)  
+- **Progress** — a visual indicator of how far through the workflow the patient is  
+- **Steps** — the specific clinical actions that make up the workflow  
+- **Triggered by** — the task or call that initiated this workflow  
+
+Each workflow in the catalog is a structured sequence of clinical actions designed to address a specific patient need. The workflow catalog includes:
+
+| Workflow | Purpose |
+|---|---|
+| Home Health Start-of-Care Coordination | Coordinate home health agency assignment and start-of-care visit |
+| DME Coordination: Home Oxygen | Order and coordinate home oxygen delivery |
+| Medication Assistance | Connect patient with prescription assistance programs |
+| Transportation Assistance | Arrange non-emergency medical transportation |
+| Mental Health Referral | Coordinate behavioral health evaluation and treatment |
+| Social Determinants Intervention | Address food, housing, and utility needs |
+| Fall Prevention Program | Enroll patient in fall prevention and home safety assessment |
+| Caregiver Support | Connect caregiver with respite and support resources |
+| Feed Assistance | Connect patient with meal delivery and nutrition programs |
+| Social Engagement | Address isolation through community programs |
+
+This catalog exists because care managers should not have to build care coordination workflows from scratch for every patient need. Florence provides a library of evidence-based workflows that can be initiated with a single click — and that automatically track progress, log actions, and surface the next steps.
+
+### Tasks
+
+![Tasks List](manual-screenshots/10-tasks-list.png)
+
+*The Tasks list shows every action item for this patient, organized by status and linked to their parent workflows.*
+
+The Tasks list shows every individual action item for this patient. Tasks are the atomic units of care coordination — the specific things that need to happen to move a workflow forward.
+
+#### Task Statuses
+
+| Status | Meaning | Visual |
+|---|---|---|
+| **Pending Review** | Awaiting care manager accept/deny — surfaced from a call | Amber left border, “PENDING REVIEW” badge |
+| **In Progress** | Accepted and actively being worked | Blue left border, “In Progress” badge |
+| **Pending** | Queued but not yet started | Yellow left border, “Pending” badge |
+| **Completed** | Done, with timestamp | Green checkmark, strikethrough text |
+
+#### Pending Review Tasks
+
+Tasks with **Pending Review** status appear at the top of the list and represent items that Florence surfaced during a call and the care manager deferred for post-call action. These are the items that require the care manager’s explicit decision before any action is taken.
+
+This status exists because not every suggestion Florence makes during a call can be acted on immediately. A care manager who is in the middle of a complex conversation with a patient cannot stop to evaluate a workflow suggestion in depth. Deferring creates a structured queue of pending decisions that the care manager can work through after the call.
+
+#### Workflow Linkage
+
+When a task is linked to a parent workflow, the task card shows the workflow name as a clickable link. This allows the care manager to navigate directly from a task to the workflow it belongs to, maintaining full context for every action.
+
+#### The Workflows ↔ Tasks Connection
+
+During a Convene call, Florence automatically deduces tasks from the conversation — specific actions that need to happen based on what the patient reported. When a task is deduced:
+
+1. The Workflows tab briefly switches to the Tasks sub-view to show the new task being added  
+2. The task highlights with a teal glow animation  
+3. The care manager can see the task in context before returning to the call  
+
+This connection exists because care coordination is not a linear process. A single patient call can generate multiple tasks across multiple workflows — and the care manager needs to see these tasks being created in real time, not discover them after the call ends.
+
+---
+
+## 8. The Activity Tab — The Audit Trail
+
+The Activity tab is the complete, timestamped record of everything that happened during this Florence session. It is the answer to the question: *“What did we do for this patient today, and who did it?”*
+
+![Activity Log](manual-screenshots/11-activity-log.png)
+
+*The Activity Log provides a complete, timestamped audit trail of every action taken during the session.*
+
+### Session Header
+
+Every Activity log opens with a session header that identifies:
+
+- **Care Manager name and credentials** (e.g., “Sarah Martinez, RN, CCM”)  
+- **Session date and time** (e.g., “Feb 27, 2026 02:59 PM”)  
+
+This header exists because every action in the Activity log needs to be attributed to a specific clinician. In a care management environment where multiple team members may interact with a patient, the session header establishes clear accountability for every action taken.
+
+### Log Entries
+
+Each log entry shows:
+
+- **Action type** (e.g., “Engage Call Completed,” “Clinical Flag,” “Gap Staged”)  
+- **Description** — what happened  
+- **Care manager attribution** — “by Sarah Martinez, RN, CCM” for care manager-initiated actions  
+- **Timestamp** — precise time of the action  
+
+### Activity Filter
+
+The dropdown at the top of the Activity log allows filtering by activity type:
+
+| Filter | Shows |
+|---|---|
+| **All Activity** | Every action in the session |
+| **Outreach** | Call-related actions only |
+| **Gaps** | Gap staging and documentation actions |
+| **Workflows** | Workflow and task actions |
+| **Clinical** | Clinical flag detections and responses |
+
+This filter exists because the Activity log can become dense during a complex session. A care manager reviewing the log after a call needs to be able to quickly find specific types of actions without scrolling through everything.
+
+### Why the Activity Log Matters
+
+The Activity log is not just a convenience feature — it is a compliance requirement. In CCM, TCM, and other value-based programs, every billable interaction must be documented with:
+
+- The identity of the clinician who performed the service  
+- The date and time of the service  
+- The specific clinical actions taken  
+
+Florence’s Activity log provides all of this automatically, as a byproduct of normal care management workflow. The care manager does not need to separately document that they staged a gap, initiated a workflow, or detected a clinical flag — Florence records all of it in real time.
+
+> **White Paper Alignment:** The Activity log directly supports the white paper’s discussion of *“automated compliance documentation”* (Section 6.2), which identifies real-time audit trails as a critical component of sustainable CCM program management.
+
+---
+
+## 9. Filing to the EHR — Closing the Loop
+
+By the end of the call, Florence drafts a comprehensive Care Manager’s Note that the care manager can review and submit directly into the EHR with a single click, ensuring documentation is accurate, compliant, and immediately available for billing and clinical continuity.
+
+When the care manager is satisfied with the Care Manager’s Note, they click **File to EHR**. This single action:
+
+1. Writes the note directly to the patient’s athenaOne record  
+2. Attributes the note to the care manager (e.g., Sarah Martinez, RN, CCM)  
+3. Timestamps the filing  
+4. Logs the action to the Activity tab  
+5. Displays a confirmation: *“Care Manager’s Note Filed to EHR”*  
+
+This is the moment where Florence’s work becomes permanent clinical record. The note is not a separate document that needs to be copy-pasted into the EHR — it is written directly to the patient record in the correct clinical format, in the correct section, with the correct attribution.
+
+This capability exists because the final step of every care management encounter — getting the documentation into the EHR — is often the most time-consuming and error-prone part of the workflow. Care managers who finish a call and then have to manually open the EHR, navigate to the correct note section, and type out the encounter from memory are doing work that Florence can do for them.
+
+**One click. The note is filed. The encounter is documented. The loop is closed.**
+
+---
+
+## 10. The Patient — Jane Doe's Story
+
+Every feature in Florence is illustrated through the story of Jane Doe — a composite patient whose clinical complexity represents the real patients that care managers work with every day.
+
+**Jane Doe, 68 y/o Female**  
+- **Risk Level:** HIGH RISK  
+- **Programs:** CCM, TCM  
+- **Primary Diagnoses:** Essential Hypertension, Type 2 Diabetes Mellitus, Chronic Kidney Disease Stage 3a (suspected), Major Depressive Disorder  
+- **Recent Event:** Discharged from St. Joseph’s Hospital following an acute MI  
+- **Open Gaps:** 9 (2 Staged for MD Review, 7 Open)  
+- **Active Workflows:** Home Health Start-of-Care Coordination, DME Coordination: Home Oxygen  
+
+Jane’s story is not hypothetical — it is the clinical reality that care
