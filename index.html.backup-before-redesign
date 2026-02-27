@@ -5419,8 +5419,9 @@ button:hover {
             </div>
             
             <!-- Tab Navigation -->
+            <!-- Tab Navigation -->
             <div class="florence-tabs">
-                <button class="florence-tab active" data-tab="gaps" title="Care gaps and gap status">
+                <button class="florence-tab active" data-tab="facesheet" title="Care gaps and active workflows">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
@@ -5428,96 +5429,64 @@ button:hover {
                     </svg>
                     <span>Gaps</span>
                 </button>
-                <button class="florence-tab" data-tab="outreach" title="Patient and care team outreach">
+                <button class="florence-tab" data-tab="transcript" title="Communication workflows">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path>
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    <span>Outreach</span>
+                    <span>Comms</span>
                 </button>
-                <button class="florence-tab" data-tab="workflows" title="Active workflows and tasks">
+                <button class="florence-tab" data-tab="tasks" title="Action items and task checklist">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
                     </svg>
-                    <span>Workflows</span>
+                    <span>Tasks</span>
                 </button>
-                <button class="florence-tab" data-tab="activity" title="Activity log and session history">
+                <button class="florence-tab" data-tab="log" title="Activity log and gap tracking">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
-                    <span>Activity</span>
+                    <span>Log</span>
                 </button>
             </div>
         </div>
         
         <div class="tab-content">
-            <!-- Workflows Tab -->
-            <div class="tab-panel" id="workflows-panel">
-                <!-- Workflows Sub-Tab Bar -->
-                <div class="gaps-toggle-bar">
-                    <button class="gaps-toggle-btn active" onclick="switchWorkflowsView('active-workflows')" id="wf-subtab-workflows">Active Workflows</button>
-                    <button class="gaps-toggle-btn" onclick="switchWorkflowsView('tasks')" id="wf-subtab-tasks">Tasks</button>
-                </div>
-
-                <!-- Active Workflows Sub-View (default) -->
-                <div id="wf-active-view">
-                    <div class="wf-header-bar">
-                        <div class="wf-title-row">
-                            <span class="wf-count-badge" id="wf-active-count">2 active</span>
-                        </div>
-                        <select class="filter-dropdown" id="wf-filter-dropdown" onchange="renderWorkflows(this.value)">
-                            <option value="all">All Workflows</option>
-                            <option value="active">Active</option>
+            <!-- Tasks Tab (NEW - Primary) -->
+            <div class="tab-panel" id="tasks-panel">
+                <div class="tasks-header-bar">
+                    <div class="tasks-title-row">
+                        <h3 class="tasks-heading">Action Items</h3>
+                        <span class="listening-indicator" id="listening-indicator" style="display:none;">
+                            <span class="listening-dot"></span>
+                            Florence is listening...
+                        </span>
+                        <span class="tasks-count-badge" id="tasks-total-count">4 pending</span>
+                    </div>
+                    <div class="tasks-filter-row">
+                        <select class="filter-dropdown" id="tasks-filter-dropdown" onchange="renderTasks(this.value)">
+                            <option value="all">All Tasks</option>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
                             <option value="completed">Completed</option>
-                            <option value="paused">Paused</option>
+                            <option value="ai-deduced">AI Deduced</option>
                         </select>
                     </div>
-                    <div class="wf-list" id="wf-list">
-                        <!-- Workflow cards rendered dynamically -->
-                    </div>
-                    <button class="wf-fab" id="wf-fab" onclick="openWorkflowCatalog()" title="Start a new workflow">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                    </button>
                 </div>
-
-                <!-- Tasks Sub-View (hidden by default) -->
-                <div id="wf-tasks-view" style="display:none;">
-                    <div class="tasks-header-bar">
-                        <div class="tasks-title-row">
-                            <span class="listening-indicator" id="listening-indicator" style="display:none;">
-                                <span class="listening-dot"></span>
-                                Florence is listening...
-                            </span>
-                            <span class="tasks-count-badge" id="tasks-total-count">4 pending</span>
-                        </div>
-                        <div class="tasks-filter-row">
-                            <select class="filter-dropdown" id="tasks-filter-dropdown" onchange="renderTasks(this.value)">
-                                <option value="all">All Tasks</option>
-                                <option value="pending">Pending</option>
-                                <option value="in-progress">In Progress</option>
-                                <option value="completed">Completed</option>
-                                <option value="ai-deduced">AI Deduced</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="tasks-list" id="tasks-list">
-                        <!-- Task items rendered dynamically -->
-                    </div>
+                <div class="tasks-list" id="tasks-list">
+                    <!-- Task items rendered dynamically -->
                 </div>
             </div>
 
             <!-- Facesheet / CDA Tab -->
-            <div class="tab-panel active" id="gaps-panel">
+            <div class="tab-panel active" id="facesheet-panel">
 
-                <!-- Gaps Sub-Tab Bar -->
+                <!-- Gaps/Workflows Toggle -->
                 <div class="gaps-toggle-bar">
-                    <button class="gaps-toggle-btn active" onclick="switchGapsView('gaps')" id="gaps-subtab-cards">Gap Cards</button>
-                    <button class="gaps-toggle-btn" onclick="switchGapsView('status')" id="gaps-subtab-status">Gap Status</button>
+                    <button class="gaps-toggle-btn active" onclick="switchGapsView('gaps')">Gap Cards</button>
+                    <button class="gaps-toggle-btn" onclick="switchGapsView('workflows')">Active Workflows</button>
                 </div>
                 
                 <!-- Gap Cards View (default) -->
@@ -5538,7 +5507,7 @@ button:hover {
                             <h3>Care & Diagnosis Gaps</h3>
                             <span class="gaps-count" id="gaps-count">10</span>
                         </div>
-
+                        <button class="prework-btn" onclick="showPreWorkSummary()">View Pre-Work Summary</button>
                     </div>
                     
                     <div class="gaps-controls">
@@ -5641,45 +5610,37 @@ button:hover {
                 </div>
                 <!-- End Gap Cards View -->
                 
-                <!-- Gap Status View (hidden by default) -->
-                <div id="gap-status-view" style="display: none;">
-                    <div class="gap-tracker-container">
-                        <div class="gap-tracker-header">
-                            <h3>Gap Status Tracker</h3>
-                            <div class="gap-tracker-stats">
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-open">9</span>
-                                    <span class="stat-label">Open</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-staged">0</span>
-                                    <span class="stat-label">Staged</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-accepted">0</span>
-                                    <span class="stat-label">Accepted</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-dismissed">0</span>
-                                    <span class="stat-label">Dismissed</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-documented">0</span>
-                                    <span class="stat-label">Documented</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gap-tracker-list" id="gap-tracker-list">
-                            <!-- Gap tracker items will be dynamically rendered here -->
-                        </div>
+                <!-- Workflows View (hidden by default) -->
+                <div id="workflows-view" style="display: none;">
+
+                <div class="wf-header-bar">
+                    <div class="wf-title-row">
+                        <h3 class="wf-heading">Active Workflows</h3>
+                        <span class="wf-count-badge" id="wf-active-count">2 active</span>
                     </div>
+                    <select class="filter-dropdown" id="wf-filter-dropdown" onchange="renderWorkflows(this.value)">
+                        <option value="all">All Workflows</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                        <option value="paused">Paused</option>
+                    </select>
                 </div>
-                <!-- End Gap Status View -->
+                <div class="wf-list" id="wf-list">
+                    <!-- Workflow cards rendered dynamically -->
+                </div>
+                <button class="wf-fab" id="wf-fab" onclick="openWorkflowCatalog()" title="Start a new workflow">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+            <!-- End Workflows View -->
         </div>
-        <!-- End Gaps Tab -->
+        <!-- End Facesheet/Gaps Tab -->
             
             <!-- Transcript Tab -->
-            <div class="tab-panel" id="outreach-panel">
+            <div class="tab-panel" id="transcript-panel">
                 <!-- Workflow Buttons (inside COM tab) -->
                 <div class="com-workflow-buttons">
                     <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
@@ -5717,31 +5678,54 @@ button:hover {
                 </div>
             </div>
             
-            <!-- Activity Tab -->
-            <div class="tab-panel" id="activity-panel">
+            <!-- Log Tab -->
+            <div class="tab-panel" id="log-panel">
                 <div class="gap-tracker-container">
+                    <div class="gap-tracker-header">
+                        <h3>Gap Status Tracker</h3>
+                        <div class="gap-tracker-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="tracker-open">9</span>
+                                <span class="stat-label">Open</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="tracker-staged">0</span>
+                                <span class="stat-label">Staged</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="tracker-accepted">0</span>
+                                <span class="stat-label">Accepted</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="tracker-dismissed">0</span>
+                                <span class="stat-label">Dismissed</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="tracker-documented">0</span>
+                                <span class="stat-label">Documented</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gap-tracker-list" id="gap-tracker-list">
+                        <!-- Gap tracker items will be dynamically rendered here -->
+                    </div>
+                    
                     <!-- Activity Log -->
-                    <div style="padding-top:8px;">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <div style="margin-top:16px;border-top:1px solid #E0E0E0;padding-top:16px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                             <h4 style="margin:0;font-size:14px;color:#1a1a2e;">Activity Log</h4>
                             <select class="filter-dropdown" style="font-size:11px;padding:4px 8px;">
                                 <option value="all">All Activity</option>
                                 <option value="staging">Staging</option>
-                                <option value="outreach">Outreach</option>
+                                <option value="provider">Provider</option>
                                 <option value="sync">Sync</option>
-                                <option value="filing">EHR Filing</option>
                             </select>
-                        </div>
-                        <div style="background:#f8f9fa;border-radius:6px;padding:6px 10px;margin-bottom:10px;font-size:11px;color:#666;display:flex;align-items:center;gap:6px;">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                            <span>Session: <strong id="activity-cm-name">Care Manager</strong></span>
-                            <span style="margin-left:auto;color:#aaa;" id="activity-session-time"></span>
                         </div>
                         <div id="log-container" style="max-height:300px;overflow-y:auto;">
                             <div class="log-item" data-log-type="system" style="display:flex;gap:10px;padding:8px;border-bottom:1px solid #f5f5f5;font-size:12px;">
                                 <span style="color:#9E9E9E;white-space:nowrap;">Session Start</span>
                                 <span style="color:#616161;">Florence connected to athenaOne. Patient: Jane Doe (MRN: 202070)</span>
-                                <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;" id="activity-session-start-time">Now</span>
+                                <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;">Session start</span>
                             </div>
                         </div>
                     </div>
@@ -6532,21 +6516,6 @@ button:hover {
             renderGaps();
             updateCounts();
             setupEventListeners();
-            // Initialize Activity tab session info
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            const dateStr = now.toLocaleDateString([], {month:'short', day:'numeric', year:'numeric'});
-            const sessionEl = document.getElementById('activity-session-time');
-            const sessionStartEl = document.getElementById('activity-session-start-time');
-            if (sessionEl) sessionEl.textContent = dateStr + ' ' + timeStr;
-            if (sessionStartEl) sessionStartEl.textContent = timeStr;
-            // Set care manager name in session header (CARE_MANAGER defined in outer scope)
-            setTimeout(() => {
-                const cmNameEl = document.getElementById('activity-cm-name');
-                if (cmNameEl && typeof CARE_MANAGER !== 'undefined') {
-                    cmNameEl.textContent = CARE_MANAGER.name + ', ' + CARE_MANAGER.credentials;
-                }
-            }, 100);
         });
         
         function setupEventListeners() {
@@ -6892,12 +6861,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     ${gap.staged ? `
                         <div class="staged-indicator">
                             <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            Staged by Sarah Martinez, RN, CCM • ${gap.stagedTime}
+                            Staged by Sarah Chen, RN • ${gap.stagedTime}
                         </div>
                     ` : gap.deferred ? `
                         <div class="deferred-indicator">
                             <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                            Deferred to future visit by Sarah Martinez, RN, CCM • ${gap.deferredTime} • Reason: ${gap.deferralReason || 'Not appropriate for today\'s visit'}
+                            Deferred to future visit by Sarah Chen, RN • ${gap.deferredTime} • Reason: ${gap.deferralReason || 'Not appropriate for today\'s visit'}
                         </div>
                     ` : ''}
                     ${renderGapDetails(gap)}
@@ -7531,7 +7500,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                         ${gap.hcc ? `<span class="hcc-badge">${gap.hcc}</span>` : ''}
                     </div>
                     <div class="problem-details">
-                        <span>Staged by: Sarah Martinez, RN, CCM • Just now</span>
+                        <span>Staged by: Sarah Chen, RN • Just now</span>
                         <div class="problem-actions">
                             <button class="btn-link-small" style="color:#1565C0;font-weight:600;" onclick="editStagedProblem(${gap.id})">✎ Edit</button>
                             <button class="btn-link-small" onclick="unstageGap(${gap.id})">Remove</button>
@@ -7612,7 +7581,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     <div class="staged-title">${gap.title}</div>
                     ${ordersHtml}
                     <div class="staged-meta">
-                        <span>Sarah Martinez, RN, CCM</span>
+                        <span>Sarah Chen, RN</span>
                         <span>🕐 Just now</span>
                         <button class="remove-btn" onclick="unstageGap(${gap.id})">Remove Staging</button>
                     </div>
@@ -7659,7 +7628,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     <div class="staged-detail">${gap.description}</div>
                     ${ordersHtml}
                     <div class="staged-meta">
-                        <span>Sarah Martinez, RN, CCM</span>
+                        <span>Sarah Chen, RN</span>
                         <span>🕐 Just now</span>
                         <button class="remove-btn" onclick="unstageGap(${gap.id})">Remove Staging</button>
                     </div>
@@ -8085,7 +8054,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                         ${gap.deferralNotes ? '<br><strong>Notes:</strong> ' + gap.deferralNotes : ''}
                     </div>
                     <div class="staged-meta" style="margin-top: 8px;">
-                        <span>Sarah Martinez, RN, CCM</span>
+                        <span>Sarah Chen, RN</span>
                         <span>🕐 Just now</span>
                         <button class="remove-btn" onclick="undeferGap(${gap.id})">Remove Deferral</button>
                     </div>
@@ -8132,17 +8101,16 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             const panel = document.getElementById(tabName + '-panel');
             if (panel) panel.classList.add('active');
             
-            // Re-initialize filters after tab switch
-            if (tabName === 'gaps') {
+            // Re-initialize filters after tab switch (v7 fix)
+            if (tabName === 'facesheet') {
                 setTimeout(() => {
                     renderGaps();
                 }, 100);
             }
             // Render new tab content on switch
-            if (tabName === 'workflows') {
-                if (typeof renderWorkflows === 'function') renderWorkflows('all');
-                if (typeof renderTasks === 'function') renderTasks('all');
-            }
+            if (tabName === 'tasks' && typeof renderTasks === 'function') renderTasks('all');
+            if (tabName === 'workflows' && typeof renderWorkflows === 'function') renderWorkflows('all');
+            if (tabName === 'documentation' && typeof renderSummaryFacesheet === 'function') renderSummaryFacesheet();
         }
         
         // ==================== WORKFLOW FUNCTIONS ====================
@@ -8267,11 +8235,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 
                 await addMessage(msg, signal);
                 
-                // Scan patient messages for clinical flags
-                if (msg.type === 'patient') {
-                    scanForClinicalFlags(msg.text);
-                }
-                
                 // Trigger task deduction for convene workflow
                 if (workflowType === 'convene' && conveneTaskDeductions[i]) {
                     setTimeout(() => {
@@ -8352,115 +8315,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             document.getElementById('file-btn').classList.remove('hidden');
         }
         
-        // ==================== CLINICAL FLAG SCANNER ====================
-        // Tracks flags already shown to avoid duplicates
-        const shownClinicalFlags = new Set();
-        
-        const CLINICAL_FLAG_PATTERNS = [
-            { keywords: ['chest pain', 'chest pressure', 'chest tightness', 'chest discomfort'], flag: 'Chest Pain', severity: 'critical', color: '#C62828', icon: '🚨' },
-            { keywords: ['short of breath', 'shortness of breath', 'can\'t breathe', 'trouble breathing', 'out of breath', 'hard to breathe'], flag: 'Shortness of Breath', severity: 'high', color: '#E65100', icon: '⚠️' },
-            { keywords: ['dizzy', 'dizziness', 'lightheaded', 'light-headed', 'feel faint', 'faint'], flag: 'Dizziness / Lightheadedness', severity: 'high', color: '#E65100', icon: '⚠️' },
-            { keywords: ['fell', 'fall', 'falling', 'tripped', 'stumbled'], flag: 'Fall or Fall Risk', severity: 'high', color: '#E65100', icon: '⚠️' },
-            { keywords: ['pain medication', 'pain med', 'need something for pain', 'pain pill', 'refill', 'running out', 'out of medication', 'out of meds'], flag: 'Medication Request / Running Out', severity: 'medium', color: '#F57F17', icon: '💊' },
-            { keywords: ['depressed', 'depression', 'hopeless', 'don\'t want to go on', 'not worth it', 'end it', 'suicide', 'kill myself', 'harm myself'], flag: 'Mental Health Concern', severity: 'critical', color: '#C62828', icon: '🚨' },
-            { keywords: ['swelling', 'swollen', 'legs are swollen', 'ankles swollen', 'feet swollen', 'puffiness'], flag: 'Edema / Swelling', severity: 'high', color: '#E65100', icon: '⚠️' },
-            { keywords: ['fever', 'temperature', 'chills', 'infection', 'wound', 'redness', 'drainage'], flag: 'Possible Infection / Fever', severity: 'high', color: '#E65100', icon: '⚠️' },
-            { keywords: ['confused', 'confusion', 'not thinking clearly', 'memory', 'forgetful', 'forget'], flag: 'Cognitive Concern', severity: 'medium', color: '#F57F17', icon: '⚠️' },
-            { keywords: ['not eating', 'can\'t eat', 'no appetite', 'haven\'t eaten', 'nausea', 'vomiting', 'throwing up'], flag: 'Nutrition / GI Concern', severity: 'medium', color: '#F57F17', icon: '⚠️' }
-        ];
-        
-        function scanForClinicalFlags(patientText) {
-            const textLower = patientText.toLowerCase();
-            const container = document.getElementById('transcript-container');
-            if (!container) return;
-            
-            CLINICAL_FLAG_PATTERNS.forEach(pattern => {
-                const matched = pattern.keywords.some(kw => textLower.includes(kw));
-                if (matched && !shownClinicalFlags.has(pattern.flag)) {
-                    shownClinicalFlags.add(pattern.flag);
-                    showClinicalFlagAlert(pattern, patientText, container);
-                }
-            });
-        }
-        
-        function showClinicalFlagAlert(pattern, patientText, container) {
-            const alertDiv = document.createElement('div');
-            alertDiv.style.cssText = `
-                background: ${pattern.color}12;
-                border-left: 3px solid ${pattern.color};
-                border-radius: 6px;
-                padding: 10px 12px;
-                margin: 6px 0;
-                font-size: 12px;
-                animation: slideIn 0.3s ease;
-            `;
-            alertDiv.innerHTML = `
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                    <span style="font-size:14px;">${pattern.icon}</span>
-                    <strong style="color:${pattern.color};font-size:12px;">Clinical Flag: ${pattern.flag}</strong>
-                    <span style="margin-left:auto;background:${pattern.color};color:white;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600;">${pattern.severity.toUpperCase()}</span>
-                </div>
-                <div style="color:#424242;font-size:11px;">
-                    Patient reported concern. Document in note and consider clinical follow-up.
-                </div>
-                <div style="margin-top:6px;display:flex;gap:6px;">
-                    <button onclick="addFlagToNote('${pattern.flag.replace(/'/g, "\\'")}')"
-                        style="background:${pattern.color};color:white;border:none;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;">
-                        + Add to Note
-                    </button>
-                    <button onclick="this.closest('div[style]').remove()"
-                        style="background:transparent;color:#9E9E9E;border:1px solid #E0E0E0;padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;">
-                        Dismiss
-                    </button>
-                </div>
-            `;
-            container.appendChild(alertDiv);
-            container.scrollTop = container.scrollHeight;
-            
-            // Also log to activity
-            if (typeof addLogEntry === 'function') {
-                addLogEntry('Clinical Flag', `Patient reported: ${pattern.flag} — flagged for documentation`);
-            }
-        }
-        
-        function addFlagToNote(flagName) {
-            // Add flag to the inline doc content if it exists
-            const docContent = document.getElementById('inline-doc-content');
-            if (docContent) {
-                const flagSection = docContent.querySelector('.patient-concerns-section');
-                if (flagSection) {
-                    const ul = flagSection.querySelector('ul');
-                    if (ul) {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<strong>${flagName}</strong> — Patient-reported during call. Requires follow-up.`;
-                        ul.appendChild(li);
-                    }
-                } else {
-                    // Create the section
-                    const section = document.createElement('div');
-                    section.className = 'doc-section patient-concerns-section';
-                    section.innerHTML = `
-                        <h4 style="color:#C62828;">⚠ Patient-Reported Concerns</h4>
-                        <ul>
-                            <li><strong>${flagName}</strong> — Patient-reported during call. Requires follow-up.</li>
-                        </ul>
-                    `;
-                    docContent.insertBefore(section, docContent.firstChild);
-                }
-                // Show feedback
-                if (typeof showToast === 'function') {
-                    showToast('Flag added to note', 'success');
-                }
-            } else {
-                // Store for when doc is generated
-                if (!window.pendingClinicalFlags) window.pendingClinicalFlags = [];
-                window.pendingClinicalFlags.push(flagName);
-                if (typeof showToast === 'function') {
-                    showToast('Flag will be added when note is generated', 'info');
-                }
-            }
-        }
-        
         async function startWorkflow(workflowType) {
             // If same workflow is running, ignore
             if (currentWorkflow === workflowType && isWorkflowInProgress) return;
@@ -8484,10 +8338,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Clear previous transcript
             document.getElementById('transcript-container').innerHTML = '';
             
-            // Reset clinical flags for new workflow
-            if (typeof shownClinicalFlags !== 'undefined') shownClinicalFlags.clear();
-            if (window.pendingClinicalFlags) window.pendingClinicalFlags = [];
-            
             // Show/hide full transcript bar for convene
             const ftBar = document.getElementById('show-full-transcript-bar');
             if (ftBar) {
@@ -8502,8 +8352,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Reset all buttons first
             resetButtons();
             
-            // Switch to outreach tab
-            switchToTab('outreach');
+            // Switch to transcript tab
+            switchToTab('transcript');
             
             // Update active button
             const btn = document.getElementById(workflowType + '-btn');
@@ -8701,7 +8551,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                                 <strong>Medication Reconciliation:</strong> Confirmed patient picked up and has all discharge medications (Metoprolol succinate 50mg daily, Clopidogrel 75mg daily, Atorvastatin 80mg once daily at bedtime, Lisinopril 20mg once daily, Aspirin 81mg once daily). Patient education provided on medication regimen and importance of adherence.<br><br>
                                 <strong>Red Flag Education:</strong> Reviewed warning signs requiring immediate 911 call: chest pain/pressure, severe shortness of breath, sudden weakness/numbness, severe dizziness. Patient demonstrates understanding.<br><br>
                                 <strong>Follow-Up Plan:</strong> PCP appointment scheduled for Monday, February 18, 2026 at 10:00 AM with Dr. Campbell via 3-way call. Patient confirmed availability and preference for morning appointment.<br><br>
-                                <strong>Care Manager:</strong> Sarah Martinez, RN, CCM • <strong>Supervising Physician:</strong> Dr. Neil Campbell
+                                <strong>Care Manager:</strong> Sarah Chen, RN • <strong>Supervising Physician:</strong> Dr. Neil Campbell
                             </div>
                         `;
                         apActive.insertBefore(noteBlock, apActive.firstChild);
@@ -8845,9 +8695,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                                         }
                                     }, 500);
                                     
-                                    // Switch back to gaps after showing the appointment
+                                    // Switch back to facesheet after showing the appointment
                                     setTimeout(() => {
-                                        switchToTab('gaps');
+                                        switchToTab('facesheet');
                                     }, 3000);
                                 }, 4000);
                             }
@@ -11549,22 +11399,9 @@ function showToast(message, type = 'info') {
     }, 4000);
 }
 
-// Care manager identity for activity log attribution
-const CARE_MANAGER = {
-    name: 'Sarah Martinez',
-    credentials: 'RN, CCM',
-    role: 'Care Manager'
-};
-
 function addLogEntry(title, description) {
     const logContainer = document.getElementById('log-container');
     if (!logContainer) return;
-    
-    // Update session header with CM name if not already set
-    const cmNameEl = document.getElementById('activity-cm-name');
-    if (cmNameEl && cmNameEl.textContent === 'Care Manager') {
-        cmNameEl.textContent = CARE_MANAGER.name + ', ' + CARE_MANAGER.credentials;
-    }
     
     // Determine log type for filtering
     let logType = 'system';
@@ -11601,16 +11438,10 @@ function addLogEntry(title, description) {
     logItem.className = 'log-item';
     logItem.setAttribute('data-log-type', logType);
     logItem.style.cssText = 'display:flex;gap:10px;padding:8px 8px;border-bottom:1px solid #f5f5f5;font-size:12px;align-items:flex-start;animation:slideIn 0.3s ease;';
-    // Determine if this is a care manager action (not physician/system)
-    const isCMAction = !titleLower.includes('approved') && !titleLower.includes('signed') && 
-                       !titleLower.includes('campbell') && !titleLower.includes('physician') &&
-                       !titleLower.includes('ehr sync') && !titleLower.includes('florence automation');
-    const cmAttr = isCMAction ? `<span style="color:#9E9E9E;font-size:10px;display:block;margin-top:2px;">by ${CARE_MANAGER.name}, ${CARE_MANAGER.credentials}</span>` : '';
-    
     logItem.innerHTML = `
         <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${iconColor}15;color:${iconColor};font-size:11px;font-weight:700;flex-shrink:0;">${icon}</span>
         <span style="color:#1a1a2e;font-weight:600;white-space:nowrap;min-width:100px;">${title}</span>
-        <span style="color:#616161;flex:1;">${description}${cmAttr}</span>
+        <span style="color:#616161;flex:1;">${description}</span>
         <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;">${timeStr}</span>
     `;
     logContainer.insertBefore(logItem, logContainer.firstChild);
@@ -13987,47 +13818,24 @@ window.showPreWorkSummary = showPreWorkSummary;
 // ==================== GAPS/WORKFLOWS TOGGLE ====================
 function switchGapsView(view) {
     const gapsView = document.getElementById('gaps-view');
-    const gapStatusView = document.getElementById('gap-status-view');
-    const cardBtn = document.getElementById('gaps-subtab-cards');
-    const statusBtn = document.getElementById('gaps-subtab-status');
+    const workflowsView = document.getElementById('workflows-view');
+    const toggleBtns = document.querySelectorAll('.gaps-toggle-btn');
     
     if (view === 'gaps') {
-        if (gapsView) gapsView.style.display = 'block';
-        if (gapStatusView) gapStatusView.style.display = 'none';
-        if (cardBtn) cardBtn.classList.add('active');
-        if (statusBtn) statusBtn.classList.remove('active');
-    } else if (view === 'status') {
-        if (gapsView) gapsView.style.display = 'none';
-        if (gapStatusView) gapStatusView.style.display = 'block';
-        if (cardBtn) cardBtn.classList.remove('active');
-        if (statusBtn) statusBtn.classList.add('active');
-        // Re-render gap tracker when switching to status view
-        if (typeof renderGapTracker === 'function') renderGapTracker();
+        gapsView.style.display = 'block';
+        workflowsView.style.display = 'none';
+        toggleBtns[0].classList.add('active');
+        toggleBtns[1].classList.remove('active');
+    } else {
+        gapsView.style.display = 'none';
+        workflowsView.style.display = 'block';
+        toggleBtns[0].classList.remove('active');
+        toggleBtns[1].classList.add('active');
+        // Re-render workflows when switching to that view
+        if (typeof renderWorkflows === 'function') renderWorkflows('all');
     }
 }
 window.switchGapsView = switchGapsView;
-
-function switchWorkflowsView(view) {
-    const wfActiveView = document.getElementById('wf-active-view');
-    const wfTasksView = document.getElementById('wf-tasks-view');
-    const wfBtn = document.getElementById('wf-subtab-workflows');
-    const tasksBtn = document.getElementById('wf-subtab-tasks');
-    
-    if (view === 'active-workflows') {
-        if (wfActiveView) wfActiveView.style.display = 'block';
-        if (wfTasksView) wfTasksView.style.display = 'none';
-        if (wfBtn) wfBtn.classList.add('active');
-        if (tasksBtn) tasksBtn.classList.remove('active');
-        if (typeof renderWorkflows === 'function') renderWorkflows('all');
-    } else if (view === 'tasks') {
-        if (wfActiveView) wfActiveView.style.display = 'none';
-        if (wfTasksView) wfTasksView.style.display = 'block';
-        if (wfBtn) wfBtn.classList.remove('active');
-        if (tasksBtn) tasksBtn.classList.add('active');
-        if (typeof renderTasks === 'function') renderTasks('all');
-    }
-}
-window.switchWorkflowsView = switchWorkflowsView;
 
 // ==================== TASK DEDUCTION & NOTIFICATIONS ====================
 
