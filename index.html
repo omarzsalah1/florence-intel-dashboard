@@ -5563,7 +5563,43 @@ button:hover {
                 </div>
                 </div>
                 <!-- End Gap Cards View -->
-            
+                
+                <!-- Gap Status View (hidden by default) -->
+                <div id="gap-status-view" style="display: none;">
+                    <div class="gap-tracker-container">
+                        <div class="gap-tracker-header">
+                            <h3>Gap Status Tracker</h3>
+                            <div class="gap-tracker-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value" id="tracker-open">9</span>
+                                    <span class="stat-label">Open</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="tracker-staged">0</span>
+                                    <span class="stat-label">Staged</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="tracker-accepted">0</span>
+                                    <span class="stat-label">Accepted</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="tracker-dismissed">0</span>
+                                    <span class="stat-label">Dismissed</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value" id="tracker-documented">0</span>
+                                    <span class="stat-label">Documented</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gap-tracker-list" id="gap-tracker-list">
+                            <!-- Gap tracker items will be dynamically rendered here -->
+                        </div>
+                    </div>
+                </div>
+                <!-- End Gap Status View -->
+            </div>
+            <!-- End Gaps Tab -->
             
             <!-- Documentation Tab -->
             <div class="tab-panel" id="documentation-panel">
@@ -5638,46 +5674,6 @@ button:hover {
                 </div>
             </div>
             
-                </div>
-                <!-- End Gap Cards View -->
-                
-                <!-- Gap Status View (hidden by default) -->
-                <div id="gap-status-view" style="display: none;">
-                    <div class="gap-tracker-container">
-                        <div class="gap-tracker-header">
-                            <h3>Gap Status Tracker</h3>
-                            <div class="gap-tracker-stats">
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-open">9</span>
-                                    <span class="stat-label">Open</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-staged">0</span>
-                                    <span class="stat-label">Staged</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-accepted">0</span>
-                                    <span class="stat-label">Accepted</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-dismissed">0</span>
-                                    <span class="stat-label">Dismissed</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value" id="tracker-documented">0</span>
-                                    <span class="stat-label">Documented</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gap-tracker-list" id="gap-tracker-list">
-                            <!-- Gap tracker items will be dynamically rendered here -->
-                        </div>
-                    </div>
-                </div>
-                <!-- End Gap Status View -->
-        </div>
-        <!-- End Gaps Tab -->
-            
             <!-- Transcript Tab -->
             <div class="tab-panel" id="outreach-panel">
                 <!-- Workflow Buttons (inside COM tab) -->
@@ -5719,32 +5715,31 @@ button:hover {
             
             <!-- Activity Tab -->
             <div class="tab-panel" id="activity-panel">
-                <div class="gap-tracker-container">
-                    <!-- Activity Log -->
-                    <div style="padding-top:8px;">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                            <h4 style="margin:0;font-size:14px;color:#1a1a2e;">Activity Log</h4>
-                            <select class="filter-dropdown" style="font-size:11px;padding:4px 8px;">
-                                <option value="all">All Activity</option>
-                                <option value="staging">Staging</option>
-                                <option value="outreach">Outreach</option>
-                                <option value="sync">Sync</option>
-                                <option value="filing">EHR Filing</option>
-                            </select>
-                        </div>
-                        <div style="background:#f8f9fa;border-radius:6px;padding:6px 10px;margin-bottom:10px;font-size:11px;color:#666;display:flex;align-items:center;gap:6px;">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                            <span>Session: <strong id="activity-cm-name">Care Manager</strong></span>
-                            <span style="margin-left:auto;color:#aaa;" id="activity-session-time"></span>
-                        </div>
-                        <div id="log-container" style="max-height:300px;overflow-y:auto;">
-                            <div class="log-item" data-log-type="system" style="display:flex;gap:10px;padding:8px;border-bottom:1px solid #f5f5f5;font-size:12px;">
-                                <span style="color:#9E9E9E;white-space:nowrap;">Session Start</span>
-                                <span style="color:#616161;">Florence connected to athenaOne. Patient: Jane Doe (MRN: 202070)</span>
-                                <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;" id="activity-session-start-time">Now</span>
-                            </div>
+                <!-- Activity Log -->
+                <div style="display:flex;flex-direction:column;height:100%;gap:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-shrink:0;">
+                        <h4 style="margin:0;font-size:14px;color:#F3F4F6;font-weight:600;">Activity Log</h4>
+                        <select class="filter-dropdown" style="font-size:11px;padding:4px 8px;background:#374151;color:#F3F4F6;border:1px solid #4B5563;border-radius:4px;" onchange="filterActivityLog(this.value)">
+                            <option value="all">All Activity</option>
+                            <option value="staging">Staging</option>
+                            <option value="outreach">Outreach</option>
+                            <option value="sync">Sync</option>
+                            <option value="provider">Provider</option>
+                        </select>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 10px;margin-bottom:10px;font-size:11px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>Session: <strong id="activity-cm-name" style="color:#55B5B8;">Care Manager</strong></span>
+                        <span style="margin-left:auto;color:rgba(255,255,255,0.4);" id="activity-session-time"></span>
+                    </div>
+                    <div id="log-container" style="flex:1;overflow-y:auto;min-height:0;">
+                        <div class="log-item" data-log-type="system" style="display:flex;gap:10px;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;">
+                            <span style="color:rgba(255,255,255,0.4);white-space:nowrap;">Session Start</span>
+                            <span style="color:rgba(255,255,255,0.7);">Florence connected to athenaOne. Patient: Jane Doe (MRN: 202070)</span>
+                            <span style="margin-left:auto;color:rgba(255,255,255,0.3);white-space:nowrap;font-size:11px;" id="activity-session-start-time">Now</span>
                         </div>
                     </div>
+                </div>
                     
                     <!-- Dismissal Analytics Dashboard -->
                     <div class="dismissal-analytics" id="dismissal-analytics" style="display: none;">
@@ -5771,7 +5766,6 @@ button:hover {
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -8303,6 +8297,30 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         function showInlineDocumentation(workflowType) {
             const doc = documentation[workflowType];
             const container = document.getElementById('transcript-container');
+            
+            // Mark all AI-deduced in-progress tasks as completed (workflow finished)
+            if (typeof florenceTasks !== 'undefined') {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                let completedAny = false;
+                florenceTasks.forEach(t => {
+                    if (t.origin === 'ai-deduced' && t.status === 'in-progress') {
+                        t.status = 'completed';
+                        t.completed_at = timeStr;
+                        completedAny = true;
+                    }
+                });
+                if (completedAny) {
+                    // Briefly show Tasks tab to display completed tasks
+                    if (typeof switchToTab === 'function') switchToTab('workflows');
+                    if (typeof switchWorkflowsView === 'function') switchWorkflowsView('tasks');
+                    if (typeof renderTasks === 'function') renderTasks('all');
+                    // Return to Outreach after 3 seconds
+                    setTimeout(() => {
+                        if (typeof switchToTab === 'function') switchToTab('outreach');
+                    }, 3000);
+                }
+            }
             
             // Create the inline documentation block
             const docBlock = document.createElement('div');
@@ -11600,18 +11618,18 @@ function addLogEntry(title, description) {
     const logItem = document.createElement('div');
     logItem.className = 'log-item';
     logItem.setAttribute('data-log-type', logType);
-    logItem.style.cssText = 'display:flex;gap:10px;padding:8px 8px;border-bottom:1px solid #f5f5f5;font-size:12px;align-items:flex-start;animation:slideIn 0.3s ease;';
+    logItem.style.cssText = 'display:flex;gap:10px;padding:8px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;align-items:flex-start;animation:slideIn 0.3s ease;';
     // Determine if this is a care manager action (not physician/system)
     const isCMAction = !titleLower.includes('approved') && !titleLower.includes('signed') && 
                        !titleLower.includes('campbell') && !titleLower.includes('physician') &&
                        !titleLower.includes('ehr sync') && !titleLower.includes('florence automation');
-    const cmAttr = isCMAction ? `<span style="color:#9E9E9E;font-size:10px;display:block;margin-top:2px;">by ${CARE_MANAGER.name}, ${CARE_MANAGER.credentials}</span>` : '';
+    const cmAttr = isCMAction ? `<span style="color:rgba(255,255,255,0.35);font-size:10px;display:block;margin-top:2px;">by ${CARE_MANAGER.name}, ${CARE_MANAGER.credentials}</span>` : '';
     
     logItem.innerHTML = `
-        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${iconColor}15;color:${iconColor};font-size:11px;font-weight:700;flex-shrink:0;">${icon}</span>
-        <span style="color:#1a1a2e;font-weight:600;white-space:nowrap;min-width:100px;">${title}</span>
-        <span style="color:#616161;flex:1;">${description}${cmAttr}</span>
-        <span style="margin-left:auto;color:#BDBDBD;white-space:nowrap;font-size:11px;">${timeStr}</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${iconColor}20;color:${iconColor};font-size:11px;font-weight:700;flex-shrink:0;">${icon}</span>
+        <span style="color:rgba(255,255,255,0.9);font-weight:600;white-space:nowrap;min-width:100px;">${title}</span>
+        <span style="color:rgba(255,255,255,0.6);flex:1;">${description}${cmAttr}</span>
+        <span style="margin-left:auto;color:rgba(255,255,255,0.3);white-space:nowrap;font-size:11px;">${timeStr}</span>
     `;
     logContainer.insertBefore(logItem, logContainer.firstChild);
     
@@ -11627,6 +11645,18 @@ function addLogEntry(title, description) {
 
 function updateLogFilterCounts() {
     // No-op for now, could add badge counts to filter buttons
+}
+
+function filterActivityLog(filter) {
+    const logItems = document.querySelectorAll('#log-container .log-item');
+    logItems.forEach(item => {
+        const itemType = item.getAttribute('data-log-type') || 'system';
+        if (filter === 'all' || itemType === filter) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
 }
 
 // Setup log filter buttons
@@ -14070,11 +14100,82 @@ function showToast(message) {
     }, 3000);
 }
 
-// Add task from Convene call
+// Add task from Convene call — marks matching task as in-progress and shows it in Tasks sub-tab
 function addTaskFromConvene(taskTitle) {
-    // Show toast
-    showToast(`New task added: ${taskTitle}`);
-    // Tasks are already in florenceTasks array, toast is the main feedback
+    // Find matching task in florenceTasks by title (case-insensitive partial match)
+    const task = florenceTasks.find(t => 
+        t.title.toLowerCase().includes(taskTitle.toLowerCase().substring(0, 20)) ||
+        taskTitle.toLowerCase().includes(t.title.toLowerCase().substring(0, 20))
+    );
+    
+    if (task && task.status === 'pending') {
+        // Mark as in-progress
+        task.status = 'in-progress';
+        task.origin = 'ai-deduced';
+        task.deduced_from = task.deduced_from || 'Convene call — AI deduced from conversation';
+    } else if (!task) {
+        // Add as a new task if not found
+        florenceTasks.unshift({
+            id: 'task-conv-' + Date.now(),
+            title: taskTitle,
+            detail: 'Deduced from Convene call conversation.',
+            status: 'in-progress',
+            origin: 'ai-deduced',
+            category: 'follow-up',
+            deduced_from: 'Convene call — AI deduced from conversation',
+            completed_at: null,
+            transcript: null,
+            transcript_label: null
+        });
+    }
+    
+    // Re-render tasks list
+    if (typeof renderTasks === 'function') renderTasks('all');
+    
+    // Switch to Workflows > Tasks sub-tab to show the task being added
+    if (typeof switchToTab === 'function') switchToTab('workflows');
+    if (typeof switchWorkflowsView === 'function') switchWorkflowsView('tasks');
+    
+    // Highlight the newly added/updated task
+    const taskId = task ? task.id : (florenceTasks[0] ? florenceTasks[0].id : null);
+    setTimeout(() => {
+        const taskEl = taskId ? document.getElementById(taskId) :
+                       document.querySelector('.task-card:first-child');
+        if (taskEl) {
+            taskEl.style.transition = 'all 0.3s ease';
+            taskEl.style.boxShadow = '0 0 0 2px #55B5B8, 0 0 12px rgba(85,181,184,0.4)';
+            taskEl.style.borderColor = '#55B5B8';
+            setTimeout(() => {
+                taskEl.style.boxShadow = '';
+                taskEl.style.borderColor = '';
+            }, 3000);
+        }
+    }, 200);
+    
+    // Flash the Tasks sub-tab badge to draw attention
+    const tasksBadge = document.getElementById('tasks-total-count');
+    if (tasksBadge) {
+        tasksBadge.style.transition = 'all 0.3s ease';
+        tasksBadge.style.background = '#55B5B8';
+        tasksBadge.style.color = 'white';
+        setTimeout(() => {
+            tasksBadge.style.background = '';
+            tasksBadge.style.color = '';
+        }, 1500);
+    }
+    
+    // After 4 seconds, switch back to Outreach tab (where the conversation is)
+    setTimeout(() => {
+        if (typeof switchToTab === 'function') switchToTab('outreach');
+    }, 4000);
+    
+    // Show toast with link to Tasks tab
+    showToast(`✓ Task deduced: ${taskTitle}`);
+    
+    // Log to activity
+    if (typeof addLogEntry === 'function') {
+        addLogEntry('Task Deduced', taskTitle + ' — added to task list');
+    }
 }
 
 // Task deduction mapping for Convene script
