@@ -5418,46 +5418,9 @@ button:hover {
                         <!-- Gap cards will be rendered here -->
                     </div>
                 </div>
-            </div>
+                </div>
+                <!-- End Gap Cards View -->
             
-            <!-- Transcript Tab -->
-            <div class="tab-panel" id="transcript-panel">
-                <!-- Workflow Buttons (inside COM tab) -->
-                <div class="com-workflow-buttons">
-                    <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                        </svg>
-                        <span class="btn-text">Engage</span>
-                    </button>
-                    <button class="workflow-btn btn-convene" id="convene-btn" onclick="startWorkflow('convene')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="overflow:hidden; flex-shrink:0;">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        <span class="btn-text" style="margin-left:2px;">Convene</span>
-                    </button>
-                    <button class="workflow-btn btn-checkin" id="checkin-btn" onclick="startWorkflow('checkin')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        <span class="btn-text">Check-In</span>
-                    </button>
-                </div>
-                <div id="show-full-transcript-bar" style="display:none; padding: 6px 12px; background: linear-gradient(135deg, #f0f9ff, #e8f4fd); border-bottom: 1px solid #dbeafe; text-align: center;">
-                    <button id="show-full-transcript-btn" onclick="showFullTranscriptInstant()" style="background: linear-gradient(135deg, #55B5B8, #3d9a9d); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        Show Full Transcript
-                    </button>
-                </div>
-                <div class="transcript-container" id="transcript-container">
-                    <p style="color: #a0aec0; text-align: center; padding: 40px;">
-                        Select a workflow above to start a conversation.
-                    </p>
-                </div>
-            </div>
             
             <!-- Documentation Tab -->
             <div class="tab-panel" id="documentation-panel">
@@ -5565,6 +5528,45 @@ button:hover {
                 <!-- End Workflows View -->
             </div>
             <!-- End Facesheet/Gaps Tab -->
+            
+            <!-- Transcript Tab -->
+            <div class="tab-panel" id="transcript-panel">
+                <!-- Workflow Buttons (inside COM tab) -->
+                <div class="com-workflow-buttons">
+                    <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        <span class="btn-text">Engage</span>
+                    </button>
+                    <button class="workflow-btn btn-convene" id="convene-btn" onclick="startWorkflow('convene')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="overflow:hidden; flex-shrink:0;">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="btn-text" style="margin-left:2px;">Convene</span>
+                    </button>
+                    <button class="workflow-btn btn-checkin" id="checkin-btn" onclick="startWorkflow('checkin')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span class="btn-text">Check-In</span>
+                    </button>
+                </div>
+                <div id="show-full-transcript-bar" style="display:none; padding: 6px 12px; background: linear-gradient(135deg, #f0f9ff, #e8f4fd); border-bottom: 1px solid #dbeafe; text-align: center;">
+                    <button id="show-full-transcript-btn" onclick="showFullTranscriptInstant()" style="background: linear-gradient(135deg, #55B5B8, #3d9a9d); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        Show Full Transcript
+                    </button>
+                </div>
+                <div class="transcript-container" id="transcript-container">
+                    <p style="color: #a0aec0; text-align: center; padding: 40px;">
+                        Select a workflow above to start a conversation.
+                    </p>
+                </div>
+            </div>
             
             <!-- Log Tab -->
             <div class="tab-panel" id="log-panel">
