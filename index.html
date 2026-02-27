@@ -405,11 +405,15 @@
         /* ==================== FLORENCE PANEL (RIGHT) ==================== */
         .florence-panel {
             width: 400px;
+            min-width: 400px;
+            max-width: 400px;
+            flex: 0 0 400px;
             background: #ffffff;
             display: flex;
             flex-direction: column;
             color: #31393F;
             font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
         }
         
         .florence-header {
@@ -1752,8 +1756,10 @@
             flex-direction: column;
             gap: 16px;
             max-height: 100%;
+            max-width: 100%;
             overflow-y: auto;
             padding-right: 8px;
+            box-sizing: border-box;
         }
         
         .gap-tracker-header {
