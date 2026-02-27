@@ -3984,6 +3984,43 @@ button:hover {
         .task-card.status-pending { border-left-color: #F59E0B; }
         .task-card.status-in-progress { border-left-color: #3B82F6; }
         .task-card.status-completed { border-left-color: #10B981; opacity: 0.8; }
+        .task-card.status-pending-review { border-left-color: #55B5B8; background: rgba(85,181,184,0.05); }
+        .task-card.status-dismissed { border-left-color: #4B5563; opacity: 0.5; }
+        .task-status-pill.s-pending-review { background: rgba(85,181,184,0.15); color: #55B5B8; }
+        .task-status-pill.s-dismissed { background: rgba(75,85,99,0.2); color: #9CA3AF; }
+        .task-review-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            flex-wrap: wrap;
+        }
+        .task-review-label { color: #6B7280; font-size: 10px; margin-right: 2px; }
+        .task-accept-btn {
+            background: #55B5B8; color: #0D1117; border: none;
+            padding: 4px 10px; border-radius: 4px; font-size: 10px;
+            font-weight: 700; cursor: pointer; transition: background 0.2s;
+        }
+        .task-accept-btn:hover { background: #3d9ea1; }
+        .task-defer-btn {
+            background: transparent; color: #9CA3AF;
+            border: 1px solid #374151; padding: 4px 10px;
+            border-radius: 4px; font-size: 10px; cursor: pointer; transition: all 0.2s;
+        }
+        .task-defer-btn:hover { border-color: #55B5B8; color: #55B5B8; }
+        .task-dismiss-btn {
+            background: transparent; color: #6B7280; border: none;
+            padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;
+        }
+        .task-dismiss-btn:hover { color: #E45740; }
+        .task-wf-link {
+            display: inline-flex; align-items: center; gap: 3px;
+            color: #55B5B8; font-size: 10px; cursor: pointer;
+            text-decoration: underline; text-decoration-color: rgba(85,181,184,0.4);
+        }
+        .task-wf-link:hover { color: #3d9ea1; }
         .task-checkbox {
             width: 18px;
             height: 18px;
@@ -8261,9 +8298,10 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 
                 await addMessage(msg, signal);
                 
-                // Scan patient messages for clinical flags
+                // Scan patient messages for clinical flags and workflow suggestions
                 if (msg.type === 'patient') {
                     scanForClinicalFlags(msg.text);
+                    scanForWorkflowSuggestions(msg.text);
                 }
                 
                 // Trigger task deduction for convene workflow
@@ -8297,30 +8335,6 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         function showInlineDocumentation(workflowType) {
             const doc = documentation[workflowType];
             const container = document.getElementById('transcript-container');
-            
-            // Mark all AI-deduced in-progress tasks as completed (workflow finished)
-            if (typeof florenceTasks !== 'undefined') {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                let completedAny = false;
-                florenceTasks.forEach(t => {
-                    if (t.origin === 'ai-deduced' && t.status === 'in-progress') {
-                        t.status = 'completed';
-                        t.completed_at = timeStr;
-                        completedAny = true;
-                    }
-                });
-                if (completedAny) {
-                    // Briefly show Tasks tab to display completed tasks
-                    if (typeof switchToTab === 'function') switchToTab('workflows');
-                    if (typeof switchWorkflowsView === 'function') switchWorkflowsView('tasks');
-                    if (typeof renderTasks === 'function') renderTasks('all');
-                    // Return to Outreach after 3 seconds
-                    setTimeout(() => {
-                        if (typeof switchToTab === 'function') switchToTab('outreach');
-                    }, 3000);
-                }
-            }
             
             // Create the inline documentation block
             const docBlock = document.createElement('div');
@@ -8441,6 +8455,160 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             }
         }
         
+        // ==================== WORKFLOW SUGGESTION ENGINE ====================
+        // Tracks workflow suggestions already shown this session to avoid duplicates
+        const shownWorkflowSuggestions = new Set();
+        
+        // Maps patient-reported keywords to workflow catalog entries
+        // Each entry: { keywords, workflowId, workflowName, taskTitle, taskDetail, rationale }
+        const WORKFLOW_TRIGGER_PATTERNS = [
+            {
+                keywords: ['oxygen', 'oxygen machine', 'concentrator', 'home oxygen', 'breathing machine'],
+                workflowId: 'WF-106',
+                workflowName: 'DME Order & Delivery Coordination',
+                taskTitle: 'Coordinate home oxygen delivery',
+                taskDetail: 'Patient mentioned waiting for home oxygen concentrator. Verify order and schedule delivery.',
+                rationale: 'Patient mentioned waiting for home oxygen equipment.'
+            },
+            {
+                keywords: ['home health', 'home aide', 'someone to help', 'help at home', 'help with bathing', 'help with shower', 'help around the house', 'caregiver'],
+                workflowId: 'WF-105',
+                workflowName: 'Home Health Start-of-Care Coordination',
+                taskTitle: 'Initiate home health aide referral',
+                taskDetail: 'Patient requested assistance with daily activities or personal care.',
+                rationale: 'Patient expressed need for in-home assistance.'
+            },
+            {
+                keywords: ['pharmacy', 'prescription', 'medication', 'pick up', 'pickup', 'which pharmacy', 'confused about', 'where to get'],
+                workflowId: 'WF-107',
+                workflowName: 'Medication Adherence Intervention',
+                taskTitle: 'Verify prescription pickup location',
+                taskDetail: 'Patient is confused about which pharmacy has their medications.',
+                rationale: 'Patient expressed confusion about medication pickup.'
+            },
+            {
+                keywords: ['appointment', 'doctor appointment', 'specialist', 'kidney doctor', 'nephrologist', 'cardiologist', 'follow up', 'follow-up'],
+                workflowId: 'WF-103',
+                workflowName: 'Specialist Referral Coordination',
+                taskTitle: 'Coordinate specialist appointment',
+                taskDetail: 'Patient asked about or needs help with a specialist appointment.',
+                rationale: 'Patient mentioned a specialist appointment or referral need.'
+            },
+            {
+                keywords: ['not eating', 'can\'t eat', 'no appetite', 'food', 'meals', 'nutrition', 'meal delivery', 'haven\'t eaten', 'trouble eating'],
+                workflowId: 'WF-108',
+                workflowName: 'Patient Education Delivery',
+                taskTitle: 'Assess nutritional needs and arrange meal support',
+                taskDetail: 'Patient reported difficulty eating or appetite concerns. Consider nutrition assessment and meal assistance.',
+                rationale: 'Patient reported food or nutrition concerns.'
+            },
+            {
+                keywords: ['depressed', 'depression', 'anxious', 'anxiety', 'mental health', 'counseling', 'therapist', 'hopeless', 'not coping'],
+                workflowId: 'WF-103',
+                workflowName: 'Specialist Referral Coordination',
+                taskTitle: 'Initiate behavioral health referral',
+                taskDetail: 'Patient expressed mental health concerns. Refer to behavioral health or social work.',
+                rationale: 'Patient expressed mental health or emotional distress.'
+            },
+            {
+                keywords: ['lab', 'labs', 'blood test', 'blood work', 'results', 'test results'],
+                workflowId: 'WF-104',
+                workflowName: 'Lab Order & Results Follow-Up',
+                taskTitle: 'Follow up on pending lab results',
+                taskDetail: 'Patient mentioned labs or asked about test results.',
+                rationale: 'Patient mentioned lab work or test results.'
+            },
+            {
+                keywords: ['prior auth', 'prior authorization', 'insurance denied', 'insurance won\'t cover', 'coverage', 'not covered'],
+                workflowId: 'WF-109',
+                workflowName: 'Prior Authorization Request',
+                taskTitle: 'Submit prior authorization request',
+                taskDetail: 'Patient mentioned insurance coverage issue requiring prior authorization.',
+                rationale: 'Patient mentioned insurance or prior authorization issue.'
+            }
+        ];
+        
+        function scanForWorkflowSuggestions(patientText) {
+            const textLower = patientText.toLowerCase();
+            const container = document.getElementById('transcript-container');
+            if (!container) return;
+            
+            WORKFLOW_TRIGGER_PATTERNS.forEach(pattern => {
+                const matched = pattern.keywords.some(kw => textLower.includes(kw));
+                if (matched && !shownWorkflowSuggestions.has(pattern.workflowId)) {
+                    shownWorkflowSuggestions.add(pattern.workflowId);
+                    showWorkflowSuggestionCard(pattern, patientText, container);
+                }
+            });
+        }
+        
+        function showWorkflowSuggestionCard(pattern, patientText, container) {
+            const cardId = 'wf-suggest-' + pattern.workflowId.replace(/[^a-z0-9]/gi, '-');
+            // Don't show duplicate cards
+            if (document.getElementById(cardId)) return;
+            
+            const card = document.createElement('div');
+            card.id = cardId;
+            card.className = 'florence-suggestion-card';
+            card.style.cssText = `
+                background: linear-gradient(135deg, #0D2137 0%, #1a3a5c 100%);
+                border: 1px solid #55B5B8;
+                border-left: 4px solid #55B5B8;
+                border-radius: 8px;
+                padding: 12px 14px;
+                margin: 8px 0;
+                font-size: 12px;
+                animation: slideIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+                position: relative;
+            `;
+            card.innerHTML = `
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <div style="flex-shrink:0;width:28px;height:28px;background:rgba(85,181,184,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    </div>
+                    <div style="flex:1;">
+                        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                            <span style="color:#55B5B8;font-weight:700;font-size:11px;letter-spacing:0.5px;">FLORENCE SUGGESTION</span>
+                            <span style="background:rgba(85,181,184,0.2);color:#55B5B8;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600;">WORKFLOW</span>
+                        </div>
+                        <div style="color:#F3F4F6;font-weight:600;font-size:12px;margin-bottom:2px;">${pattern.workflowName}</div>
+                        <div style="color:#9CA3AF;font-size:11px;margin-bottom:8px;">${pattern.rationale}</div>
+                        <div style="background:rgba(255,255,255,0.05);border-radius:5px;padding:6px 8px;margin-bottom:8px;">
+                            <div style="color:#6B7280;font-size:10px;margin-bottom:2px;">SUGGESTED TASK</div>
+                            <div style="color:#E5E7EB;font-size:11px;font-weight:500;">${pattern.taskTitle}</div>
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <button
+                                onclick="acceptWorkflowSuggestion('${cardId}', '${pattern.workflowId.replace(/'/g,"\\'")}',' ${pattern.workflowName.replace(/'/g,"\\'")}',' ${pattern.taskTitle.replace(/'/g,"\\'")}',' ${pattern.taskDetail.replace(/'/g,"\\'")}')"
+                                style="background:#55B5B8;color:#0D1117;border:none;padding:5px 12px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;"
+                                onmouseover="this.style.background='#3d9ea1'" onmouseout="this.style.background='#55B5B8'">
+                                ✓ Accept — Start Workflow
+                            </button>
+                            <button
+                                onclick="deferWorkflowSuggestion('${cardId}', '${pattern.workflowId.replace(/'/g,"\\'")}',' ${pattern.taskTitle.replace(/'/g,"\\'")}',' ${pattern.taskDetail.replace(/'/g,"\\'")}')"
+                                style="background:transparent;color:#9CA3AF;border:1px solid #374151;padding:5px 10px;border-radius:5px;font-size:11px;cursor:pointer;transition:all 0.2s;"
+                                onmouseover="this.style.borderColor='#55B5B8';this.style.color='#55B5B8'" onmouseout="this.style.borderColor='#374151';this.style.color='#9CA3AF'">
+                                Defer
+                            </button>
+                            <button
+                                onclick="dismissWorkflowSuggestion('${cardId}', '${pattern.workflowName.replace(/'/g,"\\'")}')"
+                                style="background:transparent;color:#6B7280;border:none;padding:5px 8px;border-radius:5px;font-size:11px;cursor:pointer;"
+                                onmouseover="this.style.color='#E45740'" onmouseout="this.style.color='#6B7280'">
+                                Dismiss
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+            container.scrollTop = container.scrollHeight;
+            
+            // Log to activity
+            if (typeof addLogEntry === 'function') {
+                addLogEntry('Workflow Suggested', pattern.workflowName + ' — awaiting CM decision');
+            }
+        }
+        
         function addFlagToNote(flagName) {
             // Add flag to the inline doc content if it exists
             const docContent = document.getElementById('inline-doc-content');
@@ -8502,9 +8670,10 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Clear previous transcript
             document.getElementById('transcript-container').innerHTML = '';
             
-            // Reset clinical flags for new workflow
+            // Reset clinical flags and workflow suggestions for new workflow
             if (typeof shownClinicalFlags !== 'undefined') shownClinicalFlags.clear();
             if (window.pendingClinicalFlags) window.pendingClinicalFlags = [];
+            if (typeof shownWorkflowSuggestions !== 'undefined') shownWorkflowSuggestions.clear();
             
             // Show/hide full transcript bar for convene
             const ftBar = document.getElementById('show-full-transcript-bar');
@@ -11506,6 +11675,159 @@ document.addEventListener('DOMContentLoaded', function() {
     renderStagedProblems();
 });
 
+// ===== WORKFLOW SUGGESTION ACTION HANDLERS =====
+// These are global so inline card onclick attributes can call them
+
+function acceptWorkflowSuggestion(cardId, workflowId, workflowName, taskTitle, taskDetail) {
+    // Remove the suggestion card from the transcript
+    const card = document.getElementById(cardId);
+    if (card) {
+        card.style.transition = 'all 0.3s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(10px)';
+        setTimeout(() => card.remove(), 300);
+    }
+    
+    // Create or update the task as 'in-progress'
+    const existingTask = florenceTasks.find(t =>
+        t.workflow_id === workflowId ||
+        t.title.toLowerCase().includes(taskTitle.trim().toLowerCase().substring(0, 20))
+    );
+    
+    if (existingTask) {
+        existingTask.status = 'in-progress';
+        existingTask.workflow_id = workflowId;
+    } else {
+        florenceTasks.unshift({
+            id: 'task-wf-' + Date.now(),
+            title: taskTitle.trim(),
+            detail: taskDetail.trim(),
+            status: 'in-progress',
+            origin: 'ai-deduced',
+            category: 'follow-up',
+            workflow_id: workflowId,
+            deduced_from: 'Detected from call transcript',
+            completed_at: null,
+            transcript: null,
+            transcript_label: null
+        });
+    }
+    
+    // Start or activate the corresponding workflow
+    const wf = typeof florenceWorkflows !== 'undefined' ?
+        florenceWorkflows.find(w => w.id === workflowId) : null;
+    if (wf) {
+        if (wf.status === 'paused' || wf.status === 'pending') wf.status = 'active';
+    } else if (typeof florenceWorkflows !== 'undefined') {
+        // Add a new workflow entry if not already in the list
+        florenceWorkflows.unshift({
+            id: workflowId,
+            name: workflowName.trim(),
+            triggered_by: 'CM accepted suggestion from call transcript',
+            triggered_by_task: existingTask ? existingTask.id : null,
+            status: 'active',
+            progress: '0 of 1 steps complete',
+            steps: [
+                { title: taskTitle.trim(), status: 'active', timestamp: null }
+            ]
+        });
+    }
+    
+    // Re-render tasks and workflows
+    if (typeof renderTasks === 'function') renderTasks('all');
+    if (typeof renderWorkflows === 'function') renderWorkflows('all');
+    
+    // Show confirmation in transcript
+    const container = document.getElementById('transcript-container');
+    if (container) {
+        const confirm = document.createElement('div');
+        confirm.style.cssText = 'background:rgba(85,181,184,0.1);border-left:3px solid #55B5B8;border-radius:6px;padding:8px 12px;margin:6px 0;font-size:11px;color:#55B5B8;font-weight:600;';
+        confirm.textContent = '\u2713 Workflow started: ' + workflowName.trim();
+        container.appendChild(confirm);
+        container.scrollTop = container.scrollHeight;
+    }
+    
+    // Log to activity
+    if (typeof addLogEntry === 'function') {
+        addLogEntry('Workflow Accepted', workflowName.trim() + ' \u2014 started by care manager');
+    }
+    if (typeof showToast === 'function') {
+        showToast('Workflow started: ' + workflowName.trim(), 'success');
+    }
+}
+
+function deferWorkflowSuggestion(cardId, workflowId, taskTitle, taskDetail) {
+    // Remove the suggestion card
+    const card = document.getElementById(cardId);
+    if (card) {
+        card.style.transition = 'all 0.3s ease';
+        card.style.opacity = '0';
+        setTimeout(() => card.remove(), 300);
+    }
+    
+    // Add task as pending_review in the Tasks list
+    const existingTask = florenceTasks.find(t =>
+        t.workflow_id === workflowId ||
+        t.title.toLowerCase().includes(taskTitle.trim().toLowerCase().substring(0, 20))
+    );
+    
+    if (existingTask) {
+        existingTask.status = 'pending_review';
+        existingTask.workflow_id = workflowId;
+    } else {
+        florenceTasks.unshift({
+            id: 'task-defer-' + Date.now(),
+            title: taskTitle.trim(),
+            detail: taskDetail.trim(),
+            status: 'pending_review',
+            origin: 'ai-deduced',
+            category: 'follow-up',
+            workflow_id: workflowId,
+            deduced_from: 'Deferred from call transcript for later review',
+            completed_at: null,
+            transcript: null,
+            transcript_label: null
+        });
+    }
+    
+    if (typeof renderTasks === 'function') renderTasks('all');
+    
+    // Show confirmation in transcript
+    const container = document.getElementById('transcript-container');
+    if (container) {
+        const confirm = document.createElement('div');
+        confirm.style.cssText = 'background:rgba(245,127,0,0.08);border-left:3px solid #F57C00;border-radius:6px;padding:8px 12px;margin:6px 0;font-size:11px;color:#F57C00;font-weight:600;';
+        confirm.textContent = '\u23F0 Deferred to Tasks for later review: ' + taskTitle.trim();
+        container.appendChild(confirm);
+        container.scrollTop = container.scrollHeight;
+    }
+    
+    if (typeof addLogEntry === 'function') {
+        addLogEntry('Task Deferred', taskTitle.trim() + ' \u2014 deferred for later review');
+    }
+    if (typeof showToast === 'function') {
+        showToast('Deferred to Tasks: ' + taskTitle.trim(), 'warning');
+    }
+}
+
+function dismissWorkflowSuggestion(cardId, workflowName) {
+    // Remove the suggestion card
+    const card = document.getElementById(cardId);
+    if (card) {
+        card.style.transition = 'all 0.3s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(-10px)';
+        setTimeout(() => card.remove(), 300);
+    }
+    
+    if (typeof addLogEntry === 'function') {
+        addLogEntry('Suggestion Dismissed', workflowName + ' \u2014 dismissed by care manager');
+    }
+    if (typeof showToast === 'function') {
+        showToast('Dismissed: ' + workflowName, 'info');
+    }
+}
+
 // ===== HELPER FUNCTIONS =====
 
 // Toast counter for stacking
@@ -13440,6 +13762,7 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'orders',
+    workflow_id: 'WF-DME-01',
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:28 PM',
     transcript: dmeCallTranscript,
@@ -13452,6 +13775,7 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'orders',
+    workflow_id: null,
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:35 PM',
     transcript: null,
@@ -13464,6 +13788,7 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'follow-up',
+    workflow_id: null,
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:40 PM',
     transcript: pharmacyCallTranscript,
@@ -13476,6 +13801,7 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'communication',
+    workflow_id: null,
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:22 PM',
     transcript: daughterSmsTranscript,
@@ -13488,6 +13814,7 @@ const florenceTasks = [
     status: 'in-progress',
     origin: 'ai-deduced',
     category: 'referrals',
+    workflow_id: 'WF-105',
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: null,
     transcript: null,
@@ -13498,8 +13825,9 @@ const florenceTasks = [
     title: 'Schedule follow-up with Dr. Campbell',
     detail: 'Post-discharge follow-up scheduled for Monday, Feb 18 at 10 AM.',
     status: 'completed',
-    origin: 'post-visit-automation',
+    origin: 'workflow-generated',
     category: 'follow-up',
+    workflow_id: 'WF-131',
     deduced_from: null,
     completed_at: 'Feb 25, 9:22 AM',
     transcript: null,
@@ -13512,6 +13840,7 @@ const florenceTasks = [
     status: 'pending',
     origin: 'manual-entry',
     category: 'documentation',
+    workflow_id: null,
     deduced_from: null,
     completed_at: null,
     transcript: null,
@@ -13524,6 +13853,7 @@ const florenceTasks = [
     status: 'completed',
     origin: 'workflow-generated',
     category: 'education',
+    workflow_id: 'WF-131',
     deduced_from: null,
     completed_at: 'Feb 25, 10:05 AM',
     transcript: null,
@@ -13537,14 +13867,23 @@ function renderTasks(filter) {
     if (!container) return;
 
     let filtered = florenceTasks;
-    if (filter === 'pending') filtered = florenceTasks.filter(t => t.status === 'pending');
+    if (filter === 'pending') filtered = florenceTasks.filter(t => t.status === 'pending' || t.status === 'pending_review');
     else if (filter === 'in-progress') filtered = florenceTasks.filter(t => t.status === 'in-progress');
     else if (filter === 'completed') filtered = florenceTasks.filter(t => t.status === 'completed');
     else if (filter === 'ai-deduced') filtered = florenceTasks.filter(t => t.origin === 'ai-deduced');
 
-    const pendingCount = florenceTasks.filter(t => t.status === 'pending' || t.status === 'in-progress').length;
+    // Sort: pending_review first, then in-progress, then pending, then completed
+    const statusOrder = { pending_review: 0, 'in-progress': 1, pending: 2, completed: 3 };
+    filtered = [...filtered].sort((a, b) => (statusOrder[a.status] ?? 4) - (statusOrder[b.status] ?? 4));
+
+    const reviewCount = florenceTasks.filter(t => t.status === 'pending_review').length;
+    const pendingCount = florenceTasks.filter(t => t.status === 'pending' || t.status === 'in-progress' || t.status === 'pending_review').length;
     const badge = document.getElementById('tasks-total-count');
-    if (badge) badge.textContent = pendingCount + ' pending';
+    if (badge) {
+        badge.textContent = reviewCount > 0 ? reviewCount + ' need review' : pendingCount + ' pending';
+        badge.style.background = reviewCount > 0 ? '#E45740' : '';
+        badge.style.color = reviewCount > 0 ? 'white' : '';
+    }
 
     if (filtered.length === 0) {
         container.innerHTML = '<div style="text-align:center;padding:40px;color:#6B7280;font-size:12px;">No tasks match this filter.</div>';
@@ -13553,15 +13892,33 @@ function renderTasks(filter) {
 
     container.innerHTML = filtered.map(task => {
         const isChecked = task.status === 'completed';
+        const isPendingReview = task.status === 'pending_review';
         const sparkle = task.origin === 'ai-deduced' ? `<span class="task-sparkle" title="AI Deduced">&#10024;<span class="sparkle-tooltip">Deduced from ${task.deduced_from}</span></span>` : '';
         const catClass = 'cat-' + task.category;
-        const statusClass = 's-' + task.status;
-        const statusLabel = task.status === 'in-progress' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1);
+        const statusClass = 's-' + task.status.replace('_', '-');
+        const statusLabel = task.status === 'in-progress' ? 'In Progress'
+            : task.status === 'pending_review' ? 'Pending Review'
+            : task.status.charAt(0).toUpperCase() + task.status.slice(1);
         const transcriptLink = task.transcript ? `<span class="task-transcript-link" onclick="event.stopPropagation();openTaskTranscript('${task.id}')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> View transcript</span>` : '';
         const completedAt = task.completed_at ? `<span style="color:#6B7280;font-size:9px;">${task.completed_at}</span>` : '';
+        
+        // Workflow link if task is connected to a workflow
+        const wfLink = task.workflow_id ? (() => {
+            const wf = florenceWorkflows.find(w => w.id === task.workflow_id);
+            return wf ? `<span class="task-wf-link" onclick="event.stopPropagation();switchToTab('workflows');switchWorkflowsView('active-workflows');" title="View workflow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> ${wf.name}</span>` : '';
+        })() : '';
+
+        // Pending review actions row
+        const reviewActions = isPendingReview ? `
+            <div class="task-review-actions">
+                <span class="task-review-label">Awaiting your decision:</span>
+                <button class="task-accept-btn" onclick="event.stopPropagation();acceptTask('${task.id}')">Accept</button>
+                <button class="task-defer-btn" onclick="event.stopPropagation();deferTask('${task.id}')">Defer</button>
+                <button class="task-dismiss-btn" onclick="event.stopPropagation();dismissTask('${task.id}')">Dismiss</button>
+            </div>` : '';
 
         return `
-            <div class="task-card status-${task.status}" id="${task.id}" onclick="toggleTaskCheck('${task.id}')">
+            <div class="task-card status-${task.status.replace('_','-')}" id="${task.id}" onclick="${isPendingReview ? '' : `toggleTaskCheck('${task.id}')`}">
                 <div class="task-checkbox ${isChecked ? 'checked' : ''}" id="chk-${task.id}"></div>
                 <div class="task-body">
                     <div class="task-title-row">
@@ -13574,11 +13931,45 @@ function renderTasks(filter) {
                         <span class="task-status-pill ${statusClass}">${statusLabel}</span>
                         ${completedAt}
                         ${transcriptLink}
+                        ${wfLink}
                     </div>
+                    ${reviewActions}
                 </div>
             </div>
         `;
     }).join('');
+}
+
+function acceptTask(taskId) {
+    const task = florenceTasks.find(t => t.id === taskId);
+    if (!task) return;
+    task.status = 'in-progress';
+    // If task has an associated workflow, start/activate it
+    if (task.workflow_id) {
+        const wf = florenceWorkflows.find(w => w.id === task.workflow_id);
+        if (wf && wf.status !== 'active' && wf.status !== 'completed') wf.status = 'active';
+    }
+    if (typeof renderTasks === 'function') renderTasks('all');
+    if (typeof addLogEntry === 'function') addLogEntry('Task Accepted', task.title + ' — accepted by care manager');
+    if (typeof showToast === 'function') showToast('Task accepted: ' + task.title);
+}
+
+function deferTask(taskId) {
+    const task = florenceTasks.find(t => t.id === taskId);
+    if (!task) return;
+    task.status = 'pending';
+    if (typeof renderTasks === 'function') renderTasks('all');
+    if (typeof addLogEntry === 'function') addLogEntry('Task Deferred', task.title + ' — deferred for later review');
+    if (typeof showToast === 'function') showToast('Task deferred: ' + task.title);
+}
+
+function dismissTask(taskId) {
+    const task = florenceTasks.find(t => t.id === taskId);
+    if (!task) return;
+    task.status = 'dismissed';
+    if (typeof renderTasks === 'function') renderTasks('all');
+    if (typeof addLogEntry === 'function') addLogEntry('Task Dismissed', task.title + ' — dismissed by care manager');
+    if (typeof showToast === 'function') showToast('Task dismissed: ' + task.title);
 }
 
 function toggleTaskCheck(taskId) {
@@ -13644,6 +14035,7 @@ const florenceWorkflows = [
     id: 'WF-131',
     name: 'Post-Discharge Transition of Care (TCM)',
     triggered_by: 'ADT Notification: Discharge from St. Joseph\'s Hospital',
+    triggered_by_task: null,
     status: 'completed',
     progress: '5 of 5 steps complete',
     steps: [
@@ -13658,6 +14050,7 @@ const florenceWorkflows = [
     id: 'WF-105',
     name: 'Home Health Start-of-Care Coordination',
     triggered_by: 'Deduced from Convene call: "Initiate home health aide referral"',
+    triggered_by_task: 'task-5',
     status: 'active',
     progress: '1 of 4 steps complete',
     steps: [
@@ -13671,6 +14064,7 @@ const florenceWorkflows = [
     id: 'WF-CKD-01',
     name: 'CKD Stage 3a Management',
     triggered_by: 'Staged Gap: Chronic Kidney Disease Stage 3a',
+    triggered_by_task: null,
     status: 'active',
     progress: '2 of 5 steps complete',
     steps: [
@@ -13685,6 +14079,7 @@ const florenceWorkflows = [
     id: 'WF-FALL-01',
     name: 'High Fall Risk Intervention',
     triggered_by: 'Staged Gap: Fall Risk Assessment - High',
+    triggered_by_task: null,
     status: 'paused',
     progress: '1 of 4 steps complete',
     steps: [
@@ -13698,6 +14093,7 @@ const florenceWorkflows = [
     id: 'WF-DME-01',
     name: 'DME Coordination: Home Oxygen',
     triggered_by: 'Deduced from Convene call: "Coordinate home oxygen delivery"',
+    triggered_by_task: 'task-1',
     status: 'completed',
     progress: '3 of 3 steps complete',
     steps: [
@@ -14100,28 +14496,30 @@ function showToast(message) {
     }, 3000);
 }
 
-// Add task from Convene call — marks matching task as in-progress and shows it in Tasks sub-tab
-function addTaskFromConvene(taskTitle) {
+// Add task from Convene call — creates task as pending_review (awaiting CM accept/deny via inline suggestion card)
+function addTaskFromConvene(taskTitle, workflowId) {
     // Find matching task in florenceTasks by title (case-insensitive partial match)
     const task = florenceTasks.find(t => 
         t.title.toLowerCase().includes(taskTitle.toLowerCase().substring(0, 20)) ||
         taskTitle.toLowerCase().includes(t.title.toLowerCase().substring(0, 20))
     );
     
-    if (task && task.status === 'pending') {
-        // Mark as in-progress
-        task.status = 'in-progress';
+    if (task) {
+        // Mark as pending_review — awaiting CM accept/deny
+        task.status = 'pending_review';
         task.origin = 'ai-deduced';
+        task.workflow_id = workflowId || task.workflow_id || null;
         task.deduced_from = task.deduced_from || 'Convene call — AI deduced from conversation';
-    } else if (!task) {
+    } else {
         // Add as a new task if not found
         florenceTasks.unshift({
             id: 'task-conv-' + Date.now(),
             title: taskTitle,
             detail: 'Deduced from Convene call conversation.',
-            status: 'in-progress',
+            status: 'pending_review',
             origin: 'ai-deduced',
             category: 'follow-up',
+            workflow_id: workflowId || null,
             deduced_from: 'Convene call — AI deduced from conversation',
             completed_at: null,
             transcript: null,
@@ -14129,48 +14527,8 @@ function addTaskFromConvene(taskTitle) {
         });
     }
     
-    // Re-render tasks list
+    // Re-render tasks list silently (no tab switching — inline card handles the CM interaction)
     if (typeof renderTasks === 'function') renderTasks('all');
-    
-    // Switch to Workflows > Tasks sub-tab to show the task being added
-    if (typeof switchToTab === 'function') switchToTab('workflows');
-    if (typeof switchWorkflowsView === 'function') switchWorkflowsView('tasks');
-    
-    // Highlight the newly added/updated task
-    const taskId = task ? task.id : (florenceTasks[0] ? florenceTasks[0].id : null);
-    setTimeout(() => {
-        const taskEl = taskId ? document.getElementById(taskId) :
-                       document.querySelector('.task-card:first-child');
-        if (taskEl) {
-            taskEl.style.transition = 'all 0.3s ease';
-            taskEl.style.boxShadow = '0 0 0 2px #55B5B8, 0 0 12px rgba(85,181,184,0.4)';
-            taskEl.style.borderColor = '#55B5B8';
-            setTimeout(() => {
-                taskEl.style.boxShadow = '';
-                taskEl.style.borderColor = '';
-            }, 3000);
-        }
-    }, 200);
-    
-    // Flash the Tasks sub-tab badge to draw attention
-    const tasksBadge = document.getElementById('tasks-total-count');
-    if (tasksBadge) {
-        tasksBadge.style.transition = 'all 0.3s ease';
-        tasksBadge.style.background = '#55B5B8';
-        tasksBadge.style.color = 'white';
-        setTimeout(() => {
-            tasksBadge.style.background = '';
-            tasksBadge.style.color = '';
-        }, 1500);
-    }
-    
-    // After 4 seconds, switch back to Outreach tab (where the conversation is)
-    setTimeout(() => {
-        if (typeof switchToTab === 'function') switchToTab('outreach');
-    }, 4000);
-    
-    // Show toast with link to Tasks tab
-    showToast(`✓ Task deduced: ${taskTitle}`);
     
     // Log to activity
     if (typeof addLogEntry === 'function') {
