@@ -4640,6 +4640,535 @@ button:hover {
             font-size: 14px;
         }
 
+        /* ==================== CAMPAIGNS OVERLAY ==================== */
+        .campaigns-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #F2F3F4;
+            z-index: 2000;
+            flex-direction: column;
+            overflow: hidden;
+            animation: campaignsSlideIn 0.3s ease;
+        }
+        .campaigns-overlay.active {
+            display: flex;
+        }
+        @keyframes campaignsSlideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .campaigns-overlay-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 28px;
+            background: #fff;
+            border-bottom: 2px solid #E8EAEC;
+            flex-shrink: 0;
+        }
+        .campaigns-overlay-title { flex: 1; }
+        .campaigns-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #1F2937;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .campaigns-back-btn:hover { background: #374151; }
+        .mode2-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            background: linear-gradient(135deg, #55B5B8, #3d8fa0);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .campaigns-filter-bar {
+            display: flex;
+            gap: 4px;
+            background: #F2F3F4;
+            padding: 4px;
+            border-radius: 8px;
+        }
+        .camp-filter-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #5A6872;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .camp-filter-btn.active, .camp-filter-btn:hover {
+            background: #fff;
+            color: #31393F;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+        .campaigns-stats-bar {
+            display: flex;
+            gap: 0;
+            background: #fff;
+            border-bottom: 1px solid #E8EAEC;
+            flex-shrink: 0;
+        }
+        .camp-stat {
+            flex: 1;
+            padding: 14px 20px;
+            text-align: center;
+            border-right: 1px solid #E8EAEC;
+        }
+        .camp-stat:last-child { border-right: none; }
+        .camp-stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #31393F;
+            line-height: 1;
+        }
+        .camp-stat-number.teal { color: #55B5B8; }
+        .camp-stat-number.red { color: #E45740; }
+        .camp-stat-label {
+            font-size: 11px;
+            color: #5A6872;
+            margin-top: 4px;
+        }
+        .campaigns-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+            align-content: start;
+        }
+        .campaign-card {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #E8EAEC;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .campaign-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .campaign-card.escalated {
+            border-left: 4px solid #E45740;
+        }
+        .campaign-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .campaign-card-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #31393F;
+            line-height: 1.3;
+            flex: 1;
+            padding-right: 10px;
+        }
+        .campaign-status-badge {
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .campaign-status-badge.active { background: #E8F8F5; color: #27AE60; }
+        .campaign-status-badge.completed { background: #EBF5FB; color: #2980B9; }
+        .campaign-status-badge.paused { background: #FEF9E7; color: #F39C12; }
+        .campaign-type-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #F2F3F4;
+            color: #5A6872;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+        .campaign-desc {
+            font-size: 12px;
+            color: #5A6872;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .campaign-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .campaign-metric {
+            background: #F8F9FA;
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+        }
+        .campaign-metric-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #31393F;
+        }
+        .campaign-metric-value.teal { color: #55B5B8; }
+        .campaign-metric-value.red { color: #E45740; }
+        .campaign-metric-label {
+            font-size: 10px;
+            color: #5A6872;
+            margin-top: 2px;
+        }
+        .campaign-progress-bar {
+            height: 6px;
+            background: #E8EAEC;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .campaign-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #55B5B8, #3d8fa0);
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+        .campaign-dates {
+            font-size: 11px;
+            color: #9AA5B1;
+        }
+        .campaign-escalation-alert {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #E45740;
+            font-weight: 600;
+        }
+
+        /* ==================== CAMPAIGNS HEADER BUTTON ==================== */
+        .campaigns-header-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: rgba(255,255,255,0.9);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .campaigns-header-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+        }
+        .campaigns-mode2-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: #F8CA44;
+            color: #31393F;
+            border-radius: 50%;
+            font-size: 9px;
+            font-weight: 900;
+        }
+
+        /* ==================== MODE 2 INDICATORS ==================== */
+        .mode2-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 6px;
+            background: linear-gradient(135deg, #55B5B8, #3d8fa0);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            margin-left: 6px;
+        }
+        .wf-autonomous-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(85,181,184,0.1);
+            border: 1px solid rgba(85,181,184,0.3);
+            border-radius: 4px;
+            font-size: 10px;
+            color: #55B5B8;
+            font-weight: 600;
+        }
+        .wf-escalated-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(228,87,64,0.1);
+            border: 1px solid rgba(228,87,64,0.3);
+            border-radius: 4px;
+            font-size: 10px;
+            color: #E45740;
+            font-weight: 600;
+        }
+
+        /* ==================== HANDOFF MODAL ==================== */
+        .handoff-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+        .handoff-modal-overlay.active {
+            display: flex;
+        }
+        .handoff-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 680px;
+            max-width: 95vw;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .handoff-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            background: #FEF2F2;
+            border-bottom: 2px solid #FECACA;
+            flex-shrink: 0;
+        }
+        .handoff-escalation-badge {
+            padding: 4px 10px;
+            background: #E45740;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .handoff-modal-close {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #5A6872;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .handoff-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+        }
+        .handoff-section {
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #F2F3F4;
+        }
+        .handoff-section:last-child { border-bottom: none; margin-bottom: 0; }
+        .handoff-section-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #5A6872;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .handoff-section-content {
+            font-size: 13px;
+            color: #31393F;
+            line-height: 1.6;
+        }
+        .handoff-transcript-box {
+            background: #F8F9FA;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: #49545E;
+            line-height: 1.7;
+            max-height: 160px;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+        .handoff-finding {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 0;
+        }
+        .handoff-finding-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E45740;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+        .handoff-modal-footer {
+            display: flex;
+            gap: 10px;
+            padding: 16px 24px;
+            background: #F8F9FA;
+            border-top: 1px solid #E8EAEC;
+            flex-shrink: 0;
+        }
+        .handoff-accept-btn {
+            flex: 1;
+            padding: 10px;
+            background: #55B5B8;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .handoff-accept-btn:hover { background: #3d8fa0; }
+        .handoff-assign-btn {
+            padding: 10px 16px;
+            background: #fff;
+            color: #31393F;
+            border: 1px solid #E8EAEC;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .handoff-assign-btn:hover { background: #F2F3F4; }
+        .handoff-dismiss-btn {
+            padding: 10px 16px;
+            background: #fff;
+            color: #E45740;
+            border: 1px solid #FECACA;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ==================== ACTIVITY LOG HANDOFF ENTRY ==================== */
+        .log-item-handoff {
+            border-left: 3px solid #E45740 !important;
+            background: rgba(228,87,64,0.04) !important;
+        }
+        .log-handoff-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            background: #E45740;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-right: 4px;
+        }
+        .log-autonomous-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            background: rgba(85,181,184,0.2);
+            color: #55B5B8;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+
+        /* ==================== MODE 2 OUTREACH BUTTONS ==================== */
+        .mode2-outreach-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .mode2-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .mode2-section-label::after {
+            content: 'A';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            background: #F8CA44;
+            color: #31393F;
+            border-radius: 50%;
+            font-size: 8px;
+            font-weight: 900;
+        }
+        .mode2-demo-btn {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(85,181,184,0.1);
+            border: 1px solid rgba(85,181,184,0.3);
+            border-radius: 8px;
+            color: #55B5B8;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            margin-bottom: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mode2-demo-btn:hover {
+            background: rgba(85,181,184,0.2);
+            border-color: rgba(85,181,184,0.5);
+        }
+        .mode2-demo-btn .mode2-demo-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        .mode2-demo-btn .tag-routine { background: rgba(39,174,96,0.15); color: #27AE60; }
+        .mode2-demo-btn .tag-escalation { background: rgba(228,87,64,0.15); color: #E45740; }
+        .mode2-demo-btn .tag-trigger { background: rgba(248,202,68,0.2); color: #B8860B; }
+
     </style>
 </head>
 <body>
@@ -5308,6 +5837,16 @@ button:hover {
             </div>
             <div class="header-center-icons">
 <!-- Toggle removed: all users have full access -->
+                <!-- Campaigns Population View Button -->
+                <button class="campaigns-header-btn" onclick="openCampaignsView()" title="Newton Campaigns — Population View">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="4" rx="1"></rect>
+                        <rect x="3" y="10" width="11" height="4" rx="1"></rect>
+                        <rect x="3" y="17" width="14" height="4" rx="1"></rect>
+                    </svg>
+                    <span>Campaigns</span>
+                    <span class="campaigns-mode2-badge">A</span>
+                </button>
                 <div style="position:relative;">
                     <button id="sync-notif-bell" class="sync-notif-bell" onclick="toggleNotificationPanel()" title="Sync notifications">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -5762,6 +6301,8 @@ button:hover {
                             <option value="outreach">Outreach</option>
                             <option value="sync">Sync</option>
                             <option value="provider">Provider</option>
+                            <option value="handoff">HANDOFF Notes</option>
+                            <option value="autonomous">Mode 2 — Autonomous</option>
                         </select>
                     </div>
                     <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 10px;margin-bottom:10px;font-size:11px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;flex-shrink:0;">
@@ -5807,6 +6348,84 @@ button:hover {
         </div>
     </div>
     
+    <!-- CAMPAIGNS FULL-PANEL OVERLAY -->
+    <div class="campaigns-overlay" id="campaigns-overlay">
+        <div class="campaigns-overlay-header">
+            <div class="campaigns-overlay-logo">
+                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height:44px;width:auto;">
+            </div>
+            <div class="campaigns-overlay-title">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:18px;font-weight:700;color:#31393F;">Newton Campaigns</span>
+                    <span class="mode2-pill">Mode 2 — Autonomous Coordinator</span>
+                </div>
+                <div style="font-size:12px;color:#5A6872;margin-top:2px;">Population-level autonomous outreach, monitored in real-time</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-left:auto;">
+                <div class="campaigns-filter-bar">
+                    <button class="camp-filter-btn active" onclick="filterCampaigns('all', this)">All</button>
+                    <button class="camp-filter-btn" onclick="filterCampaigns('active', this)">Active</button>
+                    <button class="camp-filter-btn" onclick="filterCampaigns('completed', this)">Completed</button>
+                    <button class="camp-filter-btn" onclick="filterCampaigns('paused', this)">Paused</button>
+                </div>
+                <button class="campaigns-back-btn" onclick="closeCampaignsView()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Back to Patient
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Stats Bar -->
+        <div class="campaigns-stats-bar">
+            <div class="camp-stat">
+                <div class="camp-stat-number" id="camp-stat-active">3</div>
+                <div class="camp-stat-label">Active Campaigns</div>
+            </div>
+            <div class="camp-stat">
+                <div class="camp-stat-number" id="camp-stat-patients">2,386</div>
+                <div class="camp-stat-label">Total Patients Targeted</div>
+            </div>
+            <div class="camp-stat">
+                <div class="camp-stat-number teal" id="camp-stat-outreach">67%</div>
+                <div class="camp-stat-label">Avg. Outreach Complete</div>
+            </div>
+            <div class="camp-stat">
+                <div class="camp-stat-number teal" id="camp-stat-success">62%</div>
+                <div class="camp-stat-label">Avg. Success Rate</div>
+            </div>
+            <div class="camp-stat">
+                <div class="camp-stat-number red" id="camp-stat-escalations">77</div>
+                <div class="camp-stat-label">Total Escalations</div>
+            </div>
+        </div>
+
+        <!-- Campaign Cards Grid -->
+        <div class="campaigns-grid" id="campaigns-grid">
+            <!-- Rendered dynamically by renderCampaigns() -->
+        </div>
+    </div>
+
+    <!-- HANDOFF NOTE MODAL -->
+    <div class="handoff-modal-overlay" id="handoff-modal-overlay">
+        <div class="handoff-modal">
+            <div class="handoff-modal-header">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="handoff-escalation-badge">ESCALATION</span>
+                    <span style="font-weight:700;font-size:15px;color:#31393F;" id="handoff-modal-title">HANDOFF Note</span>
+                </div>
+                <button class="handoff-modal-close" onclick="closeHandoffModal()">&times;</button>
+            </div>
+            <div class="handoff-modal-body" id="handoff-modal-body">
+                <!-- Rendered dynamically by openHandoffModal() -->
+            </div>
+            <div class="handoff-modal-footer">
+                <button class="handoff-accept-btn" id="handoff-accept-btn" onclick="acceptHandoffTask()">Accept Task &amp; Initiate Outreach</button>
+                <button class="handoff-assign-btn" onclick="assignHandoffTask()">Assign to Care Manager</button>
+                <button class="handoff-dismiss-btn" onclick="closeHandoffModal()">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
     <!-- STAGING MODAL -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
@@ -13766,7 +14385,8 @@ const florenceTasks = [
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:28 PM',
     transcript: dmeCallTranscript,
-    transcript_label: 'Call with Lincare Home Medical'
+    transcript_label: 'Call with Lincare Home Medical',
+    handoff_note: null
   },
   {
     id: 'task-2',
@@ -13779,7 +14399,8 @@ const florenceTasks = [
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:35 PM',
     transcript: null,
-    transcript_label: null
+    transcript_label: null,
+    handoff_note: null
   },
   {
     id: 'task-3',
@@ -13792,7 +14413,8 @@ const florenceTasks = [
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:40 PM',
     transcript: pharmacyCallTranscript,
-    transcript_label: 'Call with CVS Pharmacy'
+    transcript_label: 'Call with CVS Pharmacy',
+    handoff_note: null
   },
   {
     id: 'task-4',
@@ -13805,7 +14427,8 @@ const florenceTasks = [
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:22 PM',
     transcript: daughterSmsTranscript,
-    transcript_label: 'SMS with Lisa Doe (daughter)'
+    transcript_label: 'SMS with Lisa Doe (daughter)',
+    handoff_note: null
   },
   {
     id: 'task-5',
@@ -13818,7 +14441,8 @@ const florenceTasks = [
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: null,
     transcript: null,
-    transcript_label: null
+    transcript_label: null,
+    handoff_note: null
   },
   {
     id: 'task-6',
@@ -13831,7 +14455,8 @@ const florenceTasks = [
     deduced_from: null,
     completed_at: 'Feb 25, 9:22 AM',
     transcript: null,
-    transcript_label: null
+    transcript_label: null,
+    handoff_note: null
   },
   {
     id: 'task-7',
@@ -13844,7 +14469,8 @@ const florenceTasks = [
     deduced_from: null,
     completed_at: null,
     transcript: null,
-    transcript_label: null
+    transcript_label: null,
+    handoff_note: null
   },
   {
     id: 'task-8',
@@ -13857,7 +14483,8 @@ const florenceTasks = [
     deduced_from: null,
     completed_at: 'Feb 25, 10:05 AM',
     transcript: null,
-    transcript_label: null
+    transcript_label: null,
+    handoff_note: null
   }
 ];
 
@@ -14036,6 +14663,8 @@ const florenceWorkflows = [
     name: 'Post-Discharge Transition of Care (TCM)',
     triggered_by: 'ADT Notification: Discharge from St. Joseph\'s Hospital',
     triggered_by_task: null,
+    mode: 1,
+    campaign_id: null,
     status: 'completed',
     progress: '5 of 5 steps complete',
     steps: [
@@ -14051,6 +14680,8 @@ const florenceWorkflows = [
     name: 'Home Health Start-of-Care Coordination',
     triggered_by: 'Deduced from Convene call: "Initiate home health aide referral"',
     triggered_by_task: 'task-5',
+    mode: 1,
+    campaign_id: null,
     status: 'active',
     progress: '1 of 4 steps complete',
     steps: [
@@ -14065,6 +14696,8 @@ const florenceWorkflows = [
     name: 'CKD Stage 3a Management',
     triggered_by: 'Staged Gap: Chronic Kidney Disease Stage 3a',
     triggered_by_task: null,
+    mode: 1,
+    campaign_id: null,
     status: 'active',
     progress: '2 of 5 steps complete',
     steps: [
@@ -14080,6 +14713,8 @@ const florenceWorkflows = [
     name: 'High Fall Risk Intervention',
     triggered_by: 'Staged Gap: Fall Risk Assessment - High',
     triggered_by_task: null,
+    mode: 1,
+    campaign_id: null,
     status: 'paused',
     progress: '1 of 4 steps complete',
     steps: [
@@ -14094,6 +14729,8 @@ const florenceWorkflows = [
     name: 'DME Coordination: Home Oxygen',
     triggered_by: 'Deduced from Convene call: "Coordinate home oxygen delivery"',
     triggered_by_task: 'task-1',
+    mode: 1,
+    campaign_id: null,
     status: 'completed',
     progress: '3 of 3 steps complete',
     steps: [
@@ -14101,6 +14738,109 @@ const florenceWorkflows = [
       { title: 'Call DME supplier to schedule delivery', status: 'done', timestamp: 'Feb 25, 2:25 PM' },
       { title: 'Confirm delivery with patient', status: 'done', timestamp: 'Feb 25, 2:28 PM' }
     ]
+  },
+  // Mode 2 (Autonomous) workflows
+  {
+    id: 'WF-A-001',
+    name: 'HEDIS: Annual Wellness Visit Scheduling',
+    triggered_by: 'Newton Platform: Q3 HEDIS AWV Campaign',
+    triggered_by_task: null,
+    mode: 2,
+    campaign_id: 'CAMP-AWV-Q3',
+    status: 'completed',
+    progress: '4 of 4 steps complete',
+    steps: [
+      { title: 'Send initial AWV reminder SMS', status: 'done', timestamp: 'Feb 20, 8:00 AM' },
+      { title: 'Automated follow-up call attempt', status: 'done', timestamp: 'Feb 21, 9:30 AM' },
+      { title: 'Patient confirmed appointment via SMS', status: 'done', timestamp: 'Feb 21, 9:45 AM' },
+      { title: 'Appointment confirmed in athenaOne', status: 'done', timestamp: 'Feb 21, 9:46 AM' }
+    ]
+  },
+  {
+    id: 'WF-A-002',
+    name: 'Medication Adherence: Metoprolol Refill',
+    triggered_by: 'Newton Platform: October Medication Adherence Campaign',
+    triggered_by_task: 'task-escalation-1',
+    mode: 2,
+    campaign_id: 'CAMP-MED-OCT',
+    status: 'escalated',
+    progress: '2 of 4 steps complete',
+    steps: [
+      { title: 'Send medication refill reminder SMS', status: 'done', timestamp: 'Feb 26, 8:00 AM' },
+      { title: 'Automated check-in call', status: 'done', timestamp: 'Feb 26, 10:15 AM' },
+      { title: 'ESCALATION: CM review required', status: 'escalated', timestamp: 'Feb 26, 10:22 AM' },
+      { title: 'CM follow-up outreach', status: 'pending', timestamp: null }
+    ]
+  }
+];
+
+// ==================== NEWTON CAMPAIGNS DATA ====================
+
+const newtonCampaigns = [
+  {
+    id: 'CAMP-AWV-Q3',
+    name: 'Q3 HEDIS: Annual Wellness Visit Scheduling',
+    status: 'active',
+    type: 'HEDIS',
+    start_date: 'Jul 1, 2025',
+    end_date: 'Sep 30, 2025',
+    targeted: 847,
+    outreach_complete: 91,
+    success_rate: 74,
+    escalations: 12,
+    description: 'Automated outreach to all eligible patients who have not yet scheduled their Annual Wellness Visit for the current measurement year.'
+  },
+  {
+    id: 'CAMP-MED-OCT',
+    name: 'October Medication Adherence Outreach',
+    status: 'active',
+    type: 'Medication Adherence',
+    start_date: 'Oct 1, 2025',
+    end_date: 'Oct 31, 2025',
+    targeted: 312,
+    outreach_complete: 68,
+    success_rate: 61,
+    escalations: 23,
+    description: 'Proactive outreach to patients with chronic conditions who have not refilled key medications in the past 30 days.'
+  },
+  {
+    id: 'CAMP-FLU-2025',
+    name: 'Flu Shot Reminders — Panel Wide',
+    status: 'active',
+    type: 'Preventive Care',
+    start_date: 'Oct 15, 2025',
+    end_date: 'Dec 31, 2025',
+    targeted: 1204,
+    outreach_complete: 43,
+    success_rate: 38,
+    escalations: 7,
+    description: 'Annual flu vaccination reminder campaign targeting all patients 65+ and high-risk patients across the panel.'
+  },
+  {
+    id: 'CAMP-TCM-NOV',
+    name: 'November TCM: Post-Discharge Outreach',
+    status: 'completed',
+    type: 'Transitional Care',
+    start_date: 'Nov 1, 2025',
+    end_date: 'Nov 30, 2025',
+    targeted: 89,
+    outreach_complete: 100,
+    success_rate: 87,
+    escalations: 4,
+    description: 'Automated 48-hour post-discharge outreach for all patients discharged from partner hospitals during November.'
+  },
+  {
+    id: 'CAMP-CCM-Q4',
+    name: 'Q4 CCM Monthly Check-In',
+    status: 'paused',
+    type: 'Chronic Care Management',
+    start_date: 'Oct 1, 2025',
+    end_date: 'Dec 31, 2025',
+    targeted: 523,
+    outreach_complete: 55,
+    success_rate: 52,
+    escalations: 31,
+    description: 'Monthly automated check-in calls for all enrolled CCM patients to capture symptom changes and medication adherence.'
   }
 ];
 
@@ -14535,6 +15275,539 @@ function addTaskFromConvene(taskTitle, workflowId) {
         addLogEntry('Task Deduced', taskTitle + ' — added to task list');
     }
 }
+
+// ==================== CAMPAIGNS & MODE 2 FUNCTIONS ====================
+
+// HANDOFF note data for the escalated medication adherence workflow
+const handoffNoteData = {
+  'WF-A-002': {
+    title: 'Medication Adherence: Metoprolol Refill — ESCALATION',
+    patient: 'Jane Doe | DOB: 03/14/1957 | MRN: 202070',
+    workflow: 'Medication Adherence: Metoprolol Refill (WF-A-002)',
+    campaign: 'October Medication Adherence Campaign (CAMP-MED-OCT)',
+    interaction_summary: 'Florence initiated an automated check-in call on Feb 26 at 10:15 AM regarding an overdue Metoprolol Succinate refill (last filled: Jan 24, 2026). Patient answered and confirmed she has not refilled the medication. Patient reported feeling dizzy and short of breath over the past three days, which she attributed to "not having her heart pill." Patient expressed difficulty getting to the pharmacy due to transportation barriers.',
+    transcript: [
+      { speaker: 'Florence', text: 'Good morning, this is Florence calling from NightingaleMD on behalf of Dr. Campbell. Am I speaking with Jane Doe?' },
+      { speaker: 'Patient', text: 'Yes, this is Jane.' },
+      { speaker: 'Florence', text: 'Hi Jane, I\'m calling because our records show your Metoprolol prescription may be due for a refill. Have you been able to pick it up?' },
+      { speaker: 'Patient', text: 'No, I haven\'t. I\'ve been feeling really dizzy and short of breath for the past few days. I think it\'s because I ran out of my heart pill.' },
+      { speaker: 'Florence', text: 'I\'m sorry to hear that, Jane. Dizziness and shortness of breath can be serious. I\'m going to flag this for your care manager right away. Is there anything preventing you from getting to the pharmacy?' },
+      { speaker: 'Patient', text: 'I can\'t drive anymore and my daughter is out of town this week. I don\'t have a way to get there.' },
+      { speaker: 'Florence', text: 'Understood. I will make sure your care team knows about your symptoms and the transportation difficulty. Someone will follow up with you shortly.' }
+    ],
+    findings: [
+      'Patient has been without Metoprolol Succinate for approximately 3 days',
+      'Patient reports active dizziness and shortness of breath — possible cardiac symptoms from medication gap',
+      'Transportation barrier identified: patient cannot drive, daughter unavailable this week',
+      'Patient is cooperative and aware of the issue'
+    ],
+    suggested_next_step: 'Urgent CM outreach recommended. Consider: (1) emergency medication delivery via pharmacy or DME, (2) telehealth check with Dr. Campbell to assess cardiac status, (3) initiate Transportation Assistance Workflow for ongoing pharmacy access. Do not delay — patient has active symptoms.'
+  }
+};
+
+function openCampaignsView() {
+    const overlay = document.getElementById('campaigns-overlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+    renderCampaigns('all');
+    addLogEntry('Campaigns View', 'Opened Newton Campaigns population dashboard');
+}
+
+function closeCampaignsView() {
+    const overlay = document.getElementById('campaigns-overlay');
+    if (overlay) overlay.classList.remove('active');
+}
+
+function renderCampaigns(filter) {
+    const grid = document.getElementById('campaigns-grid');
+    if (!grid) return;
+
+    let filtered = newtonCampaigns;
+    if (filter && filter !== 'all') {
+        filtered = newtonCampaigns.filter(c => c.status === filter);
+    }
+
+    grid.innerHTML = filtered.map(c => {
+        const hasEscalations = c.escalations > 0;
+        const escalationHtml = hasEscalations ? `
+            <div class="campaign-escalation-alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                ${c.escalations} escalation${c.escalations > 1 ? 's' : ''} require CM review
+                ${c.id === 'CAMP-MED-OCT' ? '<button onclick="openHandoffModal(\'WF-A-002\')" style="margin-left:auto;padding:3px 8px;background:#E45740;color:#fff;border:none;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">View HANDOFF</button>' : ''}
+            </div>` : '';
+
+        return `
+        <div class="campaign-card ${c.escalations > 0 ? 'escalated' : ''}" onclick="">
+            <div class="campaign-card-header">
+                <div class="campaign-card-name">${c.name}</div>
+                <span class="campaign-status-badge ${c.status}">${c.status.toUpperCase()}</span>
+            </div>
+            <div class="campaign-type-tag">${c.type}</div>
+            <div class="campaign-desc">${c.description}</div>
+            <div class="campaign-metrics">
+                <div class="campaign-metric">
+                    <div class="campaign-metric-value">${c.targeted.toLocaleString()}</div>
+                    <div class="campaign-metric-label">Targeted</div>
+                </div>
+                <div class="campaign-metric">
+                    <div class="campaign-metric-value teal">${c.outreach_complete}%</div>
+                    <div class="campaign-metric-label">Outreach Done</div>
+                </div>
+                <div class="campaign-metric">
+                    <div class="campaign-metric-value ${c.escalations > 0 ? 'red' : 'teal'}">${c.escalations}</div>
+                    <div class="campaign-metric-label">Escalations</div>
+                </div>
+            </div>
+            <div class="campaign-progress-bar">
+                <div class="campaign-progress-fill" style="width:${c.success_rate}%"></div>
+            </div>
+            <div class="campaign-dates">${c.start_date} — ${c.end_date} &nbsp;|&nbsp; ${c.success_rate}% success rate</div>
+            ${escalationHtml}
+        </div>`;
+    }).join('');
+}
+
+function filterCampaigns(filter, btn) {
+    // Update active button
+    document.querySelectorAll('.camp-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderCampaigns(filter);
+}
+
+function openHandoffModal(workflowId) {
+    const data = handoffNoteData[workflowId];
+    if (!data) return;
+
+    const modal = document.getElementById('handoff-modal-overlay');
+    const title = document.getElementById('handoff-modal-title');
+    const body = document.getElementById('handoff-modal-body');
+    const acceptBtn = document.getElementById('handoff-accept-btn');
+
+    if (!modal || !body) return;
+
+    title.textContent = data.title;
+    acceptBtn.setAttribute('data-workflow-id', workflowId);
+
+    const transcriptHtml = data.transcript.map(t =>
+        `<div style="margin-bottom:6px;"><strong style="color:${t.speaker === 'Patient' ? '#E45740' : '#55B5B8'}">${t.speaker}:</strong> ${t.text}</div>`
+    ).join('');
+
+    const findingsHtml = data.findings.map(f =>
+        `<div class="handoff-finding"><div class="handoff-finding-dot"></div><div>${f}</div></div>`
+    ).join('');
+
+    body.innerHTML = `
+        <div class="handoff-section">
+            <div class="handoff-section-label">Patient &amp; Workflow</div>
+            <div class="handoff-section-content">
+                <strong>${data.patient}</strong><br>
+                <span style="color:#5A6872;font-size:12px;">Workflow: ${data.workflow}</span><br>
+                <span style="color:#5A6872;font-size:12px;">Campaign: ${data.campaign}</span>
+            </div>
+        </div>
+        <div class="handoff-section">
+            <div class="handoff-section-label">Interaction Summary</div>
+            <div class="handoff-section-content">${data.interaction_summary}</div>
+        </div>
+        <div class="handoff-section">
+            <div class="handoff-section-label">Full Transcript</div>
+            <div class="handoff-transcript-box">${transcriptHtml}</div>
+        </div>
+        <div class="handoff-section">
+            <div class="handoff-section-label">Key Findings</div>
+            <div class="handoff-section-content">${findingsHtml}</div>
+        </div>
+        <div class="handoff-section" style="background:#FEF9E7;border-radius:8px;padding:12px;border:1px solid #F8CA44;">
+            <div class="handoff-section-label" style="color:#B8860B;">Suggested Next Step</div>
+            <div class="handoff-section-content" style="color:#7D5A00;">${data.suggested_next_step}</div>
+        </div>`;
+
+    modal.classList.add('active');
+
+    // Log to activity
+    addLogEntry('HANDOFF Note', `Florence escalation reviewed: ${data.title}`, null, 'Florence (Autonomous)');
+}
+
+function closeHandoffModal() {
+    const modal = document.getElementById('handoff-modal-overlay');
+    if (modal) modal.classList.remove('active');
+}
+
+function acceptHandoffTask() {
+    const btn = document.getElementById('handoff-accept-btn');
+    const workflowId = btn ? btn.getAttribute('data-workflow-id') : null;
+    closeHandoffModal();
+
+    // Add a new task for CM follow-up
+    florenceTasks.unshift({
+        id: 'task-handoff-' + Date.now(),
+        title: 'Urgent: Follow up on Metoprolol gap — Jane Doe',
+        detail: 'Patient has been without Metoprolol for 3 days. Reporting dizziness and SOB. Transportation barrier. Escalated by Florence autonomous check-in.',
+        status: 'pending',
+        origin: 'ai-deduced',
+        category: 'follow-up',
+        workflow_id: workflowId,
+        deduced_from: 'Florence autonomous check-in call, Feb 26 at 10:15 AM',
+        completed_at: null,
+        transcript: null,
+        transcript_label: null,
+        handoff_note: workflowId
+    });
+
+    // Switch to Workflows > Tasks tab
+    switchToTab('workflows');
+    setTimeout(() => switchWorkflowsView('tasks'), 200);
+    setTimeout(() => renderTasks('all'), 300);
+
+    addLogEntry('HANDOFF Accepted', 'CM accepted escalation task: Urgent Metoprolol follow-up added to Tasks', null, 'Florence (Autonomous)');
+    showToast('Task added to your list. Switching to Tasks view.', 'success');
+}
+
+function assignHandoffTask() {
+    closeHandoffModal();
+    showToast('Escalation assigned to care team. Notification sent.', 'info');
+    addLogEntry('HANDOFF Assigned', 'Escalation assigned to care team for follow-up', null, 'Florence (Autonomous)');
+}
+
+// ==================== MODE 2 DEMO SCENARIOS ====================
+
+const mode2Scenarios = {
+    routine: {
+        id: 'mode2-routine',
+        label: 'AWV Scheduling — Routine Success',
+        tag: 'routine',
+        tagLabel: 'Routine',
+        campaign: 'Q3 HEDIS AWV Campaign',
+        script: [
+            { type: 'system', text: 'Florence initiating autonomous outreach — HEDIS AWV Campaign (CAMP-AWV-Q3)' },
+            { type: 'florence', text: 'Hello, this is Florence calling from NightingaleMD on behalf of Dr. Campbell. May I speak with Jane Doe?' },
+            { type: 'patient', text: 'Yes, this is Jane.' },
+            { type: 'florence', text: 'Hi Jane, I\'m calling to let you know that your Annual Wellness Visit is due this year. It\'s a covered benefit under your Medicare plan — no cost to you. Would you like me to schedule that for you?' },
+            { type: 'patient', text: 'Oh yes, I\'ve been meaning to do that. When is Dr. Campbell available?' },
+            { type: 'florence', text: 'Dr. Campbell has availability on Thursday, March 6th at 2 PM or Friday, March 7th at 10 AM. Which works better for you?' },
+            { type: 'patient', text: 'Thursday at 2 PM works perfectly.' },
+            { type: 'florence', text: 'Wonderful. I\'ve scheduled your Annual Wellness Visit for Thursday, March 6th at 2:00 PM with Dr. Campbell. You\'ll receive a confirmation text shortly. Is there anything else I can help you with today?' },
+            { type: 'patient', text: 'No, that\'s all. Thank you so much!' },
+            { type: 'florence', text: 'You\'re welcome, Jane. Have a great day and we\'ll see you on March 6th.' },
+            { type: 'system', text: 'Appointment confirmed in athenaOne. Campaign task marked complete. No escalation required.' }
+        ]
+    },
+    escalation: {
+        id: 'mode2-escalation',
+        label: 'Medication Adherence — Escalation',
+        tag: 'escalation',
+        tagLabel: 'Escalation',
+        campaign: 'October Medication Adherence Campaign',
+        script: [
+            { type: 'system', text: 'Florence initiating autonomous outreach — Medication Adherence Campaign (CAMP-MED-OCT)' },
+            { type: 'florence', text: 'Good morning, this is Florence calling from NightingaleMD on behalf of Dr. Campbell. Am I speaking with Jane Doe?' },
+            { type: 'patient', text: 'Yes, this is Jane.' },
+            { type: 'florence', text: 'Hi Jane, I\'m calling because our records show your Metoprolol prescription may be due for a refill. Have you been able to pick it up?' },
+            { type: 'patient', text: 'No, I haven\'t. I\'ve been feeling really dizzy and short of breath for the past few days. I think it\'s because I ran out of my heart pill.' },
+            { type: 'florence', text: 'I\'m very sorry to hear that, Jane. Dizziness and shortness of breath can be serious symptoms. I\'m going to flag this for your care manager right away. Is there anything preventing you from getting to the pharmacy?' },
+            { type: 'patient', text: 'I can\'t drive anymore and my daughter is out of town this week.' },
+            { type: 'florence', text: 'Understood. I will make sure your care team knows about your symptoms and the transportation difficulty. Someone will follow up with you very shortly. Please do not hesitate to call 911 if your symptoms worsen.' },
+            { type: 'system', text: '⚠ ESCALATION TRIGGERED — Florence generating HANDOFF Note for care manager review' }
+        ]
+    },
+    trigger: {
+        id: 'mode2-trigger',
+        label: 'Flu Shot Reminder — Workflow Triggered',
+        tag: 'trigger',
+        tagLabel: 'WF Triggered',
+        campaign: 'Flu Shot Reminders — Panel Wide',
+        script: [
+            { type: 'system', text: 'Florence initiating autonomous outreach — Flu Shot Campaign (CAMP-FLU-2025)' },
+            { type: 'florence', text: 'Good afternoon, this is Florence calling from NightingaleMD. May I speak with Jane Doe?' },
+            { type: 'patient', text: 'Speaking.' },
+            { type: 'florence', text: 'Hi Jane, I\'m calling with a quick reminder that flu season is here and your flu shot is due. It\'s covered by your insurance. Would you like me to schedule that at your next visit or at a nearby pharmacy?' },
+            { type: 'patient', text: 'I\'d like to get it, but honestly I\'m having trouble getting around. I can\'t really get to the pharmacy easily.' },
+            { type: 'florence', text: 'I completely understand, Jane. I\'m noting a transportation barrier. I\'d like to suggest a Transportation Assistance Workflow to help arrange a ride for you. Your care manager will need to approve this — I\'m flagging it for their review now.' },
+            { type: 'patient', text: 'That would be wonderful, thank you.' },
+            { type: 'florence', text: 'Of course. Your care manager will follow up with you about the transportation arrangement. Is there anything else I can help with today?' },
+            { type: 'patient', text: 'No, that\'s all. Thank you.' },
+            { type: 'system', text: '🔔 WORKFLOW SUGGESTION — Transportation Assistance Workflow surfaced for CM approval' }
+        ]
+    }
+};
+
+let mode2PlaybackTimeout = null;
+
+function playMode2Demo(scenarioKey) {
+    const scenario = mode2Scenarios[scenarioKey];
+    if (!scenario) return;
+
+    // Switch to Outreach tab and show the transcript area
+    switchToTab('outreach');
+
+    // Clear any existing playback
+    if (mode2PlaybackTimeout) clearTimeout(mode2PlaybackTimeout);
+
+    // Find the transcript container (reuse the existing one)
+    const transcriptContainer = document.getElementById('transcript-container');
+    const workflowTitle = document.getElementById('current-workflow-title');
+    const workflowStatus = document.getElementById('workflow-status-text');
+
+    if (transcriptContainer) {
+        transcriptContainer.innerHTML = '';
+        transcriptContainer.style.display = 'flex';
+    }
+    if (workflowTitle) workflowTitle.textContent = scenario.label;
+    if (workflowStatus) workflowStatus.textContent = 'Mode 2 — Autonomous';
+
+    // Show the outreach workflow panel — hide buttons, show transcript
+    const outreachPanel = document.getElementById('outreach-panel');
+    if (outreachPanel) {
+        const workflowButtons = outreachPanel.querySelector('.com-workflow-buttons');
+        const showTranscriptBar = document.getElementById('show-full-transcript-bar');
+        if (workflowButtons) workflowButtons.style.display = 'none';
+        if (showTranscriptBar) showTranscriptBar.style.display = 'none';
+    }
+    // Add a Mode 2 header above the transcript
+    if (transcriptContainer) {
+        const mode2Header = document.createElement('div');
+        mode2Header.id = 'mode2-transcript-header';
+        mode2Header.style.cssText = 'padding:10px 12px;background:rgba(85,181,184,0.1);border-bottom:1px solid rgba(85,181,184,0.2);display:flex;align-items:center;gap:8px;flex-shrink:0;';
+        mode2Header.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span style="color:#55B5B8;font-size:11px;font-weight:700;">Florence [A] — Autonomous Mode</span>
+            <span style="color:rgba(255,255,255,0.4);font-size:11px;margin-left:4px;">${scenario.label}</span>
+            <button onclick="stopMode2Demo()" style="margin-left:auto;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;">Stop</button>
+        `;
+        transcriptContainer.parentNode.insertBefore(mode2Header, transcriptContainer);
+    }
+
+    addLogEntry('Mode 2 Demo', `Autonomous outreach started: ${scenario.label}`, null, 'Florence (Autonomous)');
+
+    // Play messages with delay
+    let delay = 300;
+    scenario.script.forEach((msg, idx) => {
+        const isSystem = msg.type === 'system';
+        const isPatient = msg.type === 'patient';
+        const isFlorence = msg.type === 'florence';
+        mode2PlaybackTimeout = setTimeout(() => {
+            if (!transcriptContainer) return;
+
+            const div = document.createElement('div');
+
+            if (isSystem) {
+                div.style.cssText = 'padding:8px 12px;margin:6px 0;background:rgba(85,181,184,0.1);border:1px solid rgba(85,181,184,0.2);border-radius:6px;font-size:11px;color:#55B5B8;font-style:italic;text-align:center;';
+                div.textContent = msg.text;
+
+                // Trigger special actions for system messages
+                if (msg.text.includes('ESCALATION')) {
+                    setTimeout(() => {
+                        openHandoffModal('WF-A-002');
+                        addLogEntry('HANDOFF Created', 'Florence created escalation HANDOFF note', null, 'Florence (Autonomous)');
+                    }, 1500);
+                } else if (msg.text.includes('WORKFLOW SUGGESTION')) {
+                    setTimeout(() => {
+                        showMode2WorkflowSuggestion(transcriptContainer);
+                    }, 1500);
+                }
+            } else {
+                div.style.cssText = `display:flex;gap:8px;padding:8px 4px;border-bottom:1px solid rgba(255,255,255,0.06);`;
+                const speakerColor = isFlorence ? '#55B5B8' : '#F3F4F6';
+                const speakerLabel = isFlorence ? 'Florence [A]' : 'Patient';
+                div.innerHTML = `
+                    <span style="color:${speakerColor};font-size:11px;font-weight:700;min-width:80px;flex-shrink:0;">${speakerLabel}</span>
+                    <span style="color:rgba(255,255,255,0.85);font-size:12px;line-height:1.5;">${msg.text}</span>`;
+            }
+
+            transcriptContainer.appendChild(div);
+            transcriptContainer.scrollTop = transcriptContainer.scrollHeight;
+
+            // Log key patient statements
+            if (isPatient && (msg.text.includes('dizzy') || msg.text.includes('short of breath') || msg.text.includes('transportation') || msg.text.includes('can\'t drive'))) {
+                addLogEntry('Clinical Flag', `Patient reported: ${msg.text.substring(0, 60)}...`, null, 'Florence (Autonomous)');
+            }
+
+            // On last message, restore outreach buttons
+            if (idx === scenario.script.length - 1) {
+                setTimeout(() => {
+                    stopMode2Demo();
+                    addLogEntry('Mode 2 Complete', `Autonomous outreach completed: ${scenario.label}`, null, 'Florence (Autonomous)');
+                }, 2000);
+            }
+        }, delay);
+        delay += isSystem ? 800 : 1800;
+    });
+}
+
+function stopMode2Demo() {
+    if (mode2PlaybackTimeout) clearTimeout(mode2PlaybackTimeout);
+    // Remove the Mode 2 header
+    const header = document.getElementById('mode2-transcript-header');
+    if (header) header.remove();
+    // Restore workflow buttons
+    const outreachPanel = document.getElementById('outreach-panel');
+    if (outreachPanel) {
+        const workflowButtons = outreachPanel.querySelector('.com-workflow-buttons');
+        if (workflowButtons) workflowButtons.style.display = '';
+    }
+    // Reset transcript
+    const transcriptContainer = document.getElementById('transcript-container');
+    if (transcriptContainer) {
+        transcriptContainer.innerHTML = '<p style="color: #a0aec0; text-align: center; padding: 40px;">Select a workflow above to start a conversation.</p>';
+    }
+}
+
+function showMode2WorkflowSuggestion(container) {
+    // Show a workflow suggestion card inline in the transcript
+    const card = document.createElement('div');
+    card.style.cssText = 'margin:10px 0;padding:12px 14px;background:linear-gradient(135deg,rgba(85,181,184,0.12),rgba(85,181,184,0.06));border:1px solid rgba(85,181,184,0.4);border-left:3px solid #55B5B8;border-radius:8px;';
+    card.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span style="color:#55B5B8;font-size:11px;font-weight:700;letter-spacing:0.5px;">FLORENCE SUGGESTION</span>
+            <span style="background:rgba(85,181,184,0.2);color:#55B5B8;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600;">WORKFLOW</span>
+        </div>
+        <div style="color:#F3F4F6;font-weight:600;font-size:12px;margin-bottom:4px;">Transportation Assistance Workflow</div>
+        <div style="color:#9CA3AF;font-size:11px;margin-bottom:8px;">Patient reported transportation barrier — unable to get to pharmacy for flu shot. Florence recommends initiating transportation assistance to enable care access.</div>
+        <div style="display:flex;gap:6px;">
+            <button onclick="this.closest('div[style]').innerHTML='<span style=color:#27AE60;font-size:11px;font-weight:600>✓ Workflow Initiated</span>';addLogEntry('Workflow Triggered','Transportation Assistance Workflow initiated from Mode 2 demo',null,'Florence (Autonomous)');" style="background:#55B5B8;color:#0D2137;border:none;border-radius:4px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;">Initiate Workflow</button>
+            <button onclick="this.closest('div[style]').style.opacity='0.4';" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:5px 10px;font-size:11px;cursor:pointer;">Dismiss</button>
+        </div>
+    `;
+    if (container) container.appendChild(card);
+}
+
+// ==================== UPDATE renderWorkflows FOR MODE 2 ====================
+
+// Override renderWorkflows to add Mode 2 [A] badge and escalated status
+const _originalRenderWorkflows = typeof renderWorkflows === 'function' ? renderWorkflows : null;
+
+function renderWorkflowsWithMode2(filter) {
+    filter = filter || 'all';
+    const container = document.getElementById('wf-list');
+    if (!container) return;
+
+    let filtered = florenceWorkflows;
+    if (filter !== 'all') filtered = florenceWorkflows.filter(w => w.status === filter);
+
+    const activeCount = florenceWorkflows.filter(w => w.status === 'active' || w.status === 'escalated').length;
+    const badge = document.getElementById('wf-active-count');
+    if (badge) badge.textContent = activeCount + ' active';
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="padding:20px;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;">No workflows found</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(wf => {
+        const isMode2 = wf.mode === 2;
+        const isEscalated = wf.status === 'escalated';
+        const statusColor = isEscalated ? '#E45740' : wf.status === 'completed' ? '#27AE60' : '#55B5B8';
+        const statusLabel = isEscalated ? 'ESCALATED' : wf.status.toUpperCase();
+
+        const mode2Tag = isMode2 ? `<span class="wf-autonomous-tag"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Autonomous</span>` : '';
+        const escalatedTag = isEscalated ? `<span class="wf-escalated-tag">⚠ Escalated</span>` : '';
+
+        const stepsHtml = wf.steps.map(s => {
+            const stepColor = s.status === 'done' ? '#27AE60' : s.status === 'escalated' ? '#E45740' : 'rgba(255,255,255,0.3)';
+            const stepIcon = s.status === 'done' ? '✓' : s.status === 'escalated' ? '⚠' : '○';
+            return `<div style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:11px;">
+                <span style="color:${stepColor};font-weight:700;flex-shrink:0;">${stepIcon}</span>
+                <span style="color:${s.status === 'done' ? 'rgba(255,255,255,0.7)' : s.status === 'escalated' ? '#E45740' : 'rgba(255,255,255,0.4)'}">${s.title}</span>
+                ${s.timestamp ? `<span style="margin-left:auto;color:rgba(255,255,255,0.3);white-space:nowrap;">${s.timestamp}</span>` : ''}
+            </div>`;
+        }).join('');
+
+        const handoffBtn = isEscalated ? `<button onclick="openHandoffModal('${wf.id}')" style="margin-top:8px;width:100%;padding:6px;background:#E45740;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">View HANDOFF Note</button>` : '';
+
+        return `<div style="background:rgba(255,255,255,0.04);border:1px solid ${isEscalated ? 'rgba(228,87,64,0.4)' : 'rgba(255,255,255,0.08)'};border-radius:10px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                <div style="flex:1;">
+                    <div style="font-size:13px;font-weight:700;color:#F3F4F6;display:flex;align-items:center;gap:6px;">
+                        ${wf.name}
+                        ${isMode2 ? '<span class="mode2-badge">A</span>' : ''}
+                    </div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">${wf.triggered_by}</div>
+                </div>
+                <span style="padding:3px 8px;background:${statusColor}22;color:${statusColor};border-radius:4px;font-size:10px;font-weight:700;flex-shrink:0;margin-left:8px;">${statusLabel}</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">${mode2Tag}${escalatedTag}</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px;">${wf.progress}</div>
+            <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;">${stepsHtml}</div>
+            ${handoffBtn}
+        </div>`;
+    }).join('');
+}
+
+// ==================== ADD MODE 2 BUTTONS TO OUTREACH TAB ====================
+
+function addMode2OutreachButtons() {
+    const outreachPanel = document.getElementById('outreach-panel');
+    if (!outreachPanel) return;
+    if (document.getElementById('mode2-outreach-section')) return; // already added
+
+    const section = document.createElement('div');
+    section.id = 'mode2-outreach-section';
+    section.className = 'mode2-outreach-section';
+    section.innerHTML = `
+        <div class="mode2-section-label">Mode 2 — Autonomous Demos</div>
+        <button class="mode2-demo-btn" onclick="playMode2Demo('routine')">
+            <span>AWV Scheduling — Routine Success</span>
+            <span class="mode2-demo-tag tag-routine">Routine</span>
+        </button>
+        <button class="mode2-demo-btn" onclick="playMode2Demo('escalation')">
+            <span>Medication Adherence — Escalation</span>
+            <span class="mode2-demo-tag tag-escalation">Escalation</span>
+        </button>
+        <button class="mode2-demo-btn" onclick="playMode2Demo('trigger')">
+            <span>Flu Shot Reminder — WF Triggered</span>
+            <span class="mode2-demo-tag tag-trigger">WF Triggered</span>
+        </button>`;
+
+    // Append at the bottom of the outreach panel
+    outreachPanel.appendChild(section);
+}
+
+// ==================== OVERRIDE addLogEntry FOR MODE 2 ATTRIBUTION ====================
+
+const _baseAddLogEntry = addLogEntry;
+function addLogEntry(title, description, time, attribution) {
+    const container = document.getElementById('log-container');
+    if (!container) return;
+
+    const now = new Date();
+    const timeStr = time || now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const isAutonomous = attribution === 'Florence (Autonomous)';
+    const isHandoff = title && title.includes('HANDOFF');
+    const cmName = window.CARE_MANAGER || 'Sarah Martinez, RN, CCM';
+    const attributionStr = isAutonomous ? 'Florence (Autonomous)' : cmName;
+
+    const item = document.createElement('div');
+    item.className = 'log-item' + (isHandoff ? ' log-item-handoff' : '');
+    item.setAttribute('data-log-type', isHandoff ? 'handoff' : (isAutonomous ? 'autonomous' : 'cm'));
+    item.style.cssText = 'display:flex;gap:10px;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;' + (isHandoff ? 'border-left:3px solid #E45740;background:rgba(228,87,64,0.04);' : '');
+
+    const handoffBadge = isHandoff ? '<span class="log-handoff-badge">HANDOFF</span>' : '';
+    const autoBadge = isAutonomous ? '<span class="log-autonomous-badge">AUTO</span>' : '';
+
+    item.innerHTML = `
+        <span style="color:rgba(255,255,255,0.4);white-space:nowrap;font-size:11px;">${handoffBadge}${title || 'Event'}</span>
+        <span style="color:rgba(255,255,255,0.7);flex:1;">${description || ''}<br>
+            <span style="font-size:10px;color:rgba(255,255,255,0.3);">by ${attributionStr}${autoBadge}</span>
+        </span>
+        <span style="margin-left:auto;color:rgba(255,255,255,0.3);white-space:nowrap;font-size:11px;">${timeStr}</span>`;
+
+    container.insertBefore(item, container.firstChild);
+    updateLogFilterCounts();
+}
+
+// ==================== INITIALIZATION ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Use the enhanced renderWorkflows with Mode 2 support
+    window.renderWorkflows = renderWorkflowsWithMode2;
+
+    // Add Mode 2 demo buttons to outreach tab after a short delay
+    setTimeout(addMode2OutreachButtons, 500);
+
+    // Initial render with Mode 2 support
+    renderWorkflowsWithMode2('all');
+});
 
 // Task deduction mapping for Convene script
 const conveneTaskDeductions = {
