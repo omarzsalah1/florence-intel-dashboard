@@ -6426,6 +6426,84 @@ button:hover {
         </div>
     </div>
 
+    <!-- PRE-WORK SUMMARY MODAL -->
+    <div class="handoff-modal-overlay" id="prework-modal-overlay" style="z-index:3100;">
+        <div class="handoff-modal" style="width:720px;">
+            <div class="handoff-modal-header" style="background:#EFF6FF;border-bottom-color:#BFDBFE;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="padding:4px 10px;background:#3B82F6;color:#fff;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:1px;">PRE-WORK SUMMARY</span>
+                    <span style="font-weight:700;font-size:15px;color:#1E3A5F;">Jane Doe — Visit Preparation Brief</span>
+                </div>
+                <button class="handoff-modal-close" onclick="document.getElementById('prework-modal-overlay').classList.remove('active')">&times;</button>
+            </div>
+            <div class="handoff-modal-body">
+                <!-- Section 1: Patient Snapshot -->
+                <div class="handoff-section">
+                    <div class="handoff-section-label">Patient Snapshot</div>
+                    <div class="handoff-section-content">
+                        <table style="width:100%;font-size:12px;border-collapse:collapse;">
+                            <tr><td style="padding:4px 8px;color:#6B7280;width:130px;">Patient</td><td style="padding:4px 8px;font-weight:600;">Jane Doe, 68 y/o F &nbsp;|&nbsp; DOB: 05/27/1955 &nbsp;|&nbsp; MRN: 202070</td></tr>
+                            <tr><td style="padding:4px 8px;color:#6B7280;">PCP</td><td style="padding:4px 8px;">Dr. Campbell &nbsp;|&nbsp; <span style="background:#FEE2E2;color:#991B1B;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:700;">HIGH RISK</span> &nbsp;<span style="background:#DBEAFE;color:#1E40AF;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:700;">CCM</span></td></tr>
+                            <tr><td style="padding:4px 8px;color:#6B7280;">Visit Type</td><td style="padding:4px 8px;">Post-Discharge TCM Follow-up &nbsp;|&nbsp; Feb 27, 2026</td></tr>
+                            <tr><td style="padding:4px 8px;color:#6B7280;">Key Labs</td><td style="padding:4px 8px;"><span style="color:#E45740;font-weight:700;">HbA1c 8.9%</span> &nbsp;|&nbsp; <span style="color:#E45740;font-weight:700;">eGFR 42 ↓</span> &nbsp;|&nbsp; <span style="color:#E45740;font-weight:700;">BP 142/88</span> &nbsp;|&nbsp; <span style="color:#E45740;font-weight:700;">Fall Risk 55 (High)</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- Section 2: Care Gaps Summary -->
+                <div class="handoff-section">
+                    <div class="handoff-section-label">Care &amp; Diagnosis Gaps (9 Total)</div>
+                    <div class="handoff-section-content">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                            <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:6px;padding:8px;">
+                                <div style="font-size:10px;font-weight:700;color:#9A3412;margin-bottom:4px;">STAGED FOR MD REVIEW (2)</div>
+                                <div style="font-size:12px;color:#7C2D12;">• Essential Hypertension (I10) — HCC 85</div>
+                                <div style="font-size:12px;color:#7C2D12;">• DM with Diabetic CKD (E11.22) — HCC 18/136</div>
+                            </div>
+                            <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:6px;padding:8px;">
+                                <div style="font-size:10px;font-weight:700;color:#991B1B;margin-bottom:4px;">SUSPECT GAPS (4)</div>
+                                <div style="font-size:12px;color:#7F1D1D;">• CKD Stage 3a (N18.31) — HCC 138</div>
+                                <div style="font-size:12px;color:#7F1D1D;">• Major Depressive Disorder (F33.1)</div>
+                                <div style="font-size:12px;color:#7F1D1D;">• Morbid Obesity (E66.01)</div>
+                                <div style="font-size:12px;color:#7F1D1D;">• Peripheral Vascular Disease</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section 3: Key Clinical Findings -->
+                <div class="handoff-section">
+                    <div class="handoff-section-label">Key Clinical Findings for Today's Visit</div>
+                    <div class="handoff-section-content">
+                        <div class="handoff-finding"><div class="handoff-finding-dot" style="background:#E45740;"></div><span><strong>Recent MI (Feb 25, 2026):</strong> Cardiac catheterization with stent placement at St. Joseph's. Patient on 6 new post-MI medications. Verify adherence and tolerance.</span></div>
+                        <div class="handoff-finding"><div class="handoff-finding-dot" style="background:#E45740;"></div><span><strong>Uncontrolled Diabetes:</strong> HbA1c 8.9% (last 12/20/2025). Metformin 1000mg BID ongoing. Consider endocrinology referral reschedule (no-show 02/05).</span></div>
+                        <div class="handoff-finding"><div class="handoff-finding-dot" style="background:#F59E0B;"></div><span><strong>CKD Stage 3a:</strong> eGFR 42 mL/min (declining trend). Nephrology referral pending signature. Avoid nephrotoxic medications.</span></div>
+                        <div class="handoff-finding"><div class="handoff-finding-dot" style="background:#F59E0B;"></div><span><strong>High Fall Risk:</strong> Morse Fall Scale 55. PT referral declined by patient (transportation barrier resolved). Re-assess willingness today.</span></div>
+                        <div class="handoff-finding"><div class="handoff-finding-dot" style="background:#6B7280;"></div><span><strong>Depression Screening:</strong> PHQ-9 score 8 (Mild). Sertraline 100mg ongoing. Monitor for post-MI depression (common in first 3 months).</span></div>
+                    </div>
+                </div>
+                <!-- Section 4: Recommendations -->
+                <div class="handoff-section">
+                    <div class="handoff-section-label">Florence Recommendations for Today</div>
+                    <div class="handoff-section-content">
+                        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:10px;">
+                            <div style="font-size:12px;color:#14532D;line-height:1.8;">
+                                <strong>1.</strong> Sign pending Nephrology referral (CKD eGFR 42, declining)<br>
+                                <strong>2.</strong> Review and attest staged gaps: HTN (I10) and DM with CKD (E11.22) for HCC capture<br>
+                                <strong>3.</strong> Reschedule Endocrinology (patient no-show 02/05) — HbA1c 8.9% requires specialist follow-up<br>
+                                <strong>4.</strong> Reassess PT referral for fall prevention — transportation barrier now resolved<br>
+                                <strong>5.</strong> Order repeat HbA1c and CMP at 3-month follow-up<br>
+                                <strong>6.</strong> Screen for post-MI depression at today's visit (PHQ-9 follow-up)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="handoff-modal-footer" style="background:#EFF6FF;border-top-color:#BFDBFE;">
+                <button class="handoff-accept-btn" style="background:#3B82F6;" onclick="document.getElementById('prework-modal-overlay').classList.remove('active')">Close Summary</button>
+                <button class="handoff-assign-btn" onclick="document.getElementById('prework-modal-overlay').classList.remove('active')">Print / Export</button>
+            </div>
+        </div>
+    </div>
+
     <!-- STAGING MODAL -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
@@ -8927,6 +9005,13 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 if (workflowType === 'convene' && conveneTaskDeductions[i]) {
                     setTimeout(() => {
                         addTaskFromConvene(conveneTaskDeductions[i]);
+                    }, 800);
+                }
+                
+                // Trigger task deduction for engage workflow
+                if (workflowType === 'engage' && typeof engageTaskDeductions !== 'undefined' && engageTaskDeductions[i]) {
+                    setTimeout(() => {
+                        addTaskFromConvene(engageTaskDeductions[i], 'WF-TCM-001');
                     }, 800);
                 }
                 
@@ -15146,7 +15231,10 @@ window.toggleBannerFacesheet = toggleBannerFacesheet;
 
 // ==================== PRE-WORK SUMMARY ====================
 function showPreWorkSummary() {
-    alert('Pre-Work Summary\n\nPatient: Jane Doe (68 y/o F)\n\nKey Findings:\n• 9 Care & Diagnosis Gaps identified\n• 2 Gaps staged for MD review\n• High risk patient (Fall Risk: 55, HbA1c: 8.9%)\n• Recent MI with stent placement (Feb 25, 2026)\n• CKD Stage 3a (eGFR: 42)\n\nRecommendations:\n• Review staged gaps (Essential HTN, DM with CKD)\n• Address suspect gaps (CKD 3a, Depression)\n• Follow up on quality measures (Colorectal screening)\n\nThis is a demo placeholder. Full summary modal coming soon.');
+    const overlay = document.getElementById('prework-modal-overlay');
+    if (overlay) {
+        overlay.classList.add('active');
+    }
 }
 window.showPreWorkSummary = showPreWorkSummary;
 
@@ -15624,9 +15712,28 @@ function playMode2Demo(scenarioKey) {
 
             // On last message, restore outreach buttons
             if (idx === scenario.script.length - 1) {
+                const lastMsg = scenario.script[scenario.script.length - 1];
+                const isWorkflowTrigger = lastMsg && lastMsg.text && lastMsg.text.includes('WORKFLOW SUGGESTION');
                 setTimeout(() => {
-                    stopMode2Demo();
                     addLogEntry('Mode 2 Complete', `Autonomous outreach completed: ${scenario.label}`, null, 'Florence (Autonomous)');
+                    if (!isWorkflowTrigger) {
+                        // Only auto-reset for non-workflow-trigger scenarios
+                        stopMode2Demo();
+                    } else {
+                        // For workflow-trigger scenarios, keep transcript visible
+                        // so care manager can see and act on the suggestion card.
+                        // Remove only the Mode 2 header bar, keep transcript.
+                        const header = document.getElementById('mode2-transcript-header');
+                        if (header) header.remove();
+                        // Add a "Close" button at the bottom of the transcript
+                        const transcriptContainer = document.getElementById('transcript-container');
+                        if (transcriptContainer) {
+                            const closeBtn = document.createElement('div');
+                            closeBtn.style.cssText = 'text-align:center;margin-top:12px;';
+                            closeBtn.innerHTML = `<button onclick="stopMode2Demo()" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:6px 16px;font-size:11px;cursor:pointer;">Close Transcript</button>`;
+                            transcriptContainer.appendChild(closeBtn);
+                        }
+                    }
                 }, 2000);
             }
         }, delay);
@@ -15810,6 +15917,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Task deduction mapping for Convene script
+// ==================== ENGAGE TASK DEDUCTIONS ====================
+// Maps script message index -> task title to deduce at that point in the Engage call
+// Engage script indices (0-indexed):
+//   3 = patient: "I'm doing okay, just a little tired" (post-discharge status)
+//   6 = patient: "Yes, I have them all here" (medication confirmed)
+//  11 = patient: "No chest pain, but I do feel a little short of breath" (clinical flag)
+//  17 = patient: "Monday at 10am would be perfect" (appointment scheduled)
+//  20 = patient: "Thank you so much for calling" (call wrap-up)
+const engageTaskDeductions = {
+    3: 'Document post-discharge status — patient reports fatigue',
+    6: 'Verify medication pickup — all discharge meds confirmed',
+    11: 'Flag exertional dyspnea — review at follow-up visit',
+    17: 'Confirm Monday 10am appointment with Dr. Campbell',
+    20: 'Send appointment reminder text to Jane Doe'
+};
+
 const conveneTaskDeductions = {
     3: 'Coordinate home oxygen delivery',
     5: 'Order home pulse oximetry monitoring',
