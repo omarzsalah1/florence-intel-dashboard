@@ -4769,6 +4769,110 @@ button:hover {
         .campaign-card.escalated {
             border-left: 4px solid #E45740;
         }
+        /* M1: Campaign Patient Drill-Down */
+        .campaign-drilldown {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #F2F3F4;
+            z-index: 10;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .campaign-drilldown.active { display: block; }
+        .campaign-drilldown-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .campaign-drilldown-back {
+            padding: 6px 14px;
+            background: #fff;
+            border: 1px solid #D5D8DC;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #31393F;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .campaign-drilldown-back:hover { background: #F8F9FA; }
+        .campaign-drilldown-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #31393F;
+        }
+        .campaign-drilldown-stats {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .drilldown-stat {
+            background: #fff;
+            border: 1px solid #E8EAEC;
+            border-radius: 8px;
+            padding: 10px 16px;
+            text-align: center;
+            flex: 1;
+        }
+        .drilldown-stat-val {
+            font-size: 20px;
+            font-weight: 800;
+            color: #31393F;
+        }
+        .drilldown-stat-val.green { color: #27AE60; }
+        .drilldown-stat-val.red { color: #E45740; }
+        .drilldown-stat-val.teal { color: #55B5B8; }
+        .drilldown-stat-label {
+            font-size: 10px;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+        .drilldown-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #E8EAEC;
+        }
+        .drilldown-table th {
+            background: #F8F9FA;
+            padding: 10px 14px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #5A6872;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            border-bottom: 1px solid #E8EAEC;
+        }
+        .drilldown-table td {
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #31393F;
+            border-bottom: 1px solid #F2F3F4;
+        }
+        .drilldown-table tr:hover td { background: #F8FFFE; }
+        .drilldown-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .drilldown-status.scheduled { background: #E8F8F5; color: #27AE60; }
+        .drilldown-status.contacted { background: #EBF5FB; color: #2980B9; }
+        .drilldown-status.escalated { background: #FDEDEC; color: #E45740; }
+        .drilldown-status.no-response { background: #FEF9E7; color: #F39C12; }
+        .drilldown-status.completed { background: #D5F5E3; color: #1E8449; }
+        .drilldown-status.declined { background: #F2F3F4; color: #6B7280; }
         .campaign-card-header {
             display: flex;
             align-items: flex-start;
@@ -6408,6 +6512,19 @@ button:hover {
         <!-- Campaign Cards Grid -->
         <div class="campaigns-grid" id="campaigns-grid">
             <!-- Rendered dynamically by renderCampaigns() -->
+        </div>
+
+        <!-- M1: Patient-Level Drill-Down Panel -->
+        <div class="campaign-drilldown" id="campaign-drilldown">
+            <div class="campaign-drilldown-header">
+                <button class="campaign-drilldown-back" onclick="closeCampaignDrillDown()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Back to Campaigns
+                </button>
+                <div class="campaign-drilldown-title" id="drilldown-title"></div>
+            </div>
+            <div class="campaign-drilldown-stats" id="drilldown-stats"></div>
+            <div id="drilldown-table-container"></div>
         </div>
     </div>
 
@@ -15440,7 +15557,7 @@ function renderCampaigns(filter) {
             </div>` : '';
 
         return `
-        <div class="campaign-card ${c.escalations > 0 ? 'escalated' : ''}" onclick="">
+        <div class="campaign-card ${c.escalations > 0 ? 'escalated' : ''}" onclick="openCampaignDrillDown('${c.id}')">
             <div class="campaign-card-header">
                 <div class="campaign-card-name">${c.name}</div>
                 <span class="campaign-status-badge ${c.status}">${c.status.toUpperCase()}</span>
@@ -15475,6 +15592,120 @@ function filterCampaigns(filter, btn) {
     document.querySelectorAll('.camp-filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     renderCampaigns(filter);
+}
+
+// M1: Campaign Patient-Level Drill-Down Data
+const campaignPatients = {
+    'CAMP-AWV-Q3': [
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'scheduled', lastOutreach: 'Mar 2, 2026', outcome: 'AWV scheduled Mar 6 at 2 PM', method: 'Phone' },
+        { name: 'Robert Chen', mrn: '201445', age: 72, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 28, 2026', outcome: 'AWV completed Feb 28', method: 'Phone' },
+        { name: 'Maria Gonzalez', mrn: '203112', age: 74, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'VM left, no callback', method: 'Phone' },
+        { name: 'William Park', mrn: '200891', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'AWV completed Feb 26', method: 'SMS' },
+        { name: 'Dorothy Adams', mrn: '204556', age: 78, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Patient confused, needs CM assist', method: 'Phone' },
+        { name: 'James Wilson', mrn: '201223', age: 70, risk: 'MOD', status: 'contacted', lastOutreach: 'Mar 1, 2026', outcome: 'Will call back to schedule', method: 'Phone' },
+        { name: 'Helen Torres', mrn: '205001', age: 69, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'AWV completed Feb 25', method: 'SMS' },
+        { name: 'Frank Miller', mrn: '202890', age: 75, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 28, 2026', outcome: 'Patient declined — prefers own schedule', method: 'Phone' }
+    ],
+    'CAMP-MED-OCT': [
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Metoprolol gap — dizziness, SOB, transport barrier', method: 'Phone' },
+        { name: 'Arthur Brown', mrn: '200334', age: 71, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'Refill confirmed at CVS', method: 'Phone' },
+        { name: 'Linda Nguyen', mrn: '203678', age: 65, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 27, 2026', outcome: 'Will pick up tomorrow', method: 'SMS' },
+        { name: 'George Harris', mrn: '201990', age: 77, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Lisinopril gap — reports headaches', method: 'Phone' },
+        { name: 'Susan Clark', mrn: '204112', age: 69, risk: 'MOD', status: 'no-response', lastOutreach: 'Feb 28, 2026', outcome: 'No answer x3 attempts', method: 'Phone' },
+        { name: 'Thomas Lee', mrn: '200567', age: 73, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'Statin refill confirmed', method: 'SMS' }
+    ],
+    'CAMP-FLU-2025': [
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 20, 2026', outcome: 'VM left, pending callback', method: 'Phone' },
+        { name: 'Patricia White', mrn: '205234', age: 71, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 18, 2026', outcome: 'Flu shot received at pharmacy', method: 'SMS' },
+        { name: 'Richard Davis', mrn: '201678', age: 80, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 19, 2026', outcome: 'Patient declined — allergic concern', method: 'Phone' },
+        { name: 'Barbara Johnson', mrn: '203445', age: 67, risk: 'LOW', status: 'scheduled', lastOutreach: 'Feb 22, 2026', outcome: 'Appt scheduled Feb 28', method: 'SMS' },
+        { name: 'Charles Martinez', mrn: '200112', age: 76, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 21, 2026', outcome: 'Homebound — needs home visit', method: 'Phone' }
+    ],
+    'CAMP-TCM-NOV': [
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'TCM call completed, f/u scheduled', method: 'Phone' },
+        { name: 'Edward Robinson', mrn: '204890', age: 74, risk: 'HIGH', status: 'completed', lastOutreach: 'Nov 15, 2025', outcome: '48-hr call completed, stable', method: 'Phone' },
+        { name: 'Margaret Taylor', mrn: '201556', age: 70, risk: 'MOD', status: 'completed', lastOutreach: 'Nov 12, 2025', outcome: 'Meds verified, PCP appt set', method: 'Phone' },
+        { name: 'Ronald Anderson', mrn: '203001', age: 82, risk: 'HIGH', status: 'escalated', lastOutreach: 'Nov 18, 2025', outcome: 'Readmission risk — CM notified', method: 'Phone' }
+    ],
+    'CAMP-CCM-Q4': [
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Monthly check-in completed', method: 'Phone' },
+        { name: 'Nancy Thompson', mrn: '205678', age: 73, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 25, 2026', outcome: 'New symptoms reported — SOB', method: 'Phone' },
+        { name: 'Kenneth Moore', mrn: '200789', age: 68, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'Stable, no changes', method: 'Phone' },
+        { name: 'Betty Jackson', mrn: '202334', age: 79, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'No answer x2, SMS sent', method: 'Phone' },
+        { name: 'Donald Garcia', mrn: '204001', age: 71, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Medication questions answered', method: 'SMS' }
+    ]
+};
+
+function openCampaignDrillDown(campaignId) {
+    const campaign = newtonCampaigns.find(c => c.id === campaignId);
+    const patients = campaignPatients[campaignId];
+    if (!campaign || !patients) return;
+
+    const panel = document.getElementById('campaign-drilldown');
+    const title = document.getElementById('drilldown-title');
+    const stats = document.getElementById('drilldown-stats');
+    const tableContainer = document.getElementById('drilldown-table-container');
+
+    title.textContent = campaign.name;
+
+    // Calculate stats from patient data
+    const total = patients.length;
+    const completed = patients.filter(p => p.status === 'completed' || p.status === 'scheduled').length;
+    const escalated = patients.filter(p => p.status === 'escalated').length;
+    const noResponse = patients.filter(p => p.status === 'no-response').length;
+    const contacted = patients.filter(p => p.status === 'contacted').length;
+
+    stats.innerHTML = `
+        <div class="drilldown-stat"><div class="drilldown-stat-val">${total}</div><div class="drilldown-stat-label">Patients Shown</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val green">${completed}</div><div class="drilldown-stat-label">Completed / Scheduled</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val teal">${contacted}</div><div class="drilldown-stat-label">Contacted</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val red">${escalated}</div><div class="drilldown-stat-label">Escalated</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val" style="color:#F39C12;">${noResponse}</div><div class="drilldown-stat-label">No Response</div></div>
+    `;
+
+    const riskBadge = (risk) => {
+        const colors = { HIGH: '#E45740', MOD: '#F39C12', LOW: '#27AE60' };
+        return `<span style="display:inline-block;padding:1px 6px;background:${colors[risk]}20;color:${colors[risk]};border-radius:4px;font-size:10px;font-weight:700;">${risk}</span>`;
+    };
+
+    tableContainer.innerHTML = `
+        <table class="drilldown-table">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>MRN</th>
+                    <th>Age</th>
+                    <th>Risk</th>
+                    <th>Status</th>
+                    <th>Method</th>
+                    <th>Last Outreach</th>
+                    <th>Outcome</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${patients.map(p => `
+                    <tr style="cursor:pointer;" onclick="${p.mrn === '202070' ? "closeCampaignsView();" : ''}">
+                        <td style="font-weight:600;">${p.name} ${p.mrn === '202070' ? '<span style="background:#55B5B8;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;margin-left:4px;">CURRENT</span>' : ''}</td>
+                        <td>${p.mrn}</td>
+                        <td>${p.age}</td>
+                        <td>${riskBadge(p.risk)}</td>
+                        <td><span class="drilldown-status ${p.status}">${p.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span></td>
+                        <td>${p.method}</td>
+                        <td>${p.lastOutreach}</td>
+                        <td style="max-width:220px;">${p.outcome}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+
+    panel.classList.add('active');
+    addLogEntry('Campaign Drill-Down', `Opened patient-level view for: ${campaign.name}`);
+}
+
+function closeCampaignDrillDown() {
+    const panel = document.getElementById('campaign-drilldown');
+    if (panel) panel.classList.remove('active');
 }
 
 function openHandoffModal(workflowId) {
