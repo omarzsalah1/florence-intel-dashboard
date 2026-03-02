@@ -15718,7 +15718,24 @@ function playMode2Demo(scenarioKey) {
             transcriptContainer.appendChild(div);
             transcriptContainer.scrollTop = transcriptContainer.scrollHeight;
 
-            // Log key patient statements
+            // === H3: Real-time Activity Log entries for every Mode 2 message ===
+            if (isFlorence) {
+                addLogEntry('Florence Outreach', msg.text.length > 80 ? msg.text.substring(0, 77) + '...' : msg.text, null, 'Florence (Autonomous)');
+            } else if (isPatient) {
+                addLogEntry('Patient Response', msg.text.length > 80 ? msg.text.substring(0, 77) + '...' : msg.text, null, 'Florence (Autonomous)');
+            } else if (isSystem) {
+                addLogEntry('System Event', msg.text.length > 80 ? msg.text.substring(0, 77) + '...' : msg.text, null, 'Florence (Autonomous)');
+            }
+
+            // Update the Activity tab notification badge
+            const syncBell = document.getElementById('sync-notif-bell');
+            if (syncBell) {
+                const currentCount = parseInt(syncBell.textContent) || 0;
+                syncBell.textContent = currentCount + 1;
+                syncBell.style.display = '';
+            }
+
+            // Log key patient statements (clinical flags get extra emphasis)
             if (isPatient && (msg.text.includes('dizzy') || msg.text.includes('short of breath') || msg.text.includes('transportation') || msg.text.includes('can\'t drive'))) {
                 addLogEntry('Clinical Flag', `Patient reported: ${msg.text.substring(0, 60)}...`, null, 'Florence (Autonomous)');
             }
