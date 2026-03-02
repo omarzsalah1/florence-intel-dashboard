@@ -7082,7 +7082,7 @@ button:hover {
                 { type: 'florence', text: "Thank you! I've recorded 156 mg/dL. That's a bit elevated - remember to watch your carbs. Any dizziness or falls today? Reply YES or NO." },
                 { type: 'patient', text: "NO" },
                 { type: 'florence', text: "Wonderful! Your check-in is complete. Remember, your appointment is coming up soon. Reply HELP anytime if you need assistance. Have a great day, Jane! 💙" },
-                { type: 'system', text: '💬 Check-In completed • 5 responses collected' }
+                { type: 'system', text: '💬 Check-In completed • 5 responses collected • ✨ 4 action items deduced' }
             ]
         };
         
@@ -9017,7 +9017,14 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 // Trigger task deduction for engage workflow
                 if (workflowType === 'engage' && typeof engageTaskDeductions !== 'undefined' && engageTaskDeductions[i]) {
                     setTimeout(() => {
-                        addTaskFromConvene(engageTaskDeductions[i], 'WF-TCM-001');
+                        addTaskFromConvene(engageTaskDeductions[i], 'WF-TCM-001', 'Engage call — AI deduced from conversation');
+                    }, 800);
+                }
+                
+                // Trigger task deduction for checkin workflow
+                if (workflowType === 'checkin' && typeof checkinTaskDeductions !== 'undefined' && checkinTaskDeductions[i]) {
+                    setTimeout(() => {
+                        addTaskFromConvene(checkinTaskDeductions[i], 'WF-CHECKIN-001', 'Check-In SMS — AI deduced from patient replies');
                     }, 800);
                 }
                 
@@ -15331,7 +15338,7 @@ function showToast(message) {
 }
 
 // Add task from Convene call — creates task as pending_review (awaiting CM accept/deny via inline suggestion card)
-function addTaskFromConvene(taskTitle, workflowId) {
+function addTaskFromConvene(taskTitle, workflowId, sourceLabel) {
     // Find matching task in florenceTasks by title (case-insensitive partial match)
     const task = florenceTasks.find(t => 
         t.title.toLowerCase().includes(taskTitle.toLowerCase().substring(0, 20)) ||
@@ -15343,18 +15350,18 @@ function addTaskFromConvene(taskTitle, workflowId) {
         task.status = 'pending_review';
         task.origin = 'ai-deduced';
         task.workflow_id = workflowId || task.workflow_id || null;
-        task.deduced_from = task.deduced_from || 'Convene call — AI deduced from conversation';
+        task.deduced_from = sourceLabel || task.deduced_from || 'Convene call — AI deduced from conversation';
     } else {
         // Add as a new task if not found
         florenceTasks.unshift({
             id: 'task-conv-' + Date.now(),
             title: taskTitle,
-            detail: 'Deduced from Convene call conversation.',
+            detail: 'Deduced from ' + (sourceLabel || 'Convene call conversation') + '.',
             status: 'pending_review',
             origin: 'ai-deduced',
             category: 'follow-up',
             workflow_id: workflowId || null,
-            deduced_from: 'Convene call — AI deduced from conversation',
+            deduced_from: sourceLabel || 'Convene call — AI deduced from conversation',
             completed_at: null,
             transcript: null,
             transcript_label: null
@@ -15937,6 +15944,13 @@ const engageTaskDeductions = {
     11: 'Flag exertional dyspnea — review at follow-up visit',
     17: 'Confirm Monday 10am appointment with Dr. Campbell',
     20: 'Send appointment reminder text to Jane Doe'
+};
+
+const checkinTaskDeductions = {
+    3: 'Log patient status: feeling okay — continue monitoring',
+    5: 'Confirm medication adherence — all meds taken today',
+    7: 'Flag elevated blood sugar (156 mg/dL) — notify care team for review',
+    9: 'Document no falls or dizziness reported — update fall risk log'
 };
 
 const conveneTaskDeductions = {
