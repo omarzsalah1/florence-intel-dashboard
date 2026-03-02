@@ -6661,7 +6661,7 @@ button:hover {
             </div>
             <div class="handoff-modal-footer" style="background:#EFF6FF;border-top-color:#BFDBFE;">
                 <button class="handoff-accept-btn" style="background:#3B82F6;" onclick="document.getElementById('prework-modal-overlay').classList.remove('active')">Close Summary</button>
-                <button class="handoff-assign-btn" onclick="document.getElementById('prework-modal-overlay').classList.remove('active')">Print / Export</button>
+                <button class="handoff-assign-btn" onclick="exportPreWorkPDF()" style="display:flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Export PDF</button>
             </div>
         </div>
     </div>
@@ -15417,6 +15417,132 @@ function showPreWorkSummary() {
     }
 }
 window.showPreWorkSummary = showPreWorkSummary;
+
+// M4: Export Pre-Work Summary as PDF
+function exportPreWorkPDF() {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) { alert('Please allow popups to export PDF.'); return; }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    printWindow.document.write(`<!DOCTYPE html>
+<html><head><title>Pre-Work Summary — Jane Doe</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Lato', sans-serif; color: #31393F; padding: 40px; max-width: 800px; margin: 0 auto; }
+  .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #55B5B8; padding-bottom: 16px; margin-bottom: 24px; }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-logo { height: 40px; }
+  .header-title { font-family: 'Merriweather', serif; font-size: 20px; font-weight: 700; color: #31393F; }
+  .header-subtitle { font-size: 12px; color: #5A6872; }
+  .header-right { text-align: right; font-size: 11px; color: #5A6872; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .badge-risk { background: #FEE2E2; color: #991B1B; }
+  .badge-ccm { background: #DBEAFE; color: #1E40AF; }
+  .badge-prework { background: #55B5B8; color: #fff; padding: 3px 10px; font-size: 10px; letter-spacing: 1px; }
+  .section { margin-bottom: 20px; }
+  .section-title { font-family: 'Merriweather', serif; font-size: 14px; font-weight: 700; color: #55B5B8; border-bottom: 1px solid #E8EAEC; padding-bottom: 6px; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table td { padding: 5px 8px; vertical-align: top; }
+  table td:first-child { color: #5A6872; width: 130px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .gap-box { border: 1px solid #E8EAEC; border-radius: 6px; padding: 10px; }
+  .gap-box-title { font-size: 10px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
+  .gap-box-staged { background: #FFF7ED; border-color: #FED7AA; }
+  .gap-box-staged .gap-box-title { color: #9A3412; }
+  .gap-box-suspect { background: #FEF2F2; border-color: #FECACA; }
+  .gap-box-suspect .gap-box-title { color: #991B1B; }
+  .gap-item { font-size: 12px; color: #374151; line-height: 1.6; }
+  .finding { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; line-height: 1.5; }
+  .finding-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .dot-red { background: #E45740; }
+  .dot-yellow { background: #F8CA44; }
+  .dot-gray { background: #6B7280; }
+  .rec-box { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 12px; font-size: 12px; line-height: 1.8; color: #14532D; }
+  .footer { margin-top: 30px; padding-top: 12px; border-top: 2px solid #55B5B8; display: flex; justify-content: space-between; font-size: 10px; color: #5A6872; }
+  @media print {
+    body { padding: 20px; }
+    @page { margin: 0.5in; size: letter; }
+  }
+</style>
+</head><body>
+<div class="header">
+  <div class="header-left">
+    <img class="header-logo" src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD">
+    <div>
+      <div class="header-title">Pre-Work Summary</div>
+      <div class="header-subtitle">Visit Preparation Brief &nbsp;|&nbsp; <span class="badge badge-prework">FLORENCE AI</span></div>
+    </div>
+  </div>
+  <div class="header-right">
+    Generated: ${dateStr}<br>${timeStr}
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Patient Snapshot</div>
+  <table>
+    <tr><td>Patient</td><td><strong>Jane Doe</strong>, 68 y/o F &nbsp;|&nbsp; DOB: 05/27/1955 &nbsp;|&nbsp; MRN: 202070</td></tr>
+    <tr><td>PCP</td><td>Dr. Campbell &nbsp;|&nbsp; <span class="badge badge-risk">HIGH RISK</span> &nbsp;<span class="badge badge-ccm">CCM</span></td></tr>
+    <tr><td>Visit Type</td><td>Post-Discharge TCM Follow-up &nbsp;|&nbsp; Feb 27, 2026</td></tr>
+    <tr><td>Key Labs</td><td><strong style="color:#E45740;">HbA1c 8.9%</strong> &nbsp;|&nbsp; <strong style="color:#E45740;">eGFR 42 ↓</strong> &nbsp;|&nbsp; <strong style="color:#E45740;">BP 142/88</strong> &nbsp;|&nbsp; <strong style="color:#E45740;">Fall Risk 55 (High)</strong></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">Care & Diagnosis Gaps (9 Total)</div>
+  <div class="grid">
+    <div class="gap-box gap-box-staged">
+      <div class="gap-box-title">Staged for MD Review (2)</div>
+      <div class="gap-item">• Essential Hypertension (I10) — HCC 85</div>
+      <div class="gap-item">• DM with Diabetic CKD (E11.22) — HCC 18/136</div>
+    </div>
+    <div class="gap-box gap-box-suspect">
+      <div class="gap-box-title">Suspect Gaps (4)</div>
+      <div class="gap-item">• CKD Stage 3a (N18.31) — HCC 138</div>
+      <div class="gap-item">• Major Depressive Disorder (F33.1)</div>
+      <div class="gap-item">• Morbid Obesity (E66.01)</div>
+      <div class="gap-item">• Peripheral Vascular Disease</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Key Clinical Findings</div>
+  <div class="finding"><div class="finding-dot dot-red"></div><span><strong>Recent MI (Feb 25, 2026):</strong> Cardiac catheterization with stent placement at St. Joseph's. Patient on 6 new post-MI medications. Verify adherence and tolerance.</span></div>
+  <div class="finding"><div class="finding-dot dot-red"></div><span><strong>Uncontrolled Diabetes:</strong> HbA1c 8.9% (last 12/20/2025). Metformin 1000mg BID ongoing. Consider endocrinology referral reschedule (no-show 02/05).</span></div>
+  <div class="finding"><div class="finding-dot dot-yellow"></div><span><strong>CKD Stage 3a:</strong> eGFR 42 mL/min (declining trend). Nephrology referral pending signature. Avoid nephrotoxic medications.</span></div>
+  <div class="finding"><div class="finding-dot dot-yellow"></div><span><strong>High Fall Risk:</strong> Morse Fall Scale 55. PT referral declined by patient (transportation barrier resolved). Re-assess willingness today.</span></div>
+  <div class="finding"><div class="finding-dot dot-gray"></div><span><strong>Depression Screening:</strong> PHQ-9 score 8 (Mild). Sertraline 100mg ongoing. Monitor for post-MI depression (common in first 3 months).</span></div>
+</div>
+
+<div class="section">
+  <div class="section-title">Florence Recommendations for Today</div>
+  <div class="rec-box">
+    <strong>1.</strong> Sign pending Nephrology referral (CKD eGFR 42, declining)<br>
+    <strong>2.</strong> Review and attest staged gaps: HTN (I10) and DM with CKD (E11.22) for HCC capture<br>
+    <strong>3.</strong> Reschedule Endocrinology (patient no-show 02/05) — HbA1c 8.9% requires specialist follow-up<br>
+    <strong>4.</strong> Reassess PT referral for fall prevention — transportation barrier now resolved<br>
+    <strong>5.</strong> Order repeat HbA1c and CMP at 3-month follow-up<br>
+    <strong>6.</strong> Screen for post-MI depression at today's visit (PHQ-9 follow-up)
+  </div>
+</div>
+
+<div class="footer">
+  <span>NightingaleMD Florence AI Navigator &nbsp;|&nbsp; Confidential Patient Information</span>
+  <span>Page 1 of 1</span>
+</div>
+</body></html>`);
+    printWindow.document.close();
+    setTimeout(() => {
+        printWindow.print();
+        addLogEntry('Pre-Work Summary', 'PDF export initiated for Jane Doe visit preparation brief');
+    }, 500);
+}
+window.exportPreWorkPDF = exportPreWorkPDF;
 
 // ==================== GAPS/WORKFLOWS TOGGLE ====================
 function switchGapsView(view) {
