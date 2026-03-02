@@ -7068,7 +7068,7 @@ button:hover {
                 { type: 'care-manager', text: "That's what I'm here for, Jane. I'll get to work on all of this. Florence will handle the coordination, and we'll keep you updated. Just rest up, and I'll be in touch soon." },
                 { type: 'patient', text: "Thank you. Bye now." },
                 { type: 'system', text: '📞 Call ended • Duration: 5:42' },
-                { type: 'system', text: '✨ Florence deduced 5 action items from this conversation. View them in the Tasks tab.' }
+                { type: 'system', text: '✨ Florence deduced 8 action items from this conversation. View them in the Tasks tab.' }
             ],
             checkin: [
                 { type: 'system', text: 'Florence initiating automated Check-In with Jane Doe...' },
@@ -15943,8 +15943,11 @@ const conveneTaskDeductions = {
     3: 'Coordinate home oxygen delivery',
     5: 'Order home pulse oximetry monitoring',
     7: 'Verify prescription pickup location',
+    9: 'Screen for mobility limitations — patient reports difficulty getting around (SDOH)',
     11: 'Send nephrology appointment details to daughter',
-    13: 'Initiate home health aide referral'
+    13: 'Initiate home health aide referral',
+    15: 'Assess social support and caregiver burden — patient overwhelmed post-discharge (SDOH)',
+    21: 'Flag ADL assistance need — patient unable to bathe independently (SDOH)'
 };
 
     </script>
