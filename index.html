@@ -4330,14 +4330,26 @@ button:hover {
         }
         .wf-step {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            align-items: flex-start;
+            gap: 10px;
             font-size: 11px;
-            padding: 4px 0;
+            padding: 0;
+            position: relative;
+            min-height: 36px;
         }
+        .wf-step-connector {
+            position: absolute;
+            left: 9px;
+            top: 20px;
+            bottom: -16px;
+            width: 2px;
+            background: #374151;
+        }
+        .wf-step.step-done .wf-step-connector { background: #10B981; }
+        .wf-step:last-child .wf-step-connector { display: none; }
         .wf-step-icon {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -4345,13 +4357,40 @@ button:hover {
             font-size: 9px;
             font-weight: 700;
             flex-shrink: 0;
+            z-index: 1;
+            margin-top: 1px;
         }
         .wf-step-icon.si-done { background: #10B981; color: white; }
-        .wf-step-icon.si-active { background: #3B82F6; color: white; animation: pulse 2s infinite; }
-        .wf-step-icon.si-pending { background: #374151; color: #6B7280; }
-        .wf-step-title { color: #D1D5DB; flex: 1; }
-        .wf-step.step-done .wf-step-title { color: #9CA3AF; }
+        .wf-step-icon.si-active { background: #3B82F6; color: white; animation: pulse 2s infinite; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); }
+        .wf-step-icon.si-pending { background: #374151; color: #6B7280; border: 1px solid #4B5563; }
+        .wf-step-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding-bottom: 12px;
+        }
+        .wf-step-title-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .wf-step-title { color: #D1D5DB; flex: 1; font-weight: 500; }
+        .wf-step.step-done .wf-step-title { color: #9CA3AF; text-decoration: line-through; text-decoration-color: #4B5563; }
+        .wf-step.step-active .wf-step-title { color: #93C5FD; font-weight: 600; }
         .wf-step-time { font-size: 9px; color: #6B7280; }
+        .wf-step-status-label {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+        .wf-step.step-done .wf-step-status-label { background: rgba(16,185,129,0.15); color: #34D399; }
+        .wf-step.step-active .wf-step-status-label { background: rgba(59,130,246,0.15); color: #60A5FA; }
+        .wf-step.step-pending .wf-step-status-label { background: rgba(75,85,99,0.3); color: #6B7280; }
         .wf-progress-bar {
             margin-top: 8px;
             background: #374151;
@@ -15086,18 +15125,27 @@ function renderWorkflows(filter) {
         const pfClass = 'pf-' + wf.status;
         const statusLabel = wf.status.charAt(0).toUpperCase() + wf.status.slice(1);
 
-        const stepsHtml = wf.steps.map(step => {
+        const stepsHtml = wf.steps.map((step, idx) => {
             const iconClass = 'si-' + step.status;
-            const iconChar = step.status === 'done' ? '\u2713' : step.status === 'active' ? '\u25CF' : '\u2022';
+            const iconChar = step.status === 'done' ? '\u2713' : step.status === 'active' ? (idx + 1) : (idx + 1);
             const stepClass = 'step-' + step.status;
+            const statusLabel = step.status === 'done' ? 'Done' : step.status === 'active' ? 'In Progress' : 'Pending';
             return `
                 <div class="wf-step ${stepClass}">
+                    <div class="wf-step-connector"></div>
                     <div class="wf-step-icon ${iconClass}">${iconChar}</div>
-                    <span class="wf-step-title">${step.title}</span>
-                    ${step.timestamp ? `<span class="wf-step-time">${step.timestamp}</span>` : ''}
+                    <div class="wf-step-content">
+                        <div class="wf-step-title-row">
+                            <span class="wf-step-title">${step.title}</span>
+                            <span class="wf-step-status-label">${statusLabel}</span>
+                        </div>
+                        ${step.timestamp ? `<span class="wf-step-time">${step.timestamp}</span>` : ''}
+                    </div>
                 </div>
             `;
         }).join('');
+        const isActive = wf.status === 'active';
+        const autoExpand = isActive ? 'expanded' : '';
 
         return `
             <div class="wf-card ${cardClass}" data-wf-id="${wf.id}">
@@ -15110,12 +15158,12 @@ function renderWorkflows(filter) {
                 </div>
                 <div class="wf-trigger">Triggered by: ${wf.triggered_by}</div>
                 <div class="wf-progress-bar"><div class="wf-progress-fill ${pfClass}" style="width:${pct}%"></div></div>
-                <div class="wf-progress-label">${wf.progress}</div>
-                <div class="wf-expand-toggle" onclick="toggleWorkflowSteps(this)">
+                <div class="wf-progress-label" style="display:flex;justify-content:space-between;"><span>${wf.progress}</span><span style="font-weight:700;color:${pct === 100 ? '#34D399' : '#60A5FA'};">${pct}%</span></div>
+                <div class="wf-expand-toggle ${autoExpand}" onclick="toggleWorkflowSteps(this)">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    <span>Show step details</span>
+                    <span>${isActive ? 'Hide step details' : 'Show step details'}</span>
                 </div>
-                <div class="wf-steps">${stepsHtml}</div>
+                <div class="wf-steps ${autoExpand}">${stepsHtml}</div>
             </div>
         `;
     }).join('');
