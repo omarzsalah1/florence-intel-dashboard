@@ -14619,6 +14619,7 @@ function renderTasks(filter) {
         const isChecked = task.status === 'completed';
         const isPendingReview = task.status === 'pending_review';
         const sparkle = task.origin === 'ai-deduced' ? `<span class="task-sparkle" title="AI Deduced">&#10024;<span class="sparkle-tooltip">Deduced from ${task.deduced_from}</span></span>` : '';
+        const handoffBadge = task.is_handoff ? `<span style="display:inline-block;padding:2px 6px;background:#E45740;color:#fff;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:0.5px;margin-left:6px;">HANDOFF</span>` : '';
         const catClass = 'cat-' + task.category;
         const statusClass = 's-' + task.status.replace('_', '-');
         const statusLabel = task.status === 'in-progress' ? 'In Progress'
@@ -14648,6 +14649,7 @@ function renderTasks(filter) {
                 <div class="task-body">
                     <div class="task-title-row">
                         <span class="task-title">${task.title}</span>
+                        ${handoffBadge}
                         ${sparkle}
                     </div>
                     <div class="task-detail">${task.detail}</div>
@@ -15539,20 +15541,28 @@ function acceptHandoffTask() {
     const workflowId = btn ? btn.getAttribute('data-workflow-id') : null;
     closeHandoffModal();
 
+    // M2: Dynamically pull title/detail from handoffNoteData
+    const data = workflowId ? handoffNoteData[workflowId] : null;
+    const taskTitle = data ? 'Urgent: ' + data.title.replace(' — ESCALATION', '') : 'Urgent: Follow up on escalation';
+    const taskDetail = data ? data.interaction_summary.substring(0, 200) + (data.interaction_summary.length > 200 ? '...' : '') : 'Escalated by Florence autonomous outreach.';
+    const taskFindings = data ? data.findings.join('; ') : '';
+
     // Add a new task for CM follow-up
     florenceTasks.unshift({
         id: 'task-handoff-' + Date.now(),
-        title: 'Urgent: Follow up on Metoprolol gap — Jane Doe',
-        detail: 'Patient has been without Metoprolol for 3 days. Reporting dizziness and SOB. Transportation barrier. Escalated by Florence autonomous check-in.',
-        status: 'pending',
+        title: taskTitle,
+        detail: taskDetail,
+        status: 'pending_review',
         origin: 'ai-deduced',
         category: 'follow-up',
         workflow_id: workflowId,
-        deduced_from: 'Florence autonomous check-in call, Feb 26 at 10:15 AM',
+        deduced_from: 'HANDOFF escalation — Florence autonomous outreach',
         completed_at: null,
         transcript: null,
         transcript_label: null,
-        handoff_note: workflowId
+        handoff_note: workflowId,
+        is_handoff: true,
+        findings: taskFindings
     });
 
     // Switch to Workflows > Tasks tab
@@ -15560,8 +15570,8 @@ function acceptHandoffTask() {
     setTimeout(() => switchWorkflowsView('tasks'), 200);
     setTimeout(() => renderTasks('all'), 300);
 
-    addLogEntry('HANDOFF Accepted', 'CM accepted escalation task: Urgent Metoprolol follow-up added to Tasks', null, 'Florence (Autonomous)');
-    showToast('Task added to your list. Switching to Tasks view.', 'success');
+    addLogEntry('HANDOFF Accepted', `CM accepted escalation task: ${taskTitle} — added to Tasks`, null, 'Florence (Autonomous)');
+    showToast('HANDOFF task added to your list. Switching to Tasks view.', 'success');
 }
 
 function assignHandoffTask() {
