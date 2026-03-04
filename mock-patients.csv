@@ -1,0 +1,13 @@
+Patient Name,MRN,Age,Risk Level,Phone,Language,Last Visit,Insurance
+Maria Gonzalez,203112,74,HIGH,(555) 234-5678,Spanish,2026-01-15,Medicare
+Robert Chen,201445,72,MOD,(555) 345-6789,English,2026-02-01,Medicare
+Patricia Williams,204567,68,HIGH,(555) 456-7890,English,2025-12-20,Medicaid
+James Rodriguez,205678,71,MOD,(555) 567-8901,Spanish,2026-01-28,Medicare
+Dorothy Kim,206789,66,LOW,(555) 678-9012,English,2026-02-10,Commercial
+Thomas Brown,207890,78,HIGH,(555) 789-0123,English,2025-11-15,Medicare
+Linda Martinez,208901,69,MOD,(555) 890-1234,Spanish,2026-01-05,Medicaid
+Richard Taylor,209012,73,LOW,(555) 901-2345,English,2026-02-18,Medicare
+Susan Nguyen,210123,67,HIGH,(555) 012-3456,English,2026-01-22,Commercial
+Carlos Hernandez,211234,75,MOD,(555) 123-4567,Spanish,2025-12-30,Medicare
+Betty Johnson,212345,70,LOW,(555) 234-5679,English,2026-02-05,Medicare
+Frank Wilson,213456,76,HIGH,(555) 345-6790,English,2025-11-28,Medicaid

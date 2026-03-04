@@ -3482,7 +3482,115 @@ button:hover {
         .referral-details div {
             margin-bottom: 4px;
         }
-        
+
+        /* F3: Closed-Loop Referral Tracking */
+        .referral-item { cursor: pointer; transition: all 0.2s ease; }
+        .referral-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); transform: translateY(-1px); }
+        .referral-tracking-panel {
+            display: none;
+            margin-top: 10px;
+            padding: 12px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+        }
+        .referral-tracking-panel.active { display: block; }
+        .referral-timeline {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 8px 0 16px;
+            position: relative;
+        }
+        .referral-timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            right: 24px;
+            height: 3px;
+            background: #E2E8F0;
+            z-index: 0;
+        }
+        .referral-timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            flex: 1;
+            max-width: 80px;
+        }
+        .referral-timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #E2E8F0;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+        }
+        .referral-timeline-dot.completed {
+            background: #059669;
+            box-shadow: 0 0 0 2px #059669;
+        }
+        .referral-timeline-dot.current {
+            background: #3B82F6;
+            box-shadow: 0 0 0 2px #3B82F6, 0 0 0 6px rgba(59,130,246,0.2);
+        }
+        .referral-timeline-dot.skipped {
+            background: #EF4444;
+            box-shadow: 0 0 0 2px #EF4444;
+        }
+        .referral-timeline-dot svg { width: 10px; height: 10px; }
+        .referral-timeline-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #94A3B8;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .referral-timeline-label.active { color: #1E293B; }
+        .referral-timeline-date {
+            font-size: 8px;
+            color: #94A3B8;
+            margin-top: 2px;
+        }
+        .specialist-notes {
+            margin-top: 10px;
+            padding: 10px;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 6px;
+        }
+        .specialist-notes-header {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1E40AF;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .specialist-notes-body {
+            font-size: 11px;
+            color: #334155;
+            line-height: 1.6;
+        }
+        .specialist-notes-body strong { color: #1E293B; }
+        .florence-tracking-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background: rgba(85,181,184,0.15);
+            color: #55B5B8;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
         /* Vitals Tracking Styles */
         .vital-trend {
             border: 1px solid #e0e0e0;
@@ -3985,9 +4093,11 @@ button:hover {
         .task-card.status-in-progress { border-left-color: #3B82F6; }
         .task-card.status-completed { border-left-color: #10B981; opacity: 0.8; }
         .task-card.status-pending-review { border-left-color: #55B5B8; background: rgba(85,181,184,0.05); }
+        .task-card.status-deferred { border-left-color: #7C3AED; opacity: 0.85; }
         .task-card.status-dismissed { border-left-color: #4B5563; opacity: 0.5; }
         .task-status-pill.s-pending-review { background: rgba(85,181,184,0.15); color: #55B5B8; }
         .task-status-pill.s-dismissed { background: rgba(75,85,99,0.2); color: #9CA3AF; }
+        .task-status-pill.s-deferred { background: rgba(124,58,237,0.15); color: #A78BFA; }
         .task-review-actions {
             display: flex;
             align-items: center;
@@ -4808,6 +4918,196 @@ button:hover {
         .campaign-card.escalated {
             border-left: 4px solid #E45740;
         }
+        /* F1: Campaign Creation Modal */
+        .camp-create-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+        .camp-create-overlay.active { display: flex; }
+        .camp-create-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 680px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .camp-create-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            border-bottom: 1px solid #E8EAEC;
+        }
+        .camp-create-header h3 { margin: 0; font-size: 18px; color: #31393F; font-family: 'Merriweather', serif; }
+        .camp-create-close {
+            background: none; border: none; cursor: pointer; font-size: 20px; color: #5A6872; padding: 4px;
+        }
+        .camp-create-close:hover { color: #E45740; }
+        .camp-create-body { padding: 24px 28px; }
+        .camp-create-steps {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .camp-step-indicator {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #9CA3AF;
+            background: #F2F3F4;
+            transition: all 0.2s;
+        }
+        .camp-step-indicator.active { background: #55B5B8; color: #fff; }
+        .camp-step-indicator.done { background: #D1FAE5; color: #059669; }
+        .camp-step-panel { display: none; }
+        .camp-step-panel.active { display: block; }
+        .camp-form-group {
+            margin-bottom: 16px;
+        }
+        .camp-form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #31393F;
+            margin-bottom: 6px;
+        }
+        .camp-form-group input,
+        .camp-form-group select,
+        .camp-form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Lato', sans-serif;
+            color: #31393F;
+            box-sizing: border-box;
+        }
+        .camp-form-group textarea { resize: vertical; min-height: 60px; }
+        .camp-form-group input:focus,
+        .camp-form-group select:focus,
+        .camp-form-group textarea:focus {
+            outline: none;
+            border-color: #55B5B8;
+            box-shadow: 0 0 0 3px rgba(85,181,184,0.15);
+        }
+        .camp-form-row { display: flex; gap: 16px; }
+        .camp-form-row .camp-form-group { flex: 1; }
+        .camp-csv-drop {
+            border: 2px dashed #D1D5DB;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #FAFAFA;
+        }
+        .camp-csv-drop:hover, .camp-csv-drop.dragover {
+            border-color: #55B5B8;
+            background: rgba(85,181,184,0.05);
+        }
+        .camp-csv-drop.has-file {
+            border-color: #059669;
+            background: #D1FAE5;
+        }
+        .camp-csv-drop svg { margin-bottom: 8px; }
+        .camp-csv-drop p { margin: 0; font-size: 13px; color: #5A6872; }
+        .camp-csv-drop .file-name { font-weight: 700; color: #059669; font-size: 14px; }
+        .camp-csv-preview {
+            margin-top: 16px;
+            max-height: 200px;
+            overflow: auto;
+            border: 1px solid #E8EAEC;
+            border-radius: 8px;
+        }
+        .camp-csv-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        .camp-csv-preview th {
+            background: #F2F3F4;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 700;
+            color: #31393F;
+            border-bottom: 1px solid #E8EAEC;
+            position: sticky;
+            top: 0;
+        }
+        .camp-csv-preview td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #F2F3F4;
+            color: #49545E;
+        }
+        .camp-col-map {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .camp-col-map-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        .camp-col-map-item label { font-weight: 700; color: #31393F; min-width: 80px; margin-bottom: 0; }
+        .camp-col-map-item select {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+        .camp-create-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 28px;
+            border-top: 1px solid #E8EAEC;
+        }
+        .camp-btn-secondary {
+            padding: 10px 20px;
+            background: #F2F3F4;
+            color: #31393F;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .camp-btn-secondary:hover { background: #E8EAEC; }
+        .camp-btn-primary {
+            padding: 10px 24px;
+            background: #55B5B8;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .camp-btn-primary:hover { background: #449a9c; }
+        .camp-btn-primary:disabled { background: #9CA3AF; cursor: not-allowed; }
+        .camp-review-card {
+            background: #F9FAFB;
+            border: 1px solid #E8EAEC;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .camp-review-card h4 { margin: 0 0 8px 0; font-size: 13px; color: #55B5B8; }
+        .camp-review-card p { margin: 4px 0; font-size: 12px; color: #49545E; }
+        .camp-review-card .val { font-weight: 700; color: #31393F; }
         /* M1: Campaign Patient Drill-Down */
         .campaign-drilldown {
             display: none;
@@ -5311,6 +5611,7 @@ button:hover {
         .mode2-demo-btn .tag-routine { background: rgba(39,174,96,0.15); color: #27AE60; }
         .mode2-demo-btn .tag-escalation { background: rgba(228,87,64,0.15); color: #E45740; }
         .mode2-demo-btn .tag-trigger { background: rgba(248,202,68,0.2); color: #B8860B; }
+        .mode2-demo-btn .tag-spanish { background: rgba(99,102,241,0.15); color: #6366F1; }
 
     </style>
 </head>
@@ -6162,6 +6463,12 @@ button:hover {
                     </svg>
                     <span>Workflows</span>
                 </button>
+                <button class="florence-tab" data-tab="hedis" title="HEDIS measure tracking and compliance">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                    <span>HEDIS</span>
+                </button>
                 <button class="florence-tab" data-tab="activity" title="Activity log and session history">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
@@ -6217,9 +6524,11 @@ button:hover {
                         <div class="tasks-filter-row">
                             <select class="filter-dropdown" id="tasks-filter-dropdown" onchange="renderTasks(this.value)">
                                 <option value="all">All Tasks</option>
+                                <option value="pending_review">Pending Review</option>
                                 <option value="pending">Pending</option>
                                 <option value="in-progress">In Progress</option>
                                 <option value="completed">Completed</option>
+                                <option value="deferred">Deferred</option>
                                 <option value="ai-deduced">AI Deduced</option>
                             </select>
                         </div>
@@ -6439,6 +6748,45 @@ button:hover {
             </div>
             
             <!-- Activity Tab -->
+            <div class="tab-panel" id="hedis-panel">
+                <!-- HEDIS Measure Tracking Dashboard -->
+                <div style="display:flex;flex-direction:column;height:100%;gap:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0;">
+                        <div>
+                            <h4 style="margin:0;font-size:14px;color:#F3F4F6;font-weight:600;">HEDIS Measure Tracking</h4>
+                            <span style="font-size:10px;color:rgba(255,255,255,0.5);">MY 2026 — Dr. Campbell Panel (342 patients)</span>
+                        </div>
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <span style="font-size:10px;color:rgba(255,255,255,0.4);">Overall:</span>
+                            <span style="font-size:16px;font-weight:800;color:#55B5B8;">74.2%</span>
+                        </div>
+                    </div>
+
+                    <!-- Star Rating Projection -->
+                    <div style="background:linear-gradient(135deg,rgba(85,181,184,0.12),rgba(99,102,241,0.08));border:1px solid rgba(85,181,184,0.25);border-radius:8px;padding:12px;margin-bottom:12px;flex-shrink:0;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <div style="font-size:10px;font-weight:700;color:#55B5B8;margin-bottom:4px;">CMS STAR RATING PROJECTION</div>
+                                <div style="display:flex;align-items:center;gap:4px;">
+                                    <span style="font-size:20px;color:#FBBF24;">&#9733;&#9733;&#9733;&#9733;</span><span style="font-size:20px;color:#4B5563;">&#9733;</span>
+                                    <span style="font-size:12px;font-weight:700;color:#F3F4F6;margin-left:4px;">4.0 Stars</span>
+                                </div>
+                                <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:2px;">+0.5 stars projected with Florence outreach completion</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:9px;color:rgba(255,255,255,0.4);">Quality Bonus</div>
+                                <div style="font-size:14px;font-weight:800;color:#059669;">+5%</div>
+                                <div style="font-size:9px;color:rgba(255,255,255,0.4);">reimbursement</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HEDIS Measures List -->
+                    <div style="flex:1;overflow-y:auto;" id="hedis-measures-container">
+                    </div>
+                </div>
+            </div>
+
             <div class="tab-panel" id="activity-panel">
                 <!-- Activity Log -->
                 <div style="display:flex;flex-direction:column;height:100%;gap:0;">
@@ -6517,6 +6865,7 @@ button:hover {
                     <button class="camp-filter-btn" onclick="filterCampaigns('completed', this)">Completed</button>
                     <button class="camp-filter-btn" onclick="filterCampaigns('paused', this)">Paused</button>
                 </div>
+                <button class="camp-btn-primary" onclick="openCampaignCreator()" style="padding:8px 16px;font-size:12px;">+ New Campaign</button>
                 <button class="campaigns-back-btn" onclick="closeCampaignsView()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     Back to Patient
@@ -6565,7 +6914,121 @@ button:hover {
             <div class="campaign-drilldown-stats" id="drilldown-stats"></div>
             <div id="drilldown-table-container"></div>
         </div>
+
+    </div><!-- end campaigns-overlay -->
+
+    <!-- F1: Campaign Creation Modal -->
+    <div class="camp-create-overlay" id="camp-create-overlay">
+        <div class="camp-create-modal">
+            <div class="camp-create-header">
+                <h3>Create New Campaign</h3>
+                <button class="camp-create-close" onclick="closeCampaignCreator()">&times;</button>
+            </div>
+            <div class="camp-create-body">
+                <div class="camp-create-steps">
+                    <div class="camp-step-indicator active" id="camp-step-1">1. Details</div>
+                    <div class="camp-step-indicator" id="camp-step-2">2. Patient List</div>
+                    <div class="camp-step-indicator" id="camp-step-3">3. Outreach Script</div>
+                    <div class="camp-step-indicator" id="camp-step-4">4. Review & Launch</div>
+                </div>
+
+                <!-- Step 1: Campaign Details -->
+                <div class="camp-step-panel active" id="camp-panel-1">
+                    <div class="camp-form-group">
+                        <label>Campaign Name</label>
+                        <input type="text" id="camp-new-name" placeholder="e.g., Q1 2026 Diabetes Screening">
+                    </div>
+                    <div class="camp-form-row">
+                        <div class="camp-form-group">
+                            <label>Campaign Type</label>
+                            <select id="camp-new-type">
+                                <option value="HEDIS">HEDIS</option>
+                                <option value="Medication Adherence">Medication Adherence</option>
+                                <option value="Preventive Care">Preventive Care</option>
+                                <option value="Transitional Care">Transitional Care</option>
+                                <option value="Chronic Care (CCM)">Chronic Care (CCM)</option>
+                                <option value="SDOH Outreach">SDOH Outreach</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="camp-form-group">
+                            <label>Status</label>
+                            <select id="camp-new-status">
+                                <option value="active">Active</option>
+                                <option value="paused">Paused</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="camp-form-group">
+                        <label>Description</label>
+                        <textarea id="camp-new-desc" placeholder="Brief description of the campaign goals..."></textarea>
+                    </div>
+                    <div class="camp-form-row">
+                        <div class="camp-form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="camp-new-start">
+                        </div>
+                        <div class="camp-form-group">
+                            <label>End Date</label>
+                            <input type="date" id="camp-new-end">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Patient List (CSV Upload) -->
+                <div class="camp-step-panel" id="camp-panel-2">
+                    <div class="camp-csv-drop" id="camp-csv-drop">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 12 15 15"></polyline></svg>
+                        <p id="camp-csv-label">Drag & drop a CSV file here, or <strong style="color:#55B5B8;cursor:pointer;">click to browse</strong></p>
+                        <input type="file" id="camp-csv-input" accept=".csv" style="display:none;">
+                    </div>
+                    <div id="camp-csv-preview-area" style="display:none;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
+                            <span style="font-size:12px;font-weight:700;color:#31393F;">Column Mapping</span>
+                            <span style="font-size:11px;color:#5A6872;" id="camp-csv-row-count"></span>
+                        </div>
+                        <div class="camp-col-map" id="camp-col-map"></div>
+                        <div style="margin-top:16px;">
+                            <span style="font-size:12px;font-weight:700;color:#31393F;">Preview (first 5 rows)</span>
+                            <div class="camp-csv-preview" id="camp-csv-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Outreach Script -->
+                <div class="camp-step-panel" id="camp-panel-3">
+                    <div class="camp-form-group">
+                        <label>Outreach Method</label>
+                        <select id="camp-new-method">
+                            <option value="Phone">Phone (Mode 2 Autonomous)</option>
+                            <option value="SMS">SMS Text Message</option>
+                            <option value="Both">Phone + SMS Fallback</option>
+                        </select>
+                    </div>
+                    <div class="camp-form-group">
+                        <label>Opening Message / Script</label>
+                        <textarea id="camp-new-script" rows="5" placeholder="Hi {{patient_name}}, this is Florence from NightingaleMD calling on behalf of Dr. Campbell..."></textarea>
+                    </div>
+                    <div class="camp-form-group">
+                        <label>Follow-Up Message (if no response)</label>
+                        <textarea id="camp-new-followup" rows="3" placeholder="Hi {{patient_name}}, we tried to reach you earlier regarding..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review & Launch -->
+                <div class="camp-step-panel" id="camp-panel-4">
+                    <div id="camp-review-content"></div>
+                </div>
+            </div>
+            <div class="camp-create-footer">
+                <button class="camp-btn-secondary" id="camp-prev-btn" onclick="campCreatorPrev()" style="display:none;">Back</button>
+                <div></div>
+                <button class="camp-btn-primary" id="camp-next-btn" onclick="campCreatorNext()">Next</button>
+            </div>
+        </div>
     </div>
+
+
 
     <!-- HANDOFF NOTE MODAL -->
     <div class="handoff-modal-overlay" id="handoff-modal-overlay">
@@ -14748,13 +15211,15 @@ function renderTasks(filter) {
     if (!container) return;
 
     let filtered = florenceTasks;
-    if (filter === 'pending') filtered = florenceTasks.filter(t => t.status === 'pending' || t.status === 'pending_review');
+    if (filter === 'pending_review') filtered = florenceTasks.filter(t => t.status === 'pending_review');
+    else if (filter === 'pending') filtered = florenceTasks.filter(t => t.status === 'pending' || t.status === 'pending_review');
     else if (filter === 'in-progress') filtered = florenceTasks.filter(t => t.status === 'in-progress');
     else if (filter === 'completed') filtered = florenceTasks.filter(t => t.status === 'completed');
+    else if (filter === 'deferred') filtered = florenceTasks.filter(t => t.status === 'deferred');
     else if (filter === 'ai-deduced') filtered = florenceTasks.filter(t => t.origin === 'ai-deduced');
 
     // Sort: pending_review first, then in-progress, then pending, then completed
-    const statusOrder = { pending_review: 0, 'in-progress': 1, pending: 2, completed: 3 };
+    const statusOrder = { pending_review: 0, 'in-progress': 1, pending: 2, deferred: 3, completed: 4, dismissed: 5 };
     filtered = [...filtered].sort((a, b) => (statusOrder[a.status] ?? 4) - (statusOrder[b.status] ?? 4));
 
     const reviewCount = florenceTasks.filter(t => t.status === 'pending_review').length;
@@ -14780,6 +15245,8 @@ function renderTasks(filter) {
         const statusClass = 's-' + task.status.replace('_', '-');
         const statusLabel = task.status === 'in-progress' ? 'In Progress'
             : task.status === 'pending_review' ? 'Pending Review'
+            : task.status === 'deferred' ? 'Deferred'
+            : task.status === 'dismissed' ? 'Dismissed'
             : task.status.charAt(0).toUpperCase() + task.status.slice(1);
         const transcriptLink = task.transcript ? `<span class="task-transcript-link" onclick="event.stopPropagation();openTaskTranscript('${task.id}')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> View transcript</span>` : '';
         const completedAt = task.completed_at ? `<span style="color:#6B7280;font-size:9px;">${task.completed_at}</span>` : '';
@@ -15721,6 +16188,7 @@ function renderCampaigns(filter) {
         filtered = newtonCampaigns.filter(c => c.status === filter);
     }
 
+    grid.innerHTML = '';
     grid.innerHTML = filtered.map(c => {
         const hasEscalations = c.escalations > 0;
         const escalationHtml = hasEscalations ? `
@@ -15731,7 +16199,7 @@ function renderCampaigns(filter) {
             </div>` : '';
 
         return `
-        <div class="campaign-card ${c.escalations > 0 ? 'escalated' : ''}" onclick="openCampaignDrillDown('${c.id}')">
+        <div class="campaign-card ${c.escalations > 0 ? 'escalated' : ''}" data-campaign-id="${c.id}">
             <div class="campaign-card-header">
                 <div class="campaign-card-name">${c.name}</div>
                 <span class="campaign-status-badge ${c.status}">${c.status.toUpperCase()}</span>
@@ -15759,6 +16227,8 @@ function renderCampaigns(filter) {
             ${escalationHtml}
         </div>`;
     }).join('');
+    // F2: Attach click listeners after rendering
+    setTimeout(() => attachCampaignCardListeners(), 50);
 }
 
 function filterCampaigns(filter, btn) {
@@ -15766,6 +16236,18 @@ function filterCampaigns(filter, btn) {
     document.querySelectorAll('.camp-filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     renderCampaigns(filter);
+}
+
+// F2: Attach campaign drill-down click handlers programmatically (fixes event propagation in overlay)
+function attachCampaignCardListeners() {
+    document.querySelectorAll('.campaign-card[data-campaign-id]').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Don't trigger drill-down if clicking on a button inside the card
+            if (e.target.closest('button')) return;
+            const campaignId = this.dataset.campaignId;
+            if (campaignId) openCampaignDrillDown(campaignId);
+        });
+    });
 }
 
 // M1: Campaign Patient-Level Drill-Down Data
@@ -15880,6 +16362,594 @@ function openCampaignDrillDown(campaignId) {
 function closeCampaignDrillDown() {
     const panel = document.getElementById('campaign-drilldown');
     if (panel) panel.classList.remove('active');
+}
+
+// ===== F3: Closed-Loop Referral Tracking =====
+const referralTrackingData = {
+    'ref-ophtho': {
+        specialty: 'Ophthalmology - Diabetic Eye Exam',
+        steps: [
+            { label: 'Referral Sent', status: 'completed', date: '02/12/2026' },
+            { label: 'Accepted', status: 'completed', date: '02/13/2026' },
+            { label: 'Scheduled', status: 'current', date: '03/15/2026' },
+            { label: 'In Progress', status: 'pending', date: '' },
+            { label: 'Notes Returned', status: 'pending', date: '' },
+            { label: 'Closed', status: 'pending', date: '' }
+        ],
+        specialistNotes: null,
+        florenceActions: ['Faxed referral to Metro Eye Associates', 'Confirmed appointment with patient via phone', 'Reminder call scheduled for 03/14/2026']
+    },
+    'ref-pt': {
+        specialty: 'Physical Therapy - Fall Prevention',
+        steps: [
+            { label: 'Referral Sent', status: 'completed', date: '02/12/2026' },
+            { label: 'Accepted', status: 'completed', date: '02/14/2026' },
+            { label: 'Scheduled', status: 'skipped', date: '' },
+            { label: 'In Progress', status: 'pending', date: '' },
+            { label: 'Notes Returned', status: 'pending', date: '' },
+            { label: 'Closed', status: 'pending', date: '' }
+        ],
+        specialistNotes: null,
+        florenceActions: ['Patient declined — barrier: transportation', 'Connected patient to ride service', 'Patient reconsidering — follow-up scheduled 02/20/2026']
+    },
+    'ref-nephro': {
+        specialty: 'Nephrology - CKD Management',
+        steps: [
+            { label: 'Referral Sent', status: 'current', date: '02/13/2026' },
+            { label: 'Accepted', status: 'pending', date: '' },
+            { label: 'Scheduled', status: 'pending', date: '' },
+            { label: 'In Progress', status: 'pending', date: '' },
+            { label: 'Notes Returned', status: 'pending', date: '' },
+            { label: 'Closed', status: 'pending', date: '' }
+        ],
+        specialistNotes: null,
+        florenceActions: ['Awaiting Dr. Campbell signature', 'eGFR 42 mL/min flagged as priority referral']
+    },
+    'ref-cardio': {
+        specialty: 'Cardiology - Hypertension Management',
+        steps: [
+            { label: 'Referral Sent', status: 'completed', date: '11/15/2025' },
+            { label: 'Accepted', status: 'completed', date: '11/18/2025' },
+            { label: 'Scheduled', status: 'completed', date: '12/20/2025' },
+            { label: 'In Progress', status: 'completed', date: '12/20/2025' },
+            { label: 'Notes Returned', status: 'completed', date: '12/22/2025' },
+            { label: 'Closed', status: 'completed', date: '12/23/2025' }
+        ],
+        specialistNotes: {
+            provider: 'Dr. Sarah Kim, MD — Metro Cardiology',
+            date: '12/22/2025',
+            findings: 'BP well-controlled on current regimen (Lisinopril 20mg + Amlodipine 5mg). Echo shows preserved EF at 58%. No evidence of LVH. Recommend continuing current medications. Repeat echo in 12 months.',
+            recommendations: ['Continue Lisinopril 20mg daily', 'Continue Amlodipine 5mg daily', 'Repeat echocardiogram in 12 months', 'Follow up with PCP in 3 months for BP check'],
+            labs: 'BNP: 45 pg/mL (normal), Lipid panel: LDL 98 mg/dL'
+        },
+        florenceActions: ['Faxed referral to Metro Cardiology', 'Confirmed appointment via phone', 'Specialist notes received and imported to chart', 'Closed loop — all recommendations documented']
+    },
+    'ref-endo': {
+        specialty: 'Endocrinology - Diabetes Management',
+        steps: [
+            { label: 'Referral Sent', status: 'completed', date: '01/10/2026' },
+            { label: 'Accepted', status: 'completed', date: '01/13/2026' },
+            { label: 'Scheduled', status: 'completed', date: '02/05/2026' },
+            { label: 'In Progress', status: 'skipped', date: '' },
+            { label: 'Notes Returned', status: 'pending', date: '' },
+            { label: 'Closed', status: 'pending', date: '' }
+        ],
+        specialistNotes: null,
+        florenceActions: ['Faxed referral to Valley Endocrine', 'Confirmed appointment via phone', 'Patient no-show on 02/05/2026', 'Left voicemail — awaiting callback to reschedule', 'Follow-up outreach scheduled 02/10/2026']
+    }
+};
+
+function buildReferralTimeline(refId) {
+    const data = referralTrackingData[refId];
+    if (!data) return '';
+    
+    const checkSvg = '<svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2"><path d="M3 6L5.5 8.5L9 3.5"></path></svg>';
+    const xSvg = '<svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2"><path d="M3 3L9 9M9 3L3 9"></path></svg>';
+    const dotSvg = '<svg viewBox="0 0 12 12" fill="#3B82F6"><circle cx="6" cy="6" r="3" fill="white"></circle></svg>';
+    
+    let timelineHtml = '<div class="referral-timeline">';
+    data.steps.forEach(step => {
+        const dotClass = step.status === 'completed' ? 'completed' : step.status === 'current' ? 'current' : step.status === 'skipped' ? 'skipped' : '';
+        const labelClass = (step.status === 'completed' || step.status === 'current') ? 'active' : '';
+        const icon = step.status === 'completed' ? checkSvg : step.status === 'skipped' ? xSvg : step.status === 'current' ? dotSvg : '';
+        timelineHtml += `
+            <div class="referral-timeline-step">
+                <div class="referral-timeline-dot ${dotClass}">${icon}</div>
+                <div class="referral-timeline-label ${labelClass}">${step.label}</div>
+                ${step.date ? `<div class="referral-timeline-date">${step.date}</div>` : ''}
+            </div>`;
+    });
+    timelineHtml += '</div>';
+    
+    // Specialist notes section
+    let notesHtml = '';
+    if (data.specialistNotes) {
+        const notes = data.specialistNotes;
+        notesHtml = `
+            <div class="specialist-notes">
+                <div class="specialist-notes-header">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E40AF" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    Specialist Notes — ${notes.provider}
+                    <span style="font-size:9px;color:#64748B;font-weight:400;">${notes.date}</span>
+                </div>
+                <div class="specialist-notes-body">
+                    <p><strong>Findings:</strong> ${notes.findings}</p>
+                    ${notes.labs ? `<p><strong>Labs:</strong> ${notes.labs}</p>` : ''}
+                    <p><strong>Recommendations:</strong></p>
+                    <ul style="margin:4px 0 0 16px;padding:0;">${notes.recommendations.map(r => `<li style="margin-bottom:2px;">${r}</li>`).join('')}</ul>
+                </div>
+            </div>`;
+    }
+    
+    // Florence tracking actions
+    let actionsHtml = `
+        <div style="margin-top:10px;">
+            <div style="font-size:10px;font-weight:700;color:#55B5B8;margin-bottom:6px;display:flex;align-items:center;gap:4px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                Florence AI Tracking Log
+            </div>
+            <div style="font-size:10px;color:#64748B;line-height:1.8;">
+                ${data.florenceActions.map((a, i) => `<div style="display:flex;gap:6px;"><span style="color:#CBD5E1;">${i + 1}.</span> ${a}</div>`).join('')}
+            </div>
+        </div>`;
+    
+    return `<div class="referral-tracking-panel" id="tracking-${refId}">
+        <div style="font-size:11px;font-weight:700;color:#1E293B;margin-bottom:8px;display:flex;align-items:center;gap:6px;">Referral Tracking Timeline <span class="florence-tracking-badge">FLORENCE TRACKED</span></div>
+        ${timelineHtml}
+        ${notesHtml}
+        ${actionsHtml}
+    </div>`;
+}
+
+function initReferralTracking() {
+    const refItems = document.querySelectorAll('#section-referrals .referral-item');
+    const refIds = ['ref-ophtho', 'ref-pt', 'ref-nephro', 'ref-cardio', 'ref-endo'];
+    refItems.forEach((item, idx) => {
+        if (idx < refIds.length) {
+            const refId = refIds[idx];
+            // Add tracking panel after the details
+            const details = item.querySelector('.referral-details');
+            if (details) {
+                details.insertAdjacentHTML('afterend', buildReferralTimeline(refId));
+            }
+            // Add click handler to toggle tracking panel
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const panel = document.getElementById('tracking-' + refId);
+                if (panel) {
+                    // Close all other panels
+                    document.querySelectorAll('.referral-tracking-panel.active').forEach(p => {
+                        if (p !== panel) p.classList.remove('active');
+                    });
+                    panel.classList.toggle('active');
+                }
+            });
+            // Add a small expand icon to the header
+            const header = item.querySelector('.referral-header');
+            if (header) {
+                const expandIcon = document.createElement('span');
+                expandIcon.style.cssText = 'margin-left:auto;font-size:10px;color:#94A3B8;';
+                expandIcon.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+                header.appendChild(expandIcon);
+            }
+        }
+    });
+}
+
+// Initialize referral tracking when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initReferralTracking, 500);
+});
+
+// ===== F6: HEDIS Measure Tracking Dashboard =====
+const hedisMeasures = [
+    {
+        id: 'AWV', code: 'AWV', name: 'Annual Wellness Visit',
+        domain: 'Preventive Care', weight: 'Triple',
+        eligible: 342, compliant: 267, rate: 78.1,
+        target: 85, benchmark: 80,
+        trend: [72, 74, 75, 76, 78],
+        gaps: 75,
+        florenceImpact: { outreached: 52, scheduled: 38, completed: 24 },
+        topBarriers: ['Transportation', 'No-show', 'Scheduling conflict']
+    },
+    {
+        id: 'BCS', code: 'BCS', name: 'Breast Cancer Screening',
+        domain: 'Preventive Care', weight: 'Triple',
+        eligible: 148, compliant: 119, rate: 80.4,
+        target: 85, benchmark: 78,
+        trend: [74, 76, 78, 79, 80],
+        gaps: 29,
+        florenceImpact: { outreached: 22, scheduled: 15, completed: 11 },
+        topBarriers: ['Patient declined', 'Insurance issue', 'Facility access']
+    },
+    {
+        id: 'CDC-A1C', code: 'CDC', name: 'Diabetes: HbA1c Control (<8%)',
+        domain: 'Chronic Care', weight: 'Triple',
+        eligible: 87, compliant: 58, rate: 66.7,
+        target: 80, benchmark: 72,
+        trend: [60, 62, 63, 65, 67],
+        gaps: 29,
+        florenceImpact: { outreached: 29, scheduled: 18, completed: 12 },
+        topBarriers: ['Medication non-adherence', 'Missed labs', 'Diet barriers']
+    },
+    {
+        id: 'CBP', code: 'CBP', name: 'Controlling High Blood Pressure',
+        domain: 'Chronic Care', weight: 'Double',
+        eligible: 156, compliant: 118, rate: 75.6,
+        target: 80, benchmark: 74,
+        trend: [70, 71, 73, 74, 76],
+        gaps: 38,
+        florenceImpact: { outreached: 30, scheduled: 22, completed: 16 },
+        topBarriers: ['Medication side effects', 'Missed follow-up', 'Home monitoring gap']
+    },
+    {
+        id: 'COL', code: 'COL', name: 'Colorectal Cancer Screening',
+        domain: 'Preventive Care', weight: 'Double',
+        eligible: 198, compliant: 142, rate: 71.7,
+        target: 80, benchmark: 70,
+        trend: [65, 67, 68, 70, 72],
+        gaps: 56,
+        florenceImpact: { outreached: 40, scheduled: 28, completed: 18 },
+        topBarriers: ['Patient declined', 'Prep concerns', 'Scheduling delay']
+    },
+    {
+        id: 'FMC', code: 'FMC', name: 'Follow-Up After ED Visit (7 days)',
+        domain: 'Access/Availability', weight: 'Single',
+        eligible: 34, compliant: 26, rate: 76.5,
+        target: 85, benchmark: 75,
+        trend: [68, 70, 72, 74, 77],
+        gaps: 8,
+        florenceImpact: { outreached: 8, scheduled: 6, completed: 5 },
+        topBarriers: ['Patient unreachable', 'Scheduling conflict', 'Transportation']
+    },
+    {
+        id: 'TRC', code: 'TRC', name: 'Transitions of Care (30-day)',
+        domain: 'Care Coordination', weight: 'Double',
+        eligible: 28, compliant: 22, rate: 78.6,
+        target: 85, benchmark: 76,
+        trend: [70, 72, 74, 76, 79],
+        gaps: 6,
+        florenceImpact: { outreached: 6, scheduled: 5, completed: 4 },
+        topBarriers: ['Discharge timing', 'Patient unreachable', 'Specialist delay']
+    },
+    {
+        id: 'MRP', code: 'MRP', name: 'Medication Reconciliation Post-Discharge',
+        domain: 'Care Coordination', weight: 'Single',
+        eligible: 28, compliant: 20, rate: 71.4,
+        target: 80, benchmark: 70,
+        trend: [62, 65, 67, 69, 71],
+        gaps: 8,
+        florenceImpact: { outreached: 8, scheduled: 6, completed: 4 },
+        topBarriers: ['Incomplete med list', 'Pharmacy delay', 'Patient confusion']
+    }
+];
+
+function renderHedisMeasures() {
+    const container = document.getElementById('hedis-measures-container');
+    if (!container) return;
+    
+    container.innerHTML = hedisMeasures.map(m => {
+        const rateColor = m.rate >= m.target ? '#059669' : m.rate >= m.benchmark ? '#FBBF24' : '#EF4444';
+        const gapToTarget = Math.max(0, Math.ceil(m.eligible * (m.target / 100) - m.compliant));
+        const barWidth = Math.min(100, m.rate);
+        const targetPos = Math.min(100, m.target);
+        const weightBadge = m.weight === 'Triple' ? '<span style="background:rgba(239,68,68,0.15);color:#EF4444;padding:1px 4px;border-radius:3px;font-size:8px;font-weight:700;">3x</span>' : m.weight === 'Double' ? '<span style="background:rgba(251,191,36,0.15);color:#FBBF24;padding:1px 4px;border-radius:3px;font-size:8px;font-weight:700;">2x</span>' : '<span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);padding:1px 4px;border-radius:3px;font-size:8px;font-weight:700;">1x</span>';
+        
+        // Mini sparkline
+        const sparkMax = Math.max(...m.trend);
+        const sparkMin = Math.min(...m.trend) - 5;
+        const sparkRange = sparkMax - sparkMin || 1;
+        const sparkPoints = m.trend.map((v, i) => `${i * 15},${30 - ((v - sparkMin) / sparkRange) * 28}`).join(' ');
+        
+        return `
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'" onclick="toggleHedisDetail('${m.id}')">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="flex:1;">
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                        <span style="font-size:9px;font-weight:800;color:#55B5B8;background:rgba(85,181,184,0.15);padding:2px 5px;border-radius:3px;">${m.code}</span>
+                        ${weightBadge}
+                        <span style="font-size:11px;font-weight:600;color:#F3F4F6;">${m.name}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div style="flex:1;max-width:160px;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;position:relative;">
+                            <div style="width:${barWidth}%;height:100%;background:${rateColor};border-radius:3px;"></div>
+                            <div style="position:absolute;top:-2px;left:${targetPos}%;width:1px;height:10px;background:rgba(255,255,255,0.3);"></div>
+                        </div>
+                        <span style="font-size:13px;font-weight:800;color:${rateColor};min-width:42px;">${m.rate}%</span>
+                        <svg width="60" height="30" style="flex-shrink:0;"><polyline points="${sparkPoints}" fill="none" stroke="${rateColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                </div>
+                <div style="text-align:right;min-width:50px;">
+                    <div style="font-size:9px;color:rgba(255,255,255,0.4);">Open Gaps</div>
+                    <div style="font-size:14px;font-weight:800;color:${m.gaps > 30 ? '#EF4444' : m.gaps > 15 ? '#FBBF24' : '#059669'};">${m.gaps}</div>
+                </div>
+            </div>
+            <div id="hedis-detail-${m.id}" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+                    <div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:8px;text-align:center;">
+                        <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Eligible</div>
+                        <div style="font-size:14px;font-weight:800;color:#F3F4F6;">${m.eligible}</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:8px;text-align:center;">
+                        <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Compliant</div>
+                        <div style="font-size:14px;font-weight:800;color:#059669;">${m.compliant}</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:8px;text-align:center;">
+                        <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:2px;">Need to Close</div>
+                        <div style="font-size:14px;font-weight:800;color:#FBBF24;">${gapToTarget}</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:8px;">
+                    <div style="flex:1;background:rgba(85,181,184,0.08);border:1px solid rgba(85,181,184,0.2);border-radius:6px;padding:8px;">
+                        <div style="font-size:9px;font-weight:700;color:#55B5B8;margin-bottom:6px;">Florence AI Impact</div>
+                        <div style="display:flex;gap:12px;">
+                            <div><span style="font-size:12px;font-weight:800;color:#F3F4F6;">${m.florenceImpact.outreached}</span><span style="font-size:9px;color:rgba(255,255,255,0.4);"> outreached</span></div>
+                            <div><span style="font-size:12px;font-weight:800;color:#FBBF24;">${m.florenceImpact.scheduled}</span><span style="font-size:9px;color:rgba(255,255,255,0.4);"> scheduled</span></div>
+                            <div><span style="font-size:12px;font-weight:800;color:#059669;">${m.florenceImpact.completed}</span><span style="font-size:9px;color:rgba(255,255,255,0.4);"> closed</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.4);">Top Barriers: ${m.topBarriers.map(b => `<span style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;margin-right:4px;">${b}</span>`).join('')}</div>
+                <div style="display:flex;gap:6px;margin-top:8px;">
+                    <div style="font-size:9px;color:rgba(255,255,255,0.3);">Target: <strong style="color:rgba(255,255,255,0.6);">${m.target}%</strong></div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.3);">Benchmark: <strong style="color:rgba(255,255,255,0.6);">${m.benchmark}%</strong></div>
+                    <div style="font-size:9px;color:rgba(255,255,255,0.3);">Domain: <strong style="color:rgba(255,255,255,0.6);">${m.domain}</strong></div>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function toggleHedisDetail(measureId) {
+    const detail = document.getElementById('hedis-detail-' + measureId);
+    if (detail) {
+        detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+// Render HEDIS on tab switch
+const _origSwitchToTab = switchToTab;
+switchToTab = function(tabName) {
+    _origSwitchToTab(tabName);
+    if (tabName === 'hedis') {
+        renderHedisMeasures();
+    }
+};
+
+// Initial render if HEDIS tab is active
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(renderHedisMeasures, 600);
+});
+
+// ===== F1: Campaign Creation + CSV Import =====
+let campCreatorStep = 1;
+let campCsvData = { headers: [], rows: [], mapping: {} };
+
+function openCampaignCreator() {
+    campCreatorStep = 1;
+    campCsvData = { headers: [], rows: [], mapping: {} };
+    // Reset form
+    document.getElementById('camp-new-name').value = '';
+    document.getElementById('camp-new-type').value = 'HEDIS';
+    document.getElementById('camp-new-status').value = 'active';
+    document.getElementById('camp-new-desc').value = '';
+    document.getElementById('camp-new-start').value = '';
+    document.getElementById('camp-new-end').value = '';
+    document.getElementById('camp-new-script').value = '';
+    document.getElementById('camp-new-followup').value = '';
+    document.getElementById('camp-new-method').value = 'Phone';
+    document.getElementById('camp-csv-preview-area').style.display = 'none';
+    const dropZone = document.getElementById('camp-csv-drop');
+    dropZone.classList.remove('has-file');
+    document.getElementById('camp-csv-label').innerHTML = 'Drag & drop a CSV file here, or <strong style="color:#55B5B8;cursor:pointer;">click to browse</strong>';
+    updateCampSteps();
+    document.getElementById('camp-create-overlay').classList.add('active');
+    addLogEntry('Campaign Creator', 'Opened new campaign creation wizard');
+}
+
+function closeCampaignCreator() {
+    document.getElementById('camp-create-overlay').classList.remove('active');
+}
+
+function updateCampSteps() {
+    for (let i = 1; i <= 4; i++) {
+        const indicator = document.getElementById('camp-step-' + i);
+        const panel = document.getElementById('camp-panel-' + i);
+        indicator.classList.remove('active', 'done');
+        panel.classList.remove('active');
+        if (i < campCreatorStep) indicator.classList.add('done');
+        if (i === campCreatorStep) { indicator.classList.add('active'); panel.classList.add('active'); }
+    }
+    document.getElementById('camp-prev-btn').style.display = campCreatorStep > 1 ? 'block' : 'none';
+    const nextBtn = document.getElementById('camp-next-btn');
+    nextBtn.textContent = campCreatorStep === 4 ? 'Launch Campaign' : 'Next';
+    if (campCreatorStep === 4) buildCampReview();
+}
+
+function campCreatorNext() {
+    if (campCreatorStep === 1) {
+        const name = document.getElementById('camp-new-name').value.trim();
+        if (!name) { alert('Please enter a campaign name.'); return; }
+    }
+    if (campCreatorStep === 4) {
+        launchNewCampaign();
+        return;
+    }
+    campCreatorStep++;
+    updateCampSteps();
+}
+
+function campCreatorPrev() {
+    if (campCreatorStep > 1) campCreatorStep--;
+    updateCampSteps();
+}
+
+// CSV parsing
+function parseCsvText(text) {
+    const lines = text.trim().split('\n');
+    if (lines.length < 2) return null;
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    const rows = [];
+    for (let i = 1; i < lines.length; i++) {
+        const vals = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        if (vals.length === headers.length) rows.push(vals);
+    }
+    return { headers, rows };
+}
+
+function handleCsvFile(file) {
+    if (!file || !file.name.endsWith('.csv')) { alert('Please upload a CSV file.'); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const parsed = parseCsvText(e.target.result);
+        if (!parsed || parsed.rows.length === 0) { alert('Could not parse CSV. Ensure it has headers and data rows.'); return; }
+        campCsvData.headers = parsed.headers;
+        campCsvData.rows = parsed.rows;
+        
+        // Update drop zone
+        const dropZone = document.getElementById('camp-csv-drop');
+        dropZone.classList.add('has-file');
+        document.getElementById('camp-csv-label').innerHTML = `<span class="file-name">${file.name}</span><br><span style="font-size:11px;color:#5A6872;">${parsed.rows.length} patients loaded</span>`;
+        
+        // Show preview area
+        document.getElementById('camp-csv-preview-area').style.display = 'block';
+        document.getElementById('camp-csv-row-count').textContent = `${parsed.rows.length} rows detected`;
+        
+        // Build column mapping
+        const requiredFields = ['Patient Name', 'MRN', 'Age', 'Risk Level', 'Phone', 'Language'];
+        const mapContainer = document.getElementById('camp-col-map');
+        mapContainer.innerHTML = requiredFields.map(field => {
+            const options = parsed.headers.map((h, idx) => {
+                const selected = h.toLowerCase().includes(field.toLowerCase().split(' ')[0].toLowerCase()) ? 'selected' : '';
+                return `<option value="${idx}" ${selected}>${h}</option>`;
+            }).join('');
+            return `<div class="camp-col-map-item"><label>${field}</label><select onchange="campCsvData.mapping['${field}']= this.value">${options}<option value="-1">— Skip —</option></select></div>`;
+        }).join('');
+        
+        // Build preview table
+        const previewRows = parsed.rows.slice(0, 5);
+        document.getElementById('camp-csv-preview').innerHTML = `
+            <table>
+                <thead><tr>${parsed.headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+                <tbody>${previewRows.map(r => `<tr>${r.map(v => `<td>${v}</td>`).join('')}</tr>`).join('')}</tbody>
+            </table>`;
+    };
+    reader.readAsText(file);
+}
+
+// Set up CSV drop zone and file input
+document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('camp-csv-drop');
+    const fileInput = document.getElementById('camp-csv-input');
+    if (dropZone && fileInput) {
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); handleCsvFile(e.dataTransfer.files[0]); });
+        fileInput.addEventListener('change', (e) => { if (e.target.files[0]) handleCsvFile(e.target.files[0]); });
+    }
+});
+
+function buildCampReview() {
+    const name = document.getElementById('camp-new-name').value;
+    const type = document.getElementById('camp-new-type').value;
+    const status = document.getElementById('camp-new-status').value;
+    const desc = document.getElementById('camp-new-desc').value || 'No description';
+    const start = document.getElementById('camp-new-start').value || 'Not set';
+    const end = document.getElementById('camp-new-end').value || 'Not set';
+    const method = document.getElementById('camp-new-method').value;
+    const script = document.getElementById('camp-new-script').value || 'Default Florence script';
+    const patientCount = campCsvData.rows.length;
+    
+    document.getElementById('camp-review-content').innerHTML = `
+        <div class="camp-review-card">
+            <h4>Campaign Details</h4>
+            <p><span class="val">${name}</span></p>
+            <p>Type: <span class="val">${type}</span> &nbsp;|&nbsp; Status: <span class="val">${status.toUpperCase()}</span></p>
+            <p>${desc}</p>
+            <p>Period: <span class="val">${start}</span> to <span class="val">${end}</span></p>
+        </div>
+        <div class="camp-review-card">
+            <h4>Patient List</h4>
+            <p><span class="val">${patientCount}</span> patients loaded from CSV</p>
+            ${patientCount > 0 ? `<p>Sample: ${campCsvData.rows.slice(0,3).map(r => r[0]).join(', ')}${patientCount > 3 ? '...' : ''}</p>` : '<p style="color:#E45740;">No CSV uploaded — campaign will start with 0 patients</p>'}
+        </div>
+        <div class="camp-review-card">
+            <h4>Outreach Configuration</h4>
+            <p>Method: <span class="val">${method}</span></p>
+            <p>Script preview: <em style="color:#5A6872;">${script.substring(0, 120)}${script.length > 120 ? '...' : ''}</em></p>
+        </div>
+        <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:12px;margin-top:12px;">
+            <p style="margin:0;font-size:12px;color:#92400E;"><strong>Ready to launch?</strong> Click "Launch Campaign" to add this campaign to Newton. Florence will begin autonomous outreach based on your configuration.</p>
+        </div>`;
+}
+
+function launchNewCampaign() {
+    const name = document.getElementById('camp-new-name').value.trim();
+    const type = document.getElementById('camp-new-type').value;
+    const status = document.getElementById('camp-new-status').value;
+    const desc = document.getElementById('camp-new-desc').value || 'Custom campaign';
+    const start = document.getElementById('camp-new-start').value || new Date().toISOString().split('T')[0];
+    const end = document.getElementById('camp-new-end').value || 'Ongoing';
+    const patientCount = campCsvData.rows.length || 0;
+    
+    // Generate a unique campaign ID
+    const campId = 'CAMP-NEW-' + Date.now().toString(36).toUpperCase();
+    
+    // Create the new campaign object
+    const newCampaign = {
+        id: campId,
+        name: name,
+        type: type,
+        status: status,
+        description: desc,
+        targeted: patientCount,
+        outreach_complete: 0,
+        success_rate: 0,
+        escalations: 0,
+        start_date: start,
+        end_date: end
+    };
+    
+    // Add to the campaigns array
+    newtonCampaigns.unshift(newCampaign);
+    
+    // Add patient data for drill-down
+    if (campCsvData.rows.length > 0) {
+        campaignPatients[campId] = campCsvData.rows.map(row => ({
+            name: row[0] || 'Unknown',
+            mrn: row[1] || '000000',
+            age: parseInt(row[2]) || 0,
+            risk: (row[3] || 'LOW').toUpperCase().substring(0, 4),
+            status: 'pending',
+            lastOutreach: '—',
+            outcome: 'Awaiting outreach',
+            method: document.getElementById('camp-new-method').value
+        }));
+    }
+    
+    // Update stats
+    const activeCount = newtonCampaigns.filter(c => c.status === 'active').length;
+    const totalPatients = newtonCampaigns.reduce((sum, c) => sum + c.targeted, 0);
+    const el1 = document.getElementById('camp-stat-active');
+    const el2 = document.getElementById('camp-stat-patients');
+    if (el1) el1.textContent = activeCount;
+    if (el2) el2.textContent = totalPatients.toLocaleString();
+    
+    // Re-render campaigns
+    renderCampaigns('all');
+    
+    // Close creator and log
+    closeCampaignCreator();
+    addLogEntry('Campaign Created', `New campaign "${name}" launched with ${patientCount} patients (${type})`);
+    
+    // Show success notification
+    const notif = document.createElement('div');
+    notif.style.cssText = 'position:fixed;top:20px;right:20px;background:#059669;color:#fff;padding:16px 24px;border-radius:12px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);animation:slideIn 0.3s ease;';
+    notif.innerHTML = `Campaign "${name}" launched successfully!<br><span style="font-size:11px;font-weight:400;">${patientCount} patients queued for ${document.getElementById('camp-new-method').value} outreach</span>`;
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 4000);
 }
 
 function openHandoffModal(workflowId) {
@@ -16026,6 +17096,27 @@ const mode2Scenarios = {
             { type: 'system', text: '⚠ ESCALATION TRIGGERED — Florence generating HANDOFF Note for care manager review' }
         ]
     },
+    spanish: {
+        id: 'mode2-spanish',
+        label: 'AWV Scheduling — Spanish (Multilingual)',
+        tag: 'spanish',
+        tagLabel: 'Español',
+        campaign: 'Q3 HEDIS AWV Campaign',
+        language: 'es',
+        script: [
+            { type: 'system', text: 'Florence initiating autonomous outreach — HEDIS AWV Campaign (CAMP-AWV-Q3) | Language: Spanish (es) | Patient: Maria Gonzalez' },
+            { type: 'florence', text: 'Hola, buenos días. Habla Florence, llamando de NightingaleMD de parte del Dr. Campbell. ¿Puedo hablar con Maria Gonzalez?' },
+            { type: 'patient', text: 'Sí, soy yo. ¿Quién habla?' },
+            { type: 'florence', text: 'Hola Maria, soy Florence, la asistente de salud del consultorio del Dr. Campbell. La llamo porque su Visita Anual de Bienestar está pendiente este año. Es un beneficio cubierto por su plan de Medicare — sin costo para usted. ¿Le gustaría que le programe una cita?' },
+            { type: 'patient', text: 'Ay sí, he querido hacer eso. Pero no sé cuándo tiene disponibilidad el doctor.' },
+            { type: 'florence', text: 'El Dr. Campbell tiene disponibilidad el jueves 6 de marzo a las 2 de la tarde, o el viernes 7 de marzo a las 10 de la mañana. ¿Cuál le conviene más?' },
+            { type: 'patient', text: 'El jueves a las 2 está bien para mí.' },
+            { type: 'florence', text: 'Perfecto. He programado su Visita Anual de Bienestar para el jueves 6 de marzo a las 2:00 PM con el Dr. Campbell. Recibirá un mensaje de texto de confirmación en español. ¿Hay algo más en lo que pueda ayudarle hoy?' },
+            { type: 'patient', text: 'No, eso es todo. Muchas gracias, Florence.' },
+            { type: 'florence', text: 'De nada, Maria. Que tenga un excelente día y la veremos el 6 de marzo. ¡Cuídese!' },
+            { type: 'system', text: 'Appointment confirmed in athenaOne. Campaign task marked complete. Language preference (Spanish) recorded in patient profile. No escalation required.' }
+        ]
+    },
     trigger: {
         id: 'mode2-trigger',
         label: 'Flu Shot Reminder — Workflow Triggered',
@@ -16087,6 +17178,7 @@ function playMode2Demo(scenarioKey) {
         mode2Header.innerHTML = `
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             <span style="color:#55B5B8;font-size:11px;font-weight:700;">Florence [A] — Autonomous Mode</span>
+            ${scenario.language ? `<span style="display:inline-block;padding:2px 6px;background:rgba(99,102,241,0.2);color:#818CF8;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:0.5px;">${scenario.language.toUpperCase()}</span>` : ''}
             <span style="color:rgba(255,255,255,0.4);font-size:11px;margin-left:4px;">${scenario.label}</span>
             <button onclick="stopMode2Demo()" style="margin-left:auto;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;">Stop</button>
         `;
@@ -16305,6 +17397,10 @@ function addMode2OutreachButtons() {
         <button class="mode2-demo-btn" onclick="playMode2Demo('escalation')">
             <span>Medication Adherence — Escalation</span>
             <span class="mode2-demo-tag tag-escalation">Escalation</span>
+        </button>
+        <button class="mode2-demo-btn" onclick="playMode2Demo('spanish')">
+            <span>AWV Scheduling — Spanish (Multilingual)</span>
+            <span class="mode2-demo-tag tag-spanish">Español</span>
         </button>
         <button class="mode2-demo-btn" onclick="playMode2Demo('trigger')">
             <span>Flu Shot Reminder — WF Triggered</span>
