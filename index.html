@@ -429,10 +429,9 @@
         .header-center-icons {
             display: flex;
             align-items: center;
-            gap: 24px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            gap: 16px;
+            margin-left: auto;
+            margin-right: 16px;
         }
         
         .florence-logo {
@@ -440,6 +439,7 @@
             align-items: center;
             gap: 12px;
             flex-shrink: 0;
+            z-index: 1;
         }
         
         .florence-logo-icon {
@@ -952,9 +952,9 @@
         /* Florence Tabs */
         .florence-tabs {
             display: flex;
-            gap: 2px;
+            gap: 4px;
             margin-top: 8px;
-            padding: 0 4px;
+            padding: 0 8px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -963,8 +963,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            padding: 12px 8px;
+            gap: 6px;
+            padding: 10px 6px;
             background: #F2F3F4;
             border: none;
             color: #49545E;
@@ -977,6 +977,8 @@
             position: relative;
             white-space: nowrap;
             min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .florence-tab:hover {
@@ -991,8 +993,8 @@
         }
         
         .tab-icon {
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
             flex-shrink: 0;
         }
         
@@ -6393,7 +6395,7 @@ button:hover {
     <div class="florence-panel">
         <div class="florence-header">
             <div class="florence-logo">
-                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 60px; width: auto;">
+                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 52px; width: auto; display: block;">
             </div>
             <div class="header-center-icons">
 <!-- Toggle removed: all users have full access -->
