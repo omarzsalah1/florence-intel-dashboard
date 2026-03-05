@@ -4205,6 +4205,41 @@ button:hover {
         .analytics-kpi-trend.up { color: #059669; }
         .analytics-kpi-trend.down { color: #DC2626; }
 
+        /* E7: Automated Referral Follow-Up */
+        .referral-followup-alert {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A); border: 1px solid #F59E0B;
+            border-radius: 6px; padding: 8px 10px; margin-top: 6px;
+            display: flex; align-items: center; gap: 8px; animation: fadeIn 0.3s ease;
+        }
+        .referral-followup-alert.overdue {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA); border-color: #EF4444;
+        }
+        .referral-followup-icon {
+            width: 24px; height: 24px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .referral-followup-icon.warning { background: #F59E0B; }
+        .referral-followup-icon.overdue { background: #EF4444; }
+        .referral-followup-text {
+            flex: 1; font-size: 10px; color: #374151; line-height: 1.4;
+        }
+        .referral-followup-text strong { color: #1F2937; }
+        .referral-followup-actions {
+            display: flex; gap: 4px; flex-shrink: 0;
+        }
+        .referral-followup-btn {
+            padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 700;
+            border: none; cursor: pointer; transition: all 0.2s;
+        }
+        .referral-followup-btn.primary {
+            background: #1E3A5F; color: #fff;
+        }
+        .referral-followup-btn.primary:hover { background: #2D5F8B; }
+        .referral-followup-btn.secondary {
+            background: #fff; color: #374151; border: 1px solid #D1D5DB;
+        }
+        .referral-followup-btn.secondary:hover { background: #F3F4F6; }
+
         .task-wf-link {
             display: inline-flex; align-items: center; gap: 3px;
             color: #55B5B8; font-size: 10px; cursor: pointer;
@@ -17652,6 +17687,166 @@ const conveneTaskDeductions = {
     15: 'Assess social support and caregiver burden — patient overwhelmed post-discharge (SDOH)',
     21: 'Flag ADL assistance need — patient unable to bathe independently (SDOH)'
 };
+
+// ========== E7: Automated Referral Follow-Up ==========
+function checkReferralFollowUps() {
+    const today = new Date('2026-03-04');
+    const FOLLOWUP_DAYS = 7;
+    const OVERDUE_DAYS = 14;
+
+    Object.entries(referralTrackingData).forEach(([refId, data]) => {
+        // Find the last completed step date
+        let lastActionDate = null;
+        let currentStep = null;
+        let isStalled = false;
+
+        for (let i = data.steps.length - 1; i >= 0; i--) {
+            const step = data.steps[i];
+            if (step.status === 'completed' && step.date) {
+                lastActionDate = parseReferralDate(step.date);
+                // Check if next step is pending/current
+                if (i + 1 < data.steps.length && ['pending', 'current'].includes(data.steps[i + 1].status)) {
+                    currentStep = data.steps[i + 1];
+                    isStalled = true;
+                }
+                break;
+            }
+            if (step.status === 'current' && step.date) {
+                lastActionDate = parseReferralDate(step.date);
+                currentStep = step;
+                break;
+            }
+        }
+
+        // Skip completed referrals
+        const allCompleted = data.steps.every(s => s.status === 'completed');
+        if (allCompleted) return;
+
+        if (lastActionDate && currentStep) {
+            const daysSince = Math.floor((today - lastActionDate) / (1000 * 60 * 60 * 24));
+            if (daysSince >= FOLLOWUP_DAYS) {
+                const isOverdue = daysSince >= OVERDUE_DAYS;
+                injectFollowUpAlert(refId, data, currentStep, daysSince, isOverdue);
+            }
+        }
+    });
+}
+
+function parseReferralDate(dateStr) {
+    // Parse MM/DD/YYYY format
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+        return new Date(parseInt(parts[2]), parseInt(parts[0]) - 1, parseInt(parts[1]));
+    }
+    return new Date(dateStr);
+}
+
+function injectFollowUpAlert(refId, data, currentStep, daysSince, isOverdue) {
+    // Find the matching referral item in the DOM
+    const refItems = document.querySelectorAll('#section-referrals .referral-item');
+    const specName = data.specialty;
+
+    refItems.forEach(item => {
+        const specEl = item.querySelector('.referral-specialty');
+        if (specEl && specEl.textContent.trim() === specName) {
+            // Don't add duplicate alerts
+            if (item.querySelector('.referral-followup-alert')) return;
+
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `referral-followup-alert ${isOverdue ? 'overdue' : ''}`;
+
+            const iconClass = isOverdue ? 'overdue' : 'warning';
+            const iconSvg = isOverdue
+                ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+                : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
+
+            const statusText = isOverdue
+                ? `<strong>${daysSince} days</strong> since last action — <strong>OVERDUE</strong> for follow-up. Stalled at: <strong>${currentStep.label}</strong>`
+                : `<strong>${daysSince} days</strong> since last action — automated follow-up triggered. Next step: <strong>${currentStep.label}</strong>`;
+
+            const actionText = getFollowUpAction(refId, data, currentStep);
+
+            alertDiv.innerHTML = `
+                <div class="referral-followup-icon ${iconClass}">${iconSvg}</div>
+                <div class="referral-followup-text">
+                    <div>${statusText}</div>
+                    <div style="margin-top:3px;color:#6B7280;">Florence AI: ${actionText}</div>
+                </div>
+                <div class="referral-followup-actions">
+                    <button class="referral-followup-btn primary" onclick="executeReferralFollowUp('${refId}', event)">Send Follow-Up</button>
+                    <button class="referral-followup-btn secondary" onclick="snoozeReferralFollowUp(this, event)">Snooze 3d</button>
+                </div>
+            `;
+
+            item.appendChild(alertDiv);
+        }
+    });
+}
+
+function getFollowUpAction(refId, data, currentStep) {
+    const actions = {
+        'Accepted': 'Will contact specialist office to confirm referral receipt and request scheduling.',
+        'Scheduled': 'Will send appointment reminder to patient and confirm with specialist.',
+        'In Progress': 'Will contact specialist for visit status update.',
+        'Notes Returned': 'Will follow up with specialist office for clinical notes.',
+        'Closed': 'Will verify all documentation is complete and close the loop.'
+    };
+    return actions[currentStep.label] || 'Will initiate automated outreach to advance this referral.';
+}
+
+function executeReferralFollowUp(refId, event) {
+    event.stopPropagation();
+    const data = referralTrackingData[refId];
+    if (!data) return;
+
+    // Add a new Florence action
+    const today = new Date('2026-03-04');
+    const dateStr = `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}/${today.getFullYear()}`;
+    data.florenceActions.push(`Automated follow-up initiated on ${dateStr} — contacting specialist office`);
+
+    // Show toast
+    showToast(`Follow-up initiated for ${data.specialty}`, 'success');
+
+    // Log to activity
+    if (typeof addActivityEntry === 'function') {
+        addActivityEntry(`Automated referral follow-up sent for ${data.specialty}`, 'auto');
+    }
+
+    // Remove the alert
+    const btn = event.target;
+    const alert = btn.closest('.referral-followup-alert');
+    if (alert) {
+        alert.style.transition = 'all 0.3s ease';
+        alert.style.opacity = '0';
+        alert.style.maxHeight = '0';
+        alert.style.padding = '0';
+        alert.style.margin = '0';
+        setTimeout(() => alert.remove(), 300);
+    }
+}
+
+function snoozeReferralFollowUp(btn, event) {
+    event.stopPropagation();
+    const alert = btn.closest('.referral-followup-alert');
+    if (alert) {
+        alert.style.transition = 'all 0.3s ease';
+        alert.style.opacity = '0';
+        setTimeout(() => {
+            alert.innerHTML = `
+                <div class="referral-followup-icon warning"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                <div class="referral-followup-text" style="color:#92400E;">Follow-up snoozed for 3 days. Florence will re-check on 03/07/2026.</div>
+            `;
+            alert.style.opacity = '1';
+            alert.className = 'referral-followup-alert';
+        }, 300);
+    }
+    showToast('Follow-up snoozed for 3 days', 'info');
+}
+
+// Run referral follow-up checks on page load
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(checkReferralFollowUps, 800);
+});
 
 // ========== E5: HEDIS Star Rating Projection ==========
 const starThresholds = [
