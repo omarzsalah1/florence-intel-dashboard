@@ -4125,6 +4125,86 @@ button:hover {
             padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;
         }
         .task-dismiss-btn:hover { color: #E45740; }
+
+        /* E4: Bulk Actions Bar for Pending Review */
+        .bulk-actions-bar {
+            display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-radius: 10px;
+            margin-bottom: 12px; border: 1px solid #F59E0B;
+        }
+        .bulk-actions-bar .bulk-label {
+            font-size: 11px; font-weight: 700; color: #92400E; margin-right: auto;
+        }
+        .bulk-actions-bar .bulk-count {
+            display: inline-block; padding: 2px 8px; background: #F59E0B; color: #fff;
+            border-radius: 10px; font-size: 10px; font-weight: 800; margin-left: 4px;
+        }
+        .bulk-actions-bar button {
+            padding: 5px 12px; border-radius: 6px; font-size: 10px; font-weight: 700;
+            border: none; cursor: pointer; transition: all 0.2s;
+        }
+        .bulk-accept-all { background: #059669; color: #fff; }
+        .bulk-accept-all:hover { background: #047857; }
+        .bulk-defer-all { background: #F59E0B; color: #fff; }
+        .bulk-defer-all:hover { background: #D97706; }
+        .bulk-dismiss-all { background: #fff; color: #DC2626; border: 1px solid #DC2626 !important; }
+        .bulk-dismiss-all:hover { background: #DC2626; color: #fff; }
+
+        /* E1: Campaign Analytics Dashboard */
+        .camp-analytics-btn {
+            display: flex; align-items: center; gap: 5px;
+            padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: 700;
+            background: linear-gradient(135deg, #1E3A5F, #2D5F8B); color: #fff;
+            border: none; cursor: pointer; transition: all 0.2s;
+        }
+        .camp-analytics-btn:hover { background: linear-gradient(135deg, #2D5F8B, #3B7FBF); }
+        .camp-analytics-btn svg { stroke: #fff; }
+        .campaign-analytics {
+            padding: 20px; animation: fadeIn 0.3s ease;
+        }
+        .analytics-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #E5E7EB;
+        }
+        .analytics-close {
+            background: none; border: none; font-size: 22px; color: #6B7280;
+            cursor: pointer; padding: 4px 8px; border-radius: 6px;
+        }
+        .analytics-close:hover { background: #F3F4F6; color: #1F2937; }
+        .analytics-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+        }
+        .analytics-card {
+            background: #fff; border: 1px solid #E5E7EB; border-radius: 12px;
+            padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            min-height: 260px; position: relative;
+        }
+        .analytics-card canvas {
+            width: 100% !important; height: 220px !important;
+        }
+        .analytics-card-title {
+            font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .analytics-kpi-row {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+        }
+        .analytics-kpi {
+            background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px;
+            padding: 14px; text-align: center;
+        }
+        .analytics-kpi-value {
+            font-size: 22px; font-weight: 800; color: #1E3A5F;
+        }
+        .analytics-kpi-label {
+            font-size: 10px; color: #6B7280; margin-top: 4px; font-weight: 600;
+        }
+        .analytics-kpi-trend {
+            font-size: 10px; margin-top: 4px; font-weight: 700;
+        }
+        .analytics-kpi-trend.up { color: #059669; }
+        .analytics-kpi-trend.down { color: #DC2626; }
+
         .task-wf-link {
             display: inline-flex; align-items: center; gap: 3px;
             color: #55B5B8; font-size: 10px; cursor: pointer;
@@ -5614,6 +5694,7 @@ button:hover {
         .mode2-demo-btn .tag-spanish { background: rgba(99,102,241,0.15); color: #6366F1; }
 
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <!-- Toast Notification Container -->
@@ -6865,6 +6946,7 @@ button:hover {
                     <button class="camp-filter-btn" onclick="filterCampaigns('completed', this)">Completed</button>
                     <button class="camp-filter-btn" onclick="filterCampaigns('paused', this)">Paused</button>
                 </div>
+                <button class="camp-analytics-btn" onclick="toggleCampaignAnalytics()" title="Campaign Analytics"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg> Analytics</button>
                 <button class="camp-btn-primary" onclick="openCampaignCreator()" style="padding:8px 16px;font-size:12px;">+ New Campaign</button>
                 <button class="campaigns-back-btn" onclick="closeCampaignsView()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -6913,6 +6995,33 @@ button:hover {
             </div>
             <div class="campaign-drilldown-stats" id="drilldown-stats"></div>
             <div id="drilldown-table-container"></div>
+        </div>
+
+        <!-- E1: Campaign Analytics Dashboard -->
+        <div class="campaign-analytics" id="campaign-analytics" style="display:none;">
+            <div class="analytics-header">
+                <h3 style="margin:0;font-size:16px;font-weight:700;color:#31393F;">Campaign Analytics Dashboard</h3>
+                <button class="analytics-close" onclick="toggleCampaignAnalytics()">&times;</button>
+            </div>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-card-title">Outreach Completion Over Time</div>
+                    <canvas id="analytics-completion-chart" width="400" height="200"></canvas>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-card-title">Response Rate by Method</div>
+                    <canvas id="analytics-method-chart" width="400" height="200"></canvas>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-card-title">Escalation Trends</div>
+                    <canvas id="analytics-escalation-chart" width="400" height="200"></canvas>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-card-title">Campaign Performance Comparison</div>
+                    <canvas id="analytics-comparison-chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="analytics-kpi-row" id="analytics-kpi-row"></div>
         </div>
 
     </div><!-- end campaigns-overlay -->
@@ -15236,7 +15345,17 @@ function renderTasks(filter) {
         return;
     }
 
-    container.innerHTML = filtered.map(task => {
+    // E4: Bulk Actions Bar for Pending Review
+    const pendingReviewTasks = florenceTasks.filter(t => t.status === 'pending_review');
+    const bulkBar = (filter === 'pending_review' && pendingReviewTasks.length > 1) ? `
+        <div class="bulk-actions-bar">
+            <span class="bulk-label">Bulk Actions <span class="bulk-count">${pendingReviewTasks.length} tasks</span></span>
+            <button class="bulk-accept-all" onclick="bulkActionTasks('accept')">&#10003; Accept All</button>
+            <button class="bulk-defer-all" onclick="bulkActionTasks('defer')">&#8634; Defer All</button>
+            <button class="bulk-dismiss-all" onclick="bulkActionTasks('dismiss')">&#10005; Dismiss All</button>
+        </div>` : '';
+
+    container.innerHTML = bulkBar + filtered.map(task => {
         const isChecked = task.status === 'completed';
         const isPendingReview = task.status === 'pending_review';
         const sparkle = task.origin === 'ai-deduced' ? `<span class="task-sparkle" title="AI Deduced">&#10024;<span class="sparkle-tooltip">Deduced from ${task.deduced_from}</span></span>` : '';
@@ -15320,6 +15439,32 @@ function dismissTask(taskId) {
     if (typeof renderTasks === 'function') renderTasks('all');
     if (typeof addLogEntry === 'function') addLogEntry('Task Dismissed', task.title + ' — dismissed by care manager');
     if (typeof showToast === 'function') showToast('Task dismissed: ' + task.title);
+}
+
+// E4: Bulk Actions for Pending Review
+function bulkActionTasks(action) {
+    const pendingReviewTasks = florenceTasks.filter(t => t.status === 'pending_review');
+    const count = pendingReviewTasks.length;
+    if (count === 0) return;
+
+    pendingReviewTasks.forEach(task => {
+        if (action === 'accept') {
+            task.status = 'in-progress';
+            if (task.workflow_id) {
+                const wf = florenceWorkflows.find(w => w.id === task.workflow_id);
+                if (wf && wf.status !== 'active' && wf.status !== 'completed') wf.status = 'active';
+            }
+        } else if (action === 'defer') {
+            task.status = 'pending';
+        } else if (action === 'dismiss') {
+            task.status = 'dismissed';
+        }
+    });
+
+    const actionLabel = action === 'accept' ? 'accepted' : action === 'defer' ? 'deferred' : 'dismissed';
+    if (typeof addLogEntry === 'function') addLogEntry('Bulk ' + actionLabel.charAt(0).toUpperCase() + actionLabel.slice(1), count + ' tasks ' + actionLabel + ' via bulk action');
+    if (typeof showToast === 'function') showToast(count + ' tasks ' + actionLabel);
+    renderTasks('pending_review');
 }
 
 function toggleTaskCheck(taskId) {
@@ -17491,6 +17636,199 @@ const conveneTaskDeductions = {
     15: 'Assess social support and caregiver burden — patient overwhelmed post-discharge (SDOH)',
     21: 'Flag ADL assistance need — patient unable to bathe independently (SDOH)'
 };
+
+// ========== E1: Campaign Analytics Dashboard ==========
+let analyticsChartsInitialized = false;
+let analyticsChartInstances = {};
+
+function toggleCampaignAnalytics() {
+    const panel = document.getElementById('campaign-analytics');
+    const grid = document.getElementById('campaigns-grid');
+    const drilldown = document.getElementById('campaign-drilldown');
+    if (!panel) return;
+    const isVisible = panel.style.display !== 'none';
+    if (isVisible) {
+        panel.style.display = 'none';
+        grid.style.display = '';
+    } else {
+        panel.style.display = 'block';
+        grid.style.display = 'none';
+        if (drilldown) drilldown.style.display = 'none';
+        renderAnalyticsDashboard();
+    }
+}
+
+function renderAnalyticsDashboard() {
+    // Destroy existing chart instances
+    Object.values(analyticsChartInstances).forEach(c => { if (c && c.destroy) c.destroy(); });
+    analyticsChartInstances = {};
+
+    renderCompletionChart();
+    renderMethodChart();
+    renderEscalationChart();
+    renderComparisonChart();
+    renderAnalyticsKPIs();
+    analyticsChartsInitialized = true;
+}
+
+function renderCompletionChart() {
+    const ctx = document.getElementById('analytics-completion-chart');
+    if (!ctx) return;
+    // Simulated weekly outreach completion data per campaign
+    const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'];
+    const datasets = [
+        { label: 'AWV Scheduling', data: [8, 22, 38, 52, 64, 75, 84, 91], borderColor: '#1E3A5F', backgroundColor: 'rgba(30,58,95,0.08)', fill: true, tension: 0.35 },
+        { label: 'Med Adherence', data: [5, 15, 28, 39, 48, 55, 62, 68], borderColor: '#55B5B8', backgroundColor: 'rgba(85,181,184,0.08)', fill: true, tension: 0.35 },
+        { label: 'Flu Shot', data: [3, 9, 15, 22, 28, 33, 38, 43], borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,0.08)', fill: true, tension: 0.35 },
+        { label: 'CCM Check-In', data: [6, 14, 23, 32, 40, 46, 51, 55], borderColor: '#8B5CF6', backgroundColor: 'rgba(139,92,246,0.08)', fill: true, tension: 0.35 }
+    ];
+    analyticsChartInstances.completion = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
+            scales: {
+                y: { beginAtZero: true, max: 100, title: { display: true, text: '% Complete', font: { size: 10 } }, ticks: { font: { size: 9 } } },
+                x: { ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+}
+
+function renderMethodChart() {
+    const ctx = document.getElementById('analytics-method-chart');
+    if (!ctx) return;
+    // Aggregate response rates by method from campaignPatients
+    let phoneTotal = 0, phoneResponded = 0, smsTotal = 0, smsResponded = 0;
+    Object.values(campaignPatients).forEach(patients => {
+        patients.forEach(p => {
+            if (p.method === 'Phone') {
+                phoneTotal++;
+                if (['completed', 'scheduled', 'contacted', 'escalated'].includes(p.status)) phoneResponded++;
+            } else {
+                smsTotal++;
+                if (['completed', 'scheduled', 'contacted', 'escalated'].includes(p.status)) smsResponded++;
+            }
+        });
+    });
+    const phoneRate = phoneTotal > 0 ? Math.round((phoneResponded / phoneTotal) * 100) : 0;
+    const smsRate = smsTotal > 0 ? Math.round((smsResponded / smsTotal) * 100) : 0;
+    const phoneNoResp = 100 - phoneRate;
+    const smsNoResp = 100 - smsRate;
+
+    analyticsChartInstances.method = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Phone', 'SMS'],
+            datasets: [
+                { label: 'Responded', data: [phoneRate, smsRate], backgroundColor: ['#1E3A5F', '#55B5B8'], borderRadius: 6 },
+                { label: 'No Response', data: [phoneNoResp, smsNoResp], backgroundColor: ['rgba(30,58,95,0.2)', 'rgba(85,181,184,0.2)'], borderRadius: 6 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } },
+                tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + ctx.raw + '%' } }
+            },
+            scales: {
+                x: { stacked: true, ticks: { font: { size: 10 } } },
+                y: { stacked: true, max: 100, title: { display: true, text: 'Response %', font: { size: 10 } }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+}
+
+function renderEscalationChart() {
+    const ctx = document.getElementById('analytics-escalation-chart');
+    if (!ctx) return;
+    // Simulated weekly escalation data
+    const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'];
+    analyticsChartInstances.escalation = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                { label: 'New Escalations', data: [14, 18, 12, 9, 11, 7, 4, 2], backgroundColor: '#E45740', borderRadius: 4 },
+                { label: 'Resolved', data: [3, 10, 14, 11, 8, 9, 6, 5], backgroundColor: '#059669', borderRadius: 4 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: 'Count', font: { size: 10 } }, ticks: { font: { size: 9 } } },
+                x: { ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+}
+
+function renderComparisonChart() {
+    const ctx = document.getElementById('analytics-comparison-chart');
+    if (!ctx) return;
+    const campNames = newtonCampaigns.map(c => c.name.length > 25 ? c.name.substring(0, 25) + '...' : c.name);
+    const outreach = newtonCampaigns.map(c => c.outreach_complete);
+    const success = newtonCampaigns.map(c => c.success_rate);
+
+    analyticsChartInstances.comparison = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: campNames,
+            datasets: [
+                { label: 'Outreach %', data: outreach, borderColor: '#1E3A5F', backgroundColor: 'rgba(30,58,95,0.15)', pointBackgroundColor: '#1E3A5F' },
+                { label: 'Success %', data: success, borderColor: '#55B5B8', backgroundColor: 'rgba(85,181,184,0.15)', pointBackgroundColor: '#55B5B8' }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
+            scales: { r: { beginAtZero: true, max: 100, ticks: { font: { size: 8 }, stepSize: 25 }, pointLabels: { font: { size: 8 } } } }
+        }
+    });
+}
+
+function renderAnalyticsKPIs() {
+    const row = document.getElementById('analytics-kpi-row');
+    if (!row) return;
+    const totalTargeted = newtonCampaigns.reduce((s, c) => s + c.targeted, 0);
+    const avgOutreach = Math.round(newtonCampaigns.reduce((s, c) => s + c.outreach_complete, 0) / newtonCampaigns.length);
+    const avgSuccess = Math.round(newtonCampaigns.reduce((s, c) => s + c.success_rate, 0) / newtonCampaigns.length);
+    const totalEscalations = newtonCampaigns.reduce((s, c) => s + c.escalations, 0);
+    // Compute method breakdown from patient data
+    let phoneCount = 0, smsCount = 0;
+    Object.values(campaignPatients).forEach(pts => pts.forEach(p => { if (p.method === 'Phone') phoneCount++; else smsCount++; }));
+    const phonePercent = Math.round((phoneCount / (phoneCount + smsCount)) * 100);
+
+    row.innerHTML = `
+        <div class="analytics-kpi">
+            <div class="analytics-kpi-value">${totalTargeted.toLocaleString()}</div>
+            <div class="analytics-kpi-label">Total Patients Targeted</div>
+            <div class="analytics-kpi-trend up">+12% vs last quarter</div>
+        </div>
+        <div class="analytics-kpi">
+            <div class="analytics-kpi-value">${avgOutreach}%</div>
+            <div class="analytics-kpi-label">Avg Outreach Completion</div>
+            <div class="analytics-kpi-trend up">+8% vs last quarter</div>
+        </div>
+        <div class="analytics-kpi">
+            <div class="analytics-kpi-value">${avgSuccess}%</div>
+            <div class="analytics-kpi-label">Avg Success Rate</div>
+            <div class="analytics-kpi-trend up">+5% vs last quarter</div>
+        </div>
+        <div class="analytics-kpi">
+            <div class="analytics-kpi-value" style="color:#E45740;">${totalEscalations}</div>
+            <div class="analytics-kpi-label">Total Escalations</div>
+            <div class="analytics-kpi-trend down">-15% vs last quarter</div>
+        </div>
+        <div class="analytics-kpi">
+            <div class="analytics-kpi-value">${phonePercent}%</div>
+            <div class="analytics-kpi-label">Phone vs SMS Split</div>
+            <div class="analytics-kpi-trend">Phone: ${phonePercent}% | SMS: ${100 - phonePercent}%</div>
+        </div>
+    `;
+}
 
     </script>
 
