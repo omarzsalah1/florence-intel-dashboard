@@ -16295,6 +16295,17 @@ function showToast(message) {
 
 // Add task from Convene call — creates task as pending_review (awaiting CM accept/deny via inline suggestion card)
 function addTaskFromConvene(taskTitle, workflowId, sourceLabel) {
+    // TD-4: Deduplication — skip if task with same title already exists as pending_review or in-progress
+    const existingDupe = florenceTasks.find(t => {
+        const titleMatch = t.title.toLowerCase().includes(taskTitle.toLowerCase().substring(0, 20)) ||
+            taskTitle.toLowerCase().includes(t.title.toLowerCase().substring(0, 20));
+        return titleMatch && (t.status === 'pending_review' || t.status === 'in-progress');
+    });
+    if (existingDupe) {
+        // Already exists — skip deduction to prevent duplicates
+        return;
+    }
+
     // Find matching task in florenceTasks by title (case-insensitive partial match)
     const task = florenceTasks.find(t => 
         t.title.toLowerCase().includes(taskTitle.toLowerCase().substring(0, 20)) ||
@@ -16911,6 +16922,15 @@ switchToTab = function(tabName) {
     if (tabName === 'hedis') {
         renderHedisMeasures();
     }
+    // TD-3: Clear Mode 2 timeouts when switching away from outreach tab
+    if (tabName !== 'outreach' && mode2AllTimeouts && mode2AllTimeouts.length > 0) {
+        mode2AllTimeouts.forEach(tid => clearTimeout(tid));
+        mode2AllTimeouts = [];
+        if (mode2PlaybackTimeout) {
+            clearTimeout(mode2PlaybackTimeout);
+            mode2PlaybackTimeout = null;
+        }
+    }
 };
 
 // Initial render if HEDIS tab is active
@@ -17335,6 +17355,7 @@ const mode2Scenarios = {
 };
 
 let mode2PlaybackTimeout = null;
+let mode2AllTimeouts = []; // TD-3: Track all Mode 2 timeouts for cleanup
 
 function playMode2Demo(scenarioKey) {
     const scenario = mode2Scenarios[scenarioKey];
@@ -17389,7 +17410,7 @@ function playMode2Demo(scenarioKey) {
         const isSystem = msg.type === 'system';
         const isPatient = msg.type === 'patient';
         const isFlorence = msg.type === 'florence';
-        mode2PlaybackTimeout = setTimeout(() => {
+        const tid = setTimeout(() => {
             if (!transcriptContainer) return;
 
             const div = document.createElement('div');
@@ -17470,12 +17491,17 @@ function playMode2Demo(scenarioKey) {
                 }, 2000);
             }
         }, delay);
+        mode2PlaybackTimeout = tid;
+        mode2AllTimeouts.push(tid); // TD-3: Track for cleanup
         delay += isSystem ? 800 : 1800;
     });
 }
 
 function stopMode2Demo() {
+    // TD-3: Clear ALL Mode 2 timeouts, not just the last one
     if (mode2PlaybackTimeout) clearTimeout(mode2PlaybackTimeout);
+    mode2AllTimeouts.forEach(tid => clearTimeout(tid));
+    mode2AllTimeouts = [];
     // Remove the Mode 2 header
     const header = document.getElementById('mode2-transcript-header');
     if (header) header.remove();
@@ -17638,6 +17664,53 @@ function addLogEntry(title, description, time, attribution) {
 
     container.insertBefore(item, container.firstChild);
     updateLogFilterCounts();
+    // TD-2: Persist to localStorage
+    persistActivityLog();
+}
+
+// TD-2: Activity log persistence to localStorage
+function persistActivityLog() {
+    try {
+        const container = document.getElementById('log-container');
+        if (!container) return;
+        const entries = [];
+        container.querySelectorAll('.log-item').forEach(item => {
+            entries.push({
+                html: item.outerHTML,
+                type: item.getAttribute('data-log-type') || 'system'
+            });
+        });
+        // Keep last 100 entries max
+        localStorage.setItem('florence-activity-log', JSON.stringify(entries.slice(0, 100)));
+    } catch(e) { /* localStorage may be full or unavailable */ }
+}
+
+function restoreActivityLog() {
+    try {
+        const saved = localStorage.getItem('florence-activity-log');
+        if (!saved) return;
+        const entries = JSON.parse(saved);
+        if (!entries || !entries.length) return;
+        const container = document.getElementById('log-container');
+        if (!container) return;
+        // Only restore if container has just the initial session entry
+        if (container.querySelectorAll('.log-item').length <= 1) {
+            entries.reverse().forEach(entry => {
+                const temp = document.createElement('div');
+                temp.innerHTML = entry.html;
+                const item = temp.firstElementChild;
+                if (item) {
+                    // Insert after the session start entry
+                    const firstItem = container.querySelector('.log-item');
+                    if (firstItem && firstItem.nextSibling) {
+                        container.insertBefore(item, firstItem.nextSibling);
+                    } else {
+                        container.appendChild(item);
+                    }
+                }
+            });
+        }
+    } catch(e) { /* ignore restore errors */ }
 }
 
 // ==================== INITIALIZATION ====================
@@ -17651,6 +17724,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial render with Mode 2 support
     renderWorkflowsWithMode2('all');
+
+    // TD-2: Restore activity log from localStorage
+    setTimeout(restoreActivityLog, 400);
 });
 
 // Task deduction mapping for Convene script
