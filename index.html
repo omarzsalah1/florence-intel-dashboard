@@ -417,21 +417,22 @@
         }
         
         .florence-header {
-            padding: 12px 20px;
+            padding: 10px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #e0e0e0;
             position: relative;
-            min-height: 70px;
+            min-height: 64px;
+            gap: 8px;
         }
         
         .header-center-icons {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             margin-left: auto;
-            margin-right: 16px;
+            flex-shrink: 0;
         }
         
         .florence-logo {
@@ -952,9 +953,9 @@
         /* Florence Tabs */
         .florence-tabs {
             display: flex;
-            gap: 4px;
+            gap: 1px;
             margin-top: 8px;
-            padding: 0 8px;
+            padding: 0 6px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -963,12 +964,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 10px 6px;
+            gap: 5px;
+            padding: 10px 4px;
             background: #F2F3F4;
             border: none;
             color: #49545E;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -977,8 +978,6 @@
             position: relative;
             white-space: nowrap;
             min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         
         .florence-tab:hover {
@@ -993,8 +992,8 @@
         }
         
         .tab-icon {
-            width: 15px;
-            height: 15px;
+            width: 14px;
+            height: 14px;
             flex-shrink: 0;
         }
         
@@ -6395,7 +6394,7 @@ button:hover {
     <div class="florence-panel">
         <div class="florence-header">
             <div class="florence-logo">
-                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 52px; width: auto; display: block;">
+                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 44px; width: auto; max-width: 180px; display: block; object-fit: contain; object-position: left;">
             </div>
             <div class="header-center-icons">
 <!-- Toggle removed: all users have full access -->
