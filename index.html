@@ -6843,21 +6843,37 @@ button:hover {
                         </div>
                     </div>
 
-                    <!-- Star Rating Projection -->
-                    <div style="background:linear-gradient(135deg,rgba(85,181,184,0.12),rgba(99,102,241,0.08));border:1px solid rgba(85,181,184,0.25);border-radius:8px;padding:12px;margin-bottom:12px;flex-shrink:0;">
+                    <!-- E5: Enhanced Star Rating Projection -->
+                    <div id="star-rating-projection" style="background:linear-gradient(135deg,rgba(85,181,184,0.12),rgba(99,102,241,0.08));border:1px solid rgba(85,181,184,0.25);border-radius:8px;padding:12px;margin-bottom:12px;flex-shrink:0;cursor:pointer;" onclick="toggleStarProjectionDetail()">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <div>
-                                <div style="font-size:10px;font-weight:700;color:#55B5B8;margin-bottom:4px;">CMS STAR RATING PROJECTION</div>
-                                <div style="display:flex;align-items:center;gap:4px;">
-                                    <span style="font-size:20px;color:#FBBF24;">&#9733;&#9733;&#9733;&#9733;</span><span style="font-size:20px;color:#4B5563;">&#9733;</span>
-                                    <span style="font-size:12px;font-weight:700;color:#F3F4F6;margin-left:4px;">4.0 Stars</span>
+                                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                                    <span style="font-size:10px;font-weight:700;color:#55B5B8;">CMS STAR RATING PROJECTION</span>
+                                    <span style="font-size:8px;background:rgba(99,102,241,0.2);color:#818CF8;padding:1px 5px;border-radius:3px;font-weight:700;">LIVE</span>
                                 </div>
-                                <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:2px;">+0.5 stars projected with Florence outreach completion</div>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <div id="star-current-display"></div>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" style="margin:0 2px;"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+                                    <div id="star-projected-display"></div>
+                                </div>
+                                <div id="star-gap-summary" style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;"></div>
                             </div>
                             <div style="text-align:right;">
                                 <div style="font-size:9px;color:rgba(255,255,255,0.4);">Quality Bonus</div>
-                                <div style="font-size:14px;font-weight:800;color:#059669;">+5%</div>
+                                <div id="star-bonus-display" style="font-size:14px;font-weight:800;color:#059669;"></div>
                                 <div style="font-size:9px;color:rgba(255,255,255,0.4);">reimbursement</div>
+                            </div>
+                        </div>
+                        <!-- Expandable detail -->
+                        <div id="star-projection-detail" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);">
+                            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;" id="star-domain-scores"></div>
+                            <div style="margin-bottom:8px;">
+                                <div style="font-size:9px;font-weight:700;color:#55B5B8;margin-bottom:6px;">GAP-TO-NEXT-STAR ANALYSIS</div>
+                                <div id="star-gap-measures" style="display:flex;flex-direction:column;gap:4px;"></div>
+                            </div>
+                            <div style="background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.2);border-radius:6px;padding:8px;">
+                                <div style="font-size:9px;font-weight:700;color:#059669;margin-bottom:4px;">FLORENCE AI PROJECTION</div>
+                                <div id="star-florence-projection" style="font-size:10px;color:rgba(255,255,255,0.6);"></div>
                             </div>
                         </div>
                     </div>
@@ -17635,6 +17651,162 @@ const conveneTaskDeductions = {
     13: 'Initiate home health aide referral',
     15: 'Assess social support and caregiver burden — patient overwhelmed post-discharge (SDOH)',
     21: 'Flag ADL assistance need — patient unable to bathe independently (SDOH)'
+};
+
+// ========== E5: HEDIS Star Rating Projection ==========
+const starThresholds = [
+    { stars: 5, minRate: 85, bonus: '+7%' },
+    { stars: 4.5, minRate: 82, bonus: '+6%' },
+    { stars: 4, minRate: 78, bonus: '+5%' },
+    { stars: 3.5, minRate: 74, bonus: '+3%' },
+    { stars: 3, minRate: 70, bonus: '+0%' },
+    { stars: 2.5, minRate: 65, bonus: '+0%' },
+    { stars: 2, minRate: 60, bonus: '+0%' },
+    { stars: 1.5, minRate: 50, bonus: '+0%' },
+    { stars: 1, minRate: 0, bonus: '+0%' }
+];
+
+function computeStarRating(weightedAvg) {
+    for (const t of starThresholds) {
+        if (weightedAvg >= t.minRate) return t;
+    }
+    return starThresholds[starThresholds.length - 1];
+}
+
+function computeWeightedAvg(measures) {
+    let totalWeight = 0, weightedSum = 0;
+    measures.forEach(m => {
+        const w = m.weight === 'Triple' ? 3 : m.weight === 'Double' ? 2 : 1;
+        totalWeight += w;
+        weightedSum += m.rate * w;
+    });
+    return totalWeight > 0 ? weightedSum / totalWeight : 0;
+}
+
+function computeProjectedRate(m) {
+    // Project rate if Florence completes all scheduled outreach
+    const additionalClosures = m.florenceImpact.scheduled - m.florenceImpact.completed;
+    const projectedCompliant = m.compliant + Math.max(0, additionalClosures);
+    return Math.min(100, (projectedCompliant / m.eligible) * 100);
+}
+
+function renderStarRatingProjection() {
+    const currentAvg = computeWeightedAvg(hedisMeasures);
+    const currentStar = computeStarRating(currentAvg);
+
+    // Compute projected measures
+    const projectedMeasures = hedisMeasures.map(m => ({
+        ...m,
+        rate: parseFloat(computeProjectedRate(m).toFixed(1))
+    }));
+    const projectedAvg = computeWeightedAvg(projectedMeasures);
+    const projectedStar = computeStarRating(projectedAvg);
+
+    // Render current stars
+    const currentDisplay = document.getElementById('star-current-display');
+    if (currentDisplay) {
+        const fullStars = Math.floor(currentStar.stars);
+        const halfStar = currentStar.stars % 1 >= 0.5;
+        let starsHtml = '';
+        for (let i = 0; i < 5; i++) {
+            if (i < fullStars) starsHtml += '<span style="font-size:16px;color:#FBBF24;">&#9733;</span>';
+            else if (i === fullStars && halfStar) starsHtml += '<span style="font-size:16px;color:#FBBF24;">&#9733;</span>';
+            else starsHtml += '<span style="font-size:16px;color:#4B5563;">&#9733;</span>';
+        }
+        currentDisplay.innerHTML = `<div style="display:flex;align-items:center;gap:4px;">${starsHtml}<span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);">${currentStar.stars}</span></div><div style="font-size:8px;color:rgba(255,255,255,0.4);">Current</div>`;
+    }
+
+    // Render projected stars
+    const projectedDisplay = document.getElementById('star-projected-display');
+    if (projectedDisplay) {
+        const fullStars = Math.floor(projectedStar.stars);
+        const halfStar = projectedStar.stars % 1 >= 0.5;
+        let starsHtml = '';
+        for (let i = 0; i < 5; i++) {
+            if (i < fullStars) starsHtml += '<span style="font-size:16px;color:#FBBF24;">&#9733;</span>';
+            else if (i === fullStars && halfStar) starsHtml += '<span style="font-size:16px;color:#FBBF24;">&#9733;</span>';
+            else starsHtml += '<span style="font-size:16px;color:#4B5563;">&#9733;</span>';
+        }
+        projectedDisplay.innerHTML = `<div style="display:flex;align-items:center;gap:4px;">${starsHtml}<span style="font-size:11px;font-weight:800;color:#059669;">${projectedStar.stars}</span></div><div style="font-size:8px;color:#059669;font-weight:700;">Projected</div>`;
+    }
+
+    // Gap summary
+    const gapSummary = document.getElementById('star-gap-summary');
+    if (gapSummary) {
+        const starDiff = projectedStar.stars - currentStar.stars;
+        gapSummary.textContent = starDiff > 0 
+            ? `+${starDiff} star${starDiff !== 1 ? 's' : ''} projected with Florence outreach completion (${currentAvg.toFixed(1)}% → ${projectedAvg.toFixed(1)}%)`
+            : `Maintaining ${currentStar.stars} stars — weighted avg ${currentAvg.toFixed(1)}%`;
+    }
+
+    // Bonus display
+    const bonusDisplay = document.getElementById('star-bonus-display');
+    if (bonusDisplay) bonusDisplay.textContent = projectedStar.bonus;
+
+    // Domain scores
+    const domainScores = document.getElementById('star-domain-scores');
+    if (domainScores) {
+        const domains = {};
+        hedisMeasures.forEach(m => {
+            if (!domains[m.domain]) domains[m.domain] = { current: [], projected: [] };
+            domains[m.domain].current.push(m.rate);
+            domains[m.domain].projected.push(computeProjectedRate(m));
+        });
+        domainScores.innerHTML = Object.entries(domains).map(([name, d]) => {
+            const curAvg = (d.current.reduce((a, b) => a + b, 0) / d.current.length).toFixed(1);
+            const projAvg = (d.projected.reduce((a, b) => a + b, 0) / d.projected.length).toFixed(1);
+            return `<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:6px;text-align:center;">
+                <div style="font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:2px;">${name}</div>
+                <div style="font-size:12px;font-weight:800;color:#F3F4F6;">${curAvg}%</div>
+                <div style="font-size:8px;color:#059669;">→ ${projAvg}%</div>
+            </div>`;
+        }).join('');
+    }
+
+    // Gap-to-next-star measures (sorted by impact)
+    const gapMeasures = document.getElementById('star-gap-measures');
+    if (gapMeasures) {
+        const nextStarThreshold = starThresholds.find(t => t.stars === currentStar.stars + 0.5) || starThresholds[0];
+        const measuresWithGap = hedisMeasures.map(m => {
+            const w = m.weight === 'Triple' ? 3 : m.weight === 'Double' ? 2 : 1;
+            const gapToTarget = Math.max(0, m.target - m.rate);
+            const patientsNeeded = Math.ceil(m.eligible * (gapToTarget / 100));
+            return { ...m, weightVal: w, gapToTarget, patientsNeeded };
+        }).filter(m => m.gapToTarget > 0).sort((a, b) => (b.gapToTarget * b.weightVal) - (a.gapToTarget * a.weightVal));
+
+        gapMeasures.innerHTML = measuresWithGap.slice(0, 4).map(m => {
+            const impactColor = m.weightVal >= 3 ? '#EF4444' : m.weightVal >= 2 ? '#FBBF24' : '#6B7280';
+            return `<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.03);border-radius:4px;padding:5px 8px;">
+                <span style="font-size:8px;font-weight:800;color:${impactColor};min-width:20px;">${m.weight === 'Triple' ? '3x' : m.weight === 'Double' ? '2x' : '1x'}</span>
+                <span style="font-size:9px;color:#F3F4F6;flex:1;">${m.code}: ${m.name}</span>
+                <span style="font-size:9px;color:#FBBF24;font-weight:700;">${m.rate}% → ${m.target}%</span>
+                <span style="font-size:8px;color:rgba(255,255,255,0.4);">(${m.patientsNeeded} pts)</span>
+            </div>`;
+        }).join('');
+    }
+
+    // Florence projection narrative
+    const florenceProj = document.getElementById('star-florence-projection');
+    if (florenceProj) {
+        const totalScheduled = hedisMeasures.reduce((s, m) => s + m.florenceImpact.scheduled, 0);
+        const totalCompleted = hedisMeasures.reduce((s, m) => s + m.florenceImpact.completed, 0);
+        const remaining = totalScheduled - totalCompleted;
+        florenceProj.innerHTML = `If Florence completes <strong style="color:#059669;">${remaining}</strong> remaining scheduled outreach actions, the weighted compliance average rises from <strong>${currentAvg.toFixed(1)}%</strong> to <strong style="color:#059669;">${projectedAvg.toFixed(1)}%</strong>, projecting a <strong style="color:#FBBF24;">${projectedStar.stars}-star</strong> rating with <strong style="color:#059669;">${projectedStar.bonus}</strong> quality bonus reimbursement.`;
+    }
+}
+
+function toggleStarProjectionDetail() {
+    const detail = document.getElementById('star-projection-detail');
+    if (detail) {
+        detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+// Hook into HEDIS tab rendering
+const _origRenderHedis = renderHedisMeasures;
+renderHedisMeasures = function() {
+    _origRenderHedis();
+    renderStarRatingProjection();
 };
 
 // ========== E1: Campaign Analytics Dashboard ==========
