@@ -15407,7 +15407,7 @@ const conveneTranscript = [
 
 const dmeCallTranscript = [
   { type: 'system', text: 'Florence initiating outbound call to Lincare Home Medical...' },
-  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office on behalf of a patient, Jane Doe, date of birth January 5th, 1958. I\'m calling to coordinate the delivery of a home oxygen concentrator ordered by Dr. Campbell. Can you help me with that?' },
+  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office on behalf of a patient, Jane Doe, date of birth May 27th, 1955. I\'m calling to coordinate the delivery of a home oxygen concentrator ordered by Dr. Campbell. Can you help me with that?' },
   { type: 'dme-agent', text: 'Hi Florence, yes, I can help. Let me pull up her record... Yes, I see the order from St. Joseph\'s Hospital for Jane Doe. It was approved this morning.' },
   { type: 'florence', text: 'Excellent. Can you please confirm the delivery address you have on file?' },
   { type: 'dme-agent', text: 'We have 123 Maple Street, Anytown, USA, 12345.' },
@@ -15429,7 +15429,7 @@ const daughterSmsTranscript = [
 
 const pharmacyCallTranscript = [
   { type: 'system', text: 'Florence initiating outbound call to CVS Pharmacy on Main Street...' },
-  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office for a patient, Jane Doe, date of birth January 5th, 1958. I\'m calling to verify if you have new prescriptions ready for her that were sent from St. Joseph\'s Hospital today.' },
+  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office for a patient, Jane Doe, date of birth May 27th, 1955. I\'m calling to verify if you have new prescriptions ready for her that were sent from St. Joseph\'s Hospital today.' },
   { type: 'pharmacy-tech', text: 'Hi, let me check for you... Doe... D-O-E... Yes, I see them. We have new prescriptions for Metoprolol, Clopidogrel, and Atorvastatin. They are filled and ready for pickup.' },
   { type: 'florence', text: 'That\'s wonderful. Thank you for confirming. I will let the patient know she can pick them up at your location on Main Street.' },
   { type: 'pharmacy-tech', text: 'Sounds good. We\'re open until 9 PM.' },
@@ -16709,7 +16709,7 @@ function addTaskFromConvene(taskTitle, workflowId, sourceLabel) {
 const handoffNoteData = {
   'WF-A-002': {
     title: 'Medication Adherence: Metoprolol Refill — ESCALATION',
-    patient: 'Jane Doe | DOB: 03/14/1957 | MRN: 202070',
+    patient: 'Jane Doe | DOB: 05/27/1955 | MRN: 202070',
     workflow: 'Medication Adherence: Metoprolol Refill (WF-A-002)',
     campaign: 'October Medication Adherence Campaign (CAMP-MED-OCT)',
     interaction_summary: 'Florence initiated an automated check-in call on Feb 26 at 10:15 AM regarding an overdue Metoprolol Succinate refill (last filled: Jan 24, 2026). Patient answered and confirmed she has not refilled the medication. Patient reported feeling dizzy and short of breath over the past three days, which she attributed to "not having her heart pill." Patient expressed difficulty getting to the pharmacy due to transportation barriers.',
