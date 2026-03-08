@@ -6554,19 +6554,19 @@ button:hover {
             
             <!-- Tab Navigation -->
             <div class="florence-tabs">
-                <button class="florence-tab active" data-tab="gaps" title="Care gaps and gap status">
+                <button class="florence-tab active" data-tab="outreach" title="Patient and care team outreach">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path>
+                    </svg>
+                    <span>Outreach</span>
+                </button>
+                <button class="florence-tab" data-tab="gaps" title="Care gaps and gap status">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
                     <span>Gaps</span>
-                </button>
-                <button class="florence-tab" data-tab="outreach" title="Patient and care team outreach">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path>
-                    </svg>
-                    <span>Outreach</span>
                 </button>
                 <button class="florence-tab" data-tab="workflows" title="Active workflows and tasks">
                     <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -6654,7 +6654,7 @@ button:hover {
             </div>
 
             <!-- Facesheet / CDA Tab -->
-            <div class="tab-panel active" id="gaps-panel">
+            <div class="tab-panel" id="gaps-panel">
 
                 <!-- Gaps Sub-Tab Bar -->
                 <div class="gaps-toggle-bar">
@@ -6823,7 +6823,7 @@ button:hover {
             </div>
             
             <!-- Transcript Tab -->
-            <div class="tab-panel" id="outreach-panel">
+            <div class="tab-panel active" id="outreach-panel">
                 <!-- Workflow Buttons (inside COM tab) -->
                 <div class="com-workflow-buttons">
                     <button class="workflow-btn btn-engage" id="engage-btn" onclick="startWorkflow('engage')">
