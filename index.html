@@ -4637,6 +4637,195 @@ button:hover {
             text-align: right;
         }
 
+        /* ===== WORKFLOW-TASK INTEGRATION (Sprint 3+) ===== */
+        .wf-completion-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .wf-completion-circle svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+        .wf-completion-circle .wf-pct-text {
+            z-index: 1;
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .wf-ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 7px;
+            background: rgba(85, 181, 184, 0.15);
+            color: #55B5B8;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .wf-ai-badge svg { width: 9px; height: 9px; }
+        .wf-time-elapsed {
+            font-size: 9px;
+            color: #F59E0B;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .wf-time-elapsed.overdue { color: #E45740; }
+
+        /* Task nodes inside workflow card */
+        .wf-tasks-section {
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 8px;
+        }
+        .wf-tasks-header {
+            font-size: 9px;
+            font-weight: 700;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .wf-tasks-header .wf-tasks-count {
+            background: rgba(59,130,246,0.15);
+            color: #60A5FA;
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-size: 9px;
+        }
+        .wf-task-node {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 6px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .wf-task-node:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(85, 181, 184, 0.3);
+        }
+        .wf-task-node-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .wf-task-node-icon.tn-completed { background: #10B981; color: white; }
+        .wf-task-node-icon.tn-in-progress { background: #3B82F6; color: white; }
+        .wf-task-node-icon.tn-pending { background: #374151; color: #6B7280; border: 1px solid #4B5563; }
+        .wf-task-node-icon.tn-pending_review { background: #E45740; color: white; }
+        .wf-task-node-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .wf-task-node-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: #D1D5DB;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .wf-task-node.completed .wf-task-node-title {
+            color: #9CA3AF;
+            text-decoration: line-through;
+            text-decoration-color: #4B5563;
+        }
+        .wf-task-node-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+        .wf-task-node-status {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        .wf-task-node-status.ts-completed { background: rgba(16,185,129,0.15); color: #34D399; }
+        .wf-task-node-status.ts-in-progress { background: rgba(59,130,246,0.15); color: #60A5FA; }
+        .wf-task-node-status.ts-pending { background: rgba(75,85,99,0.3); color: #6B7280; }
+        .wf-task-node-status.ts-pending_review { background: rgba(228,87,64,0.15); color: #E45740; }
+        .wf-task-node-transcript {
+            font-size: 8px;
+            color: #55B5B8;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .wf-task-node-time {
+            font-size: 8px;
+            color: #6B7280;
+        }
+
+        /* Quick action buttons on task nodes */
+        .wf-task-quick-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .wf-task-quick-btn {
+            padding: 2px 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: #9CA3AF;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .wf-task-quick-btn:hover {
+            background: rgba(85, 181, 184, 0.15);
+            color: #55B5B8;
+            border-color: rgba(85, 181, 184, 0.3);
+        }
+        .wf-task-quick-btn.btn-complete:hover {
+            background: rgba(16,185,129,0.15);
+            color: #34D399;
+            border-color: rgba(16,185,129,0.3);
+        }
+
+        /* Step-to-task connector line */
+        .wf-step-task-link {
+            margin-left: 9px;
+            padding-left: 18px;
+            border-left: 2px dashed rgba(85, 181, 184, 0.3);
+            padding-top: 2px;
+            padding-bottom: 4px;
+        }
+
         /* Floating Action Button */
         .wf-fab {
             position: absolute;
@@ -15435,7 +15624,7 @@ function renderTasks(filter) {
             </div>` : '';
 
         return `
-            <div class="task-card status-${task.status.replace('_','-')}" id="${task.id}" onclick="${isPendingReview ? '' : `toggleTaskCheck('${task.id}')`}">
+            <div class="task-card status-${task.status.replace('_','-')}" id="${task.id}" data-task-id="${task.id}" onclick="${isPendingReview ? '' : `toggleTaskCheck('${task.id}')`}">
                 <div class="task-checkbox ${isChecked ? 'checked' : ''}" id="chk-${task.id}"></div>
                 <div class="task-body">
                     <div class="task-title-row">
@@ -15785,12 +15974,70 @@ function renderWorkflows(filter) {
         const cardClass = 'wf-' + wf.status;
         const pfClass = 'pf-' + wf.status;
         const statusLabel = wf.status.charAt(0).toUpperCase() + wf.status.slice(1);
+        const pctColor = pct === 100 ? '#34D399' : pct >= 50 ? '#60A5FA' : '#F59E0B';
 
+        // Completion circle SVG
+        const circR = 16, circC = 2 * Math.PI * circR;
+        const circOffset = circC - (pct / 100) * circC;
+        const completionCircle = `
+            <div class="wf-completion-circle">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="${circR}" fill="none" stroke="#374151" stroke-width="3"/>
+                    <circle cx="20" cy="20" r="${circR}" fill="none" stroke="${pctColor}" stroke-width="3" stroke-dasharray="${circC}" stroke-dashoffset="${circOffset}" stroke-linecap="round"/>
+                </svg>
+                <span class="wf-pct-text" style="color:${pctColor}">${pct}%</span>
+            </div>`;
+
+        // AI Generated badge (if triggered from Convene)
+        const isAiGenerated = wf.triggered_by && (wf.triggered_by.toLowerCase().includes('convene') || wf.triggered_by.toLowerCase().includes('deduced'));
+        const aiBadge = isAiGenerated ? `<span class="wf-ai-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> AI Generated from Convene</span>` : '';
+
+        // Time elapsed
+        const lastTimestamp = [...wf.steps].reverse().find(s => s.timestamp);
+        let timeElapsedHtml = '';
+        if (lastTimestamp && wf.status !== 'completed') {
+            const elapsed = getTimeElapsed(lastTimestamp.timestamp);
+            const isOverdue = elapsed.days > 7;
+            timeElapsedHtml = `<span class="wf-time-elapsed ${isOverdue ? 'overdue' : ''}"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${elapsed.text}</span>`;
+        }
+
+        // Steps with task connectors
+        const linkedTasks = florenceTasks.filter(t => t.workflow_id === wf.id);
         const stepsHtml = wf.steps.map((step, idx) => {
             const iconClass = 'si-' + step.status;
             const iconChar = step.status === 'done' ? '\u2713' : step.status === 'active' ? (idx + 1) : (idx + 1);
             const stepClass = 'step-' + step.status;
-            const statusLabel = step.status === 'done' ? 'Done' : step.status === 'active' ? 'In Progress' : 'Pending';
+            const stepStatusLabel = step.status === 'done' ? 'Done' : step.status === 'active' ? 'In Progress' : 'Pending';
+
+            // Find tasks that map to this step (by matching step title keywords to task title)
+            const stepTasks = linkedTasks.filter(t => {
+                const stepWords = step.title.toLowerCase().split(/\s+/);
+                const taskWords = t.title.toLowerCase();
+                return stepWords.some(w => w.length > 4 && taskWords.includes(w));
+            });
+
+            const taskConnectors = stepTasks.map(t => {
+                const tnStatusClass = 'tn-' + t.status.replace('_', '-');
+                const tnIcon = t.status === 'completed' ? '\u2713' : t.status === 'in-progress' ? '\u25B6' : '\u25CB';
+                return `<div class="wf-step-task-link">
+                    <div class="wf-task-node ${t.status}" onclick="drillDownToTask('${t.id}')" title="Click to view task details">
+                        <div class="wf-task-node-icon ${tnStatusClass}">${tnIcon}</div>
+                        <div class="wf-task-node-body">
+                            <div class="wf-task-node-title">${t.title}</div>
+                            <div class="wf-task-node-meta">
+                                <span class="wf-task-node-status ts-${t.status}">${t.status.replace('_', ' ')}</span>
+                                ${t.transcript ? '<span class="wf-task-node-transcript"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg> Transcript</span>' : ''}
+                                ${t.completed_at ? '<span class="wf-task-node-time">' + t.completed_at + '</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="wf-task-quick-actions">
+                            ${t.transcript ? '<button class="wf-task-quick-btn" onclick="event.stopPropagation();openTaskTranscript(\'' + t.id + '\')" title="View Transcript">\uD83D\uDCC4 Transcript</button>' : ''}
+                            ${t.status !== 'completed' ? '<button class="wf-task-quick-btn btn-complete" onclick="event.stopPropagation();quickCompleteTask(\'' + t.id + '\',this)" title="Mark Complete">\u2713 Complete</button>' : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
             return `
                 <div class="wf-step ${stepClass}">
                     <div class="wf-step-connector"></div>
@@ -15798,33 +16045,80 @@ function renderWorkflows(filter) {
                     <div class="wf-step-content">
                         <div class="wf-step-title-row">
                             <span class="wf-step-title">${step.title}</span>
-                            <span class="wf-step-status-label">${statusLabel}</span>
+                            <span class="wf-step-status-label">${stepStatusLabel}</span>
                         </div>
                         ${step.timestamp ? `<span class="wf-step-time">${step.timestamp}</span>` : ''}
                     </div>
                 </div>
+                ${taskConnectors}
             `;
         }).join('');
+
+        // Unmatched tasks (linked to workflow but not matched to any specific step)
+        const matchedTaskIds = new Set();
+        wf.steps.forEach(step => {
+            linkedTasks.forEach(t => {
+                const stepWords = step.title.toLowerCase().split(/\s+/);
+                const taskWords = t.title.toLowerCase();
+                if (stepWords.some(w => w.length > 4 && taskWords.includes(w))) matchedTaskIds.add(t.id);
+            });
+        });
+        const unmatchedTasks = linkedTasks.filter(t => !matchedTaskIds.has(t.id));
+
+        const unmatchedHtml = unmatchedTasks.length > 0 ? `
+            <div class="wf-tasks-section">
+                <div class="wf-tasks-header">Linked Tasks <span class="wf-tasks-count">${unmatchedTasks.length}</span></div>
+                ${unmatchedTasks.map(t => {
+                    const tnStatusClass = 'tn-' + t.status.replace('_', '-');
+                    const tnIcon = t.status === 'completed' ? '\u2713' : t.status === 'in-progress' ? '\u25B6' : '\u25CB';
+                    return `<div class="wf-task-node ${t.status}" onclick="drillDownToTask('${t.id}')" title="Click to view task details">
+                        <div class="wf-task-node-icon ${tnStatusClass}">${tnIcon}</div>
+                        <div class="wf-task-node-body">
+                            <div class="wf-task-node-title">${t.title}</div>
+                            <div class="wf-task-node-meta">
+                                <span class="wf-task-node-status ts-${t.status}">${t.status.replace('_', ' ')}</span>
+                                ${t.transcript ? '<span class="wf-task-node-transcript"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg> Transcript</span>' : ''}
+                                ${t.completed_at ? '<span class="wf-task-node-time">' + t.completed_at + '</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="wf-task-quick-actions">
+                            ${t.transcript ? '<button class="wf-task-quick-btn" onclick="event.stopPropagation();openTaskTranscript(\'' + t.id + '\')" title="View Transcript">\uD83D\uDCC4 Transcript</button>' : ''}
+                            ${t.status !== 'completed' ? '<button class="wf-task-quick-btn btn-complete" onclick="event.stopPropagation();quickCompleteTask(\'' + t.id + '\',this)" title="Mark Complete">\u2713 Complete</button>' : ''}
+                        </div>
+                    </div>`;
+                }).join('')}
+            </div>` : '';
+
         const isActive = wf.status === 'active';
         const autoExpand = isActive ? 'expanded' : '';
+
+        // Badges row
+        const badgesRow = (aiBadge || timeElapsedHtml) ? `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">${aiBadge}${timeElapsedHtml}</div>` : '';
 
         return `
             <div class="wf-card ${cardClass}" data-wf-id="${wf.id}">
                 <div class="wf-card-header">
-                    <div>
-                        <div class="wf-card-title">${wf.name}</div>
-                        <div class="wf-card-id">${wf.id}</div>
+                    <div style="flex:1;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            ${completionCircle}
+                            <div>
+                                <div class="wf-card-title">${wf.name}</div>
+                                <div class="wf-card-id">${wf.id}</div>
+                            </div>
+                        </div>
                     </div>
                     <span class="wf-status-badge ${statusBadgeClass}">${statusLabel}</span>
                 </div>
+                ${badgesRow}
                 <div class="wf-trigger">Triggered by: ${wf.triggered_by}</div>
                 <div class="wf-progress-bar"><div class="wf-progress-fill ${pfClass}" style="width:${pct}%"></div></div>
-                <div class="wf-progress-label" style="display:flex;justify-content:space-between;"><span>${wf.progress}</span><span style="font-weight:700;color:${pct === 100 ? '#34D399' : '#60A5FA'};">${pct}%</span></div>
+                <div class="wf-progress-label" style="display:flex;justify-content:space-between;"><span>${wf.progress}</span><span style="font-weight:700;color:${pctColor};">${pct}%</span></div>
                 <div class="wf-expand-toggle ${autoExpand}" onclick="toggleWorkflowSteps(this)">
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     <span>${isActive ? 'Hide step details' : 'Show step details'}</span>
                 </div>
                 <div class="wf-steps ${autoExpand}">${stepsHtml}</div>
+                ${unmatchedHtml}
             </div>
         `;
     }).join('');
@@ -16025,6 +16319,73 @@ if (document.readyState !== 'loading') {
 }
 
 // Toggle workflow step details
+// ==================== WORKFLOW-TASK INTEGRATION HELPERS ====================
+
+function getTimeElapsed(timestampStr) {
+    if (!timestampStr) return { text: '', days: 0 };
+    // Parse timestamps like "Feb 25, 2:20 PM" or "Feb 25, 9:15 AM"
+    const now = new Date();
+    const year = now.getFullYear();
+    const parsed = new Date(timestampStr + ', ' + year);
+    if (isNaN(parsed.getTime())) return { text: '', days: 0 };
+    const diffMs = now - parsed;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    if (diffDays > 0) return { text: diffDays + 'd ago', days: diffDays };
+    if (diffHours > 0) return { text: diffHours + 'h ago', days: 0 };
+    return { text: 'Just now', days: 0 };
+}
+
+function drillDownToTask(taskId) {
+    // Navigate to Tasks tab and highlight/expand the target task
+    switchToTab('workflows');
+    switchWorkflowsView('tasks');
+    setTimeout(() => {
+        const taskEl = document.querySelector('[data-task-id="' + taskId + '"]');
+        if (taskEl) {
+            taskEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            taskEl.style.outline = '2px solid #55B5B8';
+            taskEl.style.outlineOffset = '2px';
+            taskEl.style.transition = 'outline 0.3s';
+            // Auto-expand the task detail
+            const detail = taskEl.querySelector('.task-detail');
+            if (detail) detail.style.display = 'block';
+            // Add a "Back to Workflow" breadcrumb
+            const existing = document.getElementById('back-to-workflow-crumb');
+            if (existing) existing.remove();
+            const crumb = document.createElement('div');
+            crumb.id = 'back-to-workflow-crumb';
+            crumb.style.cssText = 'padding:8px 12px;background:rgba(85,181,184,0.1);border:1px solid rgba(85,181,184,0.2);border-radius:6px;margin-bottom:8px;font-size:11px;color:#55B5B8;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600;';
+            crumb.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg> Back to Workflows';
+            crumb.onclick = function() {
+                switchWorkflowsView('active-workflows');
+                crumb.remove();
+            };
+            const tasksView = document.getElementById('wf-tasks-view');
+            if (tasksView) tasksView.insertBefore(crumb, tasksView.firstChild);
+            // Remove highlight after 3 seconds
+            setTimeout(() => {
+                taskEl.style.outline = 'none';
+            }, 3000);
+        }
+    }, 200);
+}
+
+function quickCompleteTask(taskId, btnEl) {
+    const task = florenceTasks.find(t => t.id === taskId);
+    if (!task) return;
+    task.status = 'completed';
+    task.completed_at = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ', ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    // Re-render workflows to update the task node
+    renderWorkflows(document.getElementById('wf-filter-dropdown')?.value || 'all');
+    renderTasks(document.getElementById('tasks-filter-dropdown')?.value || 'all');
+    showToast('Task "' + task.title + '" marked complete', 'success');
+}
+
+window.drillDownToTask = drillDownToTask;
+window.quickCompleteTask = quickCompleteTask;
+window.getTimeElapsed = getTimeElapsed;
+
 function toggleWorkflowSteps(toggleEl) {
     const card = toggleEl.closest('.wf-card');
     const stepsDiv = card.querySelector('.wf-steps');
