@@ -404,10 +404,10 @@
         
         /* ==================== FLORENCE PANEL (RIGHT) ==================== */
         .florence-panel {
-            width: 400px;
-            min-width: 400px;
-            max-width: 400px;
-            flex: 0 0 400px;
+            width: 520px;
+            min-width: 520px;
+            max-width: 520px;
+            flex: 0 0 520px;
             background: #ffffff;
             display: flex;
             flex-direction: column;
@@ -963,12 +963,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            padding: 10px 8px;
+            gap: 5px;
+            padding: 10px 12px;
             background: #F2F3F4;
             border: none;
             color: #49545E;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -1426,7 +1426,7 @@
         .bulk-stage-btn {
             position: fixed;
             bottom: 20px;
-            right: 432px; /* 400px panel width + 16px margin + 16px from edge */
+            right: 552px; /* 520px panel width + 16px margin + 16px from edge */
             background: var(--brand-teal);
             color: white;
             border: none;
@@ -2407,7 +2407,7 @@
         
         @keyframes slideIn {
             from {
-                transform: translateX(400px);
+                transform: translateX(520px);
                 opacity: 0;
             }
             to {
@@ -4867,7 +4867,7 @@ button:hover {
         
         @keyframes toast-slide-in {
             from {
-                transform: translateX(400px);
+                transform: translateX(520px);
                 opacity: 0;
             }
             to {
@@ -4886,7 +4886,7 @@ button:hover {
                 opacity: 1;
             }
             to {
-                transform: translateX(400px);
+                transform: translateX(520px);
                 opacity: 0;
             }
         }
@@ -7055,19 +7055,19 @@ button:hover {
             <div class="analytics-grid">
                 <div class="analytics-card">
                     <div class="analytics-card-title">Outreach Completion Over Time</div>
-                    <canvas id="analytics-completion-chart" width="400" height="200"></canvas>
+                    <canvas id="analytics-completion-chart" width="520" height="200"></canvas>
                 </div>
                 <div class="analytics-card">
                     <div class="analytics-card-title">Response Rate by Method</div>
-                    <canvas id="analytics-method-chart" width="400" height="200"></canvas>
+                    <canvas id="analytics-method-chart" width="520" height="200"></canvas>
                 </div>
                 <div class="analytics-card">
                     <div class="analytics-card-title">Escalation Trends</div>
-                    <canvas id="analytics-escalation-chart" width="400" height="200"></canvas>
+                    <canvas id="analytics-escalation-chart" width="520" height="200"></canvas>
                 </div>
                 <div class="analytics-card">
                     <div class="analytics-card-title">Campaign Performance Comparison</div>
-                    <canvas id="analytics-comparison-chart" width="400" height="200"></canvas>
+                    <canvas id="analytics-comparison-chart" width="520" height="200"></canvas>
                 </div>
             </div>
             <div class="analytics-kpi-row" id="analytics-kpi-row"></div>
