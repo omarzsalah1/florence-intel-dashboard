@@ -6580,8 +6580,9 @@ button:hover {
     <!-- FLORENCE PANEL -->
     <div class="florence-panel">
         <div class="florence-header">
-            <div class="florence-logo">
-                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 44px; width: auto; display: block;">
+            <div class="florence-logo" style="display:flex;align-items:center;gap:10px;">
+                <img src="https://raw.githubusercontent.com/omarzsalah1/nightingale-brand-assets/main/logos/full-logo.png" alt="NightingaleMD" style="height: 66px; width: auto; display: block;">
+                <span style="background:#55B5B8;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.5px;white-space:nowrap;">EHR Copilot</span>
             </div>
             <div class="header-center-icons">
 <!-- Toggle removed: all users have full access -->
@@ -9089,6 +9090,39 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             
             // Show sync notification
             showSyncNotification(`${gap.title} staged for MD review`);
+            
+            // Flying document animation: Florence panel → EHR
+            const flyDoc = document.createElement('div');
+            flyDoc.style.cssText = 'position:fixed;z-index:9999;font-size:26px;pointer-events:none;transition:all 0.9s cubic-bezier(0.25,0.46,0.45,0.94);';
+            flyDoc.textContent = '📄';
+            const fp = document.querySelector('.florence-panel');
+            const ac = document.getElementById('athena-content');
+            const fpRect = fp ? fp.getBoundingClientRect() : {left: window.innerWidth*0.6, top: 200};
+            flyDoc.style.left = (fpRect.left + 30) + 'px';
+            flyDoc.style.top = (fpRect.top + 120) + 'px';
+            flyDoc.style.opacity = '1';
+            document.body.appendChild(flyDoc);
+            setTimeout(() => {
+                const acRect = ac ? ac.getBoundingClientRect() : {left: 60, top: 250};
+                flyDoc.style.left = (acRect.left + 60) + 'px';
+                flyDoc.style.top = (acRect.top + 80) + 'px';
+                flyDoc.style.opacity = '0';
+                flyDoc.style.transform = 'scale(0.2)';
+            }, 60);
+            setTimeout(() => flyDoc.remove(), 1000);
+            
+            // Flash the EHR panel to show item arrived
+            setTimeout(() => {
+                const apSection = document.getElementById('section-ap');
+                if (apSection) {
+                    apSection.style.transition = 'all 0.3s ease';
+                    apSection.style.boxShadow = '0 0 0 3px #55B5B8, 0 0 25px rgba(85,181,184,0.7)';
+                    apSection.style.background = '#e0f7f7';
+                    apSection.style.transform = 'scale(1.01)';
+                    setTimeout(() => { apSection.style.transform = 'scale(1)'; apSection.style.boxShadow = '0 0 15px rgba(85,181,184,0.3)'; }, 350);
+                    setTimeout(() => { apSection.style.boxShadow = ''; apSection.style.background = ''; }, 2500);
+                }
+            }, 700);
         }
         
         function showStagingPreviewModal(gap) {
@@ -9921,7 +9955,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                         textSpan.textContent += (wordIndex > 0 ? ' ' : '') + words[wordIndex];
                         wordIndex++;
                         container.scrollTop = container.scrollHeight;
-                        setTimeout(typeWord, 80);
+                        setTimeout(typeWord, 40);
                     } else {
                         resolve();
                     }
@@ -9956,7 +9990,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 if (msg.type === 'patient' || msg.type === 'care-manager') {
                     showTypingIndicator();
                     await new Promise((r, reject) => {
-                        const timeout = setTimeout(r, 1200);
+                        const timeout = setTimeout(r, 600);
                         signal.addEventListener('abort', () => {
                             clearTimeout(timeout);
                             reject(new Error('Aborted'));
@@ -9995,7 +10029,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 }
                 
                 await new Promise((r, reject) => {
-                    const timeout = setTimeout(r, 500);
+                    const timeout = setTimeout(r, 250);
                     signal.addEventListener('abort', () => {
                         clearTimeout(timeout);
                         reject(new Error('Aborted'));
@@ -10005,7 +10039,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             
             // Wait then show documentation inline in the transcript
             await new Promise((r, reject) => {
-                const timeout = setTimeout(r, 2000);
+                const timeout = setTimeout(r, 1000);
                 signal.addEventListener('abort', () => {
                     clearTimeout(timeout);
                     reject(new Error('Aborted'));
@@ -10579,20 +10613,46 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     
                     // Scroll athenaOne to the Assessment & Plan section to show the note appearing
                     const assessSection = document.getElementById('section-ap');
-                    if (assessSection) {
-                        assessSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const athenaContent = document.getElementById('athena-content');
+                    if (assessSection && athenaContent) {
+                        // Scroll the athena panel to show the new note
+                        athenaContent.scrollTo({ top: assessSection.offsetTop - 20, behavior: 'smooth' });
                     }
                     
-                    // Flash the Assessment section to show it was updated
+                    // Strong flash + pulse animation to show note arrived in EHR
                     if (assessSection) {
-                        assessSection.style.transition = 'all 0.5s ease';
-                        assessSection.style.boxShadow = '0 0 20px rgba(85, 181, 184, 0.6)';
-                        assessSection.style.background = '#e8f8f5';
+                        assessSection.style.transition = 'all 0.3s ease';
+                        assessSection.style.boxShadow = '0 0 0 3px #55B5B8, 0 0 30px rgba(85, 181, 184, 0.8)';
+                        assessSection.style.background = '#e0f7f7';
+                        assessSection.style.transform = 'scale(1.01)';
+                        setTimeout(() => {
+                            assessSection.style.boxShadow = '0 0 20px rgba(85, 181, 184, 0.4)';
+                            assessSection.style.transform = 'scale(1)';
+                        }, 400);
                         setTimeout(() => {
                             assessSection.style.boxShadow = '';
                             assessSection.style.background = '';
-                        }, 2000);
+                        }, 2500);
                     }
+                    
+                    // Show a flying document animation from Florence panel to EHR
+                    const flyingDoc = document.createElement('div');
+                    flyingDoc.style.cssText = 'position:fixed;z-index:9999;font-size:28px;pointer-events:none;transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94);';
+                    flyingDoc.textContent = '📋';
+                    const florencePanel = document.querySelector('.florence-panel');
+                    const florenceRect = florencePanel ? florencePanel.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2};
+                    flyingDoc.style.left = (florenceRect.left + 20) + 'px';
+                    flyingDoc.style.top = (florenceRect.top + 80) + 'px';
+                    flyingDoc.style.opacity = '1';
+                    document.body.appendChild(flyingDoc);
+                    setTimeout(() => {
+                        const athenaRect = athenaContent ? athenaContent.getBoundingClientRect() : {left: 20, top: 200};
+                        flyingDoc.style.left = (athenaRect.left + 40) + 'px';
+                        flyingDoc.style.top = (athenaRect.top + 100) + 'px';
+                        flyingDoc.style.opacity = '0';
+                        flyingDoc.style.transform = 'scale(0.3)';
+                    }, 50);
+                    setTimeout(() => flyingDoc.remove(), 900);
                     
                     // STEP 2: Filing the Appointment (50-100%) after a pause
                     setTimeout(() => {
