@@ -15437,6 +15437,66 @@ const pharmacyCallTranscript = [
   { type: 'system', text: 'Call ended. Task \'Verify prescription pickup location\' status updated to \'Completed\'.' }
 ];
 
+const homeHealthCallTranscript = [
+  { type: 'system', text: 'Florence initiating outbound call to Comfort Home Health Services...' },
+  { type: 'florence', text: 'Hello, this is Florence, a digital care navigator calling from Dr. Campbell\'s office. I\'m calling to submit a home health aide referral for a patient, Jane Doe, date of birth May 27th, 1955. She was recently discharged from St. Joseph\'s Hospital following an acute MI and needs assistance with daily activities during recovery.' },
+  { type: 'agency-rep', text: 'Hi Florence, thank you for calling. Let me pull up the referral... Yes, I see the order from Dr. Campbell. We can accept this patient. What level of care is being requested?' },
+  { type: 'florence', text: 'The request is for a home health aide, 4 hours daily for the first two weeks, to assist with medication management, light meal preparation, and mobility support. She lives alone and has a fall risk score of 55.' },
+  { type: 'agency-rep', text: 'Understood. We have availability starting Monday, March 3rd. Our aide, Maria, specializes in cardiac recovery patients. She can be there by 9 AM.' },
+  { type: 'florence', text: 'That sounds excellent. Can you confirm the address? We have 123 Maple Street, Anytown, USA, 12345.' },
+  { type: 'agency-rep', text: 'Confirmed. We\'ll send the intake paperwork to your office today and have Maria there Monday morning.' },
+  { type: 'florence', text: 'Perfect. I will notify the patient and her emergency contact. Thank you for your help.' },
+  { type: 'system', text: 'Call ended. Referral accepted by Comfort Home Health Services. Start date: March 3, 2026. Task status updated to \'In-Progress\'.' }
+];
+
+const scheduleFollowUpTranscript = [
+  { type: 'system', text: 'Florence initiating outbound call to patient Jane Doe at (555) 202-0700...' },
+  { type: 'florence', text: 'Hello, this is Florence calling from Dr. Campbell\'s office. May I speak with Jane Doe?' },
+  { type: 'patient', text: 'Yes, this is Jane.' },
+  { type: 'florence', text: 'Hi Jane, I\'m calling to schedule your post-discharge follow-up appointment with Dr. Campbell. We need to see you within the next few days to check on your recovery. Dr. Campbell has availability on Monday, February 18th at 10:00 AM. Would that work for you?' },
+  { type: 'patient', text: 'Monday morning works. I\'ll have my daughter drive me.' },
+  { type: 'florence', text: 'Wonderful. I\'ve scheduled you for Monday, February 18th at 10:00 AM with Dr. Campbell at the Main Clinic. Please bring your discharge paperwork and all your current medications so we can review them together.' },
+  { type: 'patient', text: 'Okay, I\'ll have everything ready. Thank you, Florence.' },
+  { type: 'florence', text: 'You\'re welcome, Jane. You\'ll receive a confirmation text shortly. Take care and don\'t hesitate to call if you have any concerns before Monday.' },
+  { type: 'system', text: 'Call ended. Appointment scheduled: Feb 18, 2026 at 10:00 AM with Dr. Campbell. Task \'Schedule follow-up with Dr. Campbell\' status updated to \'Completed\'.' }
+];
+
+const heartHealthySmsTranscript = [
+  { type: 'system', text: 'Florence initiating SMS to Jane Doe at (555) 202-0700...' },
+  { type: 'florence-sms', text: 'Hi Jane, this is Florence from Dr. Campbell\'s office. Following your recent hospital stay, here are some heart-healthy diet tips: (1) Limit sodium to less than 1,500mg/day, (2) Eat more fruits, vegetables, and whole grains, (3) Choose lean proteins like fish and chicken, (4) Avoid processed foods and sugary drinks. We\'ve also sent a detailed guide to your patient portal. Let us know if you have questions!' },
+  { type: 'patient-sms', text: 'Thank you so much! I\'ll check the portal. My daughter is helping me with grocery shopping this week so this is perfect timing.' },
+  { type: 'florence-sms', text: 'That\'s great to hear, Jane! Small changes make a big difference. We\'re here if you need anything.' },
+  { type: 'system', text: 'SMS thread ended. Task \'Send patient education on heart-healthy diet\' status updated to \'Completed\'.' }
+];
+
+const kidneyHealthSmsTranscript = [
+  { type: 'system', text: 'Florence initiating SMS to Jane Doe at (555) 202-0700...' },
+  { type: 'florence-sms', text: 'Hi Jane, this is Florence from Dr. Campbell\'s office. Because your kidney function (eGFR) is at 42 mL/min, we want to share some important tips to protect your kidneys: (1) Stay hydrated but don\'t overdo fluids, (2) Limit potassium-rich foods like bananas and oranges, (3) Avoid NSAIDs like ibuprofen — use Tylenol instead, (4) Keep your blood pressure and blood sugar controlled. A detailed guide has been sent to your patient portal.' },
+  { type: 'patient-sms', text: 'I didn\'t know about the ibuprofen! I\'ve been taking it for my knee. I\'ll switch to Tylenol. Thank you.' },
+  { type: 'florence-sms', text: 'Great catch, Jane. Please let Dr. Campbell know about the ibuprofen use at your next visit. We\'ve flagged it in your chart.' },
+  { type: 'system', text: 'SMS thread ended. Task \'Send patient education on kidney health\' completed. Alert: Patient reports NSAID use — flagged for provider review.' }
+];
+
+const awvReminderSmsTranscript = [
+  { type: 'system', text: 'Florence initiating SMS to Jane Doe at (555) 202-0700...' },
+  { type: 'florence-sms', text: 'Hi Jane, this is Florence from NightingaleMD. Your Annual Wellness Visit (AWV) is due this year. This is a free preventive visit covered by Medicare — no copay. Would you like us to schedule it for you? Reply YES to schedule or CALL to have us call you.' },
+  { type: 'patient-sms', text: 'YES please!' },
+  { type: 'florence-sms', text: 'We\'ll get that scheduled for you and send a confirmation shortly. Thank you, Jane!' },
+  { type: 'system', text: 'SMS thread ended. Patient opted in for AWV scheduling. Triggering follow-up call workflow step.' }
+];
+
+const awvFollowUpCallTranscript = [
+  { type: 'system', text: 'Florence initiating outbound call to Jane Doe at (555) 202-0700...' },
+  { type: 'florence', text: 'Hello Jane, this is Florence calling from NightingaleMD to follow up on scheduling your Annual Wellness Visit. You replied to our text that you\'d like to schedule. I have a few options for you with Dr. Campbell.' },
+  { type: 'patient', text: 'Yes, I\'d love to get that set up.' },
+  { type: 'florence', text: 'Dr. Campbell has availability on Thursday, February 20th at 2:00 PM or Friday, February 21st at 9:30 AM. Which works better?' },
+  { type: 'patient', text: 'Friday morning is better for me.' },
+  { type: 'florence', text: 'I\'ve scheduled your Annual Wellness Visit for Friday, February 21st at 9:30 AM with Dr. Campbell at the Main Clinic. You\'ll receive a confirmation text. Please bring a list of all your current medications and any health concerns you\'d like to discuss.' },
+  { type: 'patient', text: 'Perfect, thank you Florence.' },
+  { type: 'florence', text: 'You\'re welcome, Jane. Have a wonderful day!' },
+  { type: 'system', text: 'Call ended. AWV appointment scheduled: Feb 21, 2026 at 9:30 AM. Appointment confirmed in athenaOne. Task status updated to \'Completed\'.' }
+];
+
 const florenceTasks = [
   {
     id: 'task-1',
@@ -15504,8 +15564,8 @@ const florenceTasks = [
     workflow_id: 'WF-105',
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: null,
-    transcript: null,
-    transcript_label: null,
+    transcript: homeHealthCallTranscript,
+    transcript_label: 'Call with Comfort Home Health Services',
     handoff_note: null
   },
   {
@@ -15518,8 +15578,8 @@ const florenceTasks = [
     workflow_id: 'WF-131',
     deduced_from: null,
     completed_at: 'Feb 25, 9:22 AM',
-    transcript: null,
-    transcript_label: null,
+    transcript: scheduleFollowUpTranscript,
+    transcript_label: 'Call with patient — scheduling follow-up',
     handoff_note: null
   },
   {
@@ -15546,8 +15606,50 @@ const florenceTasks = [
     workflow_id: 'WF-131',
     deduced_from: null,
     completed_at: 'Feb 25, 10:05 AM',
-    transcript: null,
-    transcript_label: null,
+    transcript: heartHealthySmsTranscript,
+    transcript_label: 'SMS — heart-healthy diet education',
+    handoff_note: null
+  },
+  {
+    id: 'task-9',
+    title: 'Send AWV reminder SMS to patient',
+    detail: 'Initial outreach SMS for Annual Wellness Visit scheduling under HEDIS AWV campaign.',
+    status: 'completed',
+    origin: 'autonomous',
+    category: 'outreach',
+    workflow_id: 'WF-A-001',
+    deduced_from: null,
+    completed_at: 'Feb 20, 8:00 AM',
+    transcript: awvReminderSmsTranscript,
+    transcript_label: 'SMS — AWV scheduling reminder',
+    handoff_note: null
+  },
+  {
+    id: 'task-10',
+    title: 'AWV follow-up scheduling call',
+    detail: 'Automated follow-up call to schedule Annual Wellness Visit after patient opted in via SMS.',
+    status: 'completed',
+    origin: 'autonomous',
+    category: 'outreach',
+    workflow_id: 'WF-A-001',
+    deduced_from: null,
+    completed_at: 'Feb 21, 9:30 AM',
+    transcript: awvFollowUpCallTranscript,
+    transcript_label: 'Call with patient — AWV scheduling',
+    handoff_note: null
+  },
+  {
+    id: 'task-11',
+    title: 'Send medication refill reminder SMS',
+    detail: 'Automated SMS reminder for overdue Metoprolol Succinate refill under Medication Adherence campaign.',
+    status: 'completed',
+    origin: 'autonomous',
+    category: 'outreach',
+    workflow_id: 'WF-A-002',
+    deduced_from: null,
+    completed_at: 'Feb 26, 8:00 AM',
+    transcript: kidneyHealthSmsTranscript,
+    transcript_label: 'SMS — medication refill reminder',
     handoff_note: null
   }
 ];
