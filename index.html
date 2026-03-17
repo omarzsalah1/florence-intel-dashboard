@@ -1345,18 +1345,6 @@
             color: #5A6872;
         }
         
-        .gap-evidence {
-            font-size: 11px;
-            color: #555;
-            margin-top: 5px;
-        }
-
-        .gap-timestamp {
-            font-size: 10px;
-            color: #777;
-            margin-top: 5px;
-        }
-
         .gap-description {
             font-size: 12px;
             color: #31393F;
@@ -1391,17 +1379,7 @@
             cursor: default;
         }
         
-        .detail-btn, .dismiss-btn {
-            background: #E45740;
-            color: white;
-        }
-
-        .pin-btn {
-            background: #8B5CF6;
-            color: white;
-        }
-
-        .undo-btn {
+        .detail-btn, .undo-btn {
             padding: 8px 12px;
             background: transparent;
             border: 1px solid #c0c0c0;
@@ -8598,7 +8576,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                             <div class="gap-codes">${gap.icd ? `ICD-10: ${gap.icd}` : ''}${gap.hcc ? ` • ${gap.hcc}` : ''}</div>
                         </div>
                     </div>
-                    <div class=\"gap-description\">${gap.description}</div><div class=\"gap-evidence\">${gap.evidence || \'\'}</div><div class=\"gap-timestamp\">${gap.lastUpdated ? `Last Updated: ${gap.lastUpdated}` : \'\'}</div>                   <div class="gap-actions">
+                    <div class="gap-description">${gap.description}</div>
+                    <div class="gap-actions">
                         ${gap.staged ? `
                             <button class="stage-btn staged">✓ Staged for MD Review</button>
                             <button class="undo-btn" onclick="unstageGap(${gap.id})">Undo</button>
@@ -8606,7 +8585,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                             <button class="stage-btn deferred">📅 Deferred to Future Visit</button>
                             <button class="undo-btn" onclick="undeferGap(${gap.id})">Undo</button>
                         ` : `
-                         <button class=\"stage-btn\" onclick=\"stageGap(${gap.id})\">Stage for MD Review</button><button class=\"dismiss-btn\" onclick=\"dismissGap(${gap.id})\">Dismiss</button><button class=\"pin-btn\" onclick=\"pinGap(${gap.id})\">Pin</button>                            ${(gap.type === 'quality' || gap.type === 'frailty') ? `<button class="future-visit-btn" onclick="stageForFutureVisit(${gap.id})">📅 Future Visit</button>` : ''}
+                            <button class="stage-btn" onclick="stageGap(${gap.id})">Stage for MD Review</button>
+                            ${(gap.type === 'quality' || gap.type === 'frailty') ? `<button class="future-visit-btn" onclick="stageForFutureVisit(${gap.id})">📅 Future Visit</button>` : ''}
                             <button class="detail-btn" onclick="toggleDetails(${gap.id})">${gap.detailsExpanded ? '▲ Hide' : '▼ Details'}</button>
                         `}
                     </div>
@@ -8839,23 +8819,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             currentGapId = null;
         }
         
-        function dismissGap(id) {
-            const gap = gaps.find(g => g.id === id);
-            if (gap) {
-                gap.dismissed = true;
-                renderGaps();
-            }
-        }
-
-        function pinGap(id) {
-            const gap = gaps.find(g => g.id === id);
-            if (gap) {
-                gap.pinned = true;
-                renderGaps();
-            }
-        }
-
-        function unstageGap(id) {{
+        function stageGap(gapId) {
             const gap = gaps.find(g => g.id === gapId);
             if (!gap || gap.staged) return;
             
@@ -18933,73 +18897,3 @@ function renderAnalyticsKPIs() {
 
 </body>
 </html>
-<div id="post-encounter-summary-modal" class="modal-overlay"><div class="modal-content"><div class="modal-header">Encounter Summary</div><div id="post-encounter-summary-content"></div><button onclick="closePostEncounterSummaryModal()">Close</button></div></div>
-
-<script>
-function showPostEncounterSummaryModal() {
-    const addressedCount = gaps.filter(g => g.staged).length;
-    const dismissedCount = gaps.filter(g => g.dismissed).length;
-    const pinnedCount = gaps.filter(g => g.pinned).length;
-
-    const summaryContent = document.getElementById('post-encounter-summary-content');
-    summaryContent.innerHTML = `
-        <p>Addressed: ${addressedCount}</p>
-        <p>Dismissed: ${dismissedCount}</p>
-        <p>Pinned: ${pinnedCount}</p>
-    `;
-
-    document.getElementById('post-encounter-summary-modal').classList.add('show');
-}
-
-function closeEncounter() {
-showPostEncounterSummaryModal();SummaryModal() {
-    document.getElementById('post-encounter-summary-modal').classList.remove('show');
-}
-</script>
-<div id="work-queue-tab" class="sidebar-tab-content"><div class="kanban-board"><div class="kanban-column"><div class="kanban-column-title">To Do</div><div id="todo-column" class="kanban-column-content"></div></div><div class="kanban-column"><div class="kanban-column-title">In Progress (Florence)</div><div id="in-progress-florence-column" class="kanban-column-content"></div></div><div class="kanban-column"><div class="kanban-column-title">In Progress (Sarah)</div><div id="in-progress-sarah-column" class="kanban-column-content"></div></div><div class="kanban-column"><div class="kanban-column-title">Done</div><div id="done-column" class="kanban-column-content"></div></div></div></div>
-<style>
-.kanban-board { display: flex; }
-.kanban-column { flex: 1; margin: 0 10px; }
-.kanban-column-title { font-weight: bold; margin-bottom: 10px; }
-.kanban-column-content { min-height: 200px; background: #f0f0f0; padding: 10px; }
-</style>
-<script>
-function renderWorkQueue() {
-    const todoColumn = document.getElementById('todo-column');
-    const inProgressFlorenceColumn = document.getElementById('in-progress-florence-column');
-    const inProgressSarahColumn = document.getElementById('in-progress-sarah-column');
-    const doneColumn = document.getElementById('done-column');
-
-    // Clear columns
-    todoColumn.innerHTML = '';
-    inProgressFlorenceColumn.innerHTML = '';
-    inProgressSarahColumn.innerHTML = '';
-    doneColumn.innerHTML = '';
-
-    // Sample data
-    const tasks = [
-        { id: 1, title: 'Follow up on DME order', status: 'todo' },
-        { id: 2, title: 'Schedule cardiology appointment', status: 'in-progress-florence' },
-        { id: 3, title: 'Call patient for check-in', status: 'in-progress-sarah' },
-        { id: 4, title: 'Review lab results', status: 'done' },
-    ];
-
-    tasks.forEach(task => {
-        const taskElement = document.createElement('div');
-        taskElement.className = 'kanban-card';
-        taskElement.innerText = task.title;
-
-        if (task.status === 'todo') {
-            todoColumn.appendChild(taskElement);
-        } else if (task.status === 'in-progress-florence') {
-            inProgressFlorenceColumn.appendChild(taskElement);
-        } else if (task.status === 'in-progress-sarah') {
-            inProgressSarahColumn.appendChild(taskElement);
-        } else if (task.status === 'done') {
-            doneColumn.appendChild(taskElement);
-        }
-    });
-}
-
-renderWorkQueue();
-</script>
