@@ -1349,7 +1349,26 @@
             font-size: 12px;
             color: #31393F;
             line-height: 1.4;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
+        }
+
+        .gap-evidence-chip {
+            display: inline-block;
+            background: #EEF9F9;
+            border: 1px solid #B2DFE0;
+            color: #2E7D7F;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+            margin-bottom: 4px;
+        }
+
+        .gap-last-updated {
+            font-size: 10px;
+            color: #9E9E9E;
+            margin-bottom: 8px;
         }
         
         .gap-actions {
@@ -1387,6 +1406,71 @@
             color: #5A6872;
             font-size: 11px;
             cursor: pointer;
+        }
+
+        .dismiss-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid #E45740;
+            border-radius: 6px;
+            color: #E45740;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dismiss-btn:hover {
+            background: #FFF0EE;
+        }
+
+        .pin-btn {
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid #8B5CF6;
+            border-radius: 6px;
+            color: #8B5CF6;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pin-btn:hover {
+            background: #F5F3FF;
+        }
+
+        .gap-card.dismissed {
+            opacity: 0.5;
+            border-left-color: #E45740;
+        }
+
+        .gap-card.pinned {
+            border-left-color: #8B5CF6;
+        }
+
+        .pinned-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 10px;
+            color: #8B5CF6;
+            background: #F5F3FF;
+            padding: 5px 8px;
+            border-radius: 5px;
+        }
+
+        .dismissed-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 10px;
+            color: #E45740;
+            background: #FFF0EE;
+            padding: 5px 8px;
+            border-radius: 5px;
         }
         
         .staged-indicator {
@@ -6789,6 +6873,7 @@ button:hover {
                 <div class="gaps-toggle-bar">
                     <button class="gaps-toggle-btn active" onclick="switchWorkflowsView('active-workflows')" id="wf-subtab-workflows">Active Workflows</button>
                     <button class="gaps-toggle-btn" onclick="switchWorkflowsView('tasks')" id="wf-subtab-tasks">Tasks</button>
+                    <button class="gaps-toggle-btn" onclick="switchWorkflowsView('work-queue')" id="wf-subtab-workqueue">Work Queue</button>
                 </div>
 
                 <!-- Active Workflows Sub-View (default) -->
@@ -6813,6 +6898,33 @@ button:hover {
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
                     </button>
+                </div>
+
+                <!-- Work Queue Sub-View (hidden by default) -->
+                <div id="wf-workqueue-view" style="display:none;">
+                    <div style="padding:12px 14px 6px;">
+                        <div style="font-size:11px;font-weight:700;color:#9E9E9E;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Shared Work Queue — Jane Doe</div>
+                        <!-- To Do Column -->
+                        <div style="margin-bottom:14px;">
+                            <div style="font-size:12px;font-weight:700;color:#E65100;background:#FFF3E0;border:1px solid #FFCC80;border-radius:6px;padding:6px 10px;margin-bottom:8px;">📋 To Do <span id="wq-todo-count" style="font-weight:400;color:#9E9E9E;"></span></div>
+                            <div id="wq-todo-list"></div>
+                        </div>
+                        <!-- In Progress (Florence) Column -->
+                        <div style="margin-bottom:14px;">
+                            <div style="font-size:12px;font-weight:700;color:#0277BD;background:#E1F5FE;border:1px solid #81D4FA;border-radius:6px;padding:6px 10px;margin-bottom:8px;">⚡ In Progress — Florence <span id="wq-florence-count" style="font-weight:400;color:#9E9E9E;"></span></div>
+                            <div id="wq-florence-list"></div>
+                        </div>
+                        <!-- In Progress (Nurse) Column -->
+                        <div style="margin-bottom:14px;">
+                            <div style="font-size:12px;font-weight:700;color:#6A1B9A;background:#F3E5F5;border:1px solid #CE93D8;border-radius:6px;padding:6px 10px;margin-bottom:8px;">👩‍⚕️ In Progress — Sarah <span id="wq-nurse-count" style="font-weight:400;color:#9E9E9E;"></span></div>
+                            <div id="wq-nurse-list"></div>
+                        </div>
+                        <!-- Done Column -->
+                        <div style="margin-bottom:14px;">
+                            <div style="font-size:12px;font-weight:700;color:#2E7D32;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:6px;padding:6px 10px;margin-bottom:8px;">✓ Done <span id="wq-done-count" style="font-weight:400;color:#9E9E9E;"></span></div>
+                            <div id="wq-done-list"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Tasks Sub-View (hidden by default) -->
@@ -8565,7 +8677,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             
             filteredGaps.forEach(gap => {
                 const card = document.createElement('div');
-                card.className = `gap-card ${gap.staged ? 'staged' : gap.deferred ? 'deferred' : ''}`;
+                card.className = `gap-card ${gap.staged ? 'staged' : gap.deferred ? 'deferred' : ''} ${gap.pinned ? 'pinned' : ''} ${gap.dismissed ? 'dismissed' : ''}`.trim();
                 card.innerHTML = `
                     <div class="gap-card-header">
                         <input type="checkbox" class="gap-checkbox" ${gap.staged ? 'checked disabled' : ''}>
@@ -8577,6 +8689,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                         </div>
                     </div>
                     <div class="gap-description">${gap.description}</div>
+                    ${gap.supportingEvidence && gap.supportingEvidence.length > 0 ? `<div style="margin-bottom:4px;">${gap.supportingEvidence.slice(0,2).map(e => `<span class="gap-evidence-chip">${e}</span>`).join('')}</div>` : ''}
+                    ${gap.historicalData ? `<div class="gap-last-updated">📅 ${gap.historicalData}</div>` : ''}
                     <div class="gap-actions">
                         ${gap.staged ? `
                             <button class="stage-btn staged">✓ Staged for MD Review</button>
@@ -8587,6 +8701,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                         ` : `
                             <button class="stage-btn" onclick="stageGap(${gap.id})">Stage for MD Review</button>
                             ${(gap.type === 'quality' || gap.type === 'frailty') ? `<button class="future-visit-btn" onclick="stageForFutureVisit(${gap.id})">📅 Future Visit</button>` : ''}
+                            <button class="dismiss-btn" onclick="dismissGap(${gap.id})">✕ Dismiss</button>
+                            <button class="pin-btn" onclick="pinGap(${gap.id})">📌 Pin</button>
                             <button class="detail-btn" onclick="toggleDetails(${gap.id})">${gap.detailsExpanded ? '▲ Hide' : '▼ Details'}</button>
                         `}
                     </div>
@@ -8601,6 +8717,8 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                             Deferred to future visit by Sarah Martinez, RN, CCM • ${gap.deferredTime} • Reason: ${gap.deferralReason || 'Not appropriate for today\'s visit'}
                         </div>
                     ` : ''}
+                    ${gap.pinned ? `<div class="pinned-indicator">📌 Pinned for follow-up by Sarah Martinez, RN, CCM</div>` : ''}
+                    ${gap.dismissed ? `<div class="dismissed-indicator">✕ Dismissed by Sarah Martinez, RN, CCM</div>` : ''}
                     ${renderGapDetails(gap)}
                 ` + 
                 '<div class="attestation-checkboxes">' +
@@ -9497,6 +9615,26 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             updateCounts();
         }
         
+        function dismissGap(gapId) {
+            const gap = gaps.find(g => g.id === gapId);
+            if (!gap) return;
+            gap.dismissed = true;
+            gap.pinned = false;
+            addToLog('Gap Dismissed', `${gap.title} dismissed by nurse`);
+            renderGaps();
+            updateCounts();
+        }
+
+        function pinGap(gapId) {
+            const gap = gaps.find(g => g.id === gapId);
+            if (!gap) return;
+            gap.pinned = true;
+            gap.dismissed = false;
+            addToLog('Gap Pinned', `${gap.title} pinned for follow-up`);
+            renderGaps();
+            updateCounts();
+        }
+
         function stageForFutureVisit(gapId) {
             const gap = gaps.find(g => g.id === gapId);
             if (!gap || gap.staged || gap.deferred) return;
@@ -13257,7 +13395,29 @@ function showSignCloseModal() {
                 <div style="font-weight:700;font-size:14px;margin-bottom:12px;color:#1a1a2e;">Visit Summary</div>
                 ${summaryHtml}
                 
-                <div style="background:#F5F5F5;border-radius:8px;padding:12px;margin-top:16px;">
+                <div style="background:#F0F4FF;border:1px solid #C5CAE9;border-radius:8px;padding:12px;margin-top:16px;margin-bottom:12px;">
+                    <div style="font-weight:700;font-size:13px;color:#3949AB;margin-bottom:8px;">Gap Management Summary (Nurse)</div>
+                    <div style="font-size:12px;color:#424242;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                            <span>Staged for MD Review:</span>
+                            <strong style="color:#55B5B8;">${gaps.filter(g => g.staged).length}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                            <span>Dismissed:</span>
+                            <strong style="color:#E45740;">${gaps.filter(g => g.dismissed).length}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                            <span>Pinned for Follow-up:</span>
+                            <strong style="color:#8B5CF6;">${gaps.filter(g => g.pinned).length}</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Deferred to Future Visit:</span>
+                            <strong style="color:#FF9800;">${gaps.filter(g => g.deferred).length}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:#F5F5F5;border-radius:8px;padding:12px;margin-top:0;">
                     <div style="font-size:12px;color:#616161;">
                         <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
                             <span>Problems Documented:</span>
@@ -16754,24 +16914,78 @@ window.switchGapsView = switchGapsView;
 function switchWorkflowsView(view) {
     const wfActiveView = document.getElementById('wf-active-view');
     const wfTasksView = document.getElementById('wf-tasks-view');
+    const wfWorkQueueView = document.getElementById('wf-workqueue-view');
     const wfBtn = document.getElementById('wf-subtab-workflows');
     const tasksBtn = document.getElementById('wf-subtab-tasks');
+    const wqBtn = document.getElementById('wf-subtab-workqueue');
     
+    // Hide all, deactivate all
+    [wfActiveView, wfTasksView, wfWorkQueueView].forEach(el => { if (el) el.style.display = 'none'; });
+    [wfBtn, tasksBtn, wqBtn].forEach(el => { if (el) el.classList.remove('active'); });
+
     if (view === 'active-workflows') {
         if (wfActiveView) wfActiveView.style.display = 'block';
-        if (wfTasksView) wfTasksView.style.display = 'none';
         if (wfBtn) wfBtn.classList.add('active');
-        if (tasksBtn) tasksBtn.classList.remove('active');
         if (typeof renderWorkflows === 'function') renderWorkflows('all');
     } else if (view === 'tasks') {
-        if (wfActiveView) wfActiveView.style.display = 'none';
         if (wfTasksView) wfTasksView.style.display = 'block';
-        if (wfBtn) wfBtn.classList.remove('active');
         if (tasksBtn) tasksBtn.classList.add('active');
         if (typeof renderTasks === 'function') renderTasks('all');
+    } else if (view === 'work-queue') {
+        if (wfWorkQueueView) wfWorkQueueView.style.display = 'block';
+        if (wqBtn) wqBtn.classList.add('active');
+        renderWorkQueue();
     }
 }
 window.switchWorkflowsView = switchWorkflowsView;
+
+function renderWorkQueue() {
+    const workQueueItems = [
+        { id: 1, text: 'Follow up on DME order', assignee: 'todo', priority: 'medium' },
+        { id: 2, text: 'Confirm TCM follow-up appointment', assignee: 'todo', priority: 'high' },
+        { id: 3, text: 'Schedule cardiology appointment', assignee: 'florence', priority: 'medium' },
+        { id: 4, text: 'Send AWV reminder to patient', assignee: 'florence', priority: 'low' },
+        { id: 5, text: 'Call patient for check-in', assignee: 'nurse', priority: 'high' },
+        { id: 6, text: 'Review lab results', assignee: 'done', priority: 'low' },
+        { id: 7, text: 'Update medication list post-discharge', assignee: 'done', priority: 'medium' }
+    ];
+
+    const priorityColors = { high: '#C62828', medium: '#E65100', low: '#2E7D32' };
+    const priorityBg = { high: '#FFEBEE', medium: '#FFF3E0', low: '#E8F5E9' };
+
+    function buildItem(item) {
+        return `<div style="background:white;border:1px solid #E0E0E0;border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:12px;color:#212121;display:flex;align-items:center;justify-content:space-between;">
+            <span>${item.text}</span>
+            <span style="font-size:10px;font-weight:700;color:${priorityColors[item.priority]};background:${priorityBg[item.priority]};padding:2px 7px;border-radius:10px;">${item.priority}</span>
+        </div>`;
+    }
+
+    const todo = workQueueItems.filter(i => i.assignee === 'todo');
+    const florence = workQueueItems.filter(i => i.assignee === 'florence');
+    const nurse = workQueueItems.filter(i => i.assignee === 'nurse');
+    const done = workQueueItems.filter(i => i.assignee === 'done');
+
+    const todoList = document.getElementById('wq-todo-list');
+    const florenceList = document.getElementById('wq-florence-list');
+    const nurseList = document.getElementById('wq-nurse-list');
+    const doneList = document.getElementById('wq-done-list');
+
+    if (todoList) todoList.innerHTML = todo.map(buildItem).join('') || '<div style="font-size:11px;color:#9E9E9E;padding:6px 10px;">No items</div>';
+    if (florenceList) florenceList.innerHTML = florence.map(buildItem).join('') || '<div style="font-size:11px;color:#9E9E9E;padding:6px 10px;">No items</div>';
+    if (nurseList) nurseList.innerHTML = nurse.map(buildItem).join('') || '<div style="font-size:11px;color:#9E9E9E;padding:6px 10px;">No items</div>';
+    if (doneList) doneList.innerHTML = done.map(buildItem).join('') || '<div style="font-size:11px;color:#9E9E9E;padding:6px 10px;">No items</div>';
+
+    const todoCount = document.getElementById('wq-todo-count');
+    const florenceCount = document.getElementById('wq-florence-count');
+    const nurseCount = document.getElementById('wq-nurse-count');
+    const doneCount = document.getElementById('wq-done-count');
+
+    if (todoCount) todoCount.textContent = `(${todo.length})`;
+    if (florenceCount) florenceCount.textContent = `(${florence.length})`;
+    if (nurseCount) nurseCount.textContent = `(${nurse.length})`;
+    if (doneCount) doneCount.textContent = `(${done.length})`;
+}
+window.renderWorkQueue = renderWorkQueue;
 
 // ==================== TASK DEDUCTION & NOTIFICATIONS ====================
 
