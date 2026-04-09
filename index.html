@@ -5599,6 +5599,144 @@ button:hover {
         .drilldown-status.no-response { background: #FEF9E7; color: #F39C12; }
         .drilldown-status.completed { background: #D5F5E3; color: #1E8449; }
         .drilldown-status.declined { background: #F2F3F4; color: #6B7280; }
+        /* === NEWTON CAMPAIGNS ENHANCEMENTS === */
+        /* N1: Split Layout — Table + Live Feed */
+        .drilldown-body { display: flex; gap: 16px; }
+        .drilldown-table-panel { flex: 1; min-width: 0; }
+        .drilldown-live-panel {
+            width: 320px; flex-shrink: 0;
+            background: #fff; border: 1px solid #E8EAEC; border-radius: 10px;
+            display: flex; flex-direction: column; max-height: 520px;
+        }
+        .live-feed-header {
+            padding: 12px 14px; border-bottom: 1px solid #E8EAEC;
+            display: flex; align-items: center; gap: 8px;
+            font-size: 12px; font-weight: 700; color: #31393F;
+        }
+        .live-pulse { width: 8px; height: 8px; border-radius: 50%; background: #27AE60; animation: livePulse 1.5s infinite; }
+        @keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+        .live-feed-scroll { flex: 1; overflow-y: auto; padding: 8px 12px; }
+        .live-feed-item {
+            padding: 8px 0; border-bottom: 1px solid #F2F3F4;
+            font-size: 11px; color: #31393F; line-height: 1.5;
+            animation: feedSlideIn 0.4s ease;
+        }
+        .live-feed-item:last-child { border-bottom: none; }
+        @keyframes feedSlideIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+        .live-feed-time { font-size: 9px; color: #9CA3AF; font-weight: 600; margin-right: 6px; }
+        .live-feed-icon { margin-right: 4px; }
+        .live-feed-highlight { color: #55B5B8; font-weight: 700; }
+        .live-feed-alert { color: #E45740; font-weight: 700; }
+        .live-feed-success { color: #27AE60; font-weight: 700; }
+        /* N2: Patient Slide-Out Panel */
+        .patient-slideout {
+            position: fixed; top: 0; right: -480px; width: 480px; height: 100vh;
+            background: #fff; box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+            z-index: 9999; transition: right 0.3s ease;
+            display: flex; flex-direction: column;
+        }
+        .patient-slideout.active { right: 0; }
+        .slideout-header {
+            padding: 16px 20px; border-bottom: 1px solid #E8EAEC;
+            display: flex; align-items: center; justify-content: space-between;
+            background: #F8F9FA;
+        }
+        .slideout-patient-name { font-size: 16px; font-weight: 700; color: #31393F; }
+        .slideout-patient-meta { font-size: 11px; color: #5A6872; margin-top: 2px; }
+        .slideout-close {
+            width: 28px; height: 28px; border-radius: 6px; border: 1px solid #D5D8DC;
+            background: #fff; cursor: pointer; font-size: 16px; color: #6B7280;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .slideout-close:hover { background: #F2F3F4; }
+        .slideout-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+        .slideout-section { margin-bottom: 20px; }
+        .slideout-section-title {
+            font-size: 11px; font-weight: 700; color: #5A6872;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #F2F3F4;
+        }
+        .slideout-timeline { position: relative; padding-left: 20px; }
+        .slideout-timeline::before {
+            content: ''; position: absolute; left: 6px; top: 0; bottom: 0;
+            width: 2px; background: #E8EAEC;
+        }
+        .timeline-event { position: relative; padding: 8px 0 14px 0; }
+        .timeline-dot {
+            position: absolute; left: -17px; top: 12px;
+            width: 10px; height: 10px; border-radius: 50%;
+            border: 2px solid #55B5B8; background: #fff;
+        }
+        .timeline-dot.success { border-color: #27AE60; background: #27AE60; }
+        .timeline-dot.alert { border-color: #E45740; background: #E45740; }
+        .timeline-dot.active { border-color: #55B5B8; background: #55B5B8; }
+        .timeline-date { font-size: 10px; color: #9CA3AF; font-weight: 600; }
+        .timeline-title { font-size: 12px; font-weight: 600; color: #31393F; margin-top: 2px; }
+        .timeline-detail { font-size: 11px; color: #5A6872; margin-top: 2px; line-height: 1.5; }
+        .timeline-transcript-btn {
+            margin-top: 6px; padding: 4px 10px; font-size: 10px; font-weight: 600;
+            background: #F0FAFA; color: #55B5B8; border: 1px solid #55B5B8;
+            border-radius: 4px; cursor: pointer;
+        }
+        .timeline-transcript-btn:hover { background: #55B5B8; color: #fff; }
+        .slideout-transcript {
+            background: #F8F9FA; border: 1px solid #E8EAEC; border-radius: 8px;
+            padding: 12px; margin-top: 8px; font-size: 11px; line-height: 1.7;
+            color: #31393F; max-height: 200px; overflow-y: auto;
+        }
+        .transcript-speaker { font-weight: 700; color: #55B5B8; }
+        .transcript-speaker.patient { color: #49545E; }
+        /* N3: Pagination */
+        .drilldown-pagination {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; background: #fff; border: 1px solid #E8EAEC;
+            border-top: none; border-radius: 0 0 10px 10px;
+            font-size: 11px; color: #5A6872;
+        }
+        .drilldown-pagination button {
+            padding: 4px 12px; font-size: 11px; font-weight: 600;
+            background: #F8F9FA; border: 1px solid #D5D8DC; border-radius: 4px;
+            cursor: pointer; color: #31393F;
+        }
+        .drilldown-pagination button:hover { background: #E8EAEC; }
+        .drilldown-pagination button:disabled { opacity: 0.4; cursor: default; }
+        /* N4: Granular KPI enhancements */
+        .drilldown-kpi-row {
+            display: flex; gap: 10px; margin-bottom: 14px;
+        }
+        .drilldown-kpi-card {
+            background: #fff; border: 1px solid #E8EAEC; border-radius: 8px;
+            padding: 8px 14px; flex: 1; text-align: center;
+        }
+        .drilldown-kpi-val { font-size: 18px; font-weight: 800; }
+        .drilldown-kpi-label { font-size: 9px; color: #6B7280; text-transform: uppercase; font-weight: 600; letter-spacing: 0.4px; margin-top: 2px; }
+        .drilldown-sparkline { display: flex; align-items: flex-end; justify-content: center; gap: 2px; height: 20px; margin-top: 4px; }
+        .spark-bar { width: 4px; border-radius: 2px; background: #55B5B8; transition: height 0.3s; }
+        /* N5: Escalate button in rows */
+        .row-escalate-btn {
+            padding: 3px 8px; font-size: 9px; font-weight: 700;
+            background: #FDEDEC; color: #E45740; border: 1px solid #E45740;
+            border-radius: 4px; cursor: pointer; white-space: nowrap;
+        }
+        .row-escalate-btn:hover { background: #E45740; color: #fff; }
+        /* N6: Active row indicator */
+        .drilldown-table tr.row-active td:first-child { position: relative; }
+        .drilldown-table tr.row-active td:first-child::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 6px; height: 6px; border-radius: 50%; background: #27AE60;
+            animation: livePulse 1.5s infinite;
+        }
+        /* N7: Filter pills for drilldown */
+        .drilldown-filter-pills {
+            display: flex; gap: 6px; margin-bottom: 12px;
+        }
+        .drilldown-pill {
+            padding: 4px 12px; font-size: 10px; font-weight: 600;
+            border-radius: 20px; border: 1px solid #D5D8DC; background: #fff;
+            color: #5A6872; cursor: pointer;
+        }
+        .drilldown-pill:hover { background: #F2F3F4; }
+        .drilldown-pill.active { background: #55B5B8; color: #fff; border-color: #55B5B8; }
         .campaign-card-header {
             display: flex;
             align-items: flex-start;
@@ -7345,7 +7483,32 @@ button:hover {
                 <div class="campaign-drilldown-title" id="drilldown-title"></div>
             </div>
             <div class="campaign-drilldown-stats" id="drilldown-stats"></div>
-            <div id="drilldown-table-container"></div>
+            <div id="drilldown-kpi-row" class="drilldown-kpi-row"></div>
+            <div id="drilldown-filter-pills" class="drilldown-filter-pills"></div>
+            <div class="drilldown-body">
+                <div class="drilldown-table-panel">
+                    <div id="drilldown-table-container"></div>
+                    <div id="drilldown-pagination" class="drilldown-pagination" style="display:none;"></div>
+                </div>
+                <div class="drilldown-live-panel">
+                    <div class="live-feed-header">
+                        <div class="live-pulse"></div>
+                        Live Activity Feed
+                    </div>
+                    <div class="live-feed-scroll" id="live-feed-scroll"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Patient Slide-Out Panel -->
+        <div class="patient-slideout" id="patient-slideout">
+            <div class="slideout-header">
+                <div>
+                    <div class="slideout-patient-name" id="slideout-patient-name"></div>
+                    <div class="slideout-patient-meta" id="slideout-patient-meta"></div>
+                </div>
+                <button class="slideout-close" onclick="closePatientSlideout()">&times;</button>
+            </div>
+            <div class="slideout-body" id="slideout-body"></div>
         </div>
 
         <!-- E1: Campaign Analytics Dashboard -->
@@ -17192,75 +17355,322 @@ function attachCampaignCardListeners() {
     });
 }
 
-// M1: Campaign Patient-Level Drill-Down Data
+// M1: Campaign Patient-Level Drill-Down Data (expanded for scale)
 const campaignPatients = {
     'CAMP-AWV-Q3': [
-        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'scheduled', lastOutreach: 'Mar 2, 2026', outcome: 'AWV scheduled Mar 6 at 2 PM', method: 'Phone' },
-        { name: 'Robert Chen', mrn: '201445', age: 72, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 28, 2026', outcome: 'AWV completed Feb 28', method: 'Phone' },
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'scheduled', lastOutreach: 'Mar 2, 2026', outcome: 'AWV scheduled Mar 6 at 2 PM', method: 'Phone', hasTimeline: true },
+        { name: 'Robert Chen', mrn: '201445', age: 72, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 28, 2026', outcome: 'AWV completed Feb 28', method: 'Phone', hasTimeline: true },
         { name: 'Maria Gonzalez', mrn: '203112', age: 74, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'VM left, no callback', method: 'Phone' },
         { name: 'William Park', mrn: '200891', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'AWV completed Feb 26', method: 'SMS' },
         { name: 'Dorothy Adams', mrn: '204556', age: 78, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Patient confused, needs CM assist', method: 'Phone' },
         { name: 'James Wilson', mrn: '201223', age: 70, risk: 'MOD', status: 'contacted', lastOutreach: 'Mar 1, 2026', outcome: 'Will call back to schedule', method: 'Phone' },
         { name: 'Helen Torres', mrn: '205001', age: 69, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'AWV completed Feb 25', method: 'SMS' },
-        { name: 'Frank Miller', mrn: '202890', age: 75, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 28, 2026', outcome: 'Patient declined — prefers own schedule', method: 'Phone' }
+        { name: 'Frank Miller', mrn: '202890', age: 75, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 28, 2026', outcome: 'Patient declined — prefers own schedule', method: 'Phone' },
+        { name: 'Gloria Simmons', mrn: '206112', age: 71, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 22, 2026', outcome: 'AWV completed Feb 23', method: 'Phone' },
+        { name: 'Raymond Ortiz', mrn: '206234', age: 77, risk: 'HIGH', status: 'scheduled', lastOutreach: 'Mar 1, 2026', outcome: 'AWV scheduled Mar 8 at 10 AM', method: 'Phone' },
+        { name: 'Catherine Brooks', mrn: '206345', age: 65, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 20, 2026', outcome: 'AWV completed Feb 21', method: 'SMS' },
+        { name: 'Harold Rivera', mrn: '206456', age: 73, risk: 'MOD', status: 'no-response', lastOutreach: 'Feb 26, 2026', outcome: 'VM left x2, no callback', method: 'Phone' },
+        { name: 'Shirley Cooper', mrn: '206567', age: 80, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 25, 2026', outcome: 'Hearing impairment — needs in-person', method: 'Phone' },
+        { name: 'Eugene Powell', mrn: '206678', age: 67, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 19, 2026', outcome: 'AWV completed Feb 20', method: 'SMS' },
+        { name: 'Theresa Long', mrn: '206789', age: 74, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 28, 2026', outcome: 'Agreed to schedule next week', method: 'Phone' },
+        { name: 'Philip Reed', mrn: '206890', age: 69, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 18, 2026', outcome: 'AWV completed Feb 19', method: 'Phone' },
+        { name: 'Janet Cook', mrn: '206901', age: 76, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'Wrong number on file', method: 'Phone' },
+        { name: 'Lawrence Morgan', mrn: '207012', age: 70, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 21, 2026', outcome: 'AWV completed Feb 22', method: 'SMS' },
+        { name: 'Doris Bell', mrn: '207123', age: 82, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 24, 2026', outcome: 'Daughter declined on behalf', method: 'Phone' },
+        { name: 'Gerald Murphy', mrn: '207234', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 17, 2026', outcome: 'AWV completed Feb 18', method: 'SMS' },
+        { name: 'Carolyn Bailey', mrn: '207345', age: 73, risk: 'MOD', status: 'scheduled', lastOutreach: 'Mar 2, 2026', outcome: 'AWV scheduled Mar 10 at 1 PM', method: 'Phone' },
+        { name: 'Dennis Howard', mrn: '207456', age: 79, risk: 'HIGH', status: 'contacted', lastOutreach: 'Mar 1, 2026', outcome: 'Requested callback after 3 PM', method: 'Phone' },
+        { name: 'Judy Ward', mrn: '207567', age: 68, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 16, 2026', outcome: 'AWV completed Feb 17', method: 'SMS' },
+        { name: 'Walter Torres', mrn: '207678', age: 75, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 26, 2026', outcome: 'VM left, SMS sent as follow-up', method: 'Phone' },
+        { name: 'Diane Sanders', mrn: '207789', age: 71, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 23, 2026', outcome: 'AWV completed Feb 24', method: 'Phone' }
     ],
     'CAMP-MED-OCT': [
-        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Metoprolol gap — dizziness, SOB, transport barrier', method: 'Phone' },
-        { name: 'Arthur Brown', mrn: '200334', age: 71, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'Refill confirmed at CVS', method: 'Phone' },
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Metoprolol gap — dizziness, SOB, transport barrier', method: 'Phone', hasTimeline: true },
+        { name: 'Arthur Brown', mrn: '200334', age: 71, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'Refill confirmed at CVS', method: 'Phone', hasTimeline: true },
         { name: 'Linda Nguyen', mrn: '203678', age: 65, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 27, 2026', outcome: 'Will pick up tomorrow', method: 'SMS' },
         { name: 'George Harris', mrn: '201990', age: 77, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Lisinopril gap — reports headaches', method: 'Phone' },
         { name: 'Susan Clark', mrn: '204112', age: 69, risk: 'MOD', status: 'no-response', lastOutreach: 'Feb 28, 2026', outcome: 'No answer x3 attempts', method: 'Phone' },
-        { name: 'Thomas Lee', mrn: '200567', age: 73, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'Statin refill confirmed', method: 'SMS' }
+        { name: 'Thomas Lee', mrn: '200567', age: 73, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'Statin refill confirmed', method: 'SMS' },
+        { name: 'Virginia Scott', mrn: '208012', age: 70, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 23, 2026', outcome: 'Amlodipine refill confirmed at Walgreens', method: 'Phone' },
+        { name: 'Roger Green', mrn: '208123', age: 76, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 27, 2026', outcome: 'Will call pharmacy today', method: 'Phone' },
+        { name: 'Ruth Adams', mrn: '208234', age: 68, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 22, 2026', outcome: 'Metformin refill picked up', method: 'SMS' },
+        { name: 'Carl Nelson', mrn: '208345', age: 81, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Warfarin gap — INR overdue', method: 'Phone' },
+        { name: 'Frances Hill', mrn: '208456', age: 67, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 21, 2026', outcome: 'Atorvastatin refill confirmed', method: 'SMS' },
+        { name: 'Wayne Ramirez', mrn: '208567', age: 74, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 28, 2026', outcome: 'No answer x2, SMS pending', method: 'Phone' },
+        { name: 'Alice Campbell', mrn: '208678', age: 69, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 27, 2026', outcome: 'Switching to mail-order pharmacy', method: 'Phone' },
+        { name: 'Jerry Mitchell', mrn: '208789', age: 72, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 20, 2026', outcome: 'Losartan refill confirmed', method: 'SMS' },
+        { name: 'Marie Roberts', mrn: '208890', age: 78, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 25, 2026', outcome: 'Stopped medication per specialist', method: 'Phone' },
+        { name: 'Roy Turner', mrn: '208901', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 19, 2026', outcome: 'Omeprazole refill confirmed', method: 'SMS' },
+        { name: 'Beverly Phillips', mrn: '209012', age: 75, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 28, 2026', outcome: 'Needs prior auth — CM notified', method: 'Phone' },
+        { name: 'Peter Evans', mrn: '209123', age: 70, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 22, 2026', outcome: 'Gabapentin refill confirmed', method: 'Phone' },
+        { name: 'Norma Edwards', mrn: '209234', age: 73, risk: 'MOD', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'VM left, awaiting callback', method: 'Phone' },
+        { name: 'Russell Collins', mrn: '209345', age: 79, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 26, 2026', outcome: 'Insulin gap — reports cost barrier', method: 'Phone' }
     ],
     'CAMP-FLU-2025': [
-        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 20, 2026', outcome: 'VM left, pending callback', method: 'Phone' },
-        { name: 'Patricia White', mrn: '205234', age: 71, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 18, 2026', outcome: 'Flu shot received at pharmacy', method: 'SMS' },
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 20, 2026', outcome: 'VM left, pending callback', method: 'Phone', hasTimeline: true },
+        { name: 'Patricia White', mrn: '205234', age: 71, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 18, 2026', outcome: 'Flu shot received at pharmacy', method: 'SMS', hasTimeline: true },
         { name: 'Richard Davis', mrn: '201678', age: 80, risk: 'HIGH', status: 'declined', lastOutreach: 'Feb 19, 2026', outcome: 'Patient declined — allergic concern', method: 'Phone' },
         { name: 'Barbara Johnson', mrn: '203445', age: 67, risk: 'LOW', status: 'scheduled', lastOutreach: 'Feb 22, 2026', outcome: 'Appt scheduled Feb 28', method: 'SMS' },
-        { name: 'Charles Martinez', mrn: '200112', age: 76, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 21, 2026', outcome: 'Homebound — needs home visit', method: 'Phone' }
+        { name: 'Charles Martinez', mrn: '200112', age: 76, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 21, 2026', outcome: 'Homebound — needs home visit', method: 'Phone' },
+        { name: 'Sandra Stewart', mrn: '209456', age: 72, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 17, 2026', outcome: 'Flu shot at PCP visit', method: 'Phone' },
+        { name: 'Gary Morris', mrn: '209567', age: 78, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 20, 2026', outcome: 'VM left x3, no callback', method: 'Phone' },
+        { name: 'Donna Rogers', mrn: '209678', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 16, 2026', outcome: 'Flu shot at Walgreens', method: 'SMS' },
+        { name: 'Kevin Reed', mrn: '209789', age: 74, risk: 'HIGH', status: 'scheduled', lastOutreach: 'Feb 22, 2026', outcome: 'Appt scheduled Mar 1', method: 'Phone' },
+        { name: 'Lisa Cook', mrn: '209890', age: 69, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 15, 2026', outcome: 'Flu shot at CVS MinuteClinic', method: 'SMS' },
+        { name: 'Mark Morgan', mrn: '209901', age: 81, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 21, 2026', outcome: 'Wheelchair-bound — needs home visit', method: 'Phone' },
+        { name: 'Kimberly Bell', mrn: '210012', age: 67, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 14, 2026', outcome: 'Flu shot at employer clinic', method: 'SMS' },
+        { name: 'Steven Murphy', mrn: '210123', age: 75, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 22, 2026', outcome: 'Will get shot at next PCP visit', method: 'Phone' },
+        { name: 'Michelle Bailey', mrn: '210234', age: 70, risk: 'MOD', status: 'declined', lastOutreach: 'Feb 19, 2026', outcome: 'Declined — had reaction last year', method: 'Phone' },
+        { name: 'Jason Howard', mrn: '210345', age: 73, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 18, 2026', outcome: 'Flu shot at pharmacy', method: 'SMS' },
+        { name: 'Laura Ward', mrn: '210456', age: 79, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 21, 2026', outcome: 'Phone disconnected', method: 'Phone' },
+        { name: 'Brian Cox', mrn: '210567', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 13, 2026', outcome: 'Flu shot at PCP office', method: 'Phone' },
+        { name: 'Amy Diaz', mrn: '210678', age: 71, risk: 'MOD', status: 'scheduled', lastOutreach: 'Feb 22, 2026', outcome: 'Appt scheduled Mar 3', method: 'SMS' },
+        { name: 'Jeffrey Richardson', mrn: '210789', age: 77, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 22, 2026', outcome: 'Son will drive to pharmacy this week', method: 'Phone' },
+        { name: 'Angela Wood', mrn: '210890', age: 68, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 12, 2026', outcome: 'Flu shot completed', method: 'SMS' }
     ],
     'CAMP-TCM-NOV': [
-        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'TCM call completed, f/u scheduled', method: 'Phone' },
-        { name: 'Edward Robinson', mrn: '204890', age: 74, risk: 'HIGH', status: 'completed', lastOutreach: 'Nov 15, 2025', outcome: '48-hr call completed, stable', method: 'Phone' },
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 25, 2026', outcome: 'TCM call completed, f/u scheduled', method: 'Phone', hasTimeline: true },
+        { name: 'Edward Robinson', mrn: '204890', age: 74, risk: 'HIGH', status: 'completed', lastOutreach: 'Nov 15, 2025', outcome: '48-hr call completed, stable', method: 'Phone', hasTimeline: true },
         { name: 'Margaret Taylor', mrn: '201556', age: 70, risk: 'MOD', status: 'completed', lastOutreach: 'Nov 12, 2025', outcome: 'Meds verified, PCP appt set', method: 'Phone' },
-        { name: 'Ronald Anderson', mrn: '203001', age: 82, risk: 'HIGH', status: 'escalated', lastOutreach: 'Nov 18, 2025', outcome: 'Readmission risk — CM notified', method: 'Phone' }
+        { name: 'Ronald Anderson', mrn: '203001', age: 82, risk: 'HIGH', status: 'escalated', lastOutreach: 'Nov 18, 2025', outcome: 'Readmission risk — CM notified', method: 'Phone' },
+        { name: 'Sharon Walker', mrn: '211012', age: 76, risk: 'HIGH', status: 'completed', lastOutreach: 'Nov 14, 2025', outcome: '48-hr call completed, med reconciliation done', method: 'Phone' },
+        { name: 'Timothy Hall', mrn: '211123', age: 69, risk: 'MOD', status: 'completed', lastOutreach: 'Nov 11, 2025', outcome: 'Stable, follow-up with PCP confirmed', method: 'Phone' },
+        { name: 'Deborah Allen', mrn: '211234', age: 83, risk: 'HIGH', status: 'escalated', lastOutreach: 'Nov 17, 2025', outcome: 'New symptoms — fever, confusion', method: 'Phone' },
+        { name: 'Henry Young', mrn: '211345', age: 71, risk: 'MOD', status: 'completed', lastOutreach: 'Nov 13, 2025', outcome: 'Discharge instructions reviewed', method: 'Phone' },
+        { name: 'Pamela King', mrn: '211456', age: 78, risk: 'HIGH', status: 'completed', lastOutreach: 'Nov 16, 2025', outcome: 'Home health arranged', method: 'Phone' },
+        { name: 'Joseph Wright', mrn: '211567', age: 67, risk: 'LOW', status: 'completed', lastOutreach: 'Nov 10, 2025', outcome: 'Stable, no concerns', method: 'Phone' },
+        { name: 'Brenda Lopez', mrn: '211678', age: 80, risk: 'HIGH', status: 'completed', lastOutreach: 'Nov 15, 2025', outcome: 'Wound care follow-up scheduled', method: 'Phone' },
+        { name: 'Frank Hill', mrn: '211789', age: 73, risk: 'MOD', status: 'completed', lastOutreach: 'Nov 12, 2025', outcome: 'PT referral confirmed', method: 'Phone' },
+        { name: 'Carol Scott', mrn: '211890', age: 85, risk: 'HIGH', status: 'escalated', lastOutreach: 'Nov 19, 2025', outcome: 'Fall risk — home safety eval needed', method: 'Phone' },
+        { name: 'Douglas Green', mrn: '211901', age: 68, risk: 'LOW', status: 'completed', lastOutreach: 'Nov 9, 2025', outcome: 'Stable, discharged from TCM', method: 'Phone' }
     ],
     'CAMP-CCM-Q4': [
-        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Monthly check-in completed', method: 'Phone' },
-        { name: 'Nancy Thompson', mrn: '205678', age: 73, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 25, 2026', outcome: 'New symptoms reported — SOB', method: 'Phone' },
+        { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Monthly check-in completed', method: 'Phone', hasTimeline: true },
+        { name: 'Nancy Thompson', mrn: '205678', age: 73, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 25, 2026', outcome: 'New symptoms reported — SOB', method: 'Phone', hasTimeline: true },
         { name: 'Kenneth Moore', mrn: '200789', age: 68, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'Stable, no changes', method: 'Phone' },
         { name: 'Betty Jackson', mrn: '202334', age: 79, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'No answer x2, SMS sent', method: 'Phone' },
-        { name: 'Donald Garcia', mrn: '204001', age: 71, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Medication questions answered', method: 'SMS' }
+        { name: 'Donald Garcia', mrn: '204001', age: 71, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Medication questions answered', method: 'SMS' },
+        { name: 'Patricia Hernandez', mrn: '212012', age: 75, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 23, 2026', outcome: 'BP stable, meds unchanged', method: 'Phone' },
+        { name: 'Robert Martinez', mrn: '212123', age: 70, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Diet questions addressed', method: 'Phone' },
+        { name: 'Linda Robinson', mrn: '212234', age: 82, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 25, 2026', outcome: 'Weight gain 5 lbs in 3 days — CHF concern', method: 'Phone' },
+        { name: 'Michael Clark', mrn: '212345', age: 67, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 22, 2026', outcome: 'Stable, A1C improved', method: 'SMS' },
+        { name: 'Barbara Lewis', mrn: '212456', age: 77, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'No answer, caregiver contacted', method: 'Phone' },
+        { name: 'William Walker', mrn: '212567', age: 69, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 21, 2026', outcome: 'Stable, exercise plan reviewed', method: 'Phone' },
+        { name: 'Susan Hall', mrn: '212678', age: 80, risk: 'HIGH', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Pain management discussed', method: 'Phone' },
+        { name: 'James Allen', mrn: '212789', age: 66, risk: 'LOW', status: 'completed', lastOutreach: 'Feb 20, 2026', outcome: 'Stable, no concerns', method: 'SMS' },
+        { name: 'Karen Young', mrn: '212890', age: 74, risk: 'HIGH', status: 'escalated', lastOutreach: 'Feb 25, 2026', outcome: 'Missed 3 doses of insulin this week', method: 'Phone' },
+        { name: 'David King', mrn: '212901', age: 71, risk: 'MOD', status: 'contacted', lastOutreach: 'Feb 26, 2026', outcome: 'Refill reminder sent, confirmed', method: 'SMS' },
+        { name: 'Sandra Wright', mrn: '213012', age: 78, risk: 'HIGH', status: 'completed', lastOutreach: 'Feb 24, 2026', outcome: 'Stable, home health visit confirmed', method: 'Phone' },
+        { name: 'Paul Lopez', mrn: '213123', age: 68, risk: 'MOD', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'VM left, SMS follow-up sent', method: 'Phone' }
     ]
 };
+
+// N2: Deep timeline data for top 2 patients per campaign
+const patientTimelines = {
+    // AWV Q3 — Jane Doe
+    '202070_CAMP-AWV-Q3': {
+        timeline: [
+            { date: 'Feb 15, 2026 — 9:02 AM', type: 'active', title: 'Outreach Initiated', detail: 'Florence identified Jane Doe as overdue for AWV. Auto-queued for phone outreach based on HIGH risk score.' },
+            { date: 'Feb 15, 2026 — 9:15 AM', type: 'active', title: 'Phone Call — Attempt 1', detail: 'Call placed to (555) 202-0070. No answer. Voicemail left with callback number.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Hi Jane, this is Florence calling from Dr. Cunningham\'s office at NightingaleMD. We noticed you haven\'t had your Annual Wellness Visit yet this year. We\'d love to get you scheduled — it\'s fully covered by your insurance. Please call us back at 555-100-2000 or I can try you again soon. Have a great day!' },
+            { date: 'Feb 18, 2026 — 10:30 AM', type: 'active', title: 'SMS Follow-Up Sent', detail: 'Automated SMS: "Hi Jane, this is Dr. Cunningham\'s office. Your Annual Wellness Visit is overdue. Reply YES to schedule or call 555-100-2000."' },
+            { date: 'Feb 22, 2026 — 2:45 PM', type: 'active', title: 'Phone Call — Attempt 2', detail: 'Call placed. Patient answered. Discussed importance of AWV. Patient requested afternoon appointment.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Hi Jane, this is Florence from Dr. Cunningham\'s office. How are you today?<br><span class="transcript-speaker patient">Jane:</span> Oh hi, I\'m doing okay. I got your message about the wellness visit.<br><span class="transcript-speaker">Florence:</span> Yes! We\'d love to get you in. Your last visit was over a year ago and this is a great chance to review your medications, check your blood pressure, and make sure everything is on track. It\'s fully covered by Medicare.<br><span class="transcript-speaker patient">Jane:</span> That sounds good. Can I come in the afternoon? Mornings are hard for me.<br><span class="transcript-speaker">Florence:</span> Absolutely. Let me check availability... I have March 6th at 2 PM with Dr. Cunningham. Would that work?<br><span class="transcript-speaker patient">Jane:</span> Yes, that\'s perfect.<br><span class="transcript-speaker">Florence:</span> Wonderful! You\'re all set for March 6th at 2 PM. We\'ll send you a reminder the day before. Is there anything specific you\'d like to discuss at the visit?<br><span class="transcript-speaker patient">Jane:</span> Actually yes, I\'ve been having some dizziness lately.<br><span class="transcript-speaker">Florence:</span> I\'ll make a note of that for Dr. Cunningham so he\'s prepared. Thank you Jane, we\'ll see you on the 6th!' },
+            { date: 'Feb 22, 2026 — 2:52 PM', type: 'success', title: 'Gap Closed: AWV Scheduled', detail: 'Appointment confirmed: Mar 6, 2026 at 2:00 PM with Dr. Cunningham. Reminder set for Mar 5.' },
+            { date: 'Mar 2, 2026 — 9:00 AM', type: 'active', title: 'Confirmation Call', detail: 'Automated reminder call confirming Mar 6 appointment. Patient confirmed attendance.' }
+        ]
+    },
+    // AWV Q3 — Robert Chen
+    '201445_CAMP-AWV-Q3': {
+        timeline: [
+            { date: 'Feb 10, 2026 — 8:30 AM', type: 'active', title: 'Outreach Initiated', detail: 'Robert Chen flagged as AWV overdue. MOD risk — queued for phone outreach.' },
+            { date: 'Feb 10, 2026 — 9:45 AM', type: 'active', title: 'Phone Call — Attempt 1', detail: 'Call placed. Patient answered immediately. Agreed to schedule.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Good morning Mr. Chen, this is Florence from Dr. Cunningham\'s office. I\'m calling because your Annual Wellness Visit is coming due.<br><span class="transcript-speaker patient">Robert:</span> Oh yes, I\'ve been meaning to call. Can I come in this month?<br><span class="transcript-speaker">Florence:</span> Of course! I have February 28th at 10 AM available. Would that work?<br><span class="transcript-speaker patient">Robert:</span> That\'s great. I\'ll be there.<br><span class="transcript-speaker">Florence:</span> Perfect. We\'ll send a reminder. See you then!' },
+            { date: 'Feb 10, 2026 — 9:50 AM', type: 'success', title: 'Gap Closed: AWV Scheduled', detail: 'Appointment confirmed: Feb 28, 2026 at 10:00 AM.' },
+            { date: 'Feb 27, 2026 — 9:00 AM', type: 'active', title: 'Reminder Sent', detail: 'Automated SMS reminder for tomorrow\'s appointment.' },
+            { date: 'Feb 28, 2026 — 10:45 AM', type: 'success', title: 'AWV Completed', detail: 'Patient attended AWV. Visit documented in EHR. All preventive measures reviewed.' }
+        ]
+    },
+    // MED OCT — Jane Doe
+    '202070_CAMP-MED-OCT': {
+        timeline: [
+            { date: 'Feb 20, 2026 — 8:00 AM', type: 'active', title: 'Medication Gap Detected', detail: 'Metoprolol 50mg not refilled in 32 days. Auto-queued for urgent outreach (HIGH risk, cardiac med).' },
+            { date: 'Feb 20, 2026 — 10:15 AM', type: 'active', title: 'Phone Call — Attempt 1', detail: 'Call placed. Patient reported dizziness and shortness of breath. Expressed transportation barrier to pharmacy.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Hi Jane, this is Florence from Dr. Cunningham\'s office. I\'m calling about your Metoprolol prescription — it looks like it hasn\'t been refilled in over 30 days. Is everything okay?<br><span class="transcript-speaker patient">Jane:</span> Oh, I know I need to get it. I\'ve been feeling dizzy and short of breath lately and I just haven\'t been able to get to the pharmacy.<br><span class="transcript-speaker">Florence:</span> I\'m sorry to hear that, Jane. The dizziness and shortness of breath could actually be related to not taking the Metoprolol — it\'s important for your heart. Can I help arrange something?<br><span class="transcript-speaker patient">Jane:</span> I just don\'t have a way to get there. My daughter works during the day.<br><span class="transcript-speaker">Florence:</span> I understand. Let me flag this for your care team right away so we can look into delivery options or transportation assistance. In the meantime, please don\'t hesitate to call 911 if the shortness of breath gets worse.<br><span class="transcript-speaker patient">Jane:</span> Okay, thank you.' },
+            { date: 'Feb 20, 2026 — 10:22 AM', type: 'alert', title: 'Escalated to Care Manager', detail: 'Flagged: Symptomatic medication gap (dizziness, SOB) + transportation barrier. Requires CM intervention for pharmacy delivery or transport arrangement.' },
+            { date: 'Feb 26, 2026 — 3:00 PM', type: 'active', title: 'CM Follow-Up Documented', detail: 'Care Manager Sarah arranged CVS delivery. Patient confirmed medication received.' }
+        ]
+    },
+    // MED OCT — Arthur Brown
+    '200334_CAMP-MED-OCT': {
+        timeline: [
+            { date: 'Feb 18, 2026 — 8:30 AM', type: 'active', title: 'Medication Gap Detected', detail: 'Lisinopril 20mg not refilled in 28 days. Queued for outreach.' },
+            { date: 'Feb 18, 2026 — 11:00 AM', type: 'active', title: 'Phone Call — Attempt 1', detail: 'No answer. Voicemail left.' },
+            { date: 'Feb 20, 2026 — 9:30 AM', type: 'active', title: 'SMS Sent', detail: 'Automated SMS: "Mr. Brown, your Lisinopril prescription needs refilling. Reply YES if you need help or call 555-100-2000."' },
+            { date: 'Feb 20, 2026 — 10:15 AM', type: 'active', title: 'SMS Reply Received', detail: 'Patient replied: "Will pick up today thanks"' },
+            { date: 'Feb 25, 2026 — 9:00 AM', type: 'active', title: 'Confirmation Call', detail: 'Florence called to verify refill. Patient confirmed pickup at CVS on Feb 22.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Good morning Mr. Brown, just checking in — were you able to pick up your Lisinopril?<br><span class="transcript-speaker patient">Arthur:</span> Yes, I got it last Saturday. Taking it every morning.<br><span class="transcript-speaker">Florence:</span> That\'s great to hear. Your next refill should be around March 20th. We\'ll send you a reminder. Take care!<br><span class="transcript-speaker patient">Arthur:</span> Thank you, appreciate the call.' },
+            { date: 'Feb 25, 2026 — 9:05 AM', type: 'success', title: 'Gap Closed: Refill Confirmed', detail: 'Lisinopril refill confirmed at CVS. Next refill reminder set for Mar 18.' }
+        ]
+    },
+    // FLU — Jane Doe
+    '202070_CAMP-FLU-2025': {
+        timeline: [
+            { date: 'Feb 12, 2026 — 8:00 AM', type: 'active', title: 'Flu Vaccination Gap Identified', detail: 'No flu shot on record for 2025-2026 season. HIGH risk — queued for outreach.' },
+            { date: 'Feb 12, 2026 — 2:00 PM', type: 'active', title: 'SMS Sent', detail: 'Automated SMS: "Hi Jane, flu season is here. Your flu shot is overdue. Reply YES to schedule or visit any CVS/Walgreens."' },
+            { date: 'Feb 15, 2026 — 10:00 AM', type: 'active', title: 'Phone Call — Attempt 1', detail: 'No answer. Voicemail left about flu shot availability.' },
+            { date: 'Feb 20, 2026 — 11:30 AM', type: 'active', title: 'Phone Call — Attempt 2', detail: 'No answer. Second voicemail left. Marked for follow-up next week.' },
+            { date: 'Feb 20, 2026 — 11:35 AM', type: 'alert', title: 'Status: No Response', detail: 'Two call attempts + SMS with no response. Will retry after AWV appointment on Mar 6.' }
+        ]
+    },
+    // FLU — Patricia White
+    '205234_CAMP-FLU-2025': {
+        timeline: [
+            { date: 'Feb 10, 2026 — 8:00 AM', type: 'active', title: 'Flu Vaccination Gap Identified', detail: 'No flu shot on record. MOD risk — queued for SMS outreach.' },
+            { date: 'Feb 10, 2026 — 10:00 AM', type: 'active', title: 'SMS Sent', detail: 'Automated SMS: "Hi Patricia, your flu shot is overdue. Visit any pharmacy or reply YES to schedule at our office."' },
+            { date: 'Feb 10, 2026 — 10:45 AM', type: 'active', title: 'SMS Reply Received', detail: 'Patient replied: "Getting it at CVS this week"' },
+            { date: 'Feb 18, 2026 — 9:00 AM', type: 'active', title: 'Claims Data Received', detail: 'Pharmacy claim confirmed: Flu vaccine administered at CVS #4521 on Feb 14.' },
+            { date: 'Feb 18, 2026 — 9:01 AM', type: 'success', title: 'Gap Closed: Flu Shot Confirmed', detail: 'Flu vaccination confirmed via claims data. Record updated in EHR.' }
+        ]
+    },
+    // TCM — Jane Doe
+    '202070_CAMP-TCM-NOV': {
+        timeline: [
+            { date: 'Feb 23, 2026 — 8:00 AM', type: 'active', title: 'Post-Discharge Alert', detail: 'Jane Doe discharged from Memorial Hospital (CHF exacerbation). 48-hour TCM call required.' },
+            { date: 'Feb 23, 2026 — 2:00 PM', type: 'active', title: 'TCM Call — 48 Hour', detail: 'Florence completed post-discharge call. Reviewed discharge instructions, medication changes, and follow-up plan.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Hi Jane, this is Florence from Dr. Cunningham\'s office. I see you were just discharged from Memorial Hospital. How are you feeling?<br><span class="transcript-speaker patient">Jane:</span> I\'m doing better. They adjusted my water pill and added a new medication.<br><span class="transcript-speaker">Florence:</span> That\'s good to hear. Let me go through your discharge instructions with you. They increased your Furosemide to 40mg twice daily and added Spironolactone 25mg. Are you taking both?<br><span class="transcript-speaker patient">Jane:</span> Yes, my daughter picked them up yesterday.<br><span class="transcript-speaker">Florence:</span> Excellent. And you have a follow-up with Dr. Cunningham scheduled within 7 days?<br><span class="transcript-speaker patient">Jane:</span> Yes, next Tuesday at 11 AM.<br><span class="transcript-speaker">Florence:</span> Perfect. Please weigh yourself every morning and call us if you gain more than 2 pounds in a day. We\'ll check in again before your appointment.' },
+            { date: 'Feb 25, 2026 — 10:00 AM', type: 'active', title: 'Follow-Up Check-In', detail: 'Second call completed. Patient stable, weight unchanged. Confirmed Tuesday appointment.' },
+            { date: 'Feb 25, 2026 — 10:05 AM', type: 'success', title: 'TCM Completed', detail: 'Both TCM calls completed. Follow-up appointment confirmed. Case closed.' }
+        ]
+    },
+    // TCM — Edward Robinson
+    '204890_CAMP-TCM-NOV': {
+        timeline: [
+            { date: 'Nov 13, 2025 — 8:00 AM', type: 'active', title: 'Post-Discharge Alert', detail: 'Edward Robinson discharged from County General (pneumonia). 48-hour TCM call required.' },
+            { date: 'Nov 13, 2025 — 1:30 PM', type: 'active', title: 'TCM Call — 48 Hour', detail: 'Call completed. Patient stable, on antibiotics. Reviewed discharge plan.' },
+            { date: 'Nov 15, 2025 — 10:00 AM', type: 'active', title: 'Follow-Up Check-In', detail: 'Second call. Patient improving. Appetite returning. PCP visit confirmed for Nov 20.' },
+            { date: 'Nov 15, 2025 — 10:05 AM', type: 'success', title: 'TCM Completed', detail: 'Both calls completed. Patient stable. Follow-up confirmed.' }
+        ]
+    },
+    // CCM — Jane Doe
+    '202070_CAMP-CCM-Q4': {
+        timeline: [
+            { date: 'Feb 26, 2026 — 9:00 AM', type: 'active', title: 'Monthly Check-In Initiated', detail: 'Automated monthly CCM call for CHF, HTN, and diabetes management.' },
+            { date: 'Feb 26, 2026 — 9:15 AM', type: 'active', title: 'Phone Call Connected', detail: 'Patient answered. Reviewed symptoms, medications, and recent hospital discharge.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Good morning Jane, this is your monthly check-in call from Dr. Cunningham\'s office. How have you been since your hospital visit?<br><span class="transcript-speaker patient">Jane:</span> Much better. The new medication seems to be helping with the swelling.<br><span class="transcript-speaker">Florence:</span> That\'s wonderful. Let me go through our checklist. Are you taking all your medications as prescribed?<br><span class="transcript-speaker patient">Jane:</span> Yes, every day.<br><span class="transcript-speaker">Florence:</span> Great. Any shortness of breath, chest pain, or dizziness?<br><span class="transcript-speaker patient">Jane:</span> No, not since I came home.<br><span class="transcript-speaker">Florence:</span> And your weight this morning?<br><span class="transcript-speaker patient">Jane:</span> 158 pounds, same as yesterday.<br><span class="transcript-speaker">Florence:</span> Perfect, that\'s stable. Your blood pressure readings from your home monitor look good too. We\'ll check in again next month. Call us anytime if anything changes.' },
+            { date: 'Feb 26, 2026 — 9:22 AM', type: 'success', title: 'Monthly Check-In Completed', detail: 'All vitals stable. Medications adherent. No new symptoms. Next check-in: Mar 26.' }
+        ]
+    },
+    // CCM — Nancy Thompson
+    '205678_CAMP-CCM-Q4': {
+        timeline: [
+            { date: 'Feb 25, 2026 — 9:00 AM', type: 'active', title: 'Monthly Check-In Initiated', detail: 'Automated monthly CCM call for COPD and HTN management.' },
+            { date: 'Feb 25, 2026 — 9:10 AM', type: 'active', title: 'Phone Call Connected', detail: 'Patient answered. Reported new shortness of breath worsening over past 3 days.', hasTranscript: true, transcript: '<span class="transcript-speaker">Florence:</span> Good morning Nancy, this is your monthly check-in from Dr. Cunningham\'s office. How are you feeling?<br><span class="transcript-speaker patient">Nancy:</span> Not great, actually. I\'ve been more short of breath the last few days. It\'s harder to walk to the mailbox.<br><span class="transcript-speaker">Florence:</span> I\'m sorry to hear that. When did this start?<br><span class="transcript-speaker patient">Nancy:</span> About three days ago. And I\'ve been coughing more too.<br><span class="transcript-speaker">Florence:</span> Are you running a fever or having any chest pain?<br><span class="transcript-speaker patient">Nancy:</span> No fever, but my chest feels tight.<br><span class="transcript-speaker">Florence:</span> Nancy, I want to make sure Dr. Cunningham knows about this right away. I\'m going to flag this as urgent so the care team can reach out to you today. In the meantime, if it gets worse, please go to the ER or call 911.<br><span class="transcript-speaker patient">Nancy:</span> Okay, thank you.' },
+            { date: 'Feb 25, 2026 — 9:18 AM', type: 'alert', title: 'Escalated to Care Manager', detail: 'URGENT: New SOB, chest tightness, increased cough x3 days in COPD patient. Requires same-day clinical review.' }
+        ]
+    }
+};
+
+// === ENHANCED CAMPAIGN DRILL-DOWN ===
+let drilldownCurrentPage = 1;
+let drilldownPageSize = 15;
+let drilldownCurrentFilter = 'all';
+let drilldownCurrentCampaignId = null;
+let liveFeedInterval = null;
 
 function openCampaignDrillDown(campaignId) {
     const campaign = newtonCampaigns.find(c => c.id === campaignId);
     const patients = campaignPatients[campaignId];
     if (!campaign || !patients) return;
 
+    drilldownCurrentCampaignId = campaignId;
+    drilldownCurrentPage = 1;
+    drilldownCurrentFilter = 'all';
+
     const panel = document.getElementById('campaign-drilldown');
     const title = document.getElementById('drilldown-title');
     const stats = document.getElementById('drilldown-stats');
-    const tableContainer = document.getElementById('drilldown-table-container');
 
     title.textContent = campaign.name;
 
-    // Calculate stats from patient data
+    // Calculate stats
     const total = patients.length;
     const completed = patients.filter(p => p.status === 'completed' || p.status === 'scheduled').length;
     const escalated = patients.filter(p => p.status === 'escalated').length;
     const noResponse = patients.filter(p => p.status === 'no-response').length;
     const contacted = patients.filter(p => p.status === 'contacted').length;
+    const declined = patients.filter(p => p.status === 'declined').length;
 
+    // Top-level stats bar
     stats.innerHTML = `
-        <div class="drilldown-stat"><div class="drilldown-stat-val">${total}</div><div class="drilldown-stat-label">Patients Shown</div></div>
-        <div class="drilldown-stat"><div class="drilldown-stat-val green">${completed}</div><div class="drilldown-stat-label">Completed / Scheduled</div></div>
-        <div class="drilldown-stat"><div class="drilldown-stat-val teal">${contacted}</div><div class="drilldown-stat-label">Contacted</div></div>
-        <div class="drilldown-stat"><div class="drilldown-stat-val red">${escalated}</div><div class="drilldown-stat-label">Escalated</div></div>
-        <div class="drilldown-stat"><div class="drilldown-stat-val" style="color:#F39C12;">${noResponse}</div><div class="drilldown-stat-label">No Response</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val">${campaign.targeted.toLocaleString()}</div><div class="drilldown-stat-label">Total Targeted</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val green">${Math.round(campaign.targeted * campaign.outreach_complete / 100)}</div><div class="drilldown-stat-label">Outreach Complete</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val teal">${Math.round(campaign.targeted * campaign.success_rate / 100)}</div><div class="drilldown-stat-label">Gaps Closed</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val red">${campaign.escalations}</div><div class="drilldown-stat-label">Escalations</div></div>
+        <div class="drilldown-stat"><div class="drilldown-stat-val" style="color:#F39C12;">${campaign.outreach_complete}%</div><div class="drilldown-stat-label">Completion Rate</div></div>
     `;
 
+    // N4: Granular KPI row with sparklines
+    const kpiRow = document.getElementById('drilldown-kpi-row');
+    const sparkBars = (heights, color) => heights.map(h => `<div class="spark-bar" style="height:${h}px;background:${color};"></div>`).join('');
+    kpiRow.innerHTML = `
+        <div class="drilldown-kpi-card">
+            <div class="drilldown-kpi-val" style="color:#27AE60;">${completed}</div>
+            <div class="drilldown-kpi-label">Completed/Scheduled</div>
+            <div class="drilldown-sparkline">${sparkBars([4,6,8,5,10,12,14,11,16,completed > 0 ? 18 : 2], '#27AE60')}</div>
+        </div>
+        <div class="drilldown-kpi-card">
+            <div class="drilldown-kpi-val" style="color:#2980B9;">${contacted}</div>
+            <div class="drilldown-kpi-label">Contacted</div>
+            <div class="drilldown-sparkline">${sparkBars([3,5,4,7,6,8,5,9,7,contacted > 0 ? 10 : 2], '#2980B9')}</div>
+        </div>
+        <div class="drilldown-kpi-card">
+            <div class="drilldown-kpi-val" style="color:#E45740;">${escalated}</div>
+            <div class="drilldown-kpi-label">Escalated</div>
+            <div class="drilldown-sparkline">${sparkBars([2,3,1,4,2,3,5,3,4,escalated > 0 ? 6 : 1], '#E45740')}</div>
+        </div>
+        <div class="drilldown-kpi-card">
+            <div class="drilldown-kpi-val" style="color:#F39C12;">${noResponse}</div>
+            <div class="drilldown-kpi-label">No Response</div>
+            <div class="drilldown-sparkline">${sparkBars([5,4,3,6,4,3,2,5,3,noResponse > 0 ? 4 : 1], '#F39C12')}</div>
+        </div>
+        <div class="drilldown-kpi-card">
+            <div class="drilldown-kpi-val" style="color:#6B7280;">${declined}</div>
+            <div class="drilldown-kpi-label">Declined</div>
+            <div class="drilldown-sparkline">${sparkBars([1,2,1,1,2,1,2,1,1,declined > 0 ? 3 : 1], '#6B7280')}</div>
+        </div>
+    `;
+
+    // N7: Filter pills
+    const pillsContainer = document.getElementById('drilldown-filter-pills');
+    pillsContainer.innerHTML = `
+        <button class="drilldown-pill active" onclick="filterDrilldown('all', this)">All (${total})</button>
+        <button class="drilldown-pill" onclick="filterDrilldown('completed', this)">Completed (${patients.filter(p=>p.status==='completed').length})</button>
+        <button class="drilldown-pill" onclick="filterDrilldown('scheduled', this)">Scheduled (${patients.filter(p=>p.status==='scheduled').length})</button>
+        <button class="drilldown-pill" onclick="filterDrilldown('contacted', this)">Contacted (${contacted})</button>
+        <button class="drilldown-pill" onclick="filterDrilldown('escalated', this)">Escalated (${escalated})</button>
+        <button class="drilldown-pill" onclick="filterDrilldown('no-response', this)">No Response (${noResponse})</button>
+        <button class="drilldown-pill" onclick="filterDrilldown('declined', this)">Declined (${declined})</button>
+    `;
+
+    renderDrilldownTable();
+    startLiveFeed(campaignId);
+
+    panel.classList.add('active');
+    addLogEntry('Campaign Drill-Down', `Opened patient-level view for: ${campaign.name}`);
+}
+
+function filterDrilldown(filter, btn) {
+    drilldownCurrentFilter = filter;
+    drilldownCurrentPage = 1;
+    document.querySelectorAll('.drilldown-pill').forEach(p => p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderDrilldownTable();
+}
+
+function renderDrilldownTable() {
+    const patients = campaignPatients[drilldownCurrentCampaignId];
+    if (!patients) return;
+
+    let filtered = drilldownCurrentFilter === 'all' ? patients : patients.filter(p => p.status === drilldownCurrentFilter);
+    const totalPages = Math.ceil(filtered.length / drilldownPageSize);
+    const start = (drilldownCurrentPage - 1) * drilldownPageSize;
+    const pagePatients = filtered.slice(start, start + drilldownPageSize);
+
+    const tableContainer = document.getElementById('drilldown-table-container');
     const riskBadge = (risk) => {
         const colors = { HIGH: '#E45740', MOD: '#F39C12', LOW: '#27AE60' };
         return `<span style="display:inline-block;padding:1px 6px;background:${colors[risk]}20;color:${colors[risk]};border-radius:4px;font-size:10px;font-weight:700;">${risk}</span>`;
@@ -17278,32 +17688,157 @@ function openCampaignDrillDown(campaignId) {
                     <th>Method</th>
                     <th>Last Outreach</th>
                     <th>Outcome</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                ${patients.map(p => `
-                    <tr style="cursor:pointer;" onclick="${p.mrn === '202070' ? "closeCampaignsView();" : ''}">
-                        <td style="font-weight:600;">${p.name} ${p.mrn === '202070' ? '<span style="background:#55B5B8;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;margin-left:4px;">CURRENT</span>' : ''}</td>
+                ${pagePatients.map(p => {
+                    const isActive = p.status === 'contacted' || p.status === 'scheduled';
+                    const hasDetail = p.hasTimeline;
+                    const escalateBtn = p.status === 'escalated' ? `<button class="row-escalate-btn" onclick="event.stopPropagation();openHandoffModal('WF-A-002');">Escalate to CM</button>` : '';
+                    const viewBtn = hasDetail ? `<button class="timeline-transcript-btn" onclick="event.stopPropagation();openPatientSlideout('${p.mrn}','${drilldownCurrentCampaignId}');">View Details</button>` : escalateBtn;
+                    return `
+                    <tr class="${isActive ? 'row-active' : ''}" style="cursor:${hasDetail ? 'pointer' : 'default'};" onclick="${hasDetail ? `openPatientSlideout('${p.mrn}','${drilldownCurrentCampaignId}')` : p.mrn === '202070' ? 'closeCampaignsView()' : ''}">
+                        <td style="font-weight:600;padding-left:${isActive ? '16px' : '14px'};">${p.name} ${p.mrn === '202070' ? '<span style="background:#55B5B8;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;margin-left:4px;">CURRENT</span>' : ''} ${hasDetail ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2" style="margin-left:4px;vertical-align:middle;"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>' : ''}</td>
                         <td>${p.mrn}</td>
                         <td>${p.age}</td>
                         <td>${riskBadge(p.risk)}</td>
                         <td><span class="drilldown-status ${p.status}">${p.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span></td>
                         <td>${p.method}</td>
                         <td>${p.lastOutreach}</td>
-                        <td style="max-width:220px;">${p.outcome}</td>
-                    </tr>
-                `).join('')}
+                        <td style="max-width:200px;">${p.outcome}</td>
+                        <td>${viewBtn}</td>
+                    </tr>`;
+                }).join('')}
             </tbody>
         </table>
     `;
 
-    panel.classList.add('active');
-    addLogEntry('Campaign Drill-Down', `Opened patient-level view for: ${campaign.name}`);
+    // Pagination
+    const paginationEl = document.getElementById('drilldown-pagination');
+    if (totalPages > 1) {
+        paginationEl.style.display = 'flex';
+        paginationEl.innerHTML = `
+            <span>Showing ${start + 1}–${Math.min(start + drilldownPageSize, filtered.length)} of ${filtered.length} patients (${campaignPatients[drilldownCurrentCampaignId].length} in sample — ${newtonCampaigns.find(c=>c.id===drilldownCurrentCampaignId).targeted.toLocaleString()} total targeted)</span>
+            <div style="display:flex;gap:6px;">
+                <button ${drilldownCurrentPage <= 1 ? 'disabled' : ''} onclick="drilldownCurrentPage--;renderDrilldownTable();">Previous</button>
+                <button ${drilldownCurrentPage >= totalPages ? 'disabled' : ''} onclick="drilldownCurrentPage++;renderDrilldownTable();">Next</button>
+            </div>
+        `;
+    } else {
+        paginationEl.style.display = 'flex';
+        paginationEl.innerHTML = `<span>Showing ${filtered.length} of ${filtered.length} patients in sample — ${newtonCampaigns.find(c=>c.id===drilldownCurrentCampaignId).targeted.toLocaleString()} total targeted</span><div></div>`;
+    }
+}
+
+// N1: Live Activity Feed
+function startLiveFeed(campaignId) {
+    if (liveFeedInterval) clearInterval(liveFeedInterval);
+    const feed = document.getElementById('live-feed-scroll');
+    if (!feed) return;
+    feed.innerHTML = '';
+
+    const patients = campaignPatients[campaignId];
+    const campaign = newtonCampaigns.find(c => c.id === campaignId);
+    const actions = [
+        { icon: '📞', tpl: (p) => `Dialing <span class="live-feed-highlight">${p.name}</span> (${p.mrn})...`, type: 'call' },
+        { icon: '✅', tpl: (p) => `Call connected with <span class="live-feed-highlight">${p.name}</span>`, type: 'connect' },
+        { icon: '💬', tpl: (p) => `SMS sent to <span class="live-feed-highlight">${p.name}</span>: "Your ${campaign.type} follow-up is due"`, type: 'sms' },
+        { icon: '📅', tpl: (p) => `<span class="live-feed-success">Gap Closed:</span> ${p.name} — appointment confirmed`, type: 'gap' },
+        { icon: '⚠️', tpl: (p) => `<span class="live-feed-alert">Escalation:</span> ${p.name} flagged for CM review`, type: 'escalate' },
+        { icon: '📨', tpl: (p) => `Voicemail left for <span class="live-feed-highlight">${p.name}</span>`, type: 'vm' },
+        { icon: '🔄', tpl: (p) => `Retry queued for <span class="live-feed-highlight">${p.name}</span> (attempt #${Math.floor(Math.random()*3)+2})`, type: 'retry' },
+        { icon: '📊', tpl: (p) => `Claims data received for <span class="live-feed-highlight">${p.name}</span> — verifying gap closure`, type: 'claims' },
+        { icon: '👤', tpl: (p) => `<span class="live-feed-highlight">${p.name}</span> replied via SMS: "Yes, I can come in"`, type: 'reply' },
+        { icon: '🏥', tpl: (p) => `Pharmacy confirmation received for <span class="live-feed-highlight">${p.name}</span>`, type: 'pharmacy' }
+    ];
+
+    // Seed initial items
+    const now = new Date();
+    for (let i = 7; i >= 0; i--) {
+        const t = new Date(now - i * 45000);
+        const timeStr = t.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const p = patients[Math.floor(Math.random() * patients.length)];
+        const a = actions[Math.floor(Math.random() * actions.length)];
+        const item = document.createElement('div');
+        item.className = 'live-feed-item';
+        item.innerHTML = `<span class="live-feed-time">${timeStr}</span> <span class="live-feed-icon">${a.icon}</span> ${a.tpl(p)}`;
+        feed.appendChild(item);
+    }
+    feed.scrollTop = feed.scrollHeight;
+
+    // Add new items every 4-8 seconds
+    liveFeedInterval = setInterval(() => {
+        const t = new Date();
+        const timeStr = t.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const p = patients[Math.floor(Math.random() * patients.length)];
+        const a = actions[Math.floor(Math.random() * actions.length)];
+        const item = document.createElement('div');
+        item.className = 'live-feed-item';
+        item.innerHTML = `<span class="live-feed-time">${timeStr}</span> <span class="live-feed-icon">${a.icon}</span> ${a.tpl(p)}`;
+        feed.appendChild(item);
+        feed.scrollTop = feed.scrollHeight;
+        // Keep max 30 items
+        while (feed.children.length > 30) feed.removeChild(feed.firstChild);
+    }, 4000 + Math.random() * 4000);
+}
+
+// N2: Patient Slide-Out Panel
+function openPatientSlideout(mrn, campaignId) {
+    const key = mrn + '_' + campaignId;
+    const timelineData = patientTimelines[key];
+    const patients = campaignPatients[campaignId];
+    const patient = patients ? patients.find(p => p.mrn === mrn) : null;
+    if (!patient) return;
+
+    document.getElementById('slideout-patient-name').textContent = patient.name;
+    document.getElementById('slideout-patient-meta').innerHTML = `MRN: ${patient.mrn} &nbsp;|&nbsp; Age: ${patient.age} &nbsp;|&nbsp; Risk: ${patient.risk} &nbsp;|&nbsp; ${patient.method}`;
+
+    const body = document.getElementById('slideout-body');
+
+    if (!timelineData) {
+        body.innerHTML = `
+            <div class="slideout-section">
+                <div class="slideout-section-title">Current Status</div>
+                <div style="padding:12px;background:#F8F9FA;border-radius:8px;font-size:12px;">
+                    <strong>Status:</strong> ${patient.status.replace('-',' ').replace(/\b\w/g, l=>l.toUpperCase())}<br>
+                    <strong>Last Outreach:</strong> ${patient.lastOutreach}<br>
+                    <strong>Outcome:</strong> ${patient.outcome}
+                </div>
+            </div>
+            <div style="text-align:center;padding:30px;color:#9CA3AF;font-size:12px;">Detailed interaction timeline not available for this patient.</div>
+        `;
+    } else {
+        body.innerHTML = `
+            <div class="slideout-section">
+                <div class="slideout-section-title">Interaction Timeline</div>
+                <div class="slideout-timeline">
+                    ${timelineData.timeline.map(ev => `
+                        <div class="timeline-event">
+                            <div class="timeline-dot ${ev.type}"></div>
+                            <div class="timeline-date">${ev.date}</div>
+                            <div class="timeline-title">${ev.title}</div>
+                            <div class="timeline-detail">${ev.detail}</div>
+                            ${ev.hasTranscript ? `<button class="timeline-transcript-btn" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.textContent=this.nextElementSibling.style.display==='none'?'View Transcript':'Hide Transcript';">View Transcript</button><div class="slideout-transcript" style="display:none;">${ev.transcript}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    document.getElementById('patient-slideout').classList.add('active');
+}
+
+function closePatientSlideout() {
+    document.getElementById('patient-slideout').classList.remove('active');
 }
 
 function closeCampaignDrillDown() {
     const panel = document.getElementById('campaign-drilldown');
     if (panel) panel.classList.remove('active');
+    if (liveFeedInterval) { clearInterval(liveFeedInterval); liveFeedInterval = null; }
+    closePatientSlideout();
 }
 
 // ===== F3: Closed-Loop Referral Tracking =====
