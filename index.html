@@ -4518,38 +4518,40 @@ button:hover {
 
         /* Audio Player in Transcript Viewer */
         .tv-audio-bar {
-            display: flex; align-items: center; gap: 10px;
+            display: flex; flex-direction: column; gap: 6px;
             background: rgba(85,181,184,0.08); border: 1px solid rgba(85,181,184,0.2);
-            border-radius: 10px; padding: 10px 14px; margin: 12px 0 6px;
+            border-radius: 10px; padding: 12px 14px; margin: 12px 0 6px;
         }
-        .tv-audio-play {
-            width: 36px; height: 36px; border-radius: 50%; border: none;
+        .tv-audio-bar .audio-header {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .tv-audio-bar .audio-icon {
+            width: 28px; height: 28px; border-radius: 50%;
             background: linear-gradient(135deg, #55B5B8, #3D9B9E); color: #fff;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .tv-audio-play:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(85,181,184,0.4); }
-        .tv-audio-play.playing { background: linear-gradient(135deg, #E45740, #c43e2c); }
-        .tv-audio-label { font-size: 11px; color: #55B5B8; font-weight: 700; }
-        .tv-audio-sublabel { font-size: 9px; color: #9CA3AF; margin-top: 2px; }
+        .tv-audio-label { font-size: 12px; color: #55B5B8; font-weight: 700; }
+        .tv-audio-sublabel { font-size: 10px; color: #9CA3AF; margin-top: 1px; }
+        .tv-audio-bar audio { width: 100%; height: 36px; border-radius: 6px; }
 
         /* Audio Player in Live Transcript (Outreach tab) */
         .transcript-audio-bar {
-            display: flex; align-items: center; gap: 10px;
+            display: flex; flex-direction: column; gap: 6px;
             background: rgba(85,181,184,0.06); border: 1px solid rgba(85,181,184,0.15);
-            border-radius: 10px; padding: 10px 14px; margin: 8px 0;
+            border-radius: 10px; padding: 12px 14px; margin: 8px 0;
         }
-        .transcript-audio-play {
-            width: 32px; height: 32px; border-radius: 50%; border: none;
+        .transcript-audio-bar .audio-header {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .transcript-audio-bar .audio-icon {
+            width: 26px; height: 26px; border-radius: 50%;
             background: linear-gradient(135deg, #55B5B8, #3D9B9E); color: #fff;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: transform 0.15s;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .transcript-audio-play:hover { transform: scale(1.08); }
-        .transcript-audio-play.playing { background: linear-gradient(135deg, #E45740, #c43e2c); }
         .transcript-audio-info { display: flex; flex-direction: column; }
-        .transcript-audio-title { font-size: 11px; color: #55B5B8; font-weight: 700; }
-        .transcript-audio-sub { font-size: 9px; color: #6B7280; }
+        .transcript-audio-title { font-size: 12px; color: #55B5B8; font-weight: 700; }
+        .transcript-audio-sub { font-size: 10px; color: #6B7280; }
+        .transcript-audio-bar audio { width: 100%; height: 36px; border-radius: 6px; }
 
         /* ==================== WORKFLOWS TAB ==================== */
         .wf-header-bar {
@@ -10576,43 +10578,36 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             const container = document.getElementById('transcript-container');
             if (!container) return;
 
+            // Stop any previous audio
+            if (activeTranscriptAudio && !activeTranscriptAudio.paused) {
+                activeTranscriptAudio.pause();
+                activeTranscriptAudio = null;
+            }
+
             const bar = document.createElement('div');
             bar.className = 'transcript-audio-bar';
             bar.innerHTML = `
-                <button class="transcript-audio-play" id="transcript-audio-btn-${workflowType}" onclick="toggleTranscriptAudio('${workflowType}')">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </button>
-                <div class="transcript-audio-info">
-                    <span class="transcript-audio-title">${audioInfo.label}</span>
-                    <span class="transcript-audio-sub">${audioInfo.sub}</span>
+                <div class="audio-header">
+                    <div class="audio-icon">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                    <div class="transcript-audio-info">
+                        <span class="transcript-audio-title">${audioInfo.label}</span>
+                        <span class="transcript-audio-sub">${audioInfo.sub}</span>
+                    </div>
                 </div>
+                <audio controls preload="auto" id="transcript-audio-el-${workflowType}">
+                    <source src="${audioInfo.src}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             `;
             container.appendChild(bar);
             container.scrollTop = container.scrollHeight;
+
+            // Track the native audio element for cleanup
+            const audioEl = bar.querySelector('audio');
+            if (audioEl) activeTranscriptAudio = audioEl;
         }
-
-        function toggleTranscriptAudio(workflowType) {
-            const audioInfo = workflowAudioFiles[workflowType];
-            if (!audioInfo) return;
-            const btn = document.getElementById('transcript-audio-btn-' + workflowType);
-
-            if (activeTranscriptAudio && !activeTranscriptAudio.paused) {
-                activeTranscriptAudio.pause();
-                activeTranscriptAudio.currentTime = 0;
-                if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
-                activeTranscriptAudio = null;
-                return;
-            }
-
-            activeTranscriptAudio = new Audio(audioInfo.src);
-            activeTranscriptAudio.play();
-            if (btn) { btn.classList.add('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>'; }
-            activeTranscriptAudio.onended = function() {
-                if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
-                activeTranscriptAudio = null;
-            };
-        }
-        window.toggleTranscriptAudio = toggleTranscriptAudio;
 
         function showInlineDocumentation(workflowType) {
             const doc = documentation[workflowType];
@@ -10949,9 +10944,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             isWorkflowInProgress = true;
             abortController = new AbortController();
             
-            // Stop any playing audio
-            if (typeof activeTranscriptAudio !== 'undefined' && activeTranscriptAudio && !activeTranscriptAudio.paused) {
-                activeTranscriptAudio.pause();
+            // Stop any playing audio (native audio element)
+            if (typeof activeTranscriptAudio !== 'undefined' && activeTranscriptAudio) {
+                try { activeTranscriptAudio.pause(); activeTranscriptAudio.currentTime = 0; } catch(e) {}
                 activeTranscriptAudio = null;
             }
             
@@ -16504,14 +16499,23 @@ function openTaskTranscript(taskId) {
     let audioBarHtml = '';
     if (taskAudioMap[taskId]) {
         const ai = taskAudioMap[taskId];
-        audioBarHtml = `<div class="tv-audio-bar"><button class="tv-audio-play" id="tv-audio-btn" onclick="toggleTvAudio('${ai.src}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button><div><div class="tv-audio-label">${ai.label}</div><div class="tv-audio-sublabel">${ai.sub}</div></div></div>`;
+        audioBarHtml = `<div class="tv-audio-bar">
+            <div class="audio-header">
+                <div class="audio-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                <div><div class="tv-audio-label">${ai.label}</div><div class="tv-audio-sublabel">${ai.sub}</div></div>
+            </div>
+            <audio controls preload="auto" id="tv-audio-el">
+                <source src="${ai.src}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>`;
     }
 
     overlay.innerHTML = `
         <div class="transcript-viewer">
             <div class="transcript-viewer-header">
                 <h4>${task.transcript_label || 'Transcript'}</h4>
-                <button class="transcript-viewer-close" onclick="if(window._tvAudio){window._tvAudio.pause();window._tvAudio=null;}document.getElementById('tv-overlay').remove()">&times;</button>
+                <button class="transcript-viewer-close" onclick="var a=document.getElementById('tv-audio-el');if(a){a.pause();}document.getElementById('tv-overlay').remove()">&times;</button>
             </div>
             <div class="transcript-viewer-body">${audioBarHtml}${msgs}</div>
         </div>
@@ -16519,26 +16523,7 @@ function openTaskTranscript(taskId) {
     document.body.appendChild(overlay);
 }
 
-// Audio toggle for transcript viewer modal
-window._tvAudio = null;
-function toggleTvAudio(src) {
-    const btn = document.getElementById('tv-audio-btn');
-    if (window._tvAudio && !window._tvAudio.paused) {
-        window._tvAudio.pause();
-        window._tvAudio.currentTime = 0;
-        window._tvAudio = null;
-        if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
-        return;
-    }
-    window._tvAudio = new Audio(src);
-    window._tvAudio.play();
-    if (btn) { btn.classList.add('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>'; }
-    window._tvAudio.onended = function() {
-        if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
-        window._tvAudio = null;
-    };
-}
-window.toggleTvAudio = toggleTvAudio;
+// Native audio controls are now used — no custom toggle needed
 
 // Task filter click handler
 document.addEventListener('click', function(e) {
