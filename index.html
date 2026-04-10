@@ -4553,65 +4553,167 @@ button:hover {
         .transcript-audio-sub { font-size: 10px; color: #6B7280; }
         .transcript-audio-bar audio { width: 100%; height: 36px; border-radius: 6px; }
 
-        /* ==================== CALL TASK SUMMARY PANEL ==================== */
-        .call-task-summary {
-            background: linear-gradient(135deg, #f8f9fa, #f0f4f8);
-            border: 1px solid #dde3ea;
-            border-radius: 10px;
-            padding: 14px;
-            margin: 10px 0 4px 0;
+        /* ==================== FLORENCE CALL INTELLIGENCE (FCI) PANEL ==================== */
+        .fci-panel {
+            background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+            border: 1px solid #d0d8e0;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0 4px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
-        .call-task-summary-header {
-            display: flex; align-items: center; gap: 8px;
-            margin-bottom: 10px; padding-bottom: 8px;
+        .fci-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px; padding-bottom: 10px;
             border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap; gap: 6px;
         }
-        .call-task-summary-header h4 {
+        .fci-header-left {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .fci-florence-icon {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .fci-header h4 {
             font-size: 12px; font-weight: 700; color: #31393F; margin: 0;
+            font-family: 'Merriweather', serif;
         }
-        .call-task-summary-header .badge {
-            font-size: 9px; font-weight: 700; color: #55B5B8;
-            background: rgba(85,181,184,0.12); padding: 2px 7px;
+        .fci-count-badges {
+            display: flex; gap: 6px; flex-wrap: wrap;
+        }
+        .fci-count {
+            font-size: 9px; font-weight: 700; padding: 2px 8px;
             border-radius: 10px;
         }
-        .call-task-item {
+        .fci-count-me { color: #55B5B8; background: rgba(85,181,184,0.12); }
+        .fci-count-florence { color: #7c3aed; background: rgba(124,58,237,0.1); }
+        .fci-count-dept { color: #49545E; background: rgba(73,84,94,0.1); }
+
+        .fci-accept-all-btn {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%; padding: 8px 12px; margin-bottom: 12px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white; border: none; border-radius: 8px;
+            font-size: 11px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Lato', sans-serif;
+        }
+        .fci-accept-all-btn:hover {
+            background: linear-gradient(135deg, #6d28d9, #9333ea);
+            box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+        }
+
+        .fci-coordination-status {
             display: flex; align-items: center; gap: 8px;
-            padding: 7px 10px; margin: 4px 0;
+            padding: 8px 12px; margin-bottom: 10px;
+            background: rgba(124,58,237,0.06);
+            border: 1px solid rgba(124,58,237,0.15);
+            border-radius: 8px;
+            font-size: 10px; color: #7c3aed; font-weight: 600;
+        }
+        .fci-coordination-status.fci-coord-done {
+            background: rgba(34,197,94,0.06);
+            border-color: rgba(34,197,94,0.2);
+            color: #16a34a;
+        }
+        .fci-coord-spinner {
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid rgba(124,58,237,0.2);
+            border-top-color: #7c3aed;
+            animation: fci-spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes fci-spin { to { transform: rotate(360deg); } }
+
+        .fci-section {
+            margin-bottom: 10px;
+        }
+        .fci-section-header {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; padding: 4px 0 6px 0;
+        }
+        .fci-section-me span { color: #55B5B8; }
+        .fci-section-florence span { color: #7c3aed; }
+        .fci-section-dept span { color: #49545E; }
+
+        .fci-task-item {
             background: white; border: 1px solid #e8ecf0;
-            border-radius: 8px; font-size: 11px; color: #31393F;
+            border-radius: 8px; padding: 8px 10px; margin: 4px 0;
             transition: all 0.15s ease;
         }
-        .call-task-item:hover { border-color: #55B5B8; box-shadow: 0 1px 4px rgba(85,181,184,0.15); }
-        .call-task-item .task-icon {
-            width: 20px; height: 20px; border-radius: 50%;
-            background: rgba(85,181,184,0.1); color: #55B5B8;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10px; flex-shrink: 0;
+        .fci-task-item:hover {
+            border-color: #55B5B8; box-shadow: 0 1px 4px rgba(85,181,184,0.12);
         }
-        .call-task-item .task-label { flex: 1; font-weight: 500; }
-        .call-task-item .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
-        .call-task-item .task-actions button {
-            font-size: 9px; font-weight: 600; padding: 3px 8px;
+        .fci-task-main {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 11px; color: #31393F;
+        }
+        .fci-priority-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            flex-shrink: 0; display: inline-block;
+        }
+        .fci-task-label {
+            flex: 1; font-weight: 600; font-size: 11px;
+        }
+        .fci-dept-tag {
+            font-size: 8px; font-weight: 700; text-transform: uppercase;
+            padding: 1px 6px; border-radius: 4px;
+            background: rgba(73,84,94,0.08); color: #49545E;
+            letter-spacing: 0.3px; flex-shrink: 0;
+        }
+        .fci-eta {
+            font-size: 8px; color: #5A6872; font-weight: 500;
+            flex-shrink: 0; white-space: nowrap;
+        }
+        .fci-florence-note {
+            font-size: 9px; color: #7c3aed; font-style: italic;
+            padding: 3px 0 3px 13px; line-height: 1.4;
+            border-left: 2px solid rgba(124,58,237,0.2);
+            margin: 4px 0 4px 0;
+        }
+        .fci-task-actions {
+            display: flex; gap: 4px; margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .fci-btn {
+            font-size: 9px; font-weight: 600; padding: 3px 10px;
             border-radius: 5px; border: 1px solid; cursor: pointer;
             transition: all 0.15s ease;
+            font-family: 'Lato', sans-serif;
         }
-        .call-task-item .task-actions .btn-assign {
+        .fci-btn-me {
             background: white; color: #55B5B8; border-color: #55B5B8;
         }
-        .call-task-item .task-actions .btn-assign:hover {
-            background: #55B5B8; color: white;
+        .fci-btn-me:hover { background: #55B5B8; color: white; }
+        .fci-btn-florence {
+            background: rgba(124,58,237,0.08); color: #7c3aed; border-color: rgba(124,58,237,0.3);
         }
-        .call-task-item .task-actions .btn-self {
-            background: rgba(85,181,184,0.08); color: #3d8b8e; border-color: rgba(85,181,184,0.3);
+        .fci-btn-florence:hover { background: #7c3aed; color: white; border-color: #7c3aed; }
+        .fci-btn-dept {
+            background: rgba(73,84,94,0.06); color: #49545E; border-color: rgba(73,84,94,0.25);
         }
-        .call-task-item .task-actions .btn-self:hover {
-            background: #55B5B8; color: white; border-color: #55B5B8;
+        .fci-btn-dept:hover { background: #49545E; color: white; border-color: #49545E; }
+
+        .fci-assigned-badge {
+            font-size: 9px; font-weight: 700; color: #16a34a;
         }
-        .call-task-item.task-assigned {
-            background: rgba(85,181,184,0.06); border-color: rgba(85,181,184,0.25);
+        .fci-assigned-badge.fci-assigned-florence { color: #7c3aed; }
+        .fci-assigned-badge.fci-assigned-dept { color: #49545E; }
+
+        .fci-pre-assigned {
+            background: rgba(85,181,184,0.04);
+            border-color: rgba(85,181,184,0.2);
         }
-        .call-task-item.task-assigned .task-icon {
-            background: #55B5B8; color: white;
+
+        .fci-footer {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 9px; color: #5A6872; font-style: italic;
+            padding-top: 10px; margin-top: 8px;
+            border-top: 1px solid #e2e8f0;
         }
 
         /* ==================== WORKFLOWS TAB ==================== */
@@ -10741,31 +10843,32 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         }
 
         // ==================== CALL TASK SUMMARY PANEL ====================
-        // Collects all tasks/workflows deduced during the call and presents them
-        // with Assign / Do It Myself buttons.
+        // ==================== FLORENCE CALL INTELLIGENCE SUMMARY DATA ====================
+        // Each task has: label, category (me/florence/department), department name,
+        // florenceAction (what Florence will do), priority (high/medium/low), eta, preAssigned (if accepted mid-call)
         const callTaskSummaryData = {
             convene: [
-                'Coordinate home oxygen delivery',
-                'Order home pulse oximetry monitoring',
-                'Verify prescription pickup location',
-                'Screen for mobility limitations (SDOH)',
-                'Send nephrology appointment details to daughter',
-                'Initiate home health aide referral',
-                'Assess social support and caregiver burden (SDOH)',
-                'Flag ADL assistance need — patient unable to bathe independently (SDOH)'
+                { label: 'Coordinate home oxygen delivery', category: 'department', department: 'DME', florenceAction: 'Florence will fax DME order to Acme Medical Supply and follow up on delivery status', priority: 'high', eta: 'Within 2 hours', preAssigned: true },
+                { label: 'Order home pulse oximetry monitoring', category: 'florence', department: null, florenceAction: 'Florence will place pulse oximeter order via athena and confirm shipment', priority: 'high', eta: 'Within 2 hours', preAssigned: false },
+                { label: 'Verify prescription pickup location', category: 'florence', department: null, florenceAction: 'Florence will call CVS Main St. to verify prescription transfer and report back', priority: 'medium', eta: 'Within 4 hours', preAssigned: false },
+                { label: 'Screen for mobility limitations (SDOH)', category: 'me', department: null, florenceAction: null, priority: 'medium', eta: null, preAssigned: false },
+                { label: 'Send nephrology appointment details to daughter', category: 'florence', department: null, florenceAction: 'Florence will text appointment details to Lisa Doe (daughter) at (555) 123-4567', priority: 'low', eta: 'Within 1 hour', preAssigned: false },
+                { label: 'Initiate home health aide referral', category: 'department', department: 'Home Health', florenceAction: 'Florence will send referral to Home Health Agency and track acceptance', priority: 'high', eta: 'Next business day', preAssigned: false },
+                { label: 'Assess social support and caregiver burden (SDOH)', category: 'me', department: null, florenceAction: null, priority: 'low', eta: null, preAssigned: false },
+                { label: 'Flag ADL assistance need — patient unable to bathe independently', category: 'department', department: 'Social Work', florenceAction: 'Florence will send secure message to Social Work with ADL assessment notes', priority: 'medium', eta: 'Next business day', preAssigned: false }
             ],
             engage: [
-                'Document post-discharge status — patient reports fatigue',
-                'Verify medication pickup — all discharge meds confirmed',
-                'Flag exertional dyspnea — review at follow-up visit',
-                'Confirm Monday 10am appointment with Dr. Campbell',
-                'Send appointment reminder text to Jane Doe'
+                { label: 'Document post-discharge status — patient reports fatigue', category: 'florence', department: null, florenceAction: 'Florence will auto-document status in EHR encounter note', priority: 'medium', eta: 'Immediate', preAssigned: true },
+                { label: 'Verify medication pickup — all discharge meds confirmed', category: 'florence', department: null, florenceAction: 'Florence will log medication verification in patient chart', priority: 'high', eta: 'Immediate', preAssigned: true },
+                { label: 'Flag exertional dyspnea — review at follow-up visit', category: 'me', department: null, florenceAction: null, priority: 'high', eta: null, preAssigned: false },
+                { label: 'Confirm Monday 10am appointment with Dr. Campbell', category: 'florence', department: null, florenceAction: 'Florence will send appointment confirmation text to Jane Doe', priority: 'medium', eta: 'Within 1 hour', preAssigned: false },
+                { label: 'Send appointment reminder text to Jane Doe', category: 'florence', department: null, florenceAction: 'Florence will schedule automated reminder for Sunday evening', priority: 'low', eta: 'Scheduled for Sun 6pm', preAssigned: false }
             ],
             checkin: [
-                'Log patient status: feeling okay — continue monitoring',
-                'Confirm medication adherence — all meds taken today',
-                'Flag elevated blood sugar (156 mg/dL) — notify care team',
-                'Document no falls or dizziness reported — update fall risk log'
+                { label: 'Log patient status: feeling okay — continue monitoring', category: 'florence', department: null, florenceAction: 'Florence will log check-in status in patient chart', priority: 'low', eta: 'Immediate', preAssigned: true },
+                { label: 'Confirm medication adherence — all meds taken today', category: 'florence', department: null, florenceAction: 'Florence will update medication adherence tracker', priority: 'medium', eta: 'Immediate', preAssigned: true },
+                { label: 'Flag elevated blood sugar (156 mg/dL) — notify care team', category: 'me', department: null, florenceAction: null, priority: 'high', eta: null, preAssigned: false },
+                { label: 'Document no falls or dizziness reported — update fall risk log', category: 'florence', department: null, florenceAction: 'Florence will update fall risk log and Morse scale notes', priority: 'low', eta: 'Immediate', preAssigned: false }
             ]
         };
 
@@ -10775,41 +10878,214 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             const container = document.getElementById('transcript-container');
             if (!container) return;
 
-            const panel = document.createElement('div');
-            panel.className = 'call-task-summary';
-            panel.innerHTML = `
-                <div class="call-task-summary-header">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 11l3 3L22 4"></path>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                    <h4>Tasks Identified From This Call</h4>
-                    <span class="badge">${tasks.length} items</span>
-                </div>
-                ${tasks.map((task, idx) => `
-                    <div class="call-task-item" id="cts-item-${idx}">
-                        <div class="task-icon">${idx + 1}</div>
-                        <div class="task-label">${task}</div>
-                        <div class="task-actions">
-                            <button class="btn-assign" onclick="assignCallTask(${idx}, 'assign')">Assign</button>
-                            <button class="btn-self" onclick="assignCallTask(${idx}, 'self')">Do It Myself</button>
-                        </div>
+            // Categorize tasks
+            const myTasks = tasks.filter(t => t.category === 'me');
+            const florenceTasks = tasks.filter(t => t.category === 'florence');
+            const deptTasks = tasks.filter(t => t.category === 'department');
+
+            const priorityDot = (p) => {
+                const colors = { high: '#E45740', medium: '#F8CA44', low: '#55B5B8' };
+                return `<span class="fci-priority-dot" style="background:${colors[p] || '#ccc'}" title="${p} priority"></span>`;
+            };
+
+            const renderTask = (task, globalIdx) => {
+                const isAssigned = task.preAssigned;
+                const deptTag = task.department ? `<span class="fci-dept-tag">${task.department}</span>` : '';
+                const etaTag = task.eta ? `<span class="fci-eta">Est: ${task.eta}</span>` : '';
+                const florenceNote = task.florenceAction ? `<div class="fci-florence-note">${task.florenceAction}</div>` : '';
+                
+                let actionsHtml = '';
+                if (isAssigned) {
+                    const assignLabel = task.category === 'me' ? 'Added to My Tasks'
+                        : task.category === 'florence' ? 'Florence In Progress'
+                        : `Routed to ${task.department}`;
+                    actionsHtml = `<span class="fci-assigned-badge">\u2713 ${assignLabel}</span>`;
+                } else if (task.category === 'me') {
+                    actionsHtml = `<button class="fci-btn fci-btn-me" onclick="fciAssignTask(${globalIdx}, 'me')">Take It</button>
+                        <button class="fci-btn fci-btn-florence" onclick="fciAssignTask(${globalIdx}, 'florence')">Florence</button>`;
+                } else if (task.category === 'florence') {
+                    actionsHtml = `<button class="fci-btn fci-btn-florence" onclick="fciAssignTask(${globalIdx}, 'florence')">Confirm</button>
+                        <button class="fci-btn fci-btn-me" onclick="fciAssignTask(${globalIdx}, 'me')">Take It</button>`;
+                } else {
+                    actionsHtml = `<button class="fci-btn fci-btn-dept" onclick="fciAssignTask(${globalIdx}, 'department')">${task.department}</button>
+                        <button class="fci-btn fci-btn-florence" onclick="fciAssignTask(${globalIdx}, 'florence')">Florence</button>
+                        <button class="fci-btn fci-btn-me" onclick="fciAssignTask(${globalIdx}, 'me')">Take It</button>`;
+                }
+
+                return `<div class="fci-task-item ${isAssigned ? 'fci-pre-assigned' : ''}" id="fci-item-${globalIdx}" data-category="${task.category}">
+                    <div class="fci-task-main">
+                        ${priorityDot(task.priority)}
+                        <div class="fci-task-label">${task.label}</div>
+                        ${deptTag}
+                        ${etaTag}
                     </div>
-                `).join('')}
+                    ${florenceNote}
+                    <div class="fci-task-actions" id="fci-actions-${globalIdx}">${actionsHtml}</div>
+                </div>`;
+            };
+
+            // Build global index map
+            let globalIdx = 0;
+            const allTasksOrdered = [];
+            const myTasksHtml = myTasks.map(t => { allTasksOrdered.push(t); return renderTask(t, globalIdx++); }).join('');
+            const florenceTasksHtml = florenceTasks.map(t => { allTasksOrdered.push(t); return renderTask(t, globalIdx++); }).join('');
+            const deptTasksHtml = deptTasks.map(t => { allTasksOrdered.push(t); return renderTask(t, globalIdx++); }).join('');
+
+            // Store for later reference
+            window._fciTasks = allTasksOrdered;
+            window._fciWorkflowType = workflowType;
+
+            const panel = document.createElement('div');
+            panel.className = 'fci-panel';
+            panel.id = 'fci-panel';
+            panel.innerHTML = `
+                <div class="fci-header">
+                    <div class="fci-header-left">
+                        <div class="fci-florence-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h4>Florence Call Intelligence Summary</h4>
+                    </div>
+                    <div class="fci-count-badges" id="fci-count-badges">
+                        <span class="fci-count fci-count-me">My Tasks: ${myTasks.length}</span>
+                        <span class="fci-count fci-count-florence">Florence: ${florenceTasks.length}</span>
+                        <span class="fci-count fci-count-dept">Departments: ${deptTasks.length}</span>
+                    </div>
+                </div>
+
+                <button class="fci-accept-all-btn" id="fci-accept-all" onclick="fciAcceptAllSuggested()">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                    </svg>
+                    Accept All Suggested Assignments
+                </button>
+
+                <div class="fci-coordination-status" id="fci-coordination-status" style="display:none;">
+                    <div class="fci-coord-spinner"></div>
+                    <span id="fci-coord-text">Florence is coordinating ${tasks.length} tasks across ${new Set(deptTasks.map(t=>t.department)).size + (florenceTasks.length > 0 ? 1 : 0)} channels...</span>
+                </div>
+
+                ${myTasks.length > 0 ? `
+                <div class="fci-section">
+                    <div class="fci-section-header fci-section-me">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>My Tasks (Care Manager)</span>
+                    </div>
+                    ${myTasksHtml}
+                </div>` : ''}
+
+                ${florenceTasks.length > 0 ? `
+                <div class="fci-section">
+                    <div class="fci-section-header fci-section-florence">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <span>Florence Tasks (AI-Autonomous)</span>
+                    </div>
+                    ${florenceTasksHtml}
+                </div>` : ''}
+
+                ${deptTasks.length > 0 ? `
+                <div class="fci-section">
+                    <div class="fci-section-header fci-section-dept">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#49545E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span>Department Tasks (Routed by Florence)</span>
+                    </div>
+                    ${deptTasksHtml}
+                </div>` : ''}
+
+                <div class="fci-footer">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path></svg>
+                    All department communications orchestrated by Florence AI \u2014 Care Manager notified on completion.
+                </div>
             `;
             container.appendChild(panel);
             panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function assignCallTask(idx, action) {
-            const item = document.getElementById('cts-item-' + idx);
-            if (!item) return;
-            item.classList.add('task-assigned');
-            const actionsDiv = item.querySelector('.task-actions');
-            if (action === 'assign') {
-                actionsDiv.innerHTML = '<span style="font-size:10px;color:#55B5B8;font-weight:600;">\u2713 Assigned to Care Team</span>';
+        function fciAssignTask(idx, targetCategory) {
+            const item = document.getElementById('fci-item-' + idx);
+            const actionsDiv = document.getElementById('fci-actions-' + idx);
+            if (!item || !actionsDiv) return;
+            item.classList.add('fci-pre-assigned');
+            const task = window._fciTasks[idx];
+            let label = '';
+            if (targetCategory === 'me') {
+                label = '\u2713 Added to My Tasks';
+                actionsDiv.innerHTML = `<span class="fci-assigned-badge">${label}</span>`;
+            } else if (targetCategory === 'florence') {
+                label = '\u2713 Florence In Progress';
+                actionsDiv.innerHTML = `<span class="fci-assigned-badge fci-assigned-florence">${label}</span>`;
+                if (task && task.florenceAction) {
+                    // Show Florence action note if not already visible
+                    let noteEl = item.querySelector('.fci-florence-note');
+                    if (!noteEl) {
+                        noteEl = document.createElement('div');
+                        noteEl.className = 'fci-florence-note';
+                        noteEl.textContent = task.florenceAction;
+                        item.querySelector('.fci-task-actions').before(noteEl);
+                    }
+                }
             } else {
-                actionsDiv.innerHTML = '<span style="font-size:10px;color:#3d8b8e;font-weight:600;">\u2713 Added to My Tasks</span>';
+                const dept = task ? task.department : 'Department';
+                label = `\u2713 Routed to ${dept}`;
+                actionsDiv.innerHTML = `<span class="fci-assigned-badge fci-assigned-dept">${label}</span>`;
+            }
+            fciUpdateCounts();
+        }
+
+        function fciAcceptAllSuggested() {
+            const tasks = window._fciTasks;
+            if (!tasks) return;
+            tasks.forEach((task, idx) => {
+                const item = document.getElementById('fci-item-' + idx);
+                if (item && !item.classList.contains('fci-pre-assigned')) {
+                    fciAssignTask(idx, task.category);
+                }
+            });
+            // Hide the Accept All button
+            const btn = document.getElementById('fci-accept-all');
+            if (btn) btn.style.display = 'none';
+            // Show coordination animation
+            const coordStatus = document.getElementById('fci-coordination-status');
+            if (coordStatus) {
+                coordStatus.style.display = 'flex';
+                setTimeout(() => {
+                    const spinner = coordStatus.querySelector('.fci-coord-spinner');
+                    if (spinner) spinner.style.display = 'none';
+                    const textEl = document.getElementById('fci-coord-text');
+                    if (textEl) textEl.innerHTML = '\u2713 All tasks queued. Florence will provide status updates and report back on completion.';
+                    coordStatus.classList.add('fci-coord-done');
+                }, 2500);
+            }
+        }
+
+        function fciUpdateCounts() {
+            const tasks = window._fciTasks;
+            if (!tasks) return;
+            let me = 0, fl = 0, dept = 0;
+            tasks.forEach((task, idx) => {
+                const item = document.getElementById('fci-item-' + idx);
+                if (item && item.classList.contains('fci-pre-assigned')) {
+                    // Check what it was assigned to by reading the badge text
+                    const badge = item.querySelector('.fci-assigned-badge');
+                    if (badge) {
+                        const txt = badge.textContent;
+                        if (txt.includes('My Tasks')) me++;
+                        else if (txt.includes('Florence')) fl++;
+                        else if (txt.includes('Routed')) dept++;
+                    }
+                }
+            });
+            const badges = document.getElementById('fci-count-badges');
+            if (badges) {
+                badges.innerHTML = `
+                    <span class="fci-count fci-count-me">My Tasks: ${me}</span>
+                    <span class="fci-count fci-count-florence">Florence: ${fl}</span>
+                    <span class="fci-count fci-count-dept">Departments: ${dept}</span>
+                `;
             }
         }
 
