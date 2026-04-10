@@ -6138,6 +6138,157 @@ button:hover {
         .mode2-demo-btn .tag-trigger { background: rgba(248,202,68,0.2); color: #B8860B; }
         .mode2-demo-btn .tag-spanish { background: rgba(99,102,241,0.15); color: #6366F1; }
 
+        /* ==================== FLORENCE CHAT BAR ==================== */
+        .florence-chat-bar {
+            position: sticky; bottom: 0; left: 0; right: 0;
+            background: #FFFFFF; border-top: 1px solid #E8EAEC;
+            padding: 10px 14px; z-index: 50;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+        }
+        .florence-chat-input-row {
+            display: flex; gap: 8px; align-items: center;
+        }
+        .florence-chat-input {
+            flex: 1; padding: 10px 14px; border: 1.5px solid #D1D5DB;
+            border-radius: 20px; font-size: 13px; color: #31393F;
+            background: #F9FAFB; outline: none; font-family: 'Lato', sans-serif;
+            transition: border-color 0.2s;
+        }
+        .florence-chat-input:focus { border-color: #55B5B8; background: #fff; }
+        .florence-chat-input::placeholder { color: #9CA3AF; }
+        .florence-chat-send {
+            width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: linear-gradient(135deg, #55B5B8, #3D9B9E); color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.15s, box-shadow 0.15s; flex-shrink: 0;
+        }
+        .florence-chat-send:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(85,181,184,0.4); }
+        .florence-chat-messages {
+            max-height: 200px; overflow-y: auto; padding: 8px 0;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .florence-chat-msg {
+            padding: 8px 12px; border-radius: 12px; font-size: 12px;
+            line-height: 1.5; max-width: 90%; animation: chatFadeIn 0.3s ease;
+        }
+        .florence-chat-msg.user {
+            background: #EBF5F5; color: #31393F; align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .florence-chat-msg.florence {
+            background: #F3F4F6; color: #31393F; align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .florence-chat-msg.florence .msg-label {
+            font-weight: 700; color: #55B5B8; font-size: 10px;
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;
+        }
+        .florence-typing {
+            display: inline-flex; gap: 4px; align-items: center; padding: 8px 14px;
+            background: #F3F4F6; border-radius: 12px; align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .florence-typing .dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #9CA3AF;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        .florence-typing .dot:nth-child(2) { animation-delay: 0.2s; }
+        .florence-typing .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+            40% { transform: translateY(-6px); opacity: 1; }
+        }
+        @keyframes chatFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==================== GROUPED TASKS VIEW ==================== */
+        .tasks-workflow-group {
+            margin-bottom: 12px; border: 1px solid #E8EAEC;
+            border-radius: 8px; overflow: hidden; background: #fff;
+        }
+        .tasks-wf-group-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; background: #F8F9FA; cursor: pointer;
+            border-bottom: 1px solid #E8EAEC; transition: background 0.2s;
+        }
+        .tasks-wf-group-header:hover { background: #F0F1F3; }
+        .tasks-wf-group-header .group-chevron {
+            transition: transform 0.25s; color: #6B7280;
+        }
+        .tasks-wf-group-header.expanded .group-chevron { transform: rotate(180deg); }
+        .tasks-wf-group-name {
+            font-size: 12px; font-weight: 700; color: #31393F; flex: 1;
+        }
+        .tasks-wf-group-meta {
+            display: flex; gap: 8px; align-items: center;
+        }
+        .tasks-wf-group-count {
+            font-size: 10px; color: #6B7280; background: #E8EAEC;
+            padding: 2px 8px; border-radius: 10px; font-weight: 600;
+        }
+        .tasks-wf-group-status {
+            font-size: 9px; font-weight: 700; padding: 2px 6px;
+            border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .tasks-wf-group-status.active { background: rgba(85,181,184,0.15); color: #55B5B8; }
+        .tasks-wf-group-status.completed { background: rgba(52,211,153,0.15); color: #059669; }
+        .tasks-wf-group-status.paused { background: rgba(245,158,11,0.15); color: #D97706; }
+        .tasks-wf-group-status.escalated { background: rgba(228,87,64,0.15); color: #E45740; }
+        .tasks-wf-group-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+        }
+        .tasks-wf-group-body.expanded { max-height: 2000px; }
+        .tasks-wf-group-body .task-card { border-left: none; border-right: none; border-radius: 0; }
+        .tasks-completed-toggle {
+            padding: 8px 14px; text-align: center; font-size: 11px;
+            color: #6B7280; cursor: pointer; border-top: 1px solid #E8EAEC;
+            transition: background 0.2s;
+        }
+        .tasks-completed-toggle:hover { background: #F3F4F6; color: #31393F; }
+        .tasks-standalone-header {
+            font-size: 11px; font-weight: 700; color: #9CA3AF;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            padding: 12px 14px 6px; margin-top: 8px;
+        }
+
+        /* ==================== CAMPAIGN MINI LIVE FEED ==================== */
+        .campaign-mini-feed {
+            border-top: 1px solid #E8EAEC; margin-top: 10px; padding-top: 8px;
+        }
+        .campaign-mini-feed-header {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 9px; font-weight: 700; color: #6B7280;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+        .mini-feed-pulse {
+            width: 6px; height: 6px; border-radius: 50%; background: #34D399;
+            animation: miniFeedPulse 2s infinite;
+        }
+        @keyframes miniFeedPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(52,211,153,0); }
+        }
+        .campaign-mini-feed-list {
+            display: flex; flex-direction: column; gap: 4px;
+            max-height: 72px; overflow: hidden;
+        }
+        .mini-feed-item {
+            font-size: 10px; color: #5A6872; line-height: 1.4;
+            padding: 3px 0; display: flex; gap: 6px; align-items: flex-start;
+            animation: miniFeedSlide 0.5s ease;
+        }
+        .mini-feed-item .mf-time {
+            color: #9CA3AF; font-size: 9px; white-space: nowrap; min-width: 42px;
+        }
+        .mini-feed-item .mf-text { flex: 1; }
+        @keyframes miniFeedSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -7091,6 +7242,17 @@ button:hover {
                         <!-- Task items rendered dynamically -->
                     </div>
                 </div>
+
+                <!-- Florence Chat Bar (Patient-Level) -->
+                <div class="florence-chat-bar" id="florence-chat-patient">
+                    <div class="florence-chat-messages" id="florence-chat-patient-msgs"></div>
+                    <div class="florence-chat-input-row">
+                        <input type="text" class="florence-chat-input" id="florence-chat-patient-input" placeholder="Ask Florence about this patient’s workflows..." onkeydown="if(event.key==='Enter')sendFlorenceChat('patient')">
+                        <button class="florence-chat-send" onclick="sendFlorenceChat('patient')" title="Send">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Facesheet / CDA Tab -->
@@ -7496,6 +7658,16 @@ button:hover {
                         Live Activity Feed
                     </div>
                     <div class="live-feed-scroll" id="live-feed-scroll"></div>
+                </div>
+            </div>
+            <!-- Florence Chat Bar (Campaign/Population-Level) -->
+            <div class="florence-chat-bar" id="florence-chat-campaign">
+                <div class="florence-chat-messages" id="florence-chat-campaign-msgs"></div>
+                <div class="florence-chat-input-row">
+                    <input type="text" class="florence-chat-input" id="florence-chat-campaign-input" placeholder="Ask Florence about this campaign’s progress..." onkeydown="if(event.key==='Enter')sendFlorenceChat('campaign')">
+                    <button class="florence-chat-send" onclick="sendFlorenceChat('campaign')" title="Send">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -19641,6 +19813,304 @@ function renderAnalyticsKPIs() {
         </div>
     `;
 }
+
+// ==================== ENHANCEMENT 1 & 2: GROUPED TASKS + HIDDEN COMPLETED ====================
+
+let tasksShowCompleted = false;
+
+function renderTasksGrouped(filter) {
+    filter = filter || 'all';
+    const container = document.getElementById('tasks-list');
+    if (!container) return;
+
+    let filtered = florenceTasks;
+    if (filter === 'pending_review') filtered = florenceTasks.filter(t => t.status === 'pending_review');
+    else if (filter === 'pending') filtered = florenceTasks.filter(t => t.status === 'pending' || t.status === 'pending_review');
+    else if (filter === 'in-progress') filtered = florenceTasks.filter(t => t.status === 'in-progress');
+    else if (filter === 'completed') filtered = florenceTasks.filter(t => t.status === 'completed');
+    else if (filter === 'deferred') filtered = florenceTasks.filter(t => t.status === 'deferred');
+    else if (filter === 'ai-deduced') filtered = florenceTasks.filter(t => t.origin === 'ai-deduced');
+
+    const reviewCount = florenceTasks.filter(t => t.status === 'pending_review').length;
+    const pendingCount = florenceTasks.filter(t => t.status === 'pending' || t.status === 'in-progress' || t.status === 'pending_review').length;
+    const badge = document.getElementById('tasks-total-count');
+    if (badge) {
+        badge.textContent = reviewCount > 0 ? reviewCount + ' need review' : pendingCount + ' pending';
+        badge.style.background = reviewCount > 0 ? '#E45740' : '';
+        badge.style.color = reviewCount > 0 ? 'white' : '';
+    }
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:40px;color:#6B7280;font-size:12px;">No tasks match this filter.</div>';
+        return;
+    }
+
+    const workflowGroups = {};
+    const standaloneTasks = [];
+
+    filtered.forEach(task => {
+        if (task.workflow_id) {
+            if (!workflowGroups[task.workflow_id]) {
+                const wf = florenceWorkflows.find(w => w.id === task.workflow_id);
+                workflowGroups[task.workflow_id] = { workflow: wf, tasks: [] };
+            }
+            workflowGroups[task.workflow_id].tasks.push(task);
+        } else {
+            standaloneTasks.push(task);
+        }
+    });
+
+    const statusOrder = { pending_review: 0, 'in-progress': 1, pending: 2, deferred: 3, completed: 4, dismissed: 5 };
+    Object.values(workflowGroups).forEach(group => {
+        group.tasks.sort((a, b) => (statusOrder[a.status] ?? 4) - (statusOrder[b.status] ?? 4));
+    });
+    standaloneTasks.sort((a, b) => (statusOrder[a.status] ?? 4) - (statusOrder[b.status] ?? 4));
+
+    let html = '';
+
+    const sortedGroups = Object.values(workflowGroups).sort((a, b) => {
+        const aStatus = a.workflow ? a.workflow.status : 'completed';
+        const bStatus = b.workflow ? b.workflow.status : 'completed';
+        const groupOrder = { escalated: 0, active: 1, paused: 2, completed: 3 };
+        return (groupOrder[aStatus] ?? 3) - (groupOrder[bStatus] ?? 3);
+    });
+
+    sortedGroups.forEach(group => {
+        const wf = group.workflow;
+        const wfName = wf ? wf.name : 'Unknown Workflow';
+        const wfId = wf ? wf.id : '';
+        const wfStatus = wf ? wf.status : 'active';
+        const activeTasks = group.tasks.filter(t => t.status !== 'completed' && t.status !== 'dismissed');
+        const completedTasks = group.tasks.filter(t => t.status === 'completed' || t.status === 'dismissed');
+        const totalTasks = group.tasks.length;
+        const isExpanded = activeTasks.length > 0;
+
+        html += '<div class="tasks-workflow-group" data-wf-id="' + wfId + '">';
+        html += '<div class="tasks-wf-group-header ' + (isExpanded ? 'expanded' : '') + '" onclick="toggleTaskGroup(this)">';
+        html += '<svg class="group-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+        html += '<span class="tasks-wf-group-name">' + wfName + '</span>';
+        html += '<div class="tasks-wf-group-meta">';
+        html += '<span class="tasks-wf-group-count">' + totalTasks + ' task' + (totalTasks !== 1 ? 's' : '') + '</span>';
+        html += '<span class="tasks-wf-group-status ' + wfStatus + '">' + wfStatus + '</span>';
+        html += '</div></div>';
+
+        html += '<div class="tasks-wf-group-body ' + (isExpanded ? 'expanded' : '') + '">';
+
+        activeTasks.forEach(task => { html += buildTaskCardHtml(task); });
+
+        if (completedTasks.length > 0) {
+            if (!tasksShowCompleted && filter !== 'completed') {
+                html += '<div class="tasks-completed-toggle" onclick="toggleShowCompleted()">Show ' + completedTasks.length + ' completed task' + (completedTasks.length !== 1 ? 's' : '') + '</div>';
+            } else {
+                completedTasks.forEach(task => { html += buildTaskCardHtml(task); });
+                if (filter !== 'completed') {
+                    html += '<div class="tasks-completed-toggle" onclick="toggleShowCompleted()">Hide completed tasks</div>';
+                }
+            }
+        }
+
+        html += '</div></div>';
+    });
+
+    if (standaloneTasks.length > 0) {
+        if (sortedGroups.length > 0) {
+            html += '<div class="tasks-standalone-header">Standalone Tasks</div>';
+        }
+        const activeStandalone = standaloneTasks.filter(t => t.status !== 'completed' && t.status !== 'dismissed');
+        const completedStandalone = standaloneTasks.filter(t => t.status === 'completed' || t.status === 'dismissed');
+
+        activeStandalone.forEach(task => { html += buildTaskCardHtml(task); });
+
+        if (completedStandalone.length > 0 && !tasksShowCompleted && filter !== 'completed') {
+            html += '<div class="tasks-completed-toggle" onclick="toggleShowCompleted()">Show ' + completedStandalone.length + ' completed standalone task' + (completedStandalone.length !== 1 ? 's' : '') + '</div>';
+        } else if (completedStandalone.length > 0) {
+            completedStandalone.forEach(task => { html += buildTaskCardHtml(task); });
+            if (filter !== 'completed') {
+                html += '<div class="tasks-completed-toggle" onclick="toggleShowCompleted()">Hide completed tasks</div>';
+            }
+        }
+    }
+
+    const pendingReviewTasks = florenceTasks.filter(t => t.status === 'pending_review');
+    const bulkBar = (filter === 'pending_review' && pendingReviewTasks.length > 1) ? '<div class="bulk-actions-bar"><span class="bulk-label">Bulk Actions <span class="bulk-count">' + pendingReviewTasks.length + ' tasks</span></span><button class="bulk-accept-all" onclick="bulkActionTasks(\'accept\')">&#10003; Accept All</button><button class="bulk-defer-all" onclick="bulkActionTasks(\'defer\')">&#8634; Defer All</button><button class="bulk-dismiss-all" onclick="bulkActionTasks(\'dismiss\')">&#10005; Dismiss All</button></div>' : '';
+
+    container.innerHTML = bulkBar + html;
+}
+
+function buildTaskCardHtml(task) {
+    const isChecked = task.status === 'completed';
+    const isPendingReview = task.status === 'pending_review';
+    const sparkle = task.origin === 'ai-deduced' ? '<span class="task-sparkle" title="AI Deduced">&#10024;<span class="sparkle-tooltip">Deduced from ' + task.deduced_from + '</span></span>' : '';
+    const handoffBadge = task.is_handoff ? '<span style="display:inline-block;padding:2px 6px;background:#E45740;color:#fff;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:0.5px;margin-left:6px;">HANDOFF</span>' : '';
+    const catClass = 'cat-' + task.category;
+    const statusClass = 's-' + task.status.replace('_', '-');
+    const statusLabel = task.status === 'in-progress' ? 'In Progress' : task.status === 'pending_review' ? 'Pending Review' : task.status === 'deferred' ? 'Deferred' : task.status === 'dismissed' ? 'Dismissed' : task.status.charAt(0).toUpperCase() + task.status.slice(1);
+    const transcriptLink = task.transcript ? '<span class="task-transcript-link" onclick="event.stopPropagation();openTaskTranscript(\'' + task.id + '\')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> View transcript</span>' : '';
+    const completedAt = task.completed_at ? '<span style="color:#6B7280;font-size:9px;">' + task.completed_at + '</span>' : '';
+    const reviewActions = isPendingReview ? '<div class="task-review-actions"><span class="task-review-label">Awaiting your decision:</span><button class="task-accept-btn" onclick="event.stopPropagation();acceptTask(\'' + task.id + '\')">Accept</button><button class="task-defer-btn" onclick="event.stopPropagation();deferTask(\'' + task.id + '\')">Defer</button><button class="task-dismiss-btn" onclick="event.stopPropagation();dismissTask(\'' + task.id + '\')">Dismiss</button></div>' : '';
+
+    return '<div class="task-card status-' + task.status.replace('_','-') + '" id="' + task.id + '" data-task-id="' + task.id + '" onclick="' + (isPendingReview ? '' : "toggleTaskCheck('" + task.id + "')") + '"><div class="task-checkbox ' + (isChecked ? 'checked' : '') + '" id="chk-' + task.id + '"></div><div class="task-body"><div class="task-title-row"><span class="task-title">' + task.title + '</span>' + handoffBadge + sparkle + '</div><div class="task-detail">' + task.detail + '</div><div class="task-meta"><span class="task-category-badge ' + catClass + '">' + task.category + '</span><span class="task-status-pill ' + statusClass + '">' + statusLabel + '</span>' + completedAt + transcriptLink + '</div>' + reviewActions + '</div></div>';
+}
+
+function toggleTaskGroup(header) {
+    header.classList.toggle('expanded');
+    const body = header.nextElementSibling;
+    if (body) body.classList.toggle('expanded');
+}
+
+function toggleShowCompleted() {
+    tasksShowCompleted = !tasksShowCompleted;
+    const currentFilter = document.getElementById('tasks-filter-dropdown');
+    renderTasksGrouped(currentFilter ? currentFilter.value : 'all');
+}
+
+renderTasks = renderTasksGrouped;
+window.renderTasks = renderTasksGrouped;
+window.toggleTaskGroup = toggleTaskGroup;
+window.toggleShowCompleted = toggleShowCompleted;
+window.buildTaskCardHtml = buildTaskCardHtml;
+window.renderTasksGrouped = renderTasksGrouped;
+
+// ==================== ENHANCEMENT 3 & 5: FLORENCE CHAT ====================
+
+const florenceChatResponses = {
+    patient: {
+        'status': '<div class="msg-label">Florence</div>Here\'s Jane Doe\'s current status:<br><br><strong>Active Workflows:</strong> 2 (Home Health Coordination, CKD Management)<br><strong>Completed:</strong> 3 workflows, 6 tasks<br><strong>Pending:</strong> 1 task (Review latest lab results)<br><strong>Next Action:</strong> Confirm home health agency acceptance \u2014 due today<br><br>All post-discharge TCM steps completed on time. No escalations pending.',
+        'labs': '<div class="msg-label">Florence</div>Jane\'s most recent labs (Feb 25):<br><br>\u2022 eGFR: 48 mL/min (Stage 3a CKD \u2014 stable)<br>\u2022 BMP: Na 139, K 4.2, Cr 1.4<br>\u2022 A1c: 7.8% (up from 7.2% in Nov)<br>\u2022 BNP: 180 pg/mL (mildly elevated)<br><br>I\'ve flagged the A1c increase for Dr. Campbell\'s review and queued a diabetes education SMS.',
+        'medications': '<div class="msg-label">Florence</div>Current medication list for Jane Doe:<br><br>\u2022 Metoprolol Succinate 50mg daily \u26A0\uFE0F <em>Refill overdue 3 days</em><br>\u2022 Lisinopril 20mg daily \u2713<br>\u2022 Metformin 1000mg BID \u2713<br>\u2022 Atorvastatin 40mg daily \u2713<br>\u2022 Aspirin 81mg daily \u2713<br><br>I sent a refill reminder SMS this morning. Pharmacy confirmed Metoprolol is ready for pickup at CVS #4412.',
+        'appointments': '<div class="msg-label">Florence</div>Upcoming appointments for Jane Doe:<br><br>\uD83D\uDCC5 <strong>Mar 6, 2:00 PM</strong> \u2014 Annual Wellness Visit with Dr. Campbell<br>\uD83D\uDCC5 <strong>Mar 12, 10:30 AM</strong> \u2014 Nephrology consult (Dr. Patel)<br>\uD83D\uDCC5 <strong>Mar 18</strong> \u2014 Home health aide first visit (pending confirmation)<br><br>All confirmed except home health. I\'m following up with Comfort Home Health today.',
+        'help': '<div class="msg-label">Florence</div>I can help you with:<br><br>\u2022 <strong>"status"</strong> \u2014 Patient workflow overview<br>\u2022 <strong>"labs"</strong> \u2014 Latest lab results<br>\u2022 <strong>"medications"</strong> \u2014 Current med list & adherence<br>\u2022 <strong>"appointments"</strong> \u2014 Upcoming schedule<br>\u2022 <strong>"escalate [task]"</strong> \u2014 Flag a task for CM review<br>\u2022 <strong>"what\'s next"</strong> \u2014 Priority actions for today<br><br>Just type naturally \u2014 I understand context.',
+        'what': '<div class="msg-label">Florence</div><strong>Priority Actions for Today:</strong><br><br>1. \u2705 Confirm home health agency acceptance (due today)<br>2. \uD83D\uDCDE Follow up on Metoprolol refill pickup<br>3. \uD83D\uDCCB Review latest lab results (pending since Feb 25)<br>4. \uD83D\uDCC5 Verify nephrology referral is scheduled<br><br>I\'ll handle items 2 and 4 automatically. Items 1 and 3 need your review.',
+        'default': '<div class="msg-label">Florence</div>I\'m tracking Jane Doe\'s care plan across 2 active workflows and 11 tasks. Her post-discharge TCM is complete, and I\'m currently coordinating home health start-of-care and CKD management.<br><br>What would you like to know? Try "status", "labs", "medications", or "what\'s next".'
+    },
+    campaign: {
+        'status': '<div class="msg-label">Florence \u2014 Campaign Intel</div><strong>Status Report \u2014 Last Hour</strong><br><br>\uD83D\uDCDE <strong>23 calls completed</strong> (18 connected, 5 voicemail)<br>\uD83D\uDCC5 <strong>4 appointments scheduled</strong><br>\uD83D\uDC8A <strong>2 refills confirmed</strong> with pharmacy<br>\u26A0\uFE0F <strong>1 escalation flagged</strong> \u2014 Dorothy Adams needs CM assist<br>\uD83D\uDD04 <strong>3 patients</strong> currently in active calls<br><br>Overall pace: 12% ahead of hourly target. No system issues detected.',
+        'escalation': '<div class="msg-label">Florence \u2014 Campaign Intel</div><strong>Current Escalations</strong><br><br>1. <strong>Dorothy Adams</strong> (MRN 204556) \u2014 Patient confused about appointment process, needs CM guidance<br>2. <strong>Medication Adherence:</strong> 23 total escalations this month \u2014 18 resolved, 5 pending CM review<br><br>Recommend prioritizing Dorothy Adams \u2014 she\'s called back twice asking for help.',
+        'performance': '<div class="msg-label">Florence \u2014 Campaign Intel</div><strong>Campaign Performance Summary</strong><br><br>\u2022 AWV Scheduling: <strong>74% success rate</strong> (627 of 847 gaps closed)<br>\u2022 Med Adherence: <strong>61% success rate</strong> (190 of 312 contacted)<br>\u2022 Flu Shot: <strong>38% success rate</strong> (458 of 1,204 targeted)<br>\u2022 TCM Post-Discharge: <strong>87% success rate</strong> \u2713 Complete<br><br>AWV is on track. Med Adherence needs attention \u2014 suggest increasing call frequency for non-responders.',
+        'help': '<div class="msg-label">Florence \u2014 Campaign Intel</div>I can help you manage this campaign:<br><br>\u2022 <strong>"status report"</strong> \u2014 Activity summary for the last hour<br>\u2022 <strong>"escalations"</strong> \u2014 Current escalations needing review<br>\u2022 <strong>"performance"</strong> \u2014 Campaign KPIs and trends<br>\u2022 <strong>"pause outreach"</strong> \u2014 Temporarily halt automated calls<br>\u2022 <strong>"who\'s next"</strong> \u2014 Next patients in the outreach queue<br><br>I\'m monitoring all active campaigns in real-time.',
+        'who': '<div class="msg-label">Florence \u2014 Campaign Intel</div><strong>Next in Outreach Queue:</strong><br><br>1. Maria Gonzalez (MRN 203112) \u2014 Retry #2, last VM Feb 27<br>2. Frank Miller (MRN 202890) \u2014 Declined, cooling period ends today<br>3. James Wilson (MRN 201223) \u2014 Callback expected, will attempt at 2 PM<br><br>Queue depth: 127 patients remaining in this campaign cycle.',
+        'pause': '<div class="msg-label">Florence \u2014 Campaign Intel</div>\u26A0\uFE0F <strong>Outreach Paused</strong><br><br>I\'ve temporarily halted all automated calls and SMS for this campaign. Currently active calls will complete normally.<br><br>To resume, type <strong>"resume outreach"</strong>. Pause will auto-expire in 2 hours if not manually resumed.',
+        'default': '<div class="msg-label">Florence \u2014 Campaign Intel</div>I\'m actively managing outreach for this campaign. In the last hour: 23 calls completed, 4 appointments scheduled, 1 escalation flagged.<br><br>Try "status report", "escalations", "performance", or ask me anything about the campaign.'
+    }
+};
+
+function sendFlorenceChat(context) {
+    const inputEl = document.getElementById('florence-chat-' + context + '-input');
+    const msgsEl = document.getElementById('florence-chat-' + context + '-msgs');
+    if (!inputEl || !msgsEl) return;
+
+    const text = inputEl.value.trim();
+    if (!text) return;
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'florence-chat-msg user';
+    userMsg.textContent = text;
+    msgsEl.appendChild(userMsg);
+    inputEl.value = '';
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+
+    const typingEl = document.createElement('div');
+    typingEl.className = 'florence-typing';
+    typingEl.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    msgsEl.appendChild(typingEl);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+
+    const delay = 1200 + Math.random() * 800;
+    setTimeout(function() {
+        typingEl.remove();
+
+        const responses = florenceChatResponses[context] || florenceChatResponses.patient;
+        const lowerText = text.toLowerCase();
+        let responseHtml = responses['default'];
+
+        for (const key of Object.keys(responses)) {
+            if (key === 'default') continue;
+            if (lowerText.includes(key)) {
+                responseHtml = responses[key];
+                break;
+            }
+        }
+
+        const florenceMsg = document.createElement('div');
+        florenceMsg.className = 'florence-chat-msg florence';
+        florenceMsg.innerHTML = responseHtml;
+        msgsEl.appendChild(florenceMsg);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+    }, delay);
+}
+window.sendFlorenceChat = sendFlorenceChat;
+
+// ==================== ENHANCEMENT 4: MINI LIVE FEED UNDER CAMPAIGN CARDS ====================
+
+const miniFeedIntervals = {};
+
+function getMiniFeedActions() {
+    return [
+        function(p) { return 'Called <strong>' + p.name + '</strong> \u2014 connected'; },
+        function(p) { return 'SMS sent to <strong>' + p.name + '</strong>'; },
+        function(p) { return '<strong>' + p.name + '</strong> \u2014 appointment confirmed'; },
+        function(p) { return 'VM left for <strong>' + p.name + '</strong>'; },
+        function(p) { return '<strong>' + p.name + '</strong> replied: "Yes"'; },
+        function(p) { return 'Retry queued for <strong>' + p.name + '</strong>'; },
+        function(p) { return 'Gap closed: <strong>' + p.name + '</strong>'; }
+    ];
+}
+
+function initCampaignMiniFeeds() {
+    document.querySelectorAll('.campaign-card[data-campaign-id]').forEach(function(card) {
+        const campaignId = card.dataset.campaignId;
+        if (!campaignId) return;
+        if (card.querySelector('.campaign-mini-feed')) return;
+
+        const campaign = newtonCampaigns.find(function(c) { return c.id === campaignId; });
+        const patients = campaignPatients[campaignId];
+        if (!campaign || !patients) return;
+
+        const feedDiv = document.createElement('div');
+        feedDiv.className = 'campaign-mini-feed';
+        feedDiv.innerHTML = '<div class="campaign-mini-feed-header"><div class="mini-feed-pulse"></div>Live Activity</div><div class="campaign-mini-feed-list" id="mini-feed-' + campaignId + '"></div>';
+        card.appendChild(feedDiv);
+
+        const feedList = feedDiv.querySelector('.campaign-mini-feed-list');
+        const actions = getMiniFeedActions();
+        const now = new Date();
+        for (var i = 2; i >= 0; i--) {
+            var t = new Date(now - i * 30000);
+            var timeStr = t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            var p = patients[Math.floor(Math.random() * patients.length)];
+            var a = actions[Math.floor(Math.random() * actions.length)];
+            var item = document.createElement('div');
+            item.className = 'mini-feed-item';
+            item.innerHTML = '<span class="mf-time">' + timeStr + '</span><span class="mf-text">' + a(p) + '</span>';
+            feedList.appendChild(item);
+        }
+
+        if (miniFeedIntervals[campaignId]) clearInterval(miniFeedIntervals[campaignId]);
+        miniFeedIntervals[campaignId] = setInterval(function() {
+            var actions2 = getMiniFeedActions();
+            var t2 = new Date();
+            var timeStr2 = t2.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            var p2 = patients[Math.floor(Math.random() * patients.length)];
+            var a2 = actions2[Math.floor(Math.random() * actions2.length)];
+            var newItem = document.createElement('div');
+            newItem.className = 'mini-feed-item';
+            newItem.innerHTML = '<span class="mf-time">' + timeStr2 + '</span><span class="mf-text">' + a2(p2) + '</span>';
+            feedList.insertBefore(newItem, feedList.firstChild);
+            while (feedList.children.length > 3) feedList.removeChild(feedList.lastChild);
+        }, 5000 + Math.random() * 5000);
+    });
+}
+
+var _origRenderCampaigns = typeof renderCampaigns === 'function' ? renderCampaigns : null;
+if (_origRenderCampaigns) {
+    var _wrappedRenderCampaigns = function(filter) {
+        _origRenderCampaigns(filter);
+        setTimeout(initCampaignMiniFeeds, 100);
+    };
+    renderCampaigns = _wrappedRenderCampaigns;
+    window.renderCampaigns = _wrappedRenderCampaigns;
+}
+setTimeout(initCampaignMiniFeeds, 500);
 
     </script>
 
