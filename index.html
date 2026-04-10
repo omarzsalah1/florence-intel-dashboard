@@ -10618,20 +10618,28 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     await addMessage(msg, signal);
                     
                     // Scan patient messages for clinical flags and workflow suggestions
+                    // Delay insights by 2.5s so they appear AFTER the words are spoken,
+                    // giving the impression Florence is "listening" then "catching" the insight
                     if (msg.type === 'patient') {
-                        scanForClinicalFlags(msg.text);
-                        scanForWorkflowSuggestions(msg.text);
+                        const patientText = msg.text;
+                        setTimeout(() => {
+                            scanForClinicalFlags(patientText);
+                            scanForWorkflowSuggestions(patientText);
+                        }, 2500);
                     }
                     
-                    // Trigger task deductions
+                    // Trigger task deductions (also delayed so they feel reactive)
                     if (workflowType === 'convene' && conveneTaskDeductions[i]) {
-                        setTimeout(() => { addTaskFromConvene(conveneTaskDeductions[i]); }, 800);
+                        const deduction = conveneTaskDeductions[i];
+                        setTimeout(() => { addTaskFromConvene(deduction); }, 3000);
                     }
                     if (workflowType === 'engage' && typeof engageTaskDeductions !== 'undefined' && engageTaskDeductions[i]) {
-                        setTimeout(() => { addTaskFromConvene(engageTaskDeductions[i], 'WF-TCM-001', 'Engage call \u2014 AI deduced from conversation'); }, 800);
+                        const deduction = engageTaskDeductions[i];
+                        setTimeout(() => { addTaskFromConvene(deduction, 'WF-TCM-001', 'Engage call \u2014 AI deduced from conversation'); }, 3000);
                     }
                     if (workflowType === 'checkin' && typeof checkinTaskDeductions !== 'undefined' && checkinTaskDeductions[i]) {
-                        setTimeout(() => { addTaskFromConvene(checkinTaskDeductions[i], 'WF-CHECKIN-001', 'Check-In SMS \u2014 AI deduced from patient replies'); }, 800);
+                        const deduction = checkinTaskDeductions[i];
+                        setTimeout(() => { addTaskFromConvene(deduction, 'WF-CHECKIN-001', 'Check-In SMS \u2014 AI deduced from patient replies'); }, 3000);
                     }
                 }
             } else {
@@ -10652,8 +10660,11 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     await addMessage(msg, signal);
                     
                     if (msg.type === 'patient') {
-                        scanForClinicalFlags(msg.text);
-                        scanForWorkflowSuggestions(msg.text);
+                        const patientText = msg.text;
+                        setTimeout(() => {
+                            scanForClinicalFlags(patientText);
+                            scanForWorkflowSuggestions(patientText);
+                        }, 2500);
                     }
                     
                     if (workflowType === 'checkin' && typeof checkinTaskDeductions !== 'undefined' && checkinTaskDeductions[i]) {
