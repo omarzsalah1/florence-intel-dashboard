@@ -1,0 +1,91 @@
+[00:00.0 - 00:01.8] Hello, Jane, this is Florence calling
+[00:01.8 - 00:03.8] from Dr. Campbell's office.
+[00:03.8 - 00:06.0] I see here that you were released
+[00:06.0 - 00:08.4] from St. Joseph's Hospital this morning
+[00:08.4 - 00:10.0] after your heart attack.
+[00:10.0 - 00:11.1] How are you feeling?
+[00:12.5 - 00:14.2] Oh, hello, Florence.
+[00:14.2 - 00:15.4] I'm doing okay.
+[00:15.4 - 00:18.4] Just a little tired and nervous about being home.
+[00:18.4 - 00:20.7] That's completely understandable, Jane.
+[00:20.7 - 00:23.8] I'm here to help make sure you have everything you need.
+[00:23.8 - 00:25.8] First, let me ask,
+[00:25.8 - 00:29.1] did you pick up all your new medications from the pharmacy?
+[00:30.3 - 00:34.0] Yes, my daughter helped me get them this afternoon.
+[00:34.0 - 00:35.5] Wonderful.
+[00:35.5 - 00:37.0] Let me quickly review them with you
+[00:37.0 - 00:39.2] to make sure we're on the same page.
+[00:39.2 - 00:41.5] You should have metoprolol for your heart rate,
+[00:41.5 - 00:43.8] clopidogrel to prevent blood clots,
+[00:43.8 - 00:46.0] and atarvastatin for cholesterol.
+[00:46.0 - 00:47.6] Do you have all three of those?
+[00:49.6 - 00:51.2] Yes, I have them all here.
+[00:51.2 - 00:53.4] The pharmacist explained them to me.
+[00:53.4 - 00:54.2] Perfect.
+[00:54.2 - 00:56.2] Now, this is very important, Jane.
+[00:56.2 - 00:58.8] The hospital should have given you a scale
+[00:58.8 - 01:00.3] to weigh yourself daily.
+[01:00.3 - 01:01.9] Have you been weighing yourself?
+[01:03.3 - 01:05.2] Yes, I weighed myself this morning.
+[01:05.2 - 01:07.3] I was 198 pounds.
+[01:07.3 - 01:08.1] Good.
+[01:08.1 - 01:10.2] Here's what you need to watch for.
+[01:10.2 - 01:13.0] If you gain two pounds in one day
+[01:13.0 - 01:14.8] or five pounds in one week,
+[01:14.8 - 01:16.9] you need to call us immediately.
+[01:16.9 - 01:19.7] That could be a sign of fluid buildup.
+[01:19.7 - 01:20.9] Can you remember that?
+[01:20.9 - 01:24.3] Two pounds in a day or five pounds in a week?
+[01:24.3 - 01:27.0] Two pounds in a day, five pounds in a week.
+[01:27.0 - 01:28.5] I wrote it down.
+[01:29.2 - 01:30.0] Excellent.
+[01:30.0 - 01:32.6] Now, have you had any chest pain, shortness of breath,
+[01:32.6 - 01:35.8] or swelling in your legs since you got home?
+[01:36.7 - 01:38.2] No chest pain,
+[01:38.2 - 01:40.6] but I do feel a little short of breath
+[01:40.6 - 01:43.2] when I walk to the bathroom.
+[01:43.2 - 01:47.2] That's normal in the first few days after a heart attack,
+[01:47.2 - 01:49.4] but we'll want Dr. Campbell
+[01:49.4 - 01:51.8] to check that at your follow-up visit.
+[01:51.8 - 01:55.6] Speaking of which, let me get you scheduled.
+[01:55.7 - 01:58.5] Dr. Campbell needs to see you within the next few days.
+[01:58.5 - 02:01.5] Let me conference in the office right now
+[02:01.5 - 02:03.6] to find you an appointment.
+[02:03.6 - 02:05.8] Can you hold for just a moment?
+[02:05.8 - 02:07.2] Yes, of course.
+[02:07.2 - 02:09.0] This is Sarah at Dr. Campbell's office.
+[02:09.0 - 02:10.1] How can I help?
+[02:10.1 - 02:10.9] Hi, Sarah.
+[02:10.9 - 02:11.8] This is Florence.
+[02:11.8 - 02:13.4] I have Jane Doe on the line.
+[02:13.4 - 02:15.9] She was discharged from St. Joseph's this morning
+[02:15.9 - 02:17.4] after an MI.
+[02:17.4 - 02:20.6] We need to get her in for a post-discharge follow-up
+[02:20.6 - 02:21.8] as soon as possible.
+[02:23.2 - 02:24.0] Of course.
+[02:24.0 - 02:25.1] Let me check the schedule.
+[02:25.1 - 02:27.2] I have Monday at 10 a.m. or 2 p.m.
+[02:27.2 - 02:28.7] Which works better for you, Jane?
+[02:28.7 - 02:31.6] Monday at 10 a.m. would be perfect.
+[02:31.6 - 02:32.5] Great.
+[02:32.5 - 02:34.4] You're all set for Monday, February 18th
+[02:34.4 - 02:36.5] at 10 a.m. with Dr. Campbell.
+[02:36.5 - 02:37.8] We'll see you then, Jane.
+[02:37.8 - 02:38.9] Perfect.
+[02:38.9 - 02:41.9] Jane, you're scheduled for Monday at 10 a.m.
+[02:41.9 - 02:43.6] I'll send you a text.
+[02:43.6 - 02:45.6] Reminder the day before.
+[02:45.6 - 02:47.7] Is there anything else you're worried about
+[02:47.7 - 02:50.7] or any questions I can answer?
+[02:50.7 - 02:52.5] No, I think that covers everything.
+[02:52.5 - 02:54.3] Thank you so much for calling
+[02:54.3 - 02:57.3] and helping me get that appointment.
+[02:57.3 - 02:59.0] You're very welcome, Jane.
+[02:59.0 - 03:02.3] Remember, if you have any chest pain,
+[03:02.3 - 03:05.1] severe shortness of breath, or sudden weight gain,
+[03:05.1 - 03:07.1] call 911 right away.
+[03:07.1 - 03:08.7] Otherwise, we'll lat.
+[03:08.7 - 03:10.5] See you Monday at 10 a.m.
+[03:10.5 - 03:11.6] Take care.
+[03:11.6 - 03:13.2] Thank you, Florence.
+[03:13.2 - 03:14.1] Goodbye.

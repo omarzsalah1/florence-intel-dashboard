@@ -1,0 +1,462 @@
+{
+  "duration": 194.22999572753906,
+  "language": "english",
+  "segments": [
+    {
+      "start": 0,
+      "end": 1.7599999904632568,
+      "text": " Hello, Jane, this is Florence calling"
+    },
+    {
+      "start": 1.7599999904632568,
+      "end": 3.7799999713897705,
+      "text": " from Dr. Campbell's office."
+    },
+    {
+      "start": 3.7799999713897705,
+      "end": 6,
+      "text": " I see here that you were released"
+    },
+    {
+      "start": 6,
+      "end": 8.399999618530273,
+      "text": " from St. Joseph's Hospital this morning"
+    },
+    {
+      "start": 8.399999618530273,
+      "end": 9.979999542236328,
+      "text": " after your heart attack."
+    },
+    {
+      "start": 9.979999542236328,
+      "end": 11.100000381469727,
+      "text": " How are you feeling?"
+    },
+    {
+      "start": 12.479999542236328,
+      "end": 14.15999984741211,
+      "text": " Oh, hello, Florence."
+    },
+    {
+      "start": 14.15999984741211,
+      "end": 15.399999618530273,
+      "text": " I'm doing okay."
+    },
+    {
+      "start": 15.399999618530273,
+      "end": 18.399999618530273,
+      "text": " Just a little tired and nervous about being home."
+    },
+    {
+      "start": 18.399999618530273,
+      "end": 20.719999313354492,
+      "text": " That's completely understandable, Jane."
+    },
+    {
+      "start": 20.719999313354492,
+      "end": 23.799999237060547,
+      "text": " I'm here to help make sure you have everything you need."
+    },
+    {
+      "start": 23.799999237060547,
+      "end": 25.81999969482422,
+      "text": " First, let me ask,"
+    },
+    {
+      "start": 25.81999969482422,
+      "end": 29.079999923706055,
+      "text": " did you pick up all your new medications from the pharmacy?"
+    },
+    {
+      "start": 30.31999969482422,
+      "end": 34,
+      "text": " Yes, my daughter helped me get them this afternoon."
+    },
+    {
+      "start": 34,
+      "end": 35.459999084472656,
+      "text": " Wonderful."
+    },
+    {
+      "start": 35.459999084472656,
+      "end": 37,
+      "text": " Let me quickly review them with you"
+    },
+    {
+      "start": 37,
+      "end": 39.220001220703125,
+      "text": " to make sure we're on the same page."
+    },
+    {
+      "start": 39.220001220703125,
+      "end": 41.52000045776367,
+      "text": " You should have metoprolol for your heart rate,"
+    },
+    {
+      "start": 41.52000045776367,
+      "end": 43.79999923706055,
+      "text": " clopidogrel to prevent blood clots,"
+    },
+    {
+      "start": 43.79999923706055,
+      "end": 46.040000915527344,
+      "text": " and atarvastatin for cholesterol."
+    },
+    {
+      "start": 46.040000915527344,
+      "end": 47.599998474121094,
+      "text": " Do you have all three of those?"
+    },
+    {
+      "start": 49.560001373291016,
+      "end": 51.20000076293945,
+      "text": " Yes, I have them all here."
+    },
+    {
+      "start": 51.20000076293945,
+      "end": 53.36000061035156,
+      "text": " The pharmacist explained them to me."
+    },
+    {
+      "start": 53.36000061035156,
+      "end": 54.20000076293945,
+      "text": " Perfect."
+    },
+    {
+      "start": 54.20000076293945,
+      "end": 56.2400016784668,
+      "text": " Now, this is very important, Jane."
+    },
+    {
+      "start": 56.2400016784668,
+      "end": 58.84000015258789,
+      "text": " The hospital should have given you a scale"
+    },
+    {
+      "start": 58.84000015258789,
+      "end": 60.279998779296875,
+      "text": " to weigh yourself daily."
+    },
+    {
+      "start": 60.279998779296875,
+      "end": 61.880001068115234,
+      "text": " Have you been weighing yourself?"
+    },
+    {
+      "start": 63.31999969482422,
+      "end": 65.19999694824219,
+      "text": " Yes, I weighed myself this morning."
+    },
+    {
+      "start": 65.19999694824219,
+      "end": 67.27999877929688,
+      "text": " I was 198 pounds."
+    },
+    {
+      "start": 67.27999877929688,
+      "end": 68.12000274658203,
+      "text": " Good."
+    },
+    {
+      "start": 68.12000274658203,
+      "end": 70.18000030517578,
+      "text": " Here's what you need to watch for."
+    },
+    {
+      "start": 70.18000030517578,
+      "end": 72.95999908447266,
+      "text": " If you gain two pounds in one day"
+    },
+    {
+      "start": 72.95999908447266,
+      "end": 74.83999633789062,
+      "text": " or five pounds in one week,"
+    },
+    {
+      "start": 74.83999633789062,
+      "end": 76.9000015258789,
+      "text": " you need to call us immediately."
+    },
+    {
+      "start": 76.9000015258789,
+      "end": 79.73999786376953,
+      "text": " That could be a sign of fluid buildup."
+    },
+    {
+      "start": 79.73999786376953,
+      "end": 80.87999725341797,
+      "text": " Can you remember that?"
+    },
+    {
+      "start": 80.87999725341797,
+      "end": 84.31999969482422,
+      "text": " Two pounds in a day or five pounds in a week?"
+    },
+    {
+      "start": 84.31999969482422,
+      "end": 87,
+      "text": " Two pounds in a day, five pounds in a week."
+    },
+    {
+      "start": 87,
+      "end": 88.5199966430664,
+      "text": " I wrote it down."
+    },
+    {
+      "start": 89.19999694824219,
+      "end": 90.04000091552734,
+      "text": " Excellent."
+    },
+    {
+      "start": 90.04000091552734,
+      "end": 92.5999984741211,
+      "text": " Now, have you had any chest pain, shortness of breath,"
+    },
+    {
+      "start": 92.5999984741211,
+      "end": 95.81999969482422,
+      "text": " or swelling in your legs since you got home?"
+    },
+    {
+      "start": 96.72000122070312,
+      "end": 98.23999786376953,
+      "text": " No chest pain,"
+    },
+    {
+      "start": 98.23999786376953,
+      "end": 100.55999755859375,
+      "text": " but I do feel a little short of breath"
+    },
+    {
+      "start": 100.55999755859375,
+      "end": 103.16000366210938,
+      "text": " when I walk to the bathroom."
+    },
+    {
+      "start": 103.16000366210938,
+      "end": 107.16000366210938,
+      "text": " That's normal in the first few days after a heart attack,"
+    },
+    {
+      "start": 107.16000366210938,
+      "end": 109.37999725341797,
+      "text": " but we'll want Dr. Campbell"
+    },
+    {
+      "start": 109.37999725341797,
+      "end": 111.81999969482422,
+      "text": " to check that at your follow-up visit."
+    },
+    {
+      "start": 111.81999969482422,
+      "end": 115.63999938964844,
+      "text": " Speaking of which, let me get you scheduled."
+    },
+    {
+      "start": 115.68000030517578,
+      "end": 118.5199966430664,
+      "text": " Dr. Campbell needs to see you within the next few days."
+    },
+    {
+      "start": 118.5199966430664,
+      "end": 121.5199966430664,
+      "text": " Let me conference in the office right now"
+    },
+    {
+      "start": 121.5199966430664,
+      "end": 123.5999984741211,
+      "text": " to find you an appointment."
+    },
+    {
+      "start": 123.5999984741211,
+      "end": 125.76000213623047,
+      "text": " Can you hold for just a moment?"
+    },
+    {
+      "start": 125.76000213623047,
+      "end": 127.19999694824219,
+      "text": " Yes, of course."
+    },
+    {
+      "start": 127.19999694824219,
+      "end": 129,
+      "text": " This is Sarah at Dr. Campbell's office."
+    },
+    {
+      "start": 129,
+      "end": 130.0800018310547,
+      "text": " How can I help?"
+    },
+    {
+      "start": 130.0800018310547,
+      "end": 130.9199981689453,
+      "text": " Hi, Sarah."
+    },
+    {
+      "start": 130.9199981689453,
+      "end": 131.75999450683594,
+      "text": " This is Florence."
+    },
+    {
+      "start": 131.75999450683594,
+      "end": 133.44000244140625,
+      "text": " I have Jane Doe on the line."
+    },
+    {
+      "start": 133.44000244140625,
+      "end": 135.9199981689453,
+      "text": " She was discharged from St. Joseph's this morning"
+    },
+    {
+      "start": 135.9199981689453,
+      "end": 137.36000061035156,
+      "text": " after an MI."
+    },
+    {
+      "start": 137.36000061035156,
+      "end": 140.55999755859375,
+      "text": " We need to get her in for a post-discharge follow-up"
+    },
+    {
+      "start": 140.55999755859375,
+      "end": 141.82000732421875,
+      "text": " as soon as possible."
+    },
+    {
+      "start": 143.1999969482422,
+      "end": 144.0399932861328,
+      "text": " Of course."
+    },
+    {
+      "start": 144.0399932861328,
+      "end": 145.05999755859375,
+      "text": " Let me check the schedule."
+    },
+    {
+      "start": 145.05999755859375,
+      "end": 147.17999267578125,
+      "text": " I have Monday at 10 a.m. or 2 p.m."
+    },
+    {
+      "start": 147.17999267578125,
+      "end": 148.6999969482422,
+      "text": " Which works better for you, Jane?"
+    },
+    {
+      "start": 148.6999969482422,
+      "end": 151.6199951171875,
+      "text": " Monday at 10 a.m. would be perfect."
+    },
+    {
+      "start": 151.6199951171875,
+      "end": 152.4600067138672,
+      "text": " Great."
+    },
+    {
+      "start": 152.4600067138672,
+      "end": 154.4199981689453,
+      "text": " You're all set for Monday, February 18th"
+    },
+    {
+      "start": 154.4199981689453,
+      "end": 156.5399932861328,
+      "text": " at 10 a.m. with Dr. Campbell."
+    },
+    {
+      "start": 156.5399932861328,
+      "end": 157.82000732421875,
+      "text": " We'll see you then, Jane."
+    },
+    {
+      "start": 157.82000732421875,
+      "end": 158.94000244140625,
+      "text": " Perfect."
+    },
+    {
+      "start": 158.94000244140625,
+      "end": 161.89999389648438,
+      "text": " Jane, you're scheduled for Monday at 10 a.m."
+    },
+    {
+      "start": 161.89999389648438,
+      "end": 163.55999755859375,
+      "text": " I'll send you a text."
+    },
+    {
+      "start": 163.55999755859375,
+      "end": 165.60000610351562,
+      "text": " Reminder the day before."
+    },
+    {
+      "start": 165.60000610351562,
+      "end": 167.6999969482422,
+      "text": " Is there anything else you're worried about"
+    },
+    {
+      "start": 167.6999969482422,
+      "end": 170.66000366210938,
+      "text": " or any questions I can answer?"
+    },
+    {
+      "start": 170.66000366210938,
+      "end": 172.4600067138672,
+      "text": " No, I think that covers everything."
+    },
+    {
+      "start": 172.4600067138672,
+      "end": 174.33999633789062,
+      "text": " Thank you so much for calling"
+    },
+    {
+      "start": 174.33999633789062,
+      "end": 177.33999633789062,
+      "text": " and helping me get that appointment."
+    },
+    {
+      "start": 177.33999633789062,
+      "end": 179.02000427246094,
+      "text": " You're very welcome, Jane."
+    },
+    {
+      "start": 179.02000427246094,
+      "end": 182.3000030517578,
+      "text": " Remember, if you have any chest pain,"
+    },
+    {
+      "start": 182.3000030517578,
+      "end": 185.1199951171875,
+      "text": " severe shortness of breath, or sudden weight gain,"
+    },
+    {
+      "start": 185.1199951171875,
+      "end": 187.05999755859375,
+      "text": " call 911 right away."
+    },
+    {
+      "start": 187.05999755859375,
+      "end": 188.66000366210938,
+      "text": " Otherwise, we'll lat."
+    },
+    {
+      "start": 188.66000366210938,
+      "end": 190.4600067138672,
+      "text": " See you Monday at 10 a.m."
+    },
+    {
+      "start": 190.4600067138672,
+      "end": 191.6199951171875,
+      "text": " Take care."
+    },
+    {
+      "start": 191.6199951171875,
+      "end": 193.22000122070312,
+      "text": " Thank you, Florence."
+    },
+    {
+      "start": 193.22000122070312,
+      "end": 194.05999755859375,
+      "text": " Goodbye."
+    }
+  ],
+  "full_text": "Hello, Jane, this is Florence calling from Dr. Campbell's office. I see here that you were released from St. Joseph's Hospital this morning after your heart attack. How are you feeling? Oh, hello, Florence. I'm doing okay. Just a little tired and nervous about being home. That's completely understandable, Jane. I'm here to help make sure you have everything you need. First, let me ask, did you pick up all your new medications from the pharmacy? Yes, my daughter helped me get them this afternoon. Wonderful. Let me quickly review them with you to make sure we're on the same page. You should have metoprolol for your heart rate, clopidogrel to prevent blood clots, and atarvastatin for cholesterol. Do you have all three of those? Yes, I have them all here. The pharmacist explained them to me. Perfect. Now, this is very important, Jane. The hospital should have given you a scale to weigh yourself daily. Have you been weighing yourself? Yes, I weighed myself this morning. I was 198 pounds. Good. Here's what you need to watch for. If you gain two pounds in one day or five pounds in one week, you need to call us immediately. That could be a sign of fluid buildup. Can you remember that? Two pounds in a day or five pounds in a week? Two pounds in a day, five pounds in a week. I wrote it down. Excellent. Now, have you had any chest pain, shortness of breath, or swelling in your legs since you got home? No chest pain, but I do feel a little short of breath when I walk to the bathroom. That's normal in the first few days after a heart attack, but we'll want Dr. Campbell to check that at your follow-up visit. Speaking of which, let me get you scheduled. Dr. Campbell needs to see you within the next few days. Let me conference in the office right now to find you an appointment. Can you hold for just a moment? Yes, of course. This is Sarah at Dr. Campbell's office. How can I help? Hi, Sarah. This is Florence. I have Jane Doe on the line. She was discharged from St. Joseph's this morning after an MI. We need to get her in for a post-discharge follow-up as soon as possible. Of course. Let me check the schedule. I have Monday at 10 a.m. or 2 p.m. Which works better for you, Jane? Monday at 10 a.m. would be perfect. Great. You're all set for Monday, February 18th at 10 a.m. with Dr. Campbell. We'll see you then, Jane. Perfect. Jane, you're scheduled for Monday at 10 a.m. I'll send you a text. Reminder the day before. Is there anything else you're worried about or any questions I can answer? No, I think that covers everything. Thank you so much for calling and helping me get that appointment. You're very welcome, Jane. Remember, if you have any chest pain, severe shortness of breath, or sudden weight gain, call 911 right away. Otherwise, we'll lat. See you Monday at 10 a.m. Take care. Thank you, Florence. Goodbye."
+}

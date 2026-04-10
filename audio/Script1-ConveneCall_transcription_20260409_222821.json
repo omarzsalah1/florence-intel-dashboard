@@ -1,0 +1,397 @@
+{
+  "duration": 171.99000549316406,
+  "language": "english",
+  "segments": [
+    {
+      "start": 0,
+      "end": 5.840000152587891,
+      "text": " Hello, Jane."
+    },
+    {
+      "start": 5.840000152587891,
+      "end": 10.479999542236328,
+      "text": " This is Florence, your care navigator from Dr. Campbell's office, calling on a recorded"
+    },
+    {
+      "start": 10.479999542236328,
+      "end": 11.479999542236328,
+      "text": " line."
+    },
+    {
+      "start": 11.479999542236328,
+      "end": 14.399999618530273,
+      "text": " I have your care manager, Sarah, ready to join."
+    },
+    {
+      "start": 14.399999618530273,
+      "end": 16.1200008392334,
+      "text": " Is now a good time to talk?"
+    },
+    {
+      "start": 16.1200008392334,
+      "end": 18.15999984741211,
+      "text": " Oh, hello, Florence."
+    },
+    {
+      "start": 18.15999984741211,
+      "end": 19.639999389648438,
+      "text": " Yes, now is fine."
+    },
+    {
+      "start": 19.639999389648438,
+      "end": 22.479999542236328,
+      "text": " A little out of breath today, but I can talk."
+    },
+    {
+      "start": 22.479999542236328,
+      "end": 23.8799991607666,
+      "text": " I understand."
+    },
+    {
+      "start": 23.8799991607666,
+      "end": 25.280000686645508,
+      "text": " Connecting you with Sarah now."
+    },
+    {
+      "start": 25.280000686645508,
+      "end": 26.280000686645508,
+      "text": " Please hold."
+    },
+    {
+      "start": 26.280000686645508,
+      "end": 27.639999389648438,
+      "text": " Hi, Jane."
+    },
+    {
+      "start": 27.639999389648438,
+      "end": 28.639999389648438,
+      "text": " This is Sarah."
+    },
+    {
+      "start": 28.639999389648438,
+      "end": 29.639999389648438,
+      "text": " How are you feeling today?"
+    },
+    {
+      "start": 29.760000228881836,
+      "end": 31.31999969482422,
+      "text": " I heard you sound a bit short of breath."
+    },
+    {
+      "start": 31.31999969482422,
+      "end": 32.31999969482422,
+      "text": " Hi, Sarah."
+    },
+    {
+      "start": 32.31999969482422,
+      "end": 33.31999969482422,
+      "text": " I'm okay."
+    },
+    {
+      "start": 33.31999969482422,
+      "end": 34.52000045776367,
+      "text": " Just tired."
+    },
+    {
+      "start": 34.52000045776367,
+      "end": 37.439998626708984,
+      "text": " It's a little harder to get around than I expected."
+    },
+    {
+      "start": 37.439998626708984,
+      "end": 41.68000030517578,
+      "text": " The hospital doctor mentioned I might get an oxygen machine for the house, but nothing's"
+    },
+    {
+      "start": 41.68000030517578,
+      "end": 42.68000030517578,
+      "text": " arrived yet."
+    },
+    {
+      "start": 42.68000030517578,
+      "end": 45.560001373291016,
+      "text": " Okay, that's the first thing I want to check on for you."
+    },
+    {
+      "start": 45.560001373291016,
+      "end": 47.439998626708984,
+      "text": " A home oxygen concentrator."
+    },
+    {
+      "start": 47.439998626708984,
+      "end": 51.040000915527344,
+      "text": " I'll make sure that order is processed and find out when it will be delivered."
+    },
+    {
+      "start": 51.040000915527344,
+      "end": 53.880001068115234,
+      "text": " I'm concerned about that shortness of breath, though."
+    },
+    {
+      "start": 53.880001068115234,
+      "end": 57.68000030517578,
+      "text": " I'd feel better if we could get a pulse oximeter to you so you can check your oxygen levels"
+    },
+    {
+      "start": 57.68000030517578,
+      "end": 58.84000015258789,
+      "text": " at home."
+    },
+    {
+      "start": 59.040000915527344,
+      "end": 60.040000915527344,
+      "text": " Would that be all right?"
+    },
+    {
+      "start": 60.040000915527344,
+      "end": 62.20000076293945,
+      "text": " Oh, one of those finger clip things?"
+    },
+    {
+      "start": 62.20000076293945,
+      "end": 64.16000366210938,
+      "text": " Yes, that would be fine."
+    },
+    {
+      "start": 64.16000366210938,
+      "end": 66.5199966430664,
+      "text": " It would probably make me feel better, too."
+    },
+    {
+      "start": 66.5199966430664,
+      "end": 67.5199966430664,
+      "text": " Great."
+    },
+    {
+      "start": 67.5199966430664,
+      "end": 70.31999969482422,
+      "text": " Now, I know they gave you a few new prescriptions at the hospital."
+    },
+    {
+      "start": 70.31999969482422,
+      "end": 71.63999938964844,
+      "text": " Have you been able to pick those up?"
+    },
+    {
+      "start": 71.63999938964844,
+      "end": 73.23999786376953,
+      "text": " Well, that's the other thing."
+    },
+    {
+      "start": 73.23999786376953,
+      "end": 75.4000015258789,
+      "text": " I'm so confused."
+    },
+    {
+      "start": 75.4000015258789,
+      "end": 80.4000015258789,
+      "text": " The discharge papers say one pharmacy, but my usual one is the CVS on Main Street."
+    },
+    {
+      "start": 80.4000015258789,
+      "end": 82.55999755859375,
+      "text": " I don't know where they sent them."
+    },
+    {
+      "start": 82.55999755859375,
+      "end": 84.12000274658203,
+      "text": " Don't you worry about that at all."
+    },
+    {
+      "start": 84.12000274658203,
+      "end": 88.12000274658203,
+      "text": " I will track down exactly which pharmacy has your new medications and make sure you know"
+    },
+    {
+      "start": 88.12000274658203,
+      "end": 89.19999694824219,
+      "text": " where to go."
+    },
+    {
+      "start": 89.19999694824219,
+      "end": 91.44000244140625,
+      "text": " We can even see about getting them delivered."
+    },
+    {
+      "start": 91.44000244140625,
+      "end": 92.44000244140625,
+      "text": " How does that sound?"
+    },
+    {
+      "start": 92.44000244140625,
+      "end": 94.36000061035156,
+      "text": " Oh, that would be wonderful, Sarah."
+    },
+    {
+      "start": 94.36000061035156,
+      "end": 95.44000244140625,
+      "text": " Thank you."
+    },
+    {
+      "start": 95.44000244140625,
+      "end": 97.4000015258789,
+      "text": " It's all a bit much right now."
+    },
+    {
+      "start": 97.4000015258789,
+      "end": 99.80000305175781,
+      "text": " Of course, we'll take it one step at a time."
+    },
+    {
+      "start": 99.80000305175781,
+      "end": 101.16000366210938,
+      "text": " Is there anything else on your mind?"
+    },
+    {
+      "start": 101.16000366210938,
+      "end": 104.5199966430664,
+      "text": " Well, my daughter Lisa, she helps me so much."
+    },
+    {
+      "start": 104.5199966430664,
+      "end": 108.23999786376953,
+      "text": " She was asking when my appointment with the kidney doctor is."
+    },
+    {
+      "start": 108.23999786376953,
+      "end": 110.95999908447266,
+      "text": " I couldn't remember what we scheduled."
+    },
+    {
+      "start": 110.95999908447266,
+      "end": 112.19999694824219,
+      "text": " The nephrologist."
+    },
+    {
+      "start": 112.19999694824219,
+      "end": 114.36000061035156,
+      "text": " I see that's scheduled for March 12th."
+    },
+    {
+      "start": 114.36000061035156,
+      "end": 118,
+      "text": " I'll send all the details directly to Lisa's phone so she has them."
+    },
+    {
+      "start": 118,
+      "end": 119.4800033569336,
+      "text": " What's a good number for her?"
+    },
+    {
+      "start": 119.4800033569336,
+      "end": 122.95999908447266,
+      "text": " It's 555-123-4567."
+    },
+    {
+      "start": 122.95999908447266,
+      "end": 123.95999908447266,
+      "text": " Thank you."
+    },
+    {
+      "start": 123.95999908447266,
+      "end": 126.12000274658203,
+      "text": " One less thing for me to remember."
+    },
+    {
+      "start": 126.12000274658203,
+      "end": 127.27999877929688,
+      "text": " Perfect."
+    },
+    {
+      "start": 127.27999877929688,
+      "end": 128.6199951171875,
+      "text": " One last thing, Jane."
+    },
+    {
+      "start": 128.6199951171875,
+      "end": 132.16000366210938,
+      "text": " How are you managing with daily activities like bathing?"
+    },
+    {
+      "start": 132.16000366210938,
+      "end": 135.52000427246094,
+      "text": " I know that can be tough after a hospital stay."
+    },
+    {
+      "start": 135.52000427246094,
+      "end": 136.72000122070312,
+      "text": " It is."
+    },
+    {
+      "start": 136.72000122070312,
+      "end": 138.83999633789062,
+      "text": " It's hard to stand in the shower for too long."
+    },
+    {
+      "start": 138.83999633789062,
+      "end": 141.0399932861328,
+      "text": " I get so tired and dizzy."
+    },
+    {
+      "start": 141.0399932861328,
+      "end": 146.24000549316406,
+      "text": " I was wondering, is there someone who could help with that just for a little while?"
+    },
+    {
+      "start": 146.24000549316406,
+      "end": 147.36000061035156,
+      "text": " Absolutely."
+    },
+    {
+      "start": 147.36000061035156,
+      "end": 148.60000610351562,
+      "text": " That's a great question."
+    },
+    {
+      "start": 148.60000610351562,
+      "end": 151.0800018310547,
+      "text": " It sounds like a home health aide would be very helpful."
+    },
+    {
+      "start": 151.0800018310547,
+      "end": 153.60000610351562,
+      "text": " I will put in a referral for that right away."
+    },
+    {
+      "start": 153.60000610351562,
+      "end": 156.67999267578125,
+      "text": " They can help with personal care while you get your strength back."
+    },
+    {
+      "start": 156.67999267578125,
+      "end": 160.52000427246094,
+      "text": " You've taken such a weight off my shoulders, Sarah."
+    },
+    {
+      "start": 160.52000427246094,
+      "end": 161.9199981689453,
+      "text": " That's what I'm here for, Jane."
+    },
+    {
+      "start": 161.9199981689453,
+      "end": 163.9600067138672,
+      "text": " I'll get to work on all of this."
+    },
+    {
+      "start": 163.9600067138672,
+      "end": 167.72000122070312,
+      "text": " Florence will handle the coordination and we'll keep you updated."
+    },
+    {
+      "start": 167.72000122070312,
+      "end": 169.8800048828125,
+      "text": " Just rest up and I'll be in touch soon."
+    },
+    {
+      "start": 169.8800048828125,
+      "end": 170.8800048828125,
+      "text": " Thank you."
+    },
+    {
+      "start": 170.8800048828125,
+      "end": 171.3800048828125,
+      "text": " Bye now."
+    }
+  ],
+  "full_text": "Hello, Jane. This is Florence, your care navigator from Dr. Campbell's office, calling on a recorded line. I have your care manager, Sarah, ready to join. Is now a good time to talk? Oh, hello, Florence. Yes, now is fine. A little out of breath today, but I can talk. I understand. Connecting you with Sarah now. Please hold. Hi, Jane. This is Sarah. How are you feeling today? I heard you sound a bit short of breath. Hi, Sarah. I'm okay. Just tired. It's a little harder to get around than I expected. The hospital doctor mentioned I might get an oxygen machine for the house, but nothing's arrived yet. Okay, that's the first thing I want to check on for you. A home oxygen concentrator. I'll make sure that order is processed and find out when it will be delivered. I'm concerned about that shortness of breath, though. I'd feel better if we could get a pulse oximeter to you so you can check your oxygen levels at home. Would that be all right? Oh, one of those finger clip things? Yes, that would be fine. It would probably make me feel better, too. Great. Now, I know they gave you a few new prescriptions at the hospital. Have you been able to pick those up? Well, that's the other thing. I'm so confused. The discharge papers say one pharmacy, but my usual one is the CVS on Main Street. I don't know where they sent them. Don't you worry about that at all. I will track down exactly which pharmacy has your new medications and make sure you know where to go. We can even see about getting them delivered. How does that sound? Oh, that would be wonderful, Sarah. Thank you. It's all a bit much right now. Of course, we'll take it one step at a time. Is there anything else on your mind? Well, my daughter Lisa, she helps me so much. She was asking when my appointment with the kidney doctor is. I couldn't remember what we scheduled. The nephrologist. I see that's scheduled for March 12th. I'll send all the details directly to Lisa's phone so she has them. What's a good number for her? It's 555-123-4567. Thank you. One less thing for me to remember. Perfect. One last thing, Jane. How are you managing with daily activities like bathing? I know that can be tough after a hospital stay. It is. It's hard to stand in the shower for too long. I get so tired and dizzy. I was wondering, is there someone who could help with that just for a little while? Absolutely. That's a great question. It sounds like a home health aide would be very helpful. I will put in a referral for that right away. They can help with personal care while you get your strength back. You've taken such a weight off my shoulders, Sarah. That's what I'm here for, Jane. I'll get to work on all of this. Florence will handle the coordination and we'll keep you updated. Just rest up and I'll be in touch soon. Thank you. Bye now."
+}

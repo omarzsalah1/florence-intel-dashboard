@@ -4553,6 +4553,67 @@ button:hover {
         .transcript-audio-sub { font-size: 10px; color: #6B7280; }
         .transcript-audio-bar audio { width: 100%; height: 36px; border-radius: 6px; }
 
+        /* ==================== CALL TASK SUMMARY PANEL ==================== */
+        .call-task-summary {
+            background: linear-gradient(135deg, #f8f9fa, #f0f4f8);
+            border: 1px solid #dde3ea;
+            border-radius: 10px;
+            padding: 14px;
+            margin: 10px 0 4px 0;
+        }
+        .call-task-summary-header {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 10px; padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .call-task-summary-header h4 {
+            font-size: 12px; font-weight: 700; color: #31393F; margin: 0;
+        }
+        .call-task-summary-header .badge {
+            font-size: 9px; font-weight: 700; color: #55B5B8;
+            background: rgba(85,181,184,0.12); padding: 2px 7px;
+            border-radius: 10px;
+        }
+        .call-task-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 10px; margin: 4px 0;
+            background: white; border: 1px solid #e8ecf0;
+            border-radius: 8px; font-size: 11px; color: #31393F;
+            transition: all 0.15s ease;
+        }
+        .call-task-item:hover { border-color: #55B5B8; box-shadow: 0 1px 4px rgba(85,181,184,0.15); }
+        .call-task-item .task-icon {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: rgba(85,181,184,0.1); color: #55B5B8;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; flex-shrink: 0;
+        }
+        .call-task-item .task-label { flex: 1; font-weight: 500; }
+        .call-task-item .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .call-task-item .task-actions button {
+            font-size: 9px; font-weight: 600; padding: 3px 8px;
+            border-radius: 5px; border: 1px solid; cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .call-task-item .task-actions .btn-assign {
+            background: white; color: #55B5B8; border-color: #55B5B8;
+        }
+        .call-task-item .task-actions .btn-assign:hover {
+            background: #55B5B8; color: white;
+        }
+        .call-task-item .task-actions .btn-self {
+            background: rgba(85,181,184,0.08); color: #3d8b8e; border-color: rgba(85,181,184,0.3);
+        }
+        .call-task-item .task-actions .btn-self:hover {
+            background: #55B5B8; color: white; border-color: #55B5B8;
+        }
+        .call-task-item.task-assigned {
+            background: rgba(85,181,184,0.06); border-color: rgba(85,181,184,0.25);
+        }
+        .call-task-item.task-assigned .task-icon {
+            background: #55B5B8; color: white;
+        }
+
         /* ==================== WORKFLOWS TAB ==================== */
         .wf-header-bar {
             margin-bottom: 12px;
@@ -7487,7 +7548,7 @@ button:hover {
                         <span class="btn-text">Check-In</span>
                     </button>
                 </div>
-                <div id="show-full-transcript-bar" style="display:none; padding: 6px 12px; background: linear-gradient(135deg, #f0f9ff, #e8f4fd); border-bottom: 1px solid #dbeafe; text-align: center;">
+                <div id="show-full-transcript-bar" style="display:none !important; padding: 6px 12px; background: linear-gradient(135deg, #f0f9ff, #e8f4fd); border-bottom: 1px solid #dbeafe; text-align: center;">
                     <button id="show-full-transcript-btn" onclick="showFullTranscriptInstant()" style="background: linear-gradient(135deg, #55B5B8, #3d9a9d); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                         Show Full Transcript
@@ -8462,64 +8523,64 @@ button:hover {
         // ==================== WORKFLOW SCRIPTS ====================
         const scripts = {
             engage: [
-                { type: 'system', text: 'Florence initiating TCM outreach call to Jane Doe...' },
-                { type: 'system', text: '📞 Call connected' },
-                { type: 'florence', text: "Hello Jane, this is Florence calling from Dr. Campbell's office. I see here that you were released from St. Joseph's Hospital this morning after your heart attack. How are you feeling?" },
-                { type: 'patient', text: "Oh hello Florence. I'm doing okay, just a little tired and nervous about being home." },
-                { type: 'florence', text: "That's completely understandable, Jane. I'm here to help make sure you have everything you need. First, let me ask - did you pick up all your new medications from the pharmacy?" },
-                { type: 'patient', text: "Yes, my daughter helped me get them this afternoon." },
-                { type: 'florence', text: "Wonderful! Let me quickly review them with you to make sure we're on the same page. You should have Metoprolol for your heart rate, Clopidogrel to prevent blood clots, and Atorvastatin for cholesterol. Do you have all three of those?" },
-                { type: 'patient', text: "Yes, I have them all here. The pharmacist explained them to me." },
-                { type: 'florence', text: "Perfect. Now this is very important, Jane - the hospital should have given you a scale to weigh yourself daily. Have you been weighing yourself?" },
-                { type: 'patient', text: "Yes, I weighed myself this morning. I was 198 pounds." },
-                { type: 'florence', text: "Good! Here's what you need to watch for: if you gain 2 pounds in one day, or 5 pounds in one week, you need to call us immediately. That could be a sign of fluid buildup. Can you remember that? 2 pounds in a day, or 5 pounds in a week." },
-                { type: 'patient', text: "2 pounds in a day, 5 pounds in a week. I wrote it down." },
-                { type: 'florence', text: "Excellent! Now, have you had any chest pain, shortness of breath, or swelling in your legs since you got home?" },
-                { type: 'patient', text: "No chest pain, but I do feel a little short of breath when I walk to the bathroom." },
-                { type: 'florence', text: "That's normal in the first few days after a heart attack, but we'll want Dr. Campbell to check that at your follow-up visit. Speaking of which, let me get you scheduled. Dr. Campbell needs to see you within the next few days. Let me conference in the office right now to find you an appointment. Can you hold for just a moment?" },
-                { type: 'patient', text: "Yes, of course." },
-                { type: 'system', text: '📞 Connecting to Dr. Campbell\'s office...' },
-                { type: 'system', text: '📞 3-way call initiated' },
-                { type: 'care-manager', text: "This is Sarah at Dr. Campbell's office, how can I help?" },
-                { type: 'florence', text: "Hi Sarah, this is Florence. I have Jane Doe on the line - she was discharged from St. Joseph's this morning after an MI. We need to get her in for a post-discharge follow-up as soon as possible." },
-                { type: 'care-manager', text: "Of course! Let me check the schedule. I have Monday at 10am or 2pm. Which works better for you, Jane?" },
-                { type: 'patient', text: "Monday at 10am would be perfect." },
-                { type: 'care-manager', text: "Great! You're all set for Monday, February 18th at 10am with Dr. Campbell. We'll see you then, Jane." },
-                { type: 'florence', text: "Perfect! Jane, you're scheduled for Monday at 10am. I'll send you a text reminder the day before. Is there anything else you're worried about or any questions I can answer?" },
-                { type: 'patient', text: "No, I think that covers everything. Thank you so much for calling and helping me get that appointment." },
-                { type: 'florence', text: "You're very welcome, Jane. Remember - if you have any chest pain, severe shortness of breath, or sudden weight gain, call 911 right away. Otherwise, we'll see you Monday at 10am. Take care!" },
-                { type: 'patient', text: "Thank you, Florence. Goodbye." },
-                { type: 'system', text: '📞 Call ended • Duration: 4:32' }
+                { type: 'system', text: 'Florence initiating TCM outreach call to Jane Doe...', t: 0 },
+                { type: 'system', text: '📞 Call connected', t: 2000 },
+                { type: 'florence', text: "Hello Jane, this is Florence calling from Dr. Campbell's office. I see here that you were released from St. Joseph's Hospital this morning after your heart attack. How are you feeling?", t: 3500 },
+                { type: 'patient', text: "Oh hello Florence. I'm doing okay, just a little tired and nervous about being home.", t: 15400 },
+                { type: 'florence', text: "That's completely understandable, Jane. I'm here to help make sure you have everything you need. First, let me ask - did you pick up all your new medications from the pharmacy?", t: 22200 },
+                { type: 'patient', text: "Yes, my daughter helped me get them this afternoon.", t: 33500 },
+                { type: 'florence', text: "Wonderful! Let me quickly review them with you to make sure we're on the same page. You should have Metoprolol for your heart rate, Clopidogrel to prevent blood clots, and Atorvastatin for cholesterol. Do you have all three of those?", t: 38000 },
+                { type: 'patient', text: "Yes, I have them all here. The pharmacist explained them to me.", t: 53100 },
+                { type: 'florence', text: "Perfect. Now this is very important, Jane - the hospital should have given you a scale to weigh yourself daily. Have you been weighing yourself?", t: 57700 },
+                { type: 'patient', text: "Yes, I weighed myself this morning. I was 198 pounds.", t: 66800 },
+                { type: 'florence', text: "Good! Here's what you need to watch for: if you gain 2 pounds in one day, or 5 pounds in one week, you need to call us immediately. That could be a sign of fluid buildup. Can you remember that? 2 pounds in a day, or 5 pounds in a week.", t: 71800 },
+                { type: 'patient', text: "2 pounds in a day, 5 pounds in a week. I wrote it down.", t: 84800 },
+                { type: 'florence', text: "Excellent! Now, have you had any chest pain, shortness of breath, or swelling in your legs since you got home?", t: 93500 },
+                { type: 'patient', text: "No chest pain, but I do feel a little short of breath when I walk to the bathroom.", t: 100200 },
+                { type: 'florence', text: "That's normal in the first few days after a heart attack, but we'll want Dr. Campbell to check that at your follow-up visit. Speaking of which, let me get you scheduled. Dr. Campbell needs to see you within the next few days. Let me conference in the office right now to find you an appointment. Can you hold for just a moment?", t: 107500 },
+                { type: 'patient', text: "Yes, of course.", t: 129300 },
+                { type: 'system', text: '📞 Connecting to Dr. Campbell\'s office...', t: 131000 },
+                { type: 'system', text: '📞 3-way call initiated', t: 133000 },
+                { type: 'care-manager', text: "This is Sarah at Dr. Campbell's office, how can I help?", t: 133500 },
+                { type: 'florence', text: "Hi Sarah, this is Florence. I have Jane Doe on the line - she was discharged from St. Joseph's this morning after an MI. We need to get her in for a post-discharge follow-up as soon as possible.", t: 134400 },
+                { type: 'care-manager', text: "Of course! Let me check the schedule. I have Monday at 10am or 2pm. Which works better for you, Jane?", t: 147500 },
+                { type: 'patient', text: "Monday at 10am would be perfect.", t: 152200 },
+                { type: 'care-manager', text: "Great! You're all set for Monday, February 18th at 10am with Dr. Campbell. We'll see you then, Jane.", t: 156000 },
+                { type: 'florence', text: "Perfect! Jane, you're scheduled for Monday at 10am. I'll send you a text reminder the day before. Is there anything else you're worried about or any questions I can answer?", t: 162400 },
+                { type: 'patient', text: "No, I think that covers everything. Thank you so much for calling and helping me get that appointment.", t: 174200 },
+                { type: 'florence', text: "You're very welcome, Jane. Remember - if you have any chest pain, severe shortness of breath, or sudden weight gain, call 911 right away. Otherwise, we'll see you Monday at 10am. Take care!", t: 181500 },
+                { type: 'patient', text: "Thank you, Florence. Goodbye.", t: 195500 },
+                { type: 'system', text: '📞 Call ended • Duration: 4:32', t: 198000 }
             ],
             convene: [
-                { type: 'system', text: 'Florence initiating Convene call to Jane Doe (patient) and Sarah Martinez (Care Manager)...' },
-                { type: 'system', text: '📞 Calling Jane...' },
-                { type: 'system', text: '📞 Jane connected' },
-                { type: 'florence', text: "Hello Jane, this is Florence, your care navigator from Dr. Campbell's office, calling on a recorded line. I have your care manager, Sarah, ready to join. Is now a good time to talk?" },
-                { type: 'patient', text: "Oh, hello Florence. Yes, now is fine. A little out of breath today, but I can talk." },
-                { type: 'florence', text: "I understand. Connecting you with Sarah now. Please hold." },
-                { type: 'system', text: '👥 Connecting Sarah Martinez...' },
-                { type: 'system', text: '👥 Sarah Martinez joined' },
-                { type: 'care-manager', text: "Hi Jane, this is Sarah. How are you feeling today? I heard you sound a bit short of breath." },
-                { type: 'patient', text: "Hi Sarah. I'm okay, just... tired. It's a little harder to get around than I expected. The hospital doctor mentioned I might get an oxygen machine for the house, but nothing's arrived yet." },
-                { type: 'care-manager', text: "Okay, that's the first thing I want to check on for you. A home oxygen concentrator. I'll make sure that order is processed and find out when it will be delivered. I'm concerned about that shortness of breath, though. I'd feel better if we could get a pulse oximeter to you, so you can check your oxygen levels at home. Would that be alright?" },
-                { type: 'patient', text: "Oh, one of those finger clip things? Yes, that would be fine. It would probably make me feel better, too." },
-                { type: 'care-manager', text: "Great. Now, I know they gave you a few new prescriptions at the hospital. Have you been able to pick those up?" },
-                { type: 'patient', text: "Well, that's the other thing. I'm so confused. The discharge papers say one pharmacy, but my usual one is the CVS on Main Street. I don't know where they sent them." },
-                { type: 'care-manager', text: "Don't you worry about that at all. I will track down exactly which pharmacy has your new medications and make sure you know where to go. We can even see about getting them delivered. How does that sound?" },
-                { type: 'patient', text: "Oh, that would be wonderful, Sarah. Thank you. It's all a bit much right now." },
-                { type: 'care-manager', text: "Of course. We'll take it one step at a time. Is there anything else on your mind?" },
-                { type: 'patient', text: "Well, my daughter, Lisa, she helps me so much. She was asking when my appointment with the kidney doctor is. I couldn't remember what we scheduled." },
-                { type: 'care-manager', text: "The nephrologist. I see that's scheduled for March 12th. I'll send all the details directly to Lisa's phone so she has them. What's a good number for her?" },
-                { type: 'patient', text: "It's 555-123-4567. Thank you. One less thing for me to remember." },
-                { type: 'care-manager', text: "Perfect. One last thing, Jane. How are you managing with daily activities, like bathing? I know that can be tough after a hospital stay." },
-                { type: 'patient', text: "(sighs) It is. It's hard to stand in the shower for too long. I get so tired and dizzy. I was wondering... is there someone who could... help with that? Just for a little while?" },
-                { type: 'care-manager', text: "Absolutely. That's a great question. It sounds like a home health aide would be very helpful. I will put in a referral for that right away. They can help with personal care while you get your strength back." },
-                { type: 'patient', text: "You've taken such a weight off my shoulders, Sarah." },
-                { type: 'care-manager', text: "That's what I'm here for, Jane. I'll get to work on all of this. Florence will handle the coordination, and we'll keep you updated. Just rest up, and I'll be in touch soon." },
-                { type: 'patient', text: "Thank you. Bye now." },
-                { type: 'system', text: '📞 Call ended • Duration: 5:42' },
-                { type: 'system', text: '✨ Florence deduced 8 action items from this conversation. View them in the Tasks tab.' }
+                { type: 'system', text: 'Florence initiating Convene call to Jane Doe (patient) and Sarah Martinez (Care Manager)...', t: 0 },
+                { type: 'system', text: '📞 Calling Jane...', t: 1500 },
+                { type: 'system', text: '📞 Jane connected', t: 3000 },
+                { type: 'florence', text: "Hello Jane, this is Florence, your care navigator from Dr. Campbell's office, calling on a recorded line. I have your care manager, Sarah, ready to join. Is now a good time to talk?", t: 4500 },
+                { type: 'patient', text: "Oh, hello Florence. Yes, now is fine. A little out of breath today, but I can talk.", t: 20500 },
+                { type: 'florence', text: "I understand. Connecting you with Sarah now. Please hold.", t: 27000 },
+                { type: 'system', text: '👥 Connecting Sarah Martinez...', t: 30800 },
+                { type: 'system', text: '👥 Sarah Martinez joined', t: 32000 },
+                { type: 'care-manager', text: "Hi Jane, this is Sarah. How are you feeling today? I heard you sound a bit short of breath.", t: 32100 },
+                { type: 'patient', text: "Hi Sarah. I'm okay, just... tired. It's a little harder to get around than I expected. The hospital doctor mentioned I might get an oxygen machine for the house, but nothing's arrived yet.", t: 36500 },
+                { type: 'care-manager', text: "Okay, that's the first thing I want to check on for you. A home oxygen concentrator. I'll make sure that order is processed and find out when it will be delivered. I'm concerned about that shortness of breath, though. I'd feel better if we could get a pulse oximeter to you, so you can check your oxygen levels at home. Would that be alright?", t: 47200 },
+                { type: 'patient', text: "Oh, one of those finger clip things? Yes, that would be fine. It would probably make me feel better, too.", t: 64700 },
+                { type: 'care-manager', text: "Great. Now, I know they gave you a few new prescriptions at the hospital. Have you been able to pick those up?", t: 71000 },
+                { type: 'patient', text: "Well, that's the other thing. I'm so confused. The discharge papers say one pharmacy, but my usual one is the CVS on Main Street. I don't know where they sent them.", t: 76200 },
+                { type: 'care-manager', text: "Don't you worry about that at all. I will track down exactly which pharmacy has your new medications and make sure you know where to go. We can even see about getting them delivered. How does that sound?", t: 87600 },
+                { type: 'patient', text: "Oh, that would be wonderful, Sarah. Thank you. It's all a bit much right now.", t: 97000 },
+                { type: 'care-manager', text: "Of course. We'll take it one step at a time. Is there anything else on your mind?", t: 103300 },
+                { type: 'patient', text: "Well, my daughter, Lisa, she helps me so much. She was asking when my appointment with the kidney doctor is. I couldn't remember what we scheduled.", t: 106700 },
+                { type: 'care-manager', text: "The nephrologist. I see that's scheduled for March 12th. I'll send all the details directly to Lisa's phone so she has them. What's a good number for her?", t: 116500 },
+                { type: 'patient', text: "It's 555-123-4567. Thank you. One less thing for me to remember.", t: 124000 },
+                { type: 'care-manager', text: "Perfect. One last thing, Jane. How are you managing with daily activities, like bathing? I know that can be tough after a hospital stay.", t: 131600 },
+                { type: 'patient', text: "(sighs) It is. It's hard to stand in the shower for too long. I get so tired and dizzy. I was wondering... is there someone who could... help with that? Just for a little while?", t: 140500 },
+                { type: 'care-manager', text: "Absolutely. That's a great question. It sounds like a home health aide would be very helpful. I will put in a referral for that right away. They can help with personal care while you get your strength back.", t: 151700 },
+                { type: 'patient', text: "You've taken such a weight off my shoulders, Sarah.", t: 161500 },
+                { type: 'care-manager', text: "That's what I'm here for, Jane. I'll get to work on all of this. Florence will handle the coordination, and we'll keep you updated. Just rest up, and I'll be in touch soon.", t: 166400 },
+                { type: 'patient', text: "Thank you. Bye now.", t: 174400 },
+                { type: 'system', text: '📞 Call ended • Duration: 5:42', t: 176000 },
+                { type: 'system', text: '✨ Florence deduced 8 action items from this conversation. View them in the Tasks tab.', t: 178000 }
             ],
             checkin: [
                 { type: 'system', text: 'Florence initiating automated Check-In with Jane Doe...' },
@@ -10491,75 +10552,134 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
         
         async function playConversation(workflowType, signal) {
             const script = scripts[workflowType];
+            const hasTimingData = script[0] && typeof script[0].t === 'number';
             
-            for (let i = 0; i < script.length; i++) {
-                if (signal.aborted) throw new Error('Aborted');
-                
-                const msg = script[i];
-                
-                if (msg.type === 'patient' || msg.type === 'care-manager') {
-                    showTypingIndicator();
-                    await new Promise((r, reject) => {
-                        const timeout = setTimeout(r, 600);
-                        signal.addEventListener('abort', () => {
-                            clearTimeout(timeout);
-                            reject(new Error('Aborted'));
-                        });
-                    });
-                    hideTypingIndicator();
-                }
-                
-                await addMessage(msg, signal);
-                
-                // Scan patient messages for clinical flags and workflow suggestions
-                if (msg.type === 'patient') {
-                    scanForClinicalFlags(msg.text);
-                    scanForWorkflowSuggestions(msg.text);
-                }
-                
-                // Trigger task deduction for convene workflow
-                if (workflowType === 'convene' && conveneTaskDeductions[i]) {
+            // ---- AUTO-PLAY AUDIO for workflows with timing data ----
+            if (hasTimingData) {
+                const audioInfo = workflowAudioFiles[workflowType];
+                if (audioInfo) {
+                    // Stop any previous audio
+                    if (activeTranscriptAudio && !activeTranscriptAudio.paused) {
+                        activeTranscriptAudio.pause();
+                        activeTranscriptAudio = null;
+                    }
+                    const audio = new Audio(audioInfo.src);
+                    audio.preload = 'auto';
+                    activeTranscriptAudio = audio;
+                    // Start audio after first system messages (the pre-call setup)
+                    const firstSpeechLine = script.find(m => m.type === 'florence' || m.type === 'patient' || m.type === 'care-manager');
+                    const audioStartDelay = firstSpeechLine ? firstSpeechLine.t : 3500;
                     setTimeout(() => {
-                        addTaskFromConvene(conveneTaskDeductions[i]);
-                    }, 800);
-                }
-                
-                // Trigger task deduction for engage workflow
-                if (workflowType === 'engage' && typeof engageTaskDeductions !== 'undefined' && engageTaskDeductions[i]) {
-                    setTimeout(() => {
-                        addTaskFromConvene(engageTaskDeductions[i], 'WF-TCM-001', 'Engage call — AI deduced from conversation');
-                    }, 800);
-                }
-                
-                // Trigger task deduction for checkin workflow
-                if (workflowType === 'checkin' && typeof checkinTaskDeductions !== 'undefined' && checkinTaskDeductions[i]) {
-                    setTimeout(() => {
-                        addTaskFromConvene(checkinTaskDeductions[i], 'WF-CHECKIN-001', 'Check-In SMS — AI deduced from patient replies');
-                    }, 800);
-                }
-                
-                await new Promise((r, reject) => {
-                    const timeout = setTimeout(r, 250);
+                        if (!signal.aborted && activeTranscriptAudio === audio) {
+                            audio.play().catch(e => console.warn('Audio autoplay blocked:', e));
+                        }
+                    }, audioStartDelay);
+                    // Clean up on abort
                     signal.addEventListener('abort', () => {
-                        clearTimeout(timeout);
-                        reject(new Error('Aborted'));
+                        audio.pause(); audio.currentTime = 0;
                     });
-                });
+                }
+            }
+            
+            // ---- TIMED PLAYBACK: use absolute timestamps ----
+            if (hasTimingData) {
+                const startTime = Date.now();
+                
+                for (let i = 0; i < script.length; i++) {
+                    if (signal.aborted) throw new Error('Aborted');
+                    
+                    const msg = script[i];
+                    const targetTime = msg.t;
+                    const elapsed = Date.now() - startTime;
+                    const waitMs = Math.max(0, targetTime - elapsed);
+                    
+                    if (waitMs > 0) {
+                        await new Promise((r, reject) => {
+                            const timeout = setTimeout(r, waitMs);
+                            signal.addEventListener('abort', () => {
+                                clearTimeout(timeout);
+                                reject(new Error('Aborted'));
+                            });
+                        });
+                    }
+                    
+                    if (signal.aborted) throw new Error('Aborted');
+                    
+                    // Show typing indicator briefly for non-system messages
+                    if (msg.type === 'patient' || msg.type === 'care-manager') {
+                        showTypingIndicator();
+                        await new Promise((r, reject) => {
+                            const timeout = setTimeout(r, 400);
+                            signal.addEventListener('abort', () => { clearTimeout(timeout); reject(new Error('Aborted')); });
+                        });
+                        hideTypingIndicator();
+                    }
+                    
+                    await addMessage(msg, signal);
+                    
+                    // Scan patient messages for clinical flags and workflow suggestions
+                    if (msg.type === 'patient') {
+                        scanForClinicalFlags(msg.text);
+                        scanForWorkflowSuggestions(msg.text);
+                    }
+                    
+                    // Trigger task deductions
+                    if (workflowType === 'convene' && conveneTaskDeductions[i]) {
+                        setTimeout(() => { addTaskFromConvene(conveneTaskDeductions[i]); }, 800);
+                    }
+                    if (workflowType === 'engage' && typeof engageTaskDeductions !== 'undefined' && engageTaskDeductions[i]) {
+                        setTimeout(() => { addTaskFromConvene(engageTaskDeductions[i], 'WF-TCM-001', 'Engage call \u2014 AI deduced from conversation'); }, 800);
+                    }
+                    if (workflowType === 'checkin' && typeof checkinTaskDeductions !== 'undefined' && checkinTaskDeductions[i]) {
+                        setTimeout(() => { addTaskFromConvene(checkinTaskDeductions[i], 'WF-CHECKIN-001', 'Check-In SMS \u2014 AI deduced from patient replies'); }, 800);
+                    }
+                }
+            } else {
+                // ---- FALLBACK: original sequential playback for checkin (no timing data) ----
+                for (let i = 0; i < script.length; i++) {
+                    if (signal.aborted) throw new Error('Aborted');
+                    const msg = script[i];
+                    
+                    if (msg.type === 'patient' || msg.type === 'care-manager') {
+                        showTypingIndicator();
+                        await new Promise((r, reject) => {
+                            const timeout = setTimeout(r, 600);
+                            signal.addEventListener('abort', () => { clearTimeout(timeout); reject(new Error('Aborted')); });
+                        });
+                        hideTypingIndicator();
+                    }
+                    
+                    await addMessage(msg, signal);
+                    
+                    if (msg.type === 'patient') {
+                        scanForClinicalFlags(msg.text);
+                        scanForWorkflowSuggestions(msg.text);
+                    }
+                    
+                    if (workflowType === 'checkin' && typeof checkinTaskDeductions !== 'undefined' && checkinTaskDeductions[i]) {
+                        setTimeout(() => { addTaskFromConvene(checkinTaskDeductions[i], 'WF-CHECKIN-001', 'Check-In SMS \u2014 AI deduced from patient replies'); }, 800);
+                    }
+                    
+                    await new Promise((r, reject) => {
+                        const timeout = setTimeout(r, 250);
+                        signal.addEventListener('abort', () => { clearTimeout(timeout); reject(new Error('Aborted')); });
+                    });
+                }
             }
             
             // Wait then show documentation inline in the transcript
             await new Promise((r, reject) => {
-                const timeout = setTimeout(r, 1000);
-                signal.addEventListener('abort', () => {
-                    clearTimeout(timeout);
-                    reject(new Error('Aborted'));
-                });
+                const timeout = setTimeout(r, 1500);
+                signal.addEventListener('abort', () => { clearTimeout(timeout); reject(new Error('Aborted')); });
             });
             
             showInlineDocumentation(workflowType);
             
-            // Insert audio player at the end of the transcript
+            // Insert audio player at the end as fallback
             insertTranscriptAudioPlayer(workflowType);
+            
+            // Show task summary panel at the end
+            showCallTaskSummary(workflowType);
         }
         
         // Audio file mapping for workflow types
@@ -10607,6 +10727,79 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Track the native audio element for cleanup
             const audioEl = bar.querySelector('audio');
             if (audioEl) activeTranscriptAudio = audioEl;
+        }
+
+        // ==================== CALL TASK SUMMARY PANEL ====================
+        // Collects all tasks/workflows deduced during the call and presents them
+        // with Assign / Do It Myself buttons.
+        const callTaskSummaryData = {
+            convene: [
+                'Coordinate home oxygen delivery',
+                'Order home pulse oximetry monitoring',
+                'Verify prescription pickup location',
+                'Screen for mobility limitations (SDOH)',
+                'Send nephrology appointment details to daughter',
+                'Initiate home health aide referral',
+                'Assess social support and caregiver burden (SDOH)',
+                'Flag ADL assistance need — patient unable to bathe independently (SDOH)'
+            ],
+            engage: [
+                'Document post-discharge status — patient reports fatigue',
+                'Verify medication pickup — all discharge meds confirmed',
+                'Flag exertional dyspnea — review at follow-up visit',
+                'Confirm Monday 10am appointment with Dr. Campbell',
+                'Send appointment reminder text to Jane Doe'
+            ],
+            checkin: [
+                'Log patient status: feeling okay — continue monitoring',
+                'Confirm medication adherence — all meds taken today',
+                'Flag elevated blood sugar (156 mg/dL) — notify care team',
+                'Document no falls or dizziness reported — update fall risk log'
+            ]
+        };
+
+        function showCallTaskSummary(workflowType) {
+            const tasks = callTaskSummaryData[workflowType];
+            if (!tasks || tasks.length === 0) return;
+            const container = document.getElementById('transcript-container');
+            if (!container) return;
+
+            const panel = document.createElement('div');
+            panel.className = 'call-task-summary';
+            panel.innerHTML = `
+                <div class="call-task-summary-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#55B5B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    <h4>Tasks Identified From This Call</h4>
+                    <span class="badge">${tasks.length} items</span>
+                </div>
+                ${tasks.map((task, idx) => `
+                    <div class="call-task-item" id="cts-item-${idx}">
+                        <div class="task-icon">${idx + 1}</div>
+                        <div class="task-label">${task}</div>
+                        <div class="task-actions">
+                            <button class="btn-assign" onclick="assignCallTask(${idx}, 'assign')">Assign</button>
+                            <button class="btn-self" onclick="assignCallTask(${idx}, 'self')">Do It Myself</button>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+            container.appendChild(panel);
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function assignCallTask(idx, action) {
+            const item = document.getElementById('cts-item-' + idx);
+            if (!item) return;
+            item.classList.add('task-assigned');
+            const actionsDiv = item.querySelector('.task-actions');
+            if (action === 'assign') {
+                actionsDiv.innerHTML = '<span style="font-size:10px;color:#55B5B8;font-weight:600;">\u2713 Assigned to Care Team</span>';
+            } else {
+                actionsDiv.innerHTML = '<span style="font-size:10px;color:#3d8b8e;font-weight:600;">\u2713 Added to My Tasks</span>';
+            }
         }
 
         function showInlineDocumentation(workflowType) {
@@ -10958,11 +11151,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             if (window.pendingClinicalFlags) window.pendingClinicalFlags = [];
             if (typeof shownWorkflowSuggestions !== 'undefined') shownWorkflowSuggestions.clear();
             
-            // Show/hide full transcript bar for convene
-            const ftBar = document.getElementById('show-full-transcript-bar');
-            if (ftBar) {
-                ftBar.style.display = (workflowType === 'convene') ? 'block' : 'none';
-            }
+            // Show Full Transcript bar removed — demo should play in real-time with audio
             
             // Show listening indicator for convene
             if (workflowType === 'convene') {
