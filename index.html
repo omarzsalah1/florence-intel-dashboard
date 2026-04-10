@@ -4516,6 +4516,41 @@ button:hover {
             line-height: 1.5;
         }
 
+        /* Audio Player in Transcript Viewer */
+        .tv-audio-bar {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(85,181,184,0.08); border: 1px solid rgba(85,181,184,0.2);
+            border-radius: 10px; padding: 10px 14px; margin: 12px 0 6px;
+        }
+        .tv-audio-play {
+            width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: linear-gradient(135deg, #55B5B8, #3D9B9E); color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .tv-audio-play:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(85,181,184,0.4); }
+        .tv-audio-play.playing { background: linear-gradient(135deg, #E45740, #c43e2c); }
+        .tv-audio-label { font-size: 11px; color: #55B5B8; font-weight: 700; }
+        .tv-audio-sublabel { font-size: 9px; color: #9CA3AF; margin-top: 2px; }
+
+        /* Audio Player in Live Transcript (Outreach tab) */
+        .transcript-audio-bar {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(85,181,184,0.06); border: 1px solid rgba(85,181,184,0.15);
+            border-radius: 10px; padding: 10px 14px; margin: 8px 0;
+        }
+        .transcript-audio-play {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            background: linear-gradient(135deg, #55B5B8, #3D9B9E); color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: transform 0.15s;
+        }
+        .transcript-audio-play:hover { transform: scale(1.08); }
+        .transcript-audio-play.playing { background: linear-gradient(135deg, #E45740, #c43e2c); }
+        .transcript-audio-info { display: flex; flex-direction: column; }
+        .transcript-audio-title { font-size: 11px; color: #55B5B8; font-weight: 700; }
+        .transcript-audio-sub { font-size: 9px; color: #6B7280; }
+
         /* ==================== WORKFLOWS TAB ==================== */
         .wf-header-bar {
             margin-bottom: 12px;
@@ -6273,7 +6308,7 @@ button:hover {
         }
         .campaign-mini-feed-list {
             display: flex; flex-direction: column; gap: 4px;
-            max-height: 72px; overflow: hidden;
+            max-height: 140px; overflow-y: auto;
         }
         .mini-feed-item {
             font-size: 10px; color: #5A6872; line-height: 1.4;
@@ -10520,8 +10555,65 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             });
             
             showInlineDocumentation(workflowType);
+            
+            // Insert audio player at the end of the transcript
+            insertTranscriptAudioPlayer(workflowType);
         }
         
+        // Audio file mapping for workflow types
+        const workflowAudioFiles = {
+            convene: { src: 'audio/Script1-ConveneCall.mp3', label: 'Vocalized Convene Call', sub: 'Florence + Jane + Sarah Martinez • 5:42' },
+            engage: { src: 'audio/Script3-EngageCallTCM.mp3', label: 'Vocalized TCM Engage Call', sub: 'Florence + Jane Doe • 3:14' },
+            dme: { src: 'audio/Script2_DMECall.mp3', label: 'Vocalized DME Coordination Call', sub: 'Florence + Lincare • 1:09' }
+        };
+
+        // Global audio instance for transcript playback
+        let activeTranscriptAudio = null;
+
+        function insertTranscriptAudioPlayer(workflowType) {
+            const audioInfo = workflowAudioFiles[workflowType];
+            if (!audioInfo) return;
+            const container = document.getElementById('transcript-container');
+            if (!container) return;
+
+            const bar = document.createElement('div');
+            bar.className = 'transcript-audio-bar';
+            bar.innerHTML = `
+                <button class="transcript-audio-play" id="transcript-audio-btn-${workflowType}" onclick="toggleTranscriptAudio('${workflowType}')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+                <div class="transcript-audio-info">
+                    <span class="transcript-audio-title">${audioInfo.label}</span>
+                    <span class="transcript-audio-sub">${audioInfo.sub}</span>
+                </div>
+            `;
+            container.appendChild(bar);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function toggleTranscriptAudio(workflowType) {
+            const audioInfo = workflowAudioFiles[workflowType];
+            if (!audioInfo) return;
+            const btn = document.getElementById('transcript-audio-btn-' + workflowType);
+
+            if (activeTranscriptAudio && !activeTranscriptAudio.paused) {
+                activeTranscriptAudio.pause();
+                activeTranscriptAudio.currentTime = 0;
+                if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
+                activeTranscriptAudio = null;
+                return;
+            }
+
+            activeTranscriptAudio = new Audio(audioInfo.src);
+            activeTranscriptAudio.play();
+            if (btn) { btn.classList.add('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>'; }
+            activeTranscriptAudio.onended = function() {
+                if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
+                activeTranscriptAudio = null;
+            };
+        }
+        window.toggleTranscriptAudio = toggleTranscriptAudio;
+
         function showInlineDocumentation(workflowType) {
             const doc = documentation[workflowType];
             const container = document.getElementById('transcript-container');
@@ -10857,6 +10949,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             isWorkflowInProgress = true;
             abortController = new AbortController();
             
+            // Stop any playing audio
+            if (typeof activeTranscriptAudio !== 'undefined' && activeTranscriptAudio && !activeTranscriptAudio.paused) {
+                activeTranscriptAudio.pause();
+                activeTranscriptAudio = null;
+            }
+            
             // Clear previous transcript
             document.getElementById('transcript-container').innerHTML = '';
             
@@ -11002,7 +11100,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
             }
             
-            // Show documentation after instant view
+            // Show documentation and audio player after instant view
+            showInlineDocumentation(workflowType);
+            insertTranscriptAudioPlayer(workflowType);
             setTimeout(() => {
                 resetButtons();
                 currentWorkflow = null;
@@ -16396,17 +16496,49 @@ function openTaskTranscript(taskId) {
         return `<div class="tv-msg"><span class="tv-msg-label ${lblClass}">${lbl}</span><span class="tv-msg-text">${m.text}</span></div>`;
     }).join('');
 
+    // Determine if this task has an associated audio file
+    const taskAudioMap = {
+        'task-1': { src: 'audio/Script2_DMECall.mp3', label: 'Listen to DME Coordination Call', sub: 'Florence + Lincare \u2022 1:09' },
+    };
+    // Also check if the transcript matches the convene or engage call
+    let audioBarHtml = '';
+    if (taskAudioMap[taskId]) {
+        const ai = taskAudioMap[taskId];
+        audioBarHtml = `<div class="tv-audio-bar"><button class="tv-audio-play" id="tv-audio-btn" onclick="toggleTvAudio('${ai.src}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button><div><div class="tv-audio-label">${ai.label}</div><div class="tv-audio-sublabel">${ai.sub}</div></div></div>`;
+    }
+
     overlay.innerHTML = `
         <div class="transcript-viewer">
             <div class="transcript-viewer-header">
                 <h4>${task.transcript_label || 'Transcript'}</h4>
-                <button class="transcript-viewer-close" onclick="document.getElementById('tv-overlay').remove()">&times;</button>
+                <button class="transcript-viewer-close" onclick="if(window._tvAudio){window._tvAudio.pause();window._tvAudio=null;}document.getElementById('tv-overlay').remove()">&times;</button>
             </div>
-            <div class="transcript-viewer-body">${msgs}</div>
+            <div class="transcript-viewer-body">${audioBarHtml}${msgs}</div>
         </div>
     `;
     document.body.appendChild(overlay);
 }
+
+// Audio toggle for transcript viewer modal
+window._tvAudio = null;
+function toggleTvAudio(src) {
+    const btn = document.getElementById('tv-audio-btn');
+    if (window._tvAudio && !window._tvAudio.paused) {
+        window._tvAudio.pause();
+        window._tvAudio.currentTime = 0;
+        window._tvAudio = null;
+        if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
+        return;
+    }
+    window._tvAudio = new Audio(src);
+    window._tvAudio.play();
+    if (btn) { btn.classList.add('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>'; }
+    window._tvAudio.onended = function() {
+        if (btn) { btn.classList.remove('playing'); btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>'; }
+        window._tvAudio = null;
+    };
+}
+window.toggleTvAudio = toggleTvAudio;
 
 // Task filter click handler
 document.addEventListener('click', function(e) {
@@ -20033,9 +20165,44 @@ function sendFlorenceChat(context) {
 
         const florenceMsg = document.createElement('div');
         florenceMsg.className = 'florence-chat-msg florence';
-        florenceMsg.innerHTML = responseHtml;
         msgsEl.appendChild(florenceMsg);
         msgsEl.scrollTop = msgsEl.scrollHeight;
+
+        // Typewriter effect: render word-by-word
+        // Extract text content from HTML for typewriter, then reveal HTML at end
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = responseHtml;
+        const plainText = tempDiv.textContent || tempDiv.innerText || '';
+        const words = plainText.split(/\s+/);
+        let wordIdx = 0;
+        const labelMatch = responseHtml.match(/^(<div class="msg-label">.*?<\/div>)/);
+        if (labelMatch) {
+            florenceMsg.innerHTML = labelMatch[1];
+        }
+        const textSpan = document.createElement('span');
+        textSpan.className = 'florence-chat-typewriter';
+        florenceMsg.appendChild(textSpan);
+
+        // Skip label words
+        const labelText = labelMatch ? (function() { var d = document.createElement('div'); d.innerHTML = labelMatch[1]; return d.textContent || ''; })() : '';
+        const labelWords = labelText ? labelText.split(/\s+/) : [];
+        let skipCount = labelWords.length;
+
+        function typeNextWord() {
+            if (wordIdx < words.length) {
+                if (wordIdx >= skipCount) {
+                    textSpan.textContent += (wordIdx > skipCount ? ' ' : '') + words[wordIdx];
+                    msgsEl.scrollTop = msgsEl.scrollHeight;
+                }
+                wordIdx++;
+                setTimeout(typeNextWord, 35);
+            } else {
+                // Replace with full HTML once done
+                florenceMsg.innerHTML = responseHtml;
+                msgsEl.scrollTop = msgsEl.scrollHeight;
+            }
+        }
+        typeNextWord();
     }, delay);
 }
 window.sendFlorenceChat = sendFlorenceChat;
@@ -20074,7 +20241,7 @@ function initCampaignMiniFeeds() {
         const feedList = feedDiv.querySelector('.campaign-mini-feed-list');
         const actions = getMiniFeedActions();
         const now = new Date();
-        for (var i = 2; i >= 0; i--) {
+        for (var i = 5; i >= 0; i--) {
             var t = new Date(now - i * 30000);
             var timeStr = t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
             var p = patients[Math.floor(Math.random() * patients.length)];
@@ -20096,7 +20263,7 @@ function initCampaignMiniFeeds() {
             newItem.className = 'mini-feed-item';
             newItem.innerHTML = '<span class="mf-time">' + timeStr2 + '</span><span class="mf-text">' + a2(p2) + '</span>';
             feedList.insertBefore(newItem, feedList.firstChild);
-            while (feedList.children.length > 3) feedList.removeChild(feedList.lastChild);
+            while (feedList.children.length > 8) feedList.removeChild(feedList.lastChild);
         }, 5000 + Math.random() * 5000);
     });
 }
