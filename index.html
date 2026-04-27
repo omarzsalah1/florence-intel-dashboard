@@ -854,6 +854,36 @@
             border-top: 1px solid #e0e0e0;
         }
         
+        /* ---- MUTE BUTTON ---- */
+        .audio-mute-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 9999;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: linear-gradient(135deg, #55B5B8, #3d9a9d);
+            color: white;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            font-size: 20px;
+            line-height: 1;
+        }
+        .audio-mute-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .audio-mute-btn.muted {
+            background: linear-gradient(135deg, #E45740, #c93d2a);
+            border-color: rgba(255,255,255,0.4);
+        }
+        
         .workflow-btn {
             flex: 1;
             padding: 10px 8px;
@@ -10668,6 +10698,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     const audio = new Audio(audioInfo.src);
                     audio.preload = 'auto';
                     activeTranscriptAudio = audio;
+                    // Respect mute state
+                    if (audioMuted) audio.muted = true;
+                    updateMuteButtonVisibility();
                     // Start audio after first system messages (the pre-call setup)
                     const firstSpeechLine = script.find(m => m.type === 'florence' || m.type === 'patient' || m.type === 'care-manager');
                     const audioStartDelay = firstSpeechLine ? firstSpeechLine.t : 3500;
@@ -10804,6 +10837,41 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
 
         // Global audio instance for transcript playback
         let activeTranscriptAudio = null;
+        let audioMuted = false;
+
+        // Show/hide the mute button based on whether audio is active
+        function updateMuteButtonVisibility() {
+            const btn = document.getElementById('audio-mute-btn');
+            if (!btn) return;
+            if (activeTranscriptAudio) {
+                btn.style.display = 'flex';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function toggleAudioMute() {
+            audioMuted = !audioMuted;
+            const btn = document.getElementById('audio-mute-btn');
+            const iconOn = document.getElementById('mute-icon-on');
+            const iconOff = document.getElementById('mute-icon-off');
+            if (audioMuted) {
+                btn.classList.add('muted');
+                btn.title = 'Unmute Audio';
+                iconOn.style.display = 'none';
+                iconOff.style.display = 'block';
+                if (activeTranscriptAudio) activeTranscriptAudio.muted = true;
+                // Also mute any native audio elements in the page
+                document.querySelectorAll('audio').forEach(a => a.muted = true);
+            } else {
+                btn.classList.remove('muted');
+                btn.title = 'Mute Audio';
+                iconOn.style.display = 'block';
+                iconOff.style.display = 'none';
+                if (activeTranscriptAudio) activeTranscriptAudio.muted = false;
+                document.querySelectorAll('audio').forEach(a => a.muted = false);
+            }
+        }
 
         function insertTranscriptAudioPlayer(workflowType) {
             const audioInfo = workflowAudioFiles[workflowType];
@@ -10839,7 +10907,11 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
 
             // Track the native audio element for cleanup
             const audioEl = bar.querySelector('audio');
-            if (audioEl) activeTranscriptAudio = audioEl;
+            if (audioEl) {
+                activeTranscriptAudio = audioEl;
+                if (audioMuted) audioEl.muted = true;
+                updateMuteButtonVisibility();
+            }
         }
 
         // ==================== CALL TASK SUMMARY PANEL ====================
@@ -11429,6 +11501,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 try { activeTranscriptAudio.pause(); activeTranscriptAudio.currentTime = 0; } catch(e) {}
                 activeTranscriptAudio = null;
             }
+            updateMuteButtonVisibility();
             
             // Clear previous transcript
             document.getElementById('transcript-container').innerHTML = '';
@@ -20741,6 +20814,20 @@ if (_origRenderCampaigns) {
 setTimeout(initCampaignMiniFeeds, 500);
 
     </script>
+
+<!-- Floating Mute Button -->
+<button class="audio-mute-btn" id="audio-mute-btn" onclick="toggleAudioMute()" title="Mute/Unmute Audio">
+    <svg id="mute-icon-on" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <svg id="mute-icon-off" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+</button>
 
 </body>
 </html>
