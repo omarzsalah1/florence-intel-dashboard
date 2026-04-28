@@ -6449,15 +6449,26 @@ button:hover {
             display: none;
             position: fixed;
             top: 0;
-            right: 0;
-            width: 380px;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: #1A2332;
-            border-left: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.85);
             z-index: 9999;
-            flex-direction: column;
-            animation: slideInRight 0.3s ease-out;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
             overflow: hidden;
+        }
+        .call-monitor-overlay .call-monitor-inner {
+            width: 420px;
+            max-height: 90vh;
+            background: #1A2332;
+            border-radius: 12px;
+            border: 1px solid rgba(85,181,184,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
         .call-monitor-overlay.active { display: flex; }
         .call-monitor-header {
@@ -11282,6 +11293,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 iconOn.style.display = 'none';
                 iconOff.style.display = 'block';
                 if (activeTranscriptAudio) activeTranscriptAudio.muted = true;
+                if (window._callMonitorAudio) window._callMonitorAudio.muted = true;
                 // Also mute any native audio elements in the page
                 document.querySelectorAll('audio').forEach(a => a.muted = true);
             } else {
@@ -11290,6 +11302,7 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                 iconOn.style.display = 'block';
                 iconOff.style.display = 'none';
                 if (activeTranscriptAudio) activeTranscriptAudio.muted = false;
+                if (window._callMonitorAudio) window._callMonitorAudio.muted = false;
                 document.querySelectorAll('audio').forEach(a => a.muted = false);
             }
         }
@@ -17284,7 +17297,8 @@ const florenceTasks = [
     completed_at: 'Feb 25, 2:28 PM',
     transcript: dmeCallTranscript,
     transcript_label: 'Call with Lincare Home Medical',
-    handoff_note: null
+    handoff_note: null,
+    athena_synced: true
   },
   {
     id: 'task-2',
@@ -18778,32 +18792,50 @@ let callMonitorInterval = null;
 let callMonitorMsgInterval = null;
 let callMonitorDuration = 0;
 
+// Call Monitor uses the real Engage TCM script (same audio as Engage workflow)
 const callMonitorScript = [
-    { speaker: 'Florence', text: 'Good afternoon, Maria. This is Florence calling from NightingaleMD. How are you feeling today, two days after your discharge?' },
-    { speaker: 'Patient', text: 'Hi Florence. I\'m doing okay, a little tired. The new medications make me feel a bit nauseous.' },
-    { speaker: 'Florence', text: 'I\'m sorry to hear about the nausea. Can you tell me which medication you think is causing it? Are you taking your Lisinopril 10mg in the morning as prescribed?' },
-    { speaker: 'Patient', text: 'Yes, the Lisinopril. I take it with breakfast. The nausea usually comes about an hour later.' },
-    { speaker: 'Florence', text: 'Thank you for that detail. I\'ll note that for Dr. Rivera. Now, have you been able to get your lab work done? I see it was due last week.' },
-    { speaker: 'Patient', text: 'No, I haven\'t been able to get to the lab. My son was supposed to take me but he\'s been working.' },
-    { speaker: 'Florence', text: 'I understand. Those labs are important for monitoring your kidney function with the new medication. Let me see if we can arrange a mobile phlebotomy visit to your home. Would that work for you?' },
-    { speaker: 'Patient', text: 'Oh, they can come to my house? That would be wonderful.' },
-    { speaker: 'Florence', text: 'Yes, I\'ll coordinate that for you. I\'m also noting that you sound a bit fatigued today. On a scale of 1 to 10, how would you rate your energy level?' },
-    { speaker: 'Patient', text: 'Maybe a 4. I\'ve been sleeping a lot but I still feel tired.' }
+    { speaker: 'Florence', text: 'Hello Jane, this is Florence calling from Dr. Campbell\'s office. I see here that you were released from St. Joseph\'s Hospital this morning after your heart attack. How are you feeling?', t: 3500 },
+    { speaker: 'Patient', text: 'Oh hello Florence. I\'m doing okay, just a little tired and nervous about being home.', t: 15400 },
+    { speaker: 'Florence', text: 'That\'s completely understandable, Jane. I\'m here to help make sure you have everything you need. First, let me ask - did you pick up all your new medications from the pharmacy?', t: 22200 },
+    { speaker: 'Patient', text: 'Yes, my daughter helped me get them this afternoon.', t: 33500 },
+    { speaker: 'Florence', text: 'Wonderful! Let me quickly review them with you. You should have Metoprolol for your heart rate, Clopidogrel to prevent blood clots, and Atorvastatin for cholesterol. Do you have all three?', t: 38000 },
+    { speaker: 'Patient', text: 'Yes, I have them all here. The pharmacist explained them to me.', t: 53100 },
+    { speaker: 'Florence', text: 'Perfect. Now this is very important - the hospital should have given you a scale to weigh yourself daily. Have you been weighing yourself?', t: 57700 },
+    { speaker: 'Patient', text: 'Yes, I weighed myself this morning. I was 198 pounds.', t: 66800 },
+    { speaker: 'Florence', text: 'Good! Here\'s what you need to watch for: if you gain 2 pounds in one day, or 5 pounds in one week, you need to call us immediately. That could be a sign of fluid buildup.', t: 71800 },
+    { speaker: 'Patient', text: '2 pounds in a day, 5 pounds in a week. I wrote it down.', t: 84800 },
+    { speaker: 'Florence', text: 'Excellent! Now, have you had any chest pain, shortness of breath, or swelling in your legs since you got home?', t: 93500 },
+    { speaker: 'Patient', text: 'No chest pain, but I do feel a little short of breath when I walk to the bathroom.', t: 100200 },
+    { speaker: 'Florence', text: 'That\'s normal in the first few days after a heart attack, but we\'ll want Dr. Campbell to check that. Let me get you scheduled. Let me conference in the office right now.', t: 107500 },
+    { speaker: 'Patient', text: 'Yes, of course.', t: 129300 },
+    { speaker: 'Scheduler', text: 'This is Sarah at Dr. Campbell\'s office, how can I help?', t: 133500 },
+    { speaker: 'Florence', text: 'Hi Sarah, this is Florence. I have Jane Doe on the line - she was discharged from St. Joseph\'s this morning after an MI. We need a post-discharge follow-up as soon as possible.', t: 134400 },
+    { speaker: 'Scheduler', text: 'Of course! I have Monday at 10am or 2pm. Which works better for you, Jane?', t: 147500 },
+    { speaker: 'Patient', text: 'Monday at 10am would be perfect.', t: 152200 },
+    { speaker: 'Scheduler', text: 'Great! You\'re all set for Monday, February 18th at 10am with Dr. Campbell.', t: 156000 },
+    { speaker: 'Florence', text: 'Perfect! Jane, you\'re scheduled for Monday at 10am. I\'ll send you a text reminder. Is there anything else you\'re worried about?', t: 162400 },
+    { speaker: 'Patient', text: 'No, I think that covers everything. Thank you so much for calling.', t: 174200 },
+    { speaker: 'Florence', text: 'You\'re very welcome, Jane. Remember - if you have any chest pain, severe shortness of breath, or sudden weight gain, call 911 right away. Take care!', t: 181500 },
+    { speaker: 'Patient', text: 'Thank you, Florence. Goodbye.', t: 195500 }
 ];
 
 const callMonitorIntel = [
-    { time: 4, text: '\u2713 Medication verified: Lisinopril 10mg — taking as directed', icon: '\u2705' },
-    { time: 8, text: '\u26A0 Side effect reported: Nausea 1hr post-Lisinopril', icon: '\u26A0\uFE0F' },
-    { time: 15, text: '\u274C Labs overdue: Renal panel — 3 weeks past due', icon: '\u274C' },
-    { time: 22, text: '\uD83D\uDE97 SDOH: Transportation barrier for lab visits', icon: '\uD83D\uDE97' },
-    { time: 28, text: '\uD83D\uDCA4 Mood: Patient sounds fatigued (energy 4/10)', icon: '\uD83D\uDCA4' }
+    { time: 16, text: '\u2705 Patient reports feeling tired and nervous — normal post-discharge', icon: '\u2705' },
+    { time: 35, text: '\u2705 Medication pickup confirmed — daughter assisted', icon: '\u2705' },
+    { time: 55, text: '\u2705 All 3 medications verified: Metoprolol, Clopidogrel, Atorvastatin', icon: '\u2705' },
+    { time: 70, text: '\u2705 Daily weight monitoring active — baseline 198 lbs', icon: '\u2705' },
+    { time: 86, text: '\u2705 Patient understands weight gain thresholds (2lb/day, 5lb/week)', icon: '\u2705' },
+    { time: 102, text: '\u26A0\uFE0F Shortness of breath reported — exertional, walking to bathroom', icon: '\u26A0\uFE0F' },
+    { time: 135, text: '\uD83D\uDCDE 3-way call initiated — scheduling follow-up with Dr. Campbell', icon: '\uD83D\uDCDE' },
+    { time: 158, text: '\u2705 Follow-up scheduled: Monday Feb 18 at 10am with Dr. Campbell', icon: '\u2705' },
+    { time: 182, text: '\u2705 Safety instructions reviewed — 911 criteria communicated', icon: '\u2705' }
 ];
 
 function showCallMonitor() {
     const overlay = document.getElementById('call-monitor-overlay');
     if (!overlay) return;
     overlay.classList.add('active');
-    callMonitorDuration = 222; // Start at 3:42 to feel like an ongoing call
+    callMonitorDuration = 0;
     
     // Generate waveform bars
     const waveform = document.getElementById('cm-waveform');
@@ -18825,58 +18857,63 @@ function showCallMonitor() {
         const s = (callMonitorDuration % 60).toString().padStart(2, '0');
         durationEl.textContent = m + ':' + s;
     }, 1000);
-    durationEl.textContent = '03:42';
+    durationEl.textContent = '00:00';
     
-    // Start transcript
+    // Auto-play the Engage TCM audio
+    const cmAudio = new Audio('audio/Script3-EngageCallTCM.mp3');
+    cmAudio.muted = (typeof isAudioMuted !== 'undefined' && isAudioMuted);
+    cmAudio.play().catch(() => {});
+    window._callMonitorAudio = cmAudio;
+    
+    // Show the global mute button
+    const muteBtn = document.getElementById('audio-mute-btn');
+    if (muteBtn) muteBtn.style.display = 'flex';
+    
+    // Start transcript — sync to audio timing
     const transcript = document.getElementById('cm-transcript');
     transcript.innerHTML = '';
     const intelContainer = document.getElementById('cm-intel-items');
     intelContainer.innerHTML = '';
     
-    let msgIdx = 0;
-    let intelIdx = 0;
-    let elapsed = 0;
-    
-    // Add messages every 3-4 seconds
-    callMonitorMsgInterval = setInterval(() => {
-        elapsed += 3;
-        
-        if (msgIdx < callMonitorScript.length) {
-            const msg = callMonitorScript[msgIdx];
+    // Schedule each transcript line at its audio timestamp
+    const cmTimeouts = [];
+    callMonitorScript.forEach((msg, idx) => {
+        const tid = setTimeout(() => {
             const msgEl = document.createElement('div');
             msgEl.className = 'cm-msg';
-            msgEl.innerHTML = '<div class="cm-msg-speaker ' + (msg.speaker === 'Florence' ? 'florence' : 'patient') + '">' + msg.speaker + '</div><div class="cm-msg-text">' + msg.text + '</div>';
+            const speakerClass = msg.speaker === 'Florence' ? 'florence' : (msg.speaker === 'Scheduler' ? 'florence' : 'patient');
+            msgEl.innerHTML = '<div class="cm-msg-speaker ' + speakerClass + '">' + msg.speaker + '</div><div class="cm-msg-text">' + msg.text + '</div>';
             transcript.appendChild(msgEl);
             transcript.scrollTop = transcript.scrollHeight;
             
             // Update speaker badge
             const badge = document.getElementById('cm-speaker-badge');
-            if (msg.speaker === 'Florence') {
-                badge.textContent = 'Florence Speaking';
+            if (msg.speaker === 'Florence' || msg.speaker === 'Scheduler') {
+                badge.textContent = msg.speaker + ' Speaking';
                 badge.className = 'cm-speaker-badge cm-speaker-florence';
             } else {
                 badge.textContent = 'Patient Speaking';
                 badge.className = 'cm-speaker-badge cm-speaker-patient';
             }
-            msgIdx++;
-        }
-        
-        // Add intel items at their scheduled times
-        while (intelIdx < callMonitorIntel.length && elapsed >= callMonitorIntel[intelIdx].time) {
-            const intel = callMonitorIntel[intelIdx];
+        }, msg.t);
+        cmTimeouts.push(tid);
+    });
+    
+    // Schedule intel items at their timed positions (in seconds, convert to ms)
+    callMonitorIntel.forEach(intel => {
+        const tid = setTimeout(() => {
             const intelEl = document.createElement('div');
             intelEl.className = 'cm-intel-item';
             intelEl.innerHTML = '<span>' + intel.icon + '</span><span>' + intel.text + '</span>';
             intelContainer.appendChild(intelEl);
-            intelIdx++;
-        }
-        
-        if (msgIdx >= callMonitorScript.length && intelIdx >= callMonitorIntel.length) {
-            clearInterval(callMonitorMsgInterval);
-        }
-    }, 3500);
+        }, intel.time * 1000);
+        cmTimeouts.push(tid);
+    });
     
-    addLogEntry('Call Monitor', 'Opened live call monitor for Maria Santos — TCM Day 2', null, 'Florence (Autonomous)');
+    // Store timeouts for cleanup
+    window._callMonitorTimeouts = cmTimeouts;
+    
+    addLogEntry('Call Monitor', 'Opened live call monitor for Maria Santos \u2014 TCM Day 2', null, 'Florence (Autonomous)');
 }
 
 function closeCallMonitor() {
@@ -18884,6 +18921,17 @@ function closeCallMonitor() {
     if (overlay) overlay.classList.remove('active');
     if (callMonitorInterval) { clearInterval(callMonitorInterval); callMonitorInterval = null; }
     if (callMonitorMsgInterval) { clearInterval(callMonitorMsgInterval); callMonitorMsgInterval = null; }
+    // Stop audio
+    if (window._callMonitorAudio) {
+        window._callMonitorAudio.pause();
+        window._callMonitorAudio.currentTime = 0;
+        window._callMonitorAudio = null;
+    }
+    // Clear all scheduled transcript timeouts
+    if (window._callMonitorTimeouts) {
+        window._callMonitorTimeouts.forEach(tid => clearTimeout(tid));
+        window._callMonitorTimeouts = null;
+    }
 }
 
 function renderEscalationCards() {
@@ -21501,7 +21549,9 @@ function buildTaskCardHtml(task) {
     const completedAt = task.completed_at ? '<span style="color:#6B7280;font-size:9px;">' + task.completed_at + '</span>' : '';
     const reviewActions = isPendingReview ? '<div class="task-review-actions"><span class="task-review-label">Awaiting your decision:</span><button class="task-accept-btn" onclick="event.stopPropagation();acceptTask(\'' + task.id + '\')">Accept</button><button class="task-defer-btn" onclick="event.stopPropagation();deferTask(\'' + task.id + '\')">Defer</button><button class="task-dismiss-btn" onclick="event.stopPropagation();dismissTask(\'' + task.id + '\')">Dismiss</button></div>' : '';
 
-    return '<div class="task-card status-' + task.status.replace('_','-') + '" id="' + task.id + '" data-task-id="' + task.id + '" onclick="' + (isPendingReview ? '' : "toggleTaskCheck('" + task.id + "')") + '"><div class="task-checkbox ' + (isChecked ? 'checked' : '') + '" id="chk-' + task.id + '"></div><div class="task-body"><div class="task-title-row"><span class="task-title">' + task.title + '</span>' + handoffBadge + sparkle + '</div><div class="task-detail">' + task.detail + '</div><div class="task-meta"><span class="task-category-badge ' + catClass + '">' + task.category + '</span><span class="task-status-pill ' + statusClass + '">' + statusLabel + '</span>' + completedAt + transcriptLink + '</div>' + reviewActions + '</div></div>';
+    const athenaSyncBadge = task.athena_synced ? '<span onclick="event.stopPropagation();showToast(\'DME order synced to athenaOne — Order #LNC-20260228-001\',\'info\')" style="display:inline-flex;align-items:center;gap:3px;padding:2px 7px;background:rgba(76,175,80,0.12);color:#43A047;border-radius:4px;font-size:9px;font-weight:700;margin-left:6px;cursor:pointer;border:1px solid rgba(76,175,80,0.25);" title="Synced to athenaOne"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>Synced to athena</span>' : '';
+
+    return '<div class="task-card status-' + task.status.replace('_','-') + '" id="' + task.id + '" data-task-id="' + task.id + '" onclick="' + (isPendingReview ? '' : "toggleTaskCheck('" + task.id + "')") + '"><div class="task-checkbox ' + (isChecked ? 'checked' : '') + '" id="chk-' + task.id + '"></div><div class="task-body"><div class="task-title-row"><span class="task-title">' + task.title + '</span>' + handoffBadge + executorBadge + athenaSyncBadge + sparkle + '</div><div class="task-detail">' + task.detail + '</div><div class="task-meta"><span class="task-category-badge ' + catClass + '">' + task.category + '</span><span class="task-status-pill ' + statusClass + '">' + statusLabel + '</span>' + completedAt + transcriptLink + '</div>' + progressIndicator + reviewActions + '</div></div>';
 }
 
 function toggleTaskGroup(header) {
@@ -21703,6 +21753,7 @@ setTimeout(initCampaignMiniFeeds, 500);
 
 <!-- CALL MONITOR PANEL -->
 <div class="call-monitor-overlay" id="call-monitor-overlay">
+  <div class="call-monitor-inner">
     <div class="call-monitor-header">
         <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3>Live Call Monitor &mdash; Maria Santos</h3>
@@ -21725,6 +21776,7 @@ setTimeout(initCampaignMiniFeeds, 500);
         <button onclick="showToast('Joining call...','info')">Join Call</button>
         <button class="cm-end" onclick="closeCallMonitor()">End Monitoring</button>
     </div>
+  </div>
 </div>
 
 <!-- Floating Mute Button -->
