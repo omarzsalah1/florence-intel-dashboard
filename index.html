@@ -6277,6 +6277,385 @@ button:hover {
             cursor: pointer;
         }
 
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* ==================== ESCALATION CARDS ==================== */
+        .escalation-cards-panel {
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .escalation-cards-panel h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #E45740;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .esc-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 4px solid #ccc;
+            transition: all 0.2s;
+        }
+        .esc-card:hover { background: rgba(255,255,255,0.09); }
+        .esc-card.sev-critical { border-left-color: #E45740; }
+        .esc-card.sev-high { border-left-color: #F97316; }
+        .esc-card.sev-medium { border-left-color: #F8CA44; }
+        .esc-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .esc-card-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.95);
+        }
+        .esc-sev-badge {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .esc-sev-badge.critical { background: #E45740; color: #fff; }
+        .esc-sev-badge.high { background: #F97316; color: #fff; }
+        .esc-sev-badge.medium { background: rgba(248,202,68,0.2); color: #F8CA44; }
+        .esc-card-desc {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .esc-card-time {
+            font-size: 10px;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 8px;
+        }
+        .esc-thinking-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: #55B5B8;
+            cursor: pointer;
+            padding: 4px 0;
+            border: none;
+            background: none;
+            font-weight: 600;
+        }
+        .esc-thinking-toggle:hover { color: #7DD3D5; }
+        .esc-thinking-toggle svg {
+            transition: transform 0.2s;
+        }
+        .esc-thinking-toggle.expanded svg {
+            transform: rotate(90deg);
+        }
+        .esc-thinking-content {
+            display: none;
+            background: rgba(85,181,184,0.08);
+            border: 1px solid rgba(85,181,184,0.15);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin: 6px 0 8px 0;
+            font-size: 11px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+            font-family: 'Courier New', monospace;
+        }
+        .esc-thinking-content.visible { display: block; }
+        .esc-thinking-content .thinking-bullet {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .esc-thinking-content .thinking-bullet::before {
+            content: '>';
+            color: #55B5B8;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .esc-card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .esc-card-actions button {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.7);
+            transition: all 0.2s;
+        }
+        .esc-card-actions button:hover { background: rgba(255,255,255,0.12); }
+        .esc-card-actions button.esc-primary {
+            background: #E45740;
+            color: #fff;
+            border-color: #E45740;
+        }
+        .esc-card-actions button.esc-primary:hover { background: #c94a36; }
+
+        /* ==================== CALL MONITOR PANEL ==================== */
+        .active-call-row {
+            background: rgba(85,181,184,0.06) !important;
+            cursor: pointer;
+        }
+        .active-call-row:hover {
+            background: rgba(85,181,184,0.12) !important;
+        }
+        .active-call-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: rgba(39,174,96,0.15);
+            color: #27AE60;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            animation: pulseBadge 2s infinite;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .active-call-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #27AE60;
+            animation: pulseDot 1.2s infinite;
+        }
+        .call-monitor-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 380px;
+            height: 100%;
+            background: #1A2332;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 9999;
+            flex-direction: column;
+            animation: slideInRight 0.3s ease-out;
+            overflow: hidden;
+        }
+        .call-monitor-overlay.active { display: flex; }
+        .call-monitor-header {
+            padding: 16px;
+            background: rgba(85,181,184,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .call-monitor-header h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #55B5B8;
+            margin: 0 0 4px 0;
+        }
+        .call-monitor-header .cm-subtitle {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+        .call-monitor-duration {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .cm-duration-time {
+            font-size: 18px;
+            font-weight: 700;
+            color: #55B5B8;
+            font-family: 'Courier New', monospace;
+        }
+        .cm-waveform {
+            flex: 1;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            overflow: hidden;
+        }
+        .cm-waveform-bar {
+            width: 3px;
+            background: #55B5B8;
+            border-radius: 2px;
+            animation: waveformPulse 0.8s ease-in-out infinite;
+        }
+        @keyframes waveformPulse {
+            0%, 100% { height: 4px; opacity: 0.3; }
+            50% { height: var(--bar-height, 16px); opacity: 1; }
+        }
+        .cm-speaker-badge {
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .cm-speaker-florence { background: rgba(85,181,184,0.15); color: #55B5B8; }
+        .cm-speaker-patient { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+        .call-monitor-transcript {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 16px;
+        }
+        .cm-msg {
+            margin-bottom: 10px;
+            animation: fadeInStep 0.4s ease-out;
+        }
+        .cm-msg-speaker {
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .cm-msg-speaker.florence { color: #55B5B8; }
+        .cm-msg-speaker.patient { color: rgba(255,255,255,0.5); }
+        .cm-msg-text {
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+        }
+        .call-monitor-intel {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.15);
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .cm-intel-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #F8CA44;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cm-intel-item {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            padding: 3px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+        .call-monitor-controls {
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.2);
+        }
+        .call-monitor-controls button {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.7);
+            transition: all 0.2s;
+        }
+        .call-monitor-controls button:hover { background: rgba(255,255,255,0.12); }
+        .call-monitor-controls button.cm-end {
+            background: #E45740;
+            color: #fff;
+            border-color: #E45740;
+        }
+
+        /* ==================== CLINICAL PROTOCOL INTELLIGENCE ==================== */
+        .cpi-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            background: rgba(85,181,184,0.12);
+            border: 1px solid rgba(85,181,184,0.25);
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #55B5B8;
+            cursor: help;
+            position: relative;
+            white-space: nowrap;
+        }
+        .cpi-badge svg { flex-shrink: 0; }
+        .cpi-badge .cpi-tooltip {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #31393F;
+            color: rgba(255,255,255,0.85);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.5;
+            width: 280px;
+            white-space: normal;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            z-index: 100;
+            pointer-events: none;
+        }
+        .cpi-badge:hover .cpi-tooltip { display: block; }
+        .cpi-annotation {
+            font-size: 10px;
+            font-style: italic;
+            color: rgba(85,181,184,0.7);
+            padding: 2px 0 4px 12px;
+            border-left: 2px solid rgba(85,181,184,0.3);
+            margin: -4px 0 6px 20px;
+            animation: fadeInStep 0.5s ease-out;
+        }
+
+        /* ==================== FLORENCE PROGRESS INDICATORS ==================== */
+        .florence-pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #55B5B8;
+            animation: pulseDot 1.2s infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
+        }
+        .florence-step-text {
+            animation: fadeInStep 0.5s ease-out;
+        }
+        @keyframes fadeInStep {
+            from { opacity: 0; transform: translateX(-5px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         /* ==================== ACTIVITY LOG HANDOFF ENTRY ==================== */
         .log-item-handoff {
             border-left: 3px solid #E45740 !important;
@@ -7680,11 +8059,12 @@ button:hover {
                         <span class="btn-text">Check-In</span>
                     </button>
                 </div>
-                <div id="show-full-transcript-bar" style="display:none !important; padding: 6px 12px; background: linear-gradient(135deg, #f0f9ff, #e8f4fd); border-bottom: 1px solid #dbeafe; text-align: center;">
-                    <button id="show-full-transcript-btn" onclick="showFullTranscriptInstant()" style="background: linear-gradient(135deg, #55B5B8, #3d9a9d); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        Show Full Transcript
+                <div id="skip-to-summary-bar" style="display:none; padding: 6px 12px; background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(109,40,217,0.08)); border-bottom: 1px solid rgba(139,92,246,0.2); text-align: center;">
+                    <button id="skip-to-summary-btn" onclick="skipToSummary()" style="background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                        Skip to Summary
                     </button>
+                    <span style="font-size:10px; color:#9CA3AF; margin-left:8px;" id="skip-time-remaining"></span>
                 </div>
                 <div class="transcript-container" id="transcript-container">
                     <p style="color: #a0aec0; text-align: center; padding: 40px;">
@@ -10682,6 +11062,29 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             if (indicator) indicator.remove();
         }
         
+        // Clinical Protocol Intelligence annotations
+        const CPI_ANNOTATIONS = {
+            'How are you taking your': { protocol: 'Specific medication verification', reason: 'Avoids yes/no bias — elicits actual adherence behavior' },
+            'Can you tell me more about': { protocol: 'Open-ended clinical probing', reason: 'Worst-case-first triage — assesses severity before routine items' },
+            'Have you noticed any swelling': { protocol: 'Targeted symptom assessment', reason: 'Progressive assessment — checks for CHF decompensation signs' },
+            'Is there anything preventing you': { protocol: 'Barrier identification', reason: 'SDOH screening — identifies transportation and access barriers' },
+            'I\'m going to flag this': { protocol: 'Escalation protocol', reason: 'Threshold-based escalation — active symptoms trigger immediate CM notification' },
+            'Were you able to pick those up': { protocol: 'Medication access verification', reason: 'Specific pharmacy verification — identifies prescription routing issues' }
+        };
+        
+        function addCPIAnnotation(container, messageText) {
+            for (const [trigger, data] of Object.entries(CPI_ANNOTATIONS)) {
+                if (messageText.includes(trigger)) {
+                    const annotation = document.createElement('div');
+                    annotation.className = 'cpi-annotation';
+                    annotation.innerHTML = '<strong>Protocol:</strong> ' + data.protocol + ' — ' + data.reason;
+                    container.appendChild(annotation);
+                    container.scrollTop = container.scrollHeight;
+                    break;
+                }
+            }
+        }
+
         async function playConversation(workflowType, signal) {
             const script = scripts[workflowType];
             const hasTimingData = script[0] && typeof script[0].t === 'number';
@@ -10752,6 +11155,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     
                     await addMessage(msg, signal);
                     
+                    // Add Clinical Protocol Intelligence annotations for Florence's questions
+                    if (msg.type === 'florence' || msg.type === 'care-manager') {
+                        const transcriptContainer = document.getElementById('outreach-transcript');
+                        if (transcriptContainer) addCPIAnnotation(transcriptContainer, msg.text);
+                    }
+                    
                     // Scan patient messages for clinical flags and workflow suggestions
                     // Delay insights by 2.5s so they appear AFTER the words are spoken,
                     // giving the impression Florence is "listening" then "catching" the insight
@@ -10767,6 +11176,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     if (workflowType === 'convene' && conveneTaskDeductions[i]) {
                         const deduction = conveneTaskDeductions[i];
                         setTimeout(() => { addTaskFromConvene(deduction); }, 3000);
+                        // Item 4: DME toast when oxygen delivery task is deduced
+                        if (conveneTaskDeductions[i] === 'Coordinate home oxygen delivery') {
+                            setTimeout(() => {
+                                showTaskCreatedToast('Coordinate Home Oxygen Delivery with Lincare', 'task-1', 'Florence AI');
+                            }, 3500);
+                        }
                     }
                     if (workflowType === 'engage' && typeof engageTaskDeductions !== 'undefined' && engageTaskDeductions[i]) {
                         const deduction = engageTaskDeductions[i];
@@ -10793,6 +11208,12 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
                     }
                     
                     await addMessage(msg, signal);
+                    
+                    // CPI annotations for fallback path
+                    if (msg.type === 'florence' || msg.type === 'care-manager') {
+                        const transcriptContainer = document.getElementById('outreach-transcript');
+                        if (transcriptContainer) addCPIAnnotation(transcriptContainer, msg.text);
+                    }
                     
                     if (msg.type === 'patient') {
                         const patientText = msg.text;
@@ -11506,12 +11927,20 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             // Clear previous transcript
             document.getElementById('transcript-container').innerHTML = '';
             
+            // Add Clinical Protocol Intelligence badge
+            const cpiBadgeEl = document.createElement('div');
+            cpiBadgeEl.style.cssText = 'display:flex;justify-content:center;margin:8px 0;';
+            cpiBadgeEl.innerHTML = '<span class="cpi-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path><line x1="9" y1="21" x2="15" y2="21"></line></svg>Clinical Protocol Intelligence: Active<span class="cpi-tooltip">Florence uses evidence-based questioning protocols: worst-case-first triage, specific medication verification (not yes/no), and progressive assessment from critical to routine.</span></span>';
+            document.getElementById('transcript-container').appendChild(cpiBadgeEl);
+            
             // Reset clinical flags and workflow suggestions for new workflow
             if (typeof shownClinicalFlags !== 'undefined') shownClinicalFlags.clear();
             if (window.pendingClinicalFlags) window.pendingClinicalFlags = [];
             if (typeof shownWorkflowSuggestions !== 'undefined') shownWorkflowSuggestions.clear();
             
-            // Show Full Transcript bar removed — demo should play in real-time with audio
+            // Show Skip to Summary bar during playback
+            const skipBar = document.getElementById('skip-to-summary-bar');
+            if (skipBar) skipBar.style.display = 'block';
             
             // Show listening indicator for convene
             if (workflowType === 'convene') {
@@ -11560,7 +11989,9 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             try {
                 await playConversation(workflowType, abortController.signal);
                 
-                // Success - update button
+                // Success - hide skip bar and update button
+                const skipBarDone = document.getElementById('skip-to-summary-bar');
+                if (skipBarDone) skipBarDone.style.display = 'none';
                 btn.querySelector('.btn-text').textContent = 'Completed';
                 btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
                 
@@ -11650,6 +12081,83 @@ if (viewModeLabel) viewModeLabel.innerHTML = '<svg width="16" height="16" viewBo
             setTimeout(() => {
                 resetButtons();
                 currentWorkflow = null;
+            }, 2000);
+        }
+        
+        function skipToSummary() {
+            // Abort the current slow playback
+            if (isWorkflowInProgress && abortController) {
+                abortController.abort();
+                hideTypingIndicator();
+            }
+            isWorkflowInProgress = false;
+            
+            // Stop audio
+            if (activeTranscriptAudio && !activeTranscriptAudio.paused) {
+                activeTranscriptAudio.pause();
+                activeTranscriptAudio.currentTime = 0;
+                activeTranscriptAudio = null;
+            }
+            updateMuteButtonVisibility();
+            
+            const workflowType = currentWorkflow || 'convene';
+            const script = scripts[workflowType];
+            if (!script) return;
+            
+            const container = document.getElementById('transcript-container');
+            container.innerHTML = '';
+            
+            const speakerNames = {
+                florence: 'Florence',
+                patient: 'Jane',
+                'care-manager': 'Sarah Martinez (Care Manager)'
+            };
+            const speakerIcons = {
+                florence: '<circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+                patient: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+                'care-manager': '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line>'
+            };
+            
+            // Show all transcript messages instantly
+            script.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message ' + msg.type;
+                if (msg.type === 'system') {
+                    messageDiv.textContent = msg.text;
+                } else {
+                    messageDiv.innerHTML = '<div class="message-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">' + (speakerIcons[msg.type] || speakerIcons.patient) + '</svg> ' + (speakerNames[msg.type] || 'Unknown') + '</div><span class="message-text">' + msg.text + '</span><div class="message-time">' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + '</div>';
+                }
+                container.appendChild(messageDiv);
+            });
+            
+            // Hide skip bar
+            const skipBar = document.getElementById('skip-to-summary-bar');
+            if (skipBar) skipBar.style.display = 'none';
+            
+            // Reset the button
+            const btn = document.getElementById(workflowType + '-btn');
+            if (btn) {
+                btn.classList.remove('active');
+                btn.disabled = false;
+                btn.querySelector('.btn-text').textContent = 'Completed';
+                btn.querySelector('svg').innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+            }
+            
+            // Show documentation, audio player, and task summary
+            showInlineDocumentation(workflowType);
+            insertTranscriptAudioPlayer(workflowType);
+            showCallTaskSummary(workflowType);
+            
+            // Scroll to the summary
+            setTimeout(() => {
+                const fciPanel = container.querySelector('.fci-panel');
+                if (fciPanel) fciPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+            
+            setTimeout(() => {
+                resetButtons();
+                currentWorkflow = null;
+                hideListeningIndicator();
             }, 2000);
         }
         
@@ -14715,6 +15223,70 @@ function dismissWorkflowSuggestion(cardId, workflowName) {
 // Toast counter for stacking
 let toastCount = 0;
 
+function showTaskCreatedToast(taskName, taskId, assignee) {
+    toastCount++;
+    const toast = document.createElement('div');
+    toast.className = 'florence-toast task-created-toast';
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #43A047, #2E7D32);
+        color: #fff;
+        padding: 14px 18px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+        z-index: 10001;
+        font-size: 12px;
+        max-width: 340px;
+        animation: slideInRight 0.4s ease-out;
+        cursor: default;
+        border: 1px solid rgba(255,255,255,0.2);
+    `;
+    toast.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="background:rgba(255,255,255,0.25);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">\u2713</span>
+            <span style="font-weight:700;font-size:13px;">New Task Created</span>
+        </div>
+        <div style="font-weight:600;margin-bottom:4px;">${taskName}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+            <span style="font-size:10px;opacity:0.85;">Assigned to ${assignee}</span>
+            <a href="#" onclick="event.preventDefault();navigateToTask('${taskId}');this.closest('.task-created-toast').remove();" style="color:#fff;font-size:11px;font-weight:700;text-decoration:underline;">View Workflow \u2192</a>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.style.animation = 'fadeOut 0.4s ease-out forwards';
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 400);
+        }
+    }, 8000);
+}
+
+function navigateToTask(taskId) {
+    // Switch to Workflows tab
+    const workflowsBtn = document.querySelector('[onclick*="switchTab"][onclick*="workflows"]');
+    if (workflowsBtn) workflowsBtn.click();
+    setTimeout(() => {
+        // Switch to Tasks sub-tab
+        switchWorkflowsView('tasks');
+        setTimeout(() => {
+            // Find and highlight the task
+            const taskEl = document.querySelector('[data-task-id="' + taskId + '"]') || document.getElementById(taskId);
+            if (taskEl) {
+                taskEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                taskEl.style.transition = 'all 0.3s';
+                taskEl.style.boxShadow = '0 0 0 3px #55B5B8, 0 0 20px rgba(85,181,184,0.3)';
+                taskEl.style.background = 'rgba(85,181,184,0.08)';
+                setTimeout(() => {
+                    taskEl.style.boxShadow = '';
+                    taskEl.style.background = '';
+                }, 3000);
+            }
+        }, 300);
+    }, 200);
+}
+
 function showToast(message, type = 'info') {
     toastCount++;
     const currentToastIndex = toastCount;
@@ -16704,6 +17276,9 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'orders',
+    executor: 'Florence AI',
+    executorType: 'florence',
+    progressSteps: ['Calling Lincare...', 'Connected with dispatch...', 'Confirming order #LNC-20260228-001...', 'Order confirmed. Delivery: Tomorrow 9-11 AM'],
     workflow_id: 'WF-DME-01',
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:28 PM',
@@ -16718,6 +17293,9 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'orders',
+    executor: 'Florence AI',
+    executorType: 'florence',
+    progressSteps: ['Placing order via athena...', 'Order submitted to DME vendor...', 'Shipment confirmed — tracking #PO-98234', 'Delivered. Patient notified via SMS.'],
     workflow_id: null,
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:35 PM',
@@ -16732,6 +17310,9 @@ const florenceTasks = [
     status: 'completed',
     origin: 'ai-deduced',
     category: 'follow-up',
+    executor: 'Florence AI',
+    executorType: 'florence',
+    progressSteps: ['Calling CVS Main St...', 'Verifying prescription transfer...', 'Prescription located at CVS Main St.', 'Patient notified via SMS.'],
     workflow_id: null,
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: 'Feb 25, 2:40 PM',
@@ -16760,6 +17341,8 @@ const florenceTasks = [
     status: 'in-progress',
     origin: 'ai-deduced',
     category: 'referrals',
+    executor: 'Sarah Martinez, RN',
+    executorType: 'human',
     workflow_id: 'WF-105',
     deduced_from: 'Convene call with member, Feb 25 at 2:15 PM',
     completed_at: null,
@@ -16774,6 +17357,9 @@ const florenceTasks = [
     status: 'completed',
     origin: 'workflow-generated',
     category: 'follow-up',
+    executor: 'Florence AI',
+    executorType: 'florence',
+    progressSteps: ['Checking Dr. Campbell availability...', 'Slot found: March 5, 10:00 AM', 'Appointment booked. Patient notified.'],
     workflow_id: 'WF-131',
     deduced_from: null,
     completed_at: 'Feb 25, 9:22 AM',
@@ -16802,6 +17388,9 @@ const florenceTasks = [
     status: 'completed',
     origin: 'workflow-generated',
     category: 'education',
+    executor: 'Florence AI',
+    executorType: 'florence',
+    progressSteps: ['Selecting post-MI dietary guidelines...', 'Composing patient-friendly summary...', 'Sent via patient portal + SMS confirmation.'],
     workflow_id: 'WF-131',
     deduced_from: null,
     completed_at: 'Feb 25, 10:05 AM',
@@ -18105,9 +18694,262 @@ const handoffNoteData = {
       'Transportation barrier identified: patient cannot drive, daughter unavailable this week',
       'Patient is cooperative and aware of the issue'
     ],
+    severity: 'high',
+    florenceThinking: 'Patient reported 3 missed doses of cardiac beta-blocker within 5 days. Heart rate 98 bpm exceeds baseline of 72 bpm. Escalation threshold: 2+ missed doses of cardiac medication within 7 days. Risk: rebound tachycardia, hypertensive crisis.',
+    timeAgo: '3 min ago',
     suggested_next_step: 'Urgent CM outreach recommended. Consider: (1) emergency medication delivery via pharmacy or DME, (2) telehealth check with Dr. Campbell to assess cardiac status, (3) initiate Transportation Assistance Workflow for ongoing pharmacy access. Do not delay — patient has active symptoms.'
+  },
+  'WF-FALL-001': {
+    title: 'Fall Risk — Near-Fall Event — ESCALATION',
+    patient: 'Jane Doe | DOB: 05/27/1955 | MRN: 202070',
+    workflow: 'Fall Risk Assessment (WF-FALL-001)',
+    campaign: 'Post-Discharge Monitoring (CAMP-TCM-Q1)',
+    severity: 'medium',
+    interaction_summary: 'Florence initiated a post-discharge check-in call on Feb 27 at 2:30 PM. Patient reported a near-fall event in the bathroom 3 days after discharge. Patient described unsteady gait and difficulty with balance, particularly when standing from a seated position. No injury sustained, but patient expressed fear of falling.',
+    transcript: [
+      { speaker: 'Florence', text: 'Hi Jane, this is Florence from NightingaleMD. I\'m calling to check on how you\'re doing since your discharge. How are you feeling?' },
+      { speaker: 'Patient', text: 'I\'m okay, but I almost fell in the bathroom yesterday. I grabbed the towel rack just in time.' },
+      { speaker: 'Florence', text: 'I\'m glad you caught yourself. Can you tell me more about what happened? Were you feeling dizzy or lightheaded?' },
+      { speaker: 'Patient', text: 'A little dizzy when I stood up. My legs just feel weak since I got home from the hospital.' },
+      { speaker: 'Florence', text: 'Thank you for telling me, Jane. I\'m going to flag this for your care team right away. A near-fall event after discharge is something we want to address quickly.' }
+    ],
+    findings: [
+      'Patient reports near-fall event 3 days post-discharge',
+      'Morse Fall Scale score 55 = High Risk',
+      'Current medications include Furosemide (dizziness risk) and Metoprolol (orthostatic hypotension risk)',
+      'Home environment: lives alone, no grab bars reported'
+    ],
+    florenceThinking: 'Patient described near-fall event 3 days post-discharge. Morse Fall Scale score 55 = High Risk. Current medications include Furosemide (dizziness risk) and Metoprolol (orthostatic hypotension risk). Home environment: lives alone, no grab bars reported. Escalation threshold: any fall or near-fall event in high-risk patient within 14 days of discharge.',
+    suggested_next_step: 'Recommend home safety evaluation and physical therapy referral. Consider medication review for orthostatic hypotension risk. Assess need for grab bars and assistive devices. Schedule follow-up within 48 hours.',
+    timeAgo: '5 min ago'
+  },
+  'WF-CHF-001': {
+    title: 'CHF Decompensation Signal — ESCALATION',
+    patient: 'Jane Doe | DOB: 05/27/1955 | MRN: 202070',
+    workflow: 'CHF Monitoring (WF-CHF-001)',
+    campaign: 'Post-Discharge Monitoring (CAMP-TCM-Q1)',
+    severity: 'critical',
+    interaction_summary: 'Florence initiated a weight monitoring check-in call on Feb 28 at 9:00 AM. Patient reported a 5 lb weight gain over the past 3 days, increasing shortness of breath on exertion, and new bilateral ankle swelling. Patient baseline weight at discharge was 135 lbs; current weight is 140 lbs.',
+    transcript: [
+      { speaker: 'Florence', text: 'Good morning Jane, this is Florence. I\'m calling for your daily weight check. Were you able to weigh yourself this morning?' },
+      { speaker: 'Patient', text: 'Yes, I\'m at 140. That\'s up from 135 when I left the hospital.' },
+      { speaker: 'Florence', text: 'That\'s a 5-pound increase in 3 days. Have you noticed any swelling in your ankles or feet?' },
+      { speaker: 'Patient', text: 'Yes, both ankles are puffy. And I\'m more out of breath going up the stairs.' },
+      { speaker: 'Florence', text: 'Jane, these are important symptoms I need to report to your care team immediately. A 5-pound weight gain with swelling and shortness of breath needs urgent attention. I\'m escalating this right now.' }
+    ],
+    findings: [
+      'Weight gain of 5 lbs in 72 hours exceeds 3 lb/3-day threshold for CHF patients',
+      'Patient reports worsening dyspnea on exertion',
+      'New bilateral ankle edema reported',
+      'Baseline weight at discharge: 135 lbs, Current: 140 lbs'
+    ],
+    florenceThinking: 'Weight gain of 5 lbs in 72 hours exceeds 3 lb/3-day threshold for CHF patients. Patient reports worsening dyspnea on exertion and new bilateral ankle edema. Baseline weight at discharge: 135 lbs. Current: 140 lbs. Escalation threshold: >3 lbs gained in 72 hours OR new/worsening edema in CHF patient.',
+    suggested_next_step: 'URGENT: Contact Dr. Campbell immediately for diuretic dose adjustment. Consider same-day telehealth visit or in-office evaluation. Monitor for worsening symptoms — instruct patient to call 911 if breathing difficulty increases. Do not delay.',
+    timeAgo: '2 min ago'
+  },
+  'WF-SDOH-001': {
+    title: 'SDOH Barrier — Medication Affordability — ESCALATION',
+    patient: 'Jane Doe | DOB: 05/27/1955 | MRN: 202070',
+    workflow: 'Medication Adherence (WF-SDOH-001)',
+    campaign: 'October Medication Adherence Campaign (CAMP-MED-OCT)',
+    severity: 'medium',
+    interaction_summary: 'Florence initiated a medication adherence check-in on Feb 28 at 11:00 AM. Patient disclosed she cannot afford the $45/month copay for Clopidogrel and has been taking it every other day to stretch her supply. This is a critical post-MI antiplatelet medication.',
+    transcript: [
+      { speaker: 'Florence', text: 'Hi Jane, I\'m calling to check on your medications. How are you doing with your Clopidogrel — the blood thinner you started after your procedure?' },
+      { speaker: 'Patient', text: 'Well, honestly, I\'ve been taking it every other day instead of every day. The copay is $45 a month and I just can\'t afford it right now.' },
+      { speaker: 'Florence', text: 'I understand that\'s a difficult situation, Jane. It\'s important that I let you know — Clopidogrel needs to be taken every day to protect your heart. Skipping doses could put you at risk. Let me flag this for your care team so we can find a way to help with the cost.' },
+      { speaker: 'Patient', text: 'I know I should be taking it, but I have to choose between that and my other bills.' },
+      { speaker: 'Florence', text: 'We want to make sure you don\'t have to make that choice. I\'m going to escalate this to your care manager right away so they can look into assistance programs or alternative options for you.' }
+    ],
+    findings: [
+      'Patient disclosed financial barrier to medication adherence',
+      'Clopidogrel (antiplatelet, post-MI) is being rationed — taking every other day instead of daily',
+      'Sub-therapeutic dosing increases stent thrombosis risk',
+      'SDOH flag: financial hardship affecting critical cardiac medication'
+    ],
+    florenceThinking: 'Patient disclosed financial barrier to medication adherence. Clopidogrel (antiplatelet, post-MI) is being rationed — taking every other day instead of daily. This is a critical post-MI medication; sub-therapeutic dosing increases stent thrombosis risk. SDOH flag: financial hardship. Escalation threshold: any reported cost-related non-adherence for high-risk cardiac medication.',
+    suggested_next_step: 'Initiate Patient Assistance Program (PAP) search for Clopidogrel. Check for generic alternatives or manufacturer coupons. Refer to social worker for financial counseling. Ensure patient resumes daily dosing immediately — consider bridge supply from office samples.',
+    timeAgo: '8 min ago'
   }
 };
+
+// ==================== CALL MONITOR (ITEM 7) ====================
+let callMonitorInterval = null;
+let callMonitorMsgInterval = null;
+let callMonitorDuration = 0;
+
+const callMonitorScript = [
+    { speaker: 'Florence', text: 'Good afternoon, Maria. This is Florence calling from NightingaleMD. How are you feeling today, two days after your discharge?' },
+    { speaker: 'Patient', text: 'Hi Florence. I\'m doing okay, a little tired. The new medications make me feel a bit nauseous.' },
+    { speaker: 'Florence', text: 'I\'m sorry to hear about the nausea. Can you tell me which medication you think is causing it? Are you taking your Lisinopril 10mg in the morning as prescribed?' },
+    { speaker: 'Patient', text: 'Yes, the Lisinopril. I take it with breakfast. The nausea usually comes about an hour later.' },
+    { speaker: 'Florence', text: 'Thank you for that detail. I\'ll note that for Dr. Rivera. Now, have you been able to get your lab work done? I see it was due last week.' },
+    { speaker: 'Patient', text: 'No, I haven\'t been able to get to the lab. My son was supposed to take me but he\'s been working.' },
+    { speaker: 'Florence', text: 'I understand. Those labs are important for monitoring your kidney function with the new medication. Let me see if we can arrange a mobile phlebotomy visit to your home. Would that work for you?' },
+    { speaker: 'Patient', text: 'Oh, they can come to my house? That would be wonderful.' },
+    { speaker: 'Florence', text: 'Yes, I\'ll coordinate that for you. I\'m also noting that you sound a bit fatigued today. On a scale of 1 to 10, how would you rate your energy level?' },
+    { speaker: 'Patient', text: 'Maybe a 4. I\'ve been sleeping a lot but I still feel tired.' }
+];
+
+const callMonitorIntel = [
+    { time: 4, text: '\u2713 Medication verified: Lisinopril 10mg — taking as directed', icon: '\u2705' },
+    { time: 8, text: '\u26A0 Side effect reported: Nausea 1hr post-Lisinopril', icon: '\u26A0\uFE0F' },
+    { time: 15, text: '\u274C Labs overdue: Renal panel — 3 weeks past due', icon: '\u274C' },
+    { time: 22, text: '\uD83D\uDE97 SDOH: Transportation barrier for lab visits', icon: '\uD83D\uDE97' },
+    { time: 28, text: '\uD83D\uDCA4 Mood: Patient sounds fatigued (energy 4/10)', icon: '\uD83D\uDCA4' }
+];
+
+function showCallMonitor() {
+    const overlay = document.getElementById('call-monitor-overlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+    callMonitorDuration = 222; // Start at 3:42 to feel like an ongoing call
+    
+    // Generate waveform bars
+    const waveform = document.getElementById('cm-waveform');
+    waveform.innerHTML = '';
+    for (let i = 0; i < 30; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'cm-waveform-bar';
+        const h = 4 + Math.random() * 16;
+        bar.style.setProperty('--bar-height', h + 'px');
+        bar.style.animationDelay = (Math.random() * 0.8) + 's';
+        waveform.appendChild(bar);
+    }
+    
+    // Start duration counter
+    const durationEl = document.getElementById('cm-duration');
+    callMonitorInterval = setInterval(() => {
+        callMonitorDuration++;
+        const m = Math.floor(callMonitorDuration / 60).toString().padStart(2, '0');
+        const s = (callMonitorDuration % 60).toString().padStart(2, '0');
+        durationEl.textContent = m + ':' + s;
+    }, 1000);
+    durationEl.textContent = '03:42';
+    
+    // Start transcript
+    const transcript = document.getElementById('cm-transcript');
+    transcript.innerHTML = '';
+    const intelContainer = document.getElementById('cm-intel-items');
+    intelContainer.innerHTML = '';
+    
+    let msgIdx = 0;
+    let intelIdx = 0;
+    let elapsed = 0;
+    
+    // Add messages every 3-4 seconds
+    callMonitorMsgInterval = setInterval(() => {
+        elapsed += 3;
+        
+        if (msgIdx < callMonitorScript.length) {
+            const msg = callMonitorScript[msgIdx];
+            const msgEl = document.createElement('div');
+            msgEl.className = 'cm-msg';
+            msgEl.innerHTML = '<div class="cm-msg-speaker ' + (msg.speaker === 'Florence' ? 'florence' : 'patient') + '">' + msg.speaker + '</div><div class="cm-msg-text">' + msg.text + '</div>';
+            transcript.appendChild(msgEl);
+            transcript.scrollTop = transcript.scrollHeight;
+            
+            // Update speaker badge
+            const badge = document.getElementById('cm-speaker-badge');
+            if (msg.speaker === 'Florence') {
+                badge.textContent = 'Florence Speaking';
+                badge.className = 'cm-speaker-badge cm-speaker-florence';
+            } else {
+                badge.textContent = 'Patient Speaking';
+                badge.className = 'cm-speaker-badge cm-speaker-patient';
+            }
+            msgIdx++;
+        }
+        
+        // Add intel items at their scheduled times
+        while (intelIdx < callMonitorIntel.length && elapsed >= callMonitorIntel[intelIdx].time) {
+            const intel = callMonitorIntel[intelIdx];
+            const intelEl = document.createElement('div');
+            intelEl.className = 'cm-intel-item';
+            intelEl.innerHTML = '<span>' + intel.icon + '</span><span>' + intel.text + '</span>';
+            intelContainer.appendChild(intelEl);
+            intelIdx++;
+        }
+        
+        if (msgIdx >= callMonitorScript.length && intelIdx >= callMonitorIntel.length) {
+            clearInterval(callMonitorMsgInterval);
+        }
+    }, 3500);
+    
+    addLogEntry('Call Monitor', 'Opened live call monitor for Maria Santos — TCM Day 2', null, 'Florence (Autonomous)');
+}
+
+function closeCallMonitor() {
+    const overlay = document.getElementById('call-monitor-overlay');
+    if (overlay) overlay.classList.remove('active');
+    if (callMonitorInterval) { clearInterval(callMonitorInterval); callMonitorInterval = null; }
+    if (callMonitorMsgInterval) { clearInterval(callMonitorMsgInterval); callMonitorMsgInterval = null; }
+}
+
+function renderEscalationCards() {
+    const container = document.getElementById('escalation-cards-container');
+    if (!container) return;
+    
+    const escData = [
+        { id: 'WF-A-002', title: 'Medication Gap — Metoprolol', severity: 'high', desc: 'Patient reports dizziness, missed 3 doses in 5 days. HR elevated at 98 bpm.', timeAgo: '3 min ago' },
+        { id: 'WF-FALL-001', title: 'Fall Risk — Near-Fall Event', severity: 'medium', desc: 'Patient reports near-fall in bathroom. Unsteady gait since discharge. Morse Fall Scale: 55 (High Risk).', timeAgo: '5 min ago' },
+        { id: 'WF-CHF-001', title: 'CHF Decompensation Signal', severity: 'critical', desc: 'Patient reports 5 lb weight gain in 3 days, increasing SOB, ankle swelling.', timeAgo: '2 min ago' },
+        { id: 'WF-SDOH-001', title: 'SDOH Barrier — Medication Affordability', severity: 'medium', desc: 'Patient cannot afford Clopidogrel copay ($45/month). Skipping doses to stretch supply.', timeAgo: '8 min ago' }
+    ];
+    
+    container.innerHTML = escData.map((esc, idx) => {
+        const data = handoffNoteData[esc.id];
+        const thinking = data && data.florenceThinking ? data.florenceThinking : '';
+        const thinkingBullets = thinking ? thinking.split('. ').filter(s => s.trim()).map(s => '<div class="thinking-bullet">' + s.trim() + (s.endsWith('.') ? '' : '.') + '</div>').join('') : '';
+        
+        return '<div class="esc-card sev-' + esc.severity + '">' +
+            '<div class="esc-card-header">' +
+                '<span class="esc-card-title">' + esc.title + '</span>' +
+                '<span class="esc-sev-badge ' + esc.severity + '">' + esc.severity + '</span>' +
+            '</div>' +
+            '<div class="esc-card-desc">' + esc.desc + '</div>' +
+            '<div class="esc-card-time">' + esc.timeAgo + '</div>' +
+            (thinking ? '<button class="esc-thinking-toggle" onclick="toggleEscThinking(this)" data-esc-idx="' + idx + '">' +
+                '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+                'Florence\'s Thinking' +
+            '</button>' +
+            '<div class="esc-thinking-content" id="esc-thinking-' + idx + '">' + thinkingBullets + '</div>' : '') +
+            '<div class="esc-card-actions">' +
+                '<button class="esc-primary" onclick="openHandoffModal(\'' + esc.id + '\')">View Details</button>' +
+                '<button onclick="acknowledgeEscalation(this)">Acknowledge</button>' +
+                '<button onclick="assignEscalation(this)">Assign to Care Team</button>' +
+            '</div>' +
+        '</div>';
+    }).join('');
+}
+
+function toggleEscThinking(btn) {
+    const idx = btn.getAttribute('data-esc-idx');
+    const content = document.getElementById('esc-thinking-' + idx);
+    if (!content) return;
+    btn.classList.toggle('expanded');
+    content.classList.toggle('visible');
+}
+
+function acknowledgeEscalation(btn) {
+    const card = btn.closest('.esc-card');
+    btn.textContent = 'Acknowledged';
+    btn.disabled = true;
+    btn.style.background = 'rgba(39,174,96,0.15)';
+    btn.style.color = '#27AE60';
+    btn.style.borderColor = 'rgba(39,174,96,0.3)';
+    addLogEntry('Escalation Acknowledged', 'Care manager acknowledged escalation', null, null);
+}
+
+function assignEscalation(btn) {
+    btn.textContent = 'Assigned';
+    btn.disabled = true;
+    btn.style.background = 'rgba(85,181,184,0.15)';
+    btn.style.color = '#55B5B8';
+    btn.style.borderColor = 'rgba(85,181,184,0.3)';
+    showToast('Escalation assigned to care team. Notification sent.', 'info');
+    addLogEntry('Escalation Assigned', 'Escalation assigned to care team for follow-up', null, null);
+}
 
 function openCampaignsView() {
     const overlay = document.getElementById('campaigns-overlay');
@@ -18115,6 +18957,8 @@ function openCampaignsView() {
     overlay.classList.add('active');
     renderCampaigns('all');
     addLogEntry('Campaigns View', 'Opened Newton Campaigns population dashboard');
+    // Render escalation cards after campaigns load
+    setTimeout(() => renderEscalationCards(), 100);
 }
 
 function closeCampaignsView() {
@@ -18140,6 +18984,8 @@ function renderCampaigns(filter) {
                 ${c.escalations} escalation${c.escalations > 1 ? 's' : ''} require CM review
                 ${c.id === 'CAMP-MED-OCT' ? '<button onclick="openHandoffModal(\'WF-A-002\')" style="margin-left:auto;padding:3px 8px;background:#E45740;color:#fff;border:none;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;">View HANDOFF</button>' : ''}
             </div>` : '';
+        
+        const escalationCardsHtml = c.id === 'CAMP-MED-OCT' ? '<div class="escalation-cards-panel"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Active Escalations (4)</h4><div id="escalation-cards-container"></div></div>' : '';
 
         return `
         <div class="campaign-card ${c.escalations > 0 ? 'escalated' : ''}" data-campaign-id="${c.id}">
@@ -18168,6 +19014,7 @@ function renderCampaigns(filter) {
             </div>
             <div class="campaign-dates">${c.start_date} — ${c.end_date} &nbsp;|&nbsp; ${c.success_rate}% success rate</div>
             ${escalationHtml}
+            ${escalationCardsHtml || ''}
         </div>`;
     }).join('');
     // F2: Attach click listeners after rendering
@@ -18196,6 +19043,7 @@ function attachCampaignCardListeners() {
 // M1: Campaign Patient-Level Drill-Down Data (expanded for scale)
 const campaignPatients = {
     'CAMP-AWV-Q3': [
+        { name: 'Maria Santos', mrn: '203891', age: 72, risk: 'HIGH', status: 'contacted', lastOutreach: 'Now — Active Call', outcome: 'TCM Post-Discharge Day 2 — Florence call in progress', method: 'Phone (AI)', hasTimeline: false, isActiveCall: true },
         { name: 'Jane Doe', mrn: '202070', age: 68, risk: 'HIGH', status: 'scheduled', lastOutreach: 'Mar 2, 2026', outcome: 'AWV scheduled Mar 6 at 2 PM', method: 'Phone', hasTimeline: true },
         { name: 'Robert Chen', mrn: '201445', age: 72, risk: 'MOD', status: 'completed', lastOutreach: 'Feb 28, 2026', outcome: 'AWV completed Feb 28', method: 'Phone', hasTimeline: true },
         { name: 'Maria Gonzalez', mrn: '203112', age: 74, risk: 'HIGH', status: 'no-response', lastOutreach: 'Feb 27, 2026', outcome: 'VM left, no callback', method: 'Phone' },
@@ -18489,6 +19337,31 @@ function openCampaignDrillDown(campaignId) {
 
     panel.classList.add('active');
     addLogEntry('Campaign Drill-Down', `Opened patient-level view for: ${campaign.name}`);
+
+    // Item 7: Enhance active call patient row (Maria Santos)
+    setTimeout(() => {
+        const drilldownEl = document.getElementById('campaign-drilldown');
+        if (drilldownEl) {
+            const allCells = drilldownEl.querySelectorAll('td');
+            allCells.forEach(cell => {
+                if (cell.textContent.includes('Maria Santos')) {
+                    const row = cell.closest('tr');
+                    if (row) {
+                        row.classList.add('active-call-row');
+                        row.style.cursor = 'pointer';
+                        row.onclick = function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            showCallMonitor();
+                        };
+                    }
+                }
+                if (cell.textContent.includes('Active Call') && !cell.querySelector('.active-call-badge')) {
+                    cell.innerHTML = '<span class="active-call-badge"><span class="active-call-dot"></span> Active Call</span>';
+                }
+            });
+        }
+    }, 500);
 }
 
 function filterDrilldown(filter, btn) {
@@ -20608,6 +21481,19 @@ function buildTaskCardHtml(task) {
     const isPendingReview = task.status === 'pending_review';
     const sparkle = task.origin === 'ai-deduced' ? '<span class="task-sparkle" title="AI Deduced">&#10024;<span class="sparkle-tooltip">Deduced from ' + task.deduced_from + '</span></span>' : '';
     const handoffBadge = task.is_handoff ? '<span style="display:inline-block;padding:2px 6px;background:#E45740;color:#fff;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:0.5px;margin-left:6px;">HANDOFF</span>' : '';
+    const executorBadge = task.executor ? (task.executorType === 'florence' 
+        ? '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;background:rgba(85,181,184,0.15);color:#55B5B8;border-radius:4px;font-size:9px;font-weight:700;margin-left:6px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>' + task.executor + '</span>'
+        : '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border-radius:4px;font-size:9px;font-weight:700;margin-left:6px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>' + task.executor + '</span>'
+    ) : '';
+    const progressIndicator = (task.executorType === 'florence' && task.progressSteps) 
+        ? '<div class="florence-progress-indicator" data-steps=\'' + JSON.stringify(task.progressSteps) + '\' data-task-status="' + task.status + '" style="margin-top:4px;font-size:10px;color:#55B5B8;display:flex;align-items:center;gap:5px;">' +
+          (task.status === 'completed' 
+            ? '<span style="color:#43A047;">\u2713 ' + (task.progressSteps[task.progressSteps.length - 1]) + '</span>'
+            : task.status === 'in-progress'
+              ? '<span class="florence-pulse-dot"></span><span class="florence-step-text">' + task.progressSteps[0] + '</span>'
+              : '<span style="color:rgba(255,255,255,0.35);">\u25CF Queued — Waiting to execute</span>') +
+          '</div>'
+        : '';
     const catClass = 'cat-' + task.category;
     const statusClass = 's-' + task.status.replace('_', '-');
     const statusLabel = task.status === 'in-progress' ? 'In Progress' : task.status === 'pending_review' ? 'Pending Review' : task.status === 'deferred' ? 'Deferred' : task.status === 'dismissed' ? 'Dismissed' : task.status.charAt(0).toUpperCase() + task.status.slice(1);
@@ -20814,6 +21700,32 @@ if (_origRenderCampaigns) {
 setTimeout(initCampaignMiniFeeds, 500);
 
     </script>
+
+<!-- CALL MONITOR PANEL -->
+<div class="call-monitor-overlay" id="call-monitor-overlay">
+    <div class="call-monitor-header">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3>Live Call Monitor &mdash; Maria Santos</h3>
+            <button onclick="closeCallMonitor()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;">&times;</button>
+        </div>
+        <div class="cm-subtitle">TCM Post-Discharge Day 2 &nbsp;|&nbsp; <span class="active-call-badge"><span class="active-call-dot"></span> Live</span></div>
+    </div>
+    <div class="call-monitor-duration">
+        <span class="cm-duration-time" id="cm-duration">00:00</span>
+        <div class="cm-waveform" id="cm-waveform"></div>
+        <span class="cm-speaker-badge cm-speaker-florence" id="cm-speaker-badge">Florence Speaking</span>
+    </div>
+    <div class="call-monitor-transcript" id="cm-transcript"></div>
+    <div class="call-monitor-intel">
+        <div class="cm-intel-title">Call Intelligence &mdash; Live Detections</div>
+        <div id="cm-intel-items"></div>
+    </div>
+    <div class="call-monitor-controls">
+        <button onclick="showToast('Microphone muted','info')">Mute</button>
+        <button onclick="showToast('Joining call...','info')">Join Call</button>
+        <button class="cm-end" onclick="closeCallMonitor()">End Monitoring</button>
+    </div>
+</div>
 
 <!-- Floating Mute Button -->
 <button class="audio-mute-btn" id="audio-mute-btn" onclick="toggleAudioMute()" title="Mute/Unmute Audio">
